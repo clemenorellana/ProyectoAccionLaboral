@@ -20,6 +20,62 @@ namespace Proyecto_AccionLaboral.Models
         }
 
         public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.User> Users { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Career> Careers { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.AcademicLevel> AcademicLevels { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Privilege> Privileges { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Role> Roles { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.PrivilegesByRole> PrivilegesByRoles { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Country> Countries { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.City> Cities { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Company> Companies { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.ContractTemplate> ContractTemplates { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.ContactByCompany> ContactByCompanies { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.EducationType> EducationTypes { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.ShipmentType> ShipmentTypes { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.LanguageLevel> LanguageLevels { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Language> Languages { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.VacantLevel> VacantLevels { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.VacantByCompany> VacantByCompanies { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.State> States { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Employee> Employees { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.ReferenceType> ReferenceTypes { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.TrackingType> TrackingTypes { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Client> Clients { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.ClientTracking> ClientTrackings { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.KnownLanguage> KnownLanguages { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.KnownProgram> KnownPrograms { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.Reference> References { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.TrackingDetail> TrackingDetails { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.WorkExperience> WorkExperiences { get; set; }
+
+        public System.Data.Entity.DbSet<Proyecto_AccionLaboral.Models.AcademicEducation> AcademicEducations { get; set; }
     
     }
 }

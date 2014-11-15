@@ -32,9 +32,10 @@ namespace Proyecto_AccionLaboral.Models
         public int CurrentStateId { get; set; }
         public int CityId { get; set; }
 
-
+        
         public State CurrentState { get; set; }
         public City City { get; set; }
+        
         
         public ICollection <AcademicEducation> AcademicEducations { get; set; }
         public ICollection<KnownLanguage> Languages { get; set; }

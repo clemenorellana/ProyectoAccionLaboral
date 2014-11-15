@@ -25,10 +25,10 @@ namespace Proyecto_AccionLaboral.Models
         public int VacantLevelId { get; set; }
 
 
-        public Company CompanyId { get; set; }
-        public AcademicLevel AcademicLevelId { get; set; }
-        public Career CareerId { get; set; }
-        public City CityId { get; set; }
+        public Company Company { get; set; }
+        public AcademicLevel AcademicLevel { get; set; }
+        public Career Career { get; set; }
+        public City City { get; set; }
         public VacantLevel VacantLevel { get; set; }
     }
 }

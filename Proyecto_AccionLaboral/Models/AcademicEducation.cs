@@ -7,7 +7,7 @@ namespace Proyecto_AccionLaboral.Models
 {
     public class AcademicEducation
     {
-        public int AcademicTrainingId { get; set; }
+        public int AcademicEducationId { get; set; }
         public int Year { get; set; }        
         public string InstitutionName { get; set; }        
         public string TrainingName { get; set; }
