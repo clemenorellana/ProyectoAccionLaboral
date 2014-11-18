@@ -50,3 +50,40 @@ C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto2\ProyectoAccionLabor
 C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto2\ProyectoAccionLaboral\Proyecto_AccionLaboral\obj\Debug\Proyecto_AccionLaboral.csprojResolveAssemblyReference.cache
 C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto2\ProyectoAccionLaboral\Proyecto_AccionLaboral\obj\Debug\Proyecto_AccionLaboral.dll
 C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto2\ProyectoAccionLaboral\Proyecto_AccionLaboral\obj\Debug\Proyecto_AccionLaboral.pdb
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\EntityFramework.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Proyecto_AccionLaboral.dll.config
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Proyecto_AccionLaboral.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Proyecto_AccionLaboral.pdb
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Antlr3.Runtime.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\EntityFramework.SqlServer.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Microsoft.Web.Infrastructure.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\MySql.Data.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\MySql.Data.Entity.EF6.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Newtonsoft.Json.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Net.Http.Formatting.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Helpers.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Http.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Http.WebHost.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Mvc.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Optimization.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Razor.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.WebPages.Deployment.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.WebPages.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.WebPages.Razor.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\WebGrease.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\EntityFramework.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\EntityFramework.SqlServer.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Net.Http.Formatting.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Http.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Http.WebHost.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Helpers.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Mvc.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Optimization.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.Razor.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.WebPages.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.WebPages.Deployment.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\System.Web.WebPages.Razor.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Newtonsoft.Json.xml
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\bin\Antlr3.Runtime.pdb
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\obj\Debug\Proyecto_AccionLaboral.dll
+C:\Proyecto de Graduacion\Proyecto_AccionLaboral\obj\Debug\Proyecto_AccionLaboral.pdb
