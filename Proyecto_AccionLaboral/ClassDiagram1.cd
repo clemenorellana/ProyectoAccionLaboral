@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Proyecto_AccionLaboral.BundleConfig" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>App_Start\BundleConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.FilterConfig" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>App_Start\FilterConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.RouteConfig" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>App_Start\RouteConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.MvcApplication" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Global.asax.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.AcademicEducationsController" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAACAQAAAAAAAAAAAIQAAAAQABAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\AcademicEducationsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.AcademicLevelsController" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACJQAAAAAgAAAAAAAAAAAAAEAAAAEACAAAA=</HashCode>
+      <FileName>Controllers\AcademicLevelsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.CarrersController" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAICAQAAAgAAAAAAAAAAEAAAQAAAAAAAAAgAA=</HashCode>
+      <FileName>Controllers\CarrersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.CitiesController" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAQAAIIAAAAAAAAAAIAAAAAMAAAAAAQAAA=</HashCode>
+      <FileName>Controllers\CitiesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.ClientsController" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQACAQIAAAAAAAAAAAAAAAAAAAAAABgQBAAAA=</HashCode>
+      <FileName>Controllers\ClientsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.ClientTrackingsController" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAIAAAACAQAAAACAIAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ClientTrackingsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.CompaniesController" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAQQAAAAAAAAACAAAAAAAEABAAABAAIAAA=</HashCode>
+      <FileName>Controllers\CompaniesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.ContactsByCompanyController" Collapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACAUAAAAAAAAAAAEAAAAAAAAIAAgCAAAAAA=</HashCode>
+      <FileName>Controllers\ContactsByCompanyController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.ContractTemplatesController" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAQAWAAAAAAAAAAAAAAAAAAAIAIAAAAAAA=</HashCode>
+      <FileName>Controllers\ContractTemplatesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.CountriesController" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACBAAACAYAAAAAAAAAAAAAAAAAAAAAAEAABAgAAA=</HashCode>
+      <FileName>Controllers\CountriesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.EducationTypesController" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAFCAAACAQAACAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\EducationTypesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.EmployeesController" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACIQgAAAAAAAAAAAECAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\EmployeesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.HomeController" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEACAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.KnownLanguagesController" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAQAACAwAAAAQAAAAAAAAQAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\KnownLanguagesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.KnownProgramsController" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAgAAAACAQIAAAAAAAAAAAABAAAAAAAAAAAAAAAEQ=</HashCode>
+      <FileName>Controllers\KnownProgramsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.LanguageLevelsController" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAEICAQQAAAAAAAAAAAAAAAAAAAAAAAAAgAAEA=</HashCode>
+      <FileName>Controllers\LanguageLevelsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.LanguagesController" Collapsed="true">
+    <Position X="14.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAIAICAQAAAAAAAAAAAAAAAAAAAAAAAAQAAAACA=</HashCode>
+      <FileName>Controllers\LanguagesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.PrivilegesByRoleController" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAACAQAAAAAAAAAAAAAgAACAAAAACAQAAAAAA=</HashCode>
+      <FileName>Controllers\PrivilegesByRoleController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.PrivilegesController" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAACAUAAQAAAAAAAAABAAAoAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\PrivilegesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.ReferencesController" Collapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAIAEAACAQAAAAAAAAAAAAAIBAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Controllers\ReferencesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.ReferenceTypesController" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABCARAAAAACAAAAAAAAACAAAAAAiAAAAAAAA=</HashCode>
+      <FileName>Controllers\ReferenceTypesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.RolesController" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAEQACAQAAAAAAAAwAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Controllers\RolesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.ShipmentTypesController" Collapsed="true">
+    <Position X="9.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEACAQAAIAgAAAAAAARAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Controllers\ShipmentTypesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.StatesController" Collapsed="true">
+    <Position X="12.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAQAAAAAAAAgBAAgAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Controllers\StatesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.TrackingDetailsController" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAIACAQAAAAAAAAAAAAIACAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Controllers\TrackingDetailsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.TrackingTypesController" Collapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAACAQAAAAAABAAEAIgAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\TrackingTypesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.UsersController" Collapsed="true">
+    <Position X="7.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAAAAAAACAQAQAEAAAAAAAAAAAAAAAAMAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\UsersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.VacantLevelsController" Collapsed="true">
+    <Position X="12.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAQAAAAAAAAAAAAEAQAABAAAAAAAgAAABA=</HashCode>
+      <FileName>Controllers\VacantLevelsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.VacantsByCompanyController" Collapsed="true">
+    <Position X="14.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAEAAAACAQAAAAAAAAAAAAAAAAAAAAAAAAAgQAAgQ=</HashCode>
+      <FileName>Controllers\VacantsByCompanyController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Controllers.WorkExperiencesController" Collapsed="true">
+    <Position X="2.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoAAAAAAACAQYAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\WorkExperiencesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Migrations.Configuration" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Migrations\Configuration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.AcademicEducation" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAFBAEAAAAIgAAAACAAAAAAAAQAAAAQAAAEgCQ=</HashCode>
+      <FileName>Models\AcademicEducation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.AcademicLevel" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AcademicLevel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Career" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Models\Career.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.City" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAQAAAIQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\City.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Client" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAAIAEADKCACAKSIgEAAACAIAAA4BCQAIAAAMEAIAAg=</HashCode>
+      <FileName>Models\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.ClientTracking" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAABAARAIgAAAAgAAAggAAAAAAAAAAAAAABAAAAAw=</HashCode>
+      <FileName>Models\ClientTracking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Company" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAIAAAAAAAAAAAQEAAAAAAAAAAAEAQAAAAA=</HashCode>
+      <FileName>Models\Company.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.ContactByCompany" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAwAABAAAAABQAAAIAABAAAAAA=</HashCode>
+      <FileName>Models\ContactByCompany.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.ContractTemplate" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAEAAAAAAAAQAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ContractTemplate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Country" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Country.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.EducationType" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Models\EducationType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Employee" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAADAEIAICEAAACAEEAAAAggAAAIAAACAAAAAAACACg=</HashCode>
+      <FileName>Models\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.KnownLanguage" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAgASAAAAAgggAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\KnownLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.KnownProgram" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAgAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\KnownProgram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Language" Collapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Language.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.LanguageLevel" Collapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\LanguageLevel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Privilege" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAEAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Privilege.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Proyecto_AccionLaboralContext" Collapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EBCAACBEKAACAAQAQCAAgQAISgAwCEAAABAABiAAAAA=</HashCode>
+      <FileName>Models\Proyecto_AccionLaboralContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Reference" Collapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAQEABACQAAAAIgAAAAAAAAAAEAAAAAAABAABIAAw=</HashCode>
+      <FileName>Models\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.ReferenceType" Collapsed="true">
+    <Position X="14.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Models\ReferenceType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.Role" Collapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACJAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.ShipmentType" Collapsed="true">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Models\ShipmentType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.State" Collapsed="true">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\State.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.TrackingDetail" Collapsed="true">
+    <Position X="14.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAgAAAAAAAAAAAAAAAoAAABAAAAAQAAAAA=</HashCode>
+      <FileName>Models\TrackingDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.TrackingType" Collapsed="true">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TrackingType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.User" Collapsed="true">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAgAAAAAAAACAQAAAAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.VacantByCompany" Collapsed="true">
+    <Position X="9.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAEAAABAAMAQACICAAAACCAAAIAAEAgAAABhAAAQCg=</HashCode>
+      <FileName>Models\VacantByCompany.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.VacantLevel" Collapsed="true">
+    <Position X="11" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\VacantLevel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Proyecto_AccionLaboral.Models.WorkExperience" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAQAABAAQAAAAIgAEAAAAgAAAAAAAAAAAAgEAAAAQ=</HashCode>
+      <FileName>Models\WorkExperience.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
