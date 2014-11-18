@@ -14,7 +14,7 @@ namespace Proyecto_AccionLaboral.Controllers
 {
     public class ShipmentTypesController : ApiController
     {
-        private Proyecto_AccionLaboralContext db = new Proyecto_AccionLaboralContext();
+        private AccionLaboralContext db = new AccionLaboralContext();
 
         // GET api/ShipmentTypes
         public IQueryable<ShipmentType> GetShipmentTypes()

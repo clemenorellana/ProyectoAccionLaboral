@@ -14,7 +14,7 @@ namespace Proyecto_AccionLaboral.Controllers
 {
     public class KnownProgramsController : ApiController
     {
-        private Proyecto_AccionLaboralContext db = new Proyecto_AccionLaboralContext();
+        private AccionLaboralContext db = new AccionLaboralContext();
 
         // GET api/KnownPrograms
         public IQueryable<KnownProgram> GetKnownPrograms()

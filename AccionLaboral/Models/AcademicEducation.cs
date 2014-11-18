@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -7,8 +9,10 @@ namespace Proyecto_AccionLaboral.Models
 {
     public class AcademicEducation
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]   
         public int AcademicEducationId { get; set; }
-        public int Year { get; set; }        
+        public int Year { get; set; }
         public string InstitutionName { get; set; }        
         public string TrainingName { get; set; }
         public int CityId { get; set; }

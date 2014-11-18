@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -7,6 +9,8 @@ namespace Proyecto_AccionLaboral.Models
 {
     public class ClientTracking
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int ClientTrackingId { get; set; }  
         public int TrackingTypeId { get; set; }
         public int ClientId { get; set; }

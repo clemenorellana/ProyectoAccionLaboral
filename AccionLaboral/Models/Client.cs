@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -7,26 +9,36 @@ namespace Proyecto_AccionLaboral.Models
 {
     public class Client
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int ClientId { get; set; }
+        [Required]
+        [Index(IsUnique=true)]
+        public string Correlative { get; set; }
+        [Required]
+        [Index("IX_ClientFirstNameLastName", 1, IsUnique = true)]
         public string FirstName { get; set; }
+        [Required]
+        [Index("IX_ClientFirstNameLastName", 2, IsUnique = true)]
         public string LastName { get; set; }
         public DateTime Birthday { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
         public string Neighborhood { get; set; }
         public string CompleteAddress { get; set; }
         public string Cellphone { get; set; }
         public string HomePhone { get; set; }
         public string Hobby { get; set; }
-        public byte[] Photo { get; set; } // TODO : ver como se va a salvar esto.
+        public byte[] Photo { get; set; } 
         public string CurrentStudies { get; set; }
         public double WageAspiration { get; set; }
         public string FacebookEmail { get; set; }
         public string BBPin { get; set; }
         public string Twitter { get; set; }
         public string DesiredEmployment { get; set; }
-        public string CompaniesWithPreviouslyRequested { get; set; }        
+        public string CompaniesWithPreviouslyRequested { get; set; }   
         public bool Approved { get; set; }
         public string  RejectionDesciption { get; set; }
         public int CurrentStateId { get; set; }

@@ -189,7 +189,7 @@
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\LanguageLevel.cs" />
     <Compile Include="Models\Privilege.cs" />
-    <Compile Include="Models\Proyecto_AccionLaboralContext.cs" />
+    <Compile Include="Models\AccionLaboralContext.cs" />
     <Compile Include="Models\Reference.cs" />
     <Compile Include="Models\ReferenceType.cs" />
     <Compile Include="Models\Role.cs" />
