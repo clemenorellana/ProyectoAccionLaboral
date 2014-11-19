@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Proyecto_AccionLaboral.Models
+namespace AccionLaboral.Models
 {
     public class TrackingDetail
     {

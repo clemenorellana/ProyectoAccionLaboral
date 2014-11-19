@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace Proyecto_AccionLaboral.Models
+namespace AccionLaboral.Models
 {
     public class AccionLaboralContext : DbContext
     {

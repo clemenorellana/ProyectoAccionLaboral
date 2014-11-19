@@ -8,9 +8,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Proyecto_AccionLaboral.Models;
+using AccionLaboral.Models;
 
-namespace Proyecto_AccionLaboral.Controllers
+namespace AccionLaboral.Controllers
 {
     public class CountriesController : ApiController
     {

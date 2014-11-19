@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Proyecto_AccionLaboral.Controllers
+namespace AccionLaboral.Controllers
 {
     public class HomeController : Controller
     {
