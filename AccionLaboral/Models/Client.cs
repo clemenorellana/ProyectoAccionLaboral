@@ -43,17 +43,17 @@ namespace Proyecto_AccionLaboral.Models
         public string  RejectionDesciption { get; set; }
         public int CurrentStateId { get; set; }
         public int CityId { get; set; }
-
+        public int AdvisorId { get; set; }
         
         public State CurrentState { get; set; }
         public City City { get; set; }
-        
+        public Employee Advisor { get; set; }
         
         public ICollection <AcademicEducation> AcademicEducations { get; set; }
         public ICollection<KnownLanguage> Languages { get; set; }
         public ICollection<KnownProgram> KnownPrograms { get; set; }
         public ICollection<WorkExperience> WorkExperiences { get; set; }
         public ICollection<Reference> References { get; set; }
-        public ICollection<ClientTracking> Trackings { get; set; }
+        public ICollection<Tracking> Trackings { get; set; }
     }
 }

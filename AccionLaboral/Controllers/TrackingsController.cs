@@ -12,21 +12,21 @@ using Proyecto_AccionLaboral.Models;
 
 namespace Proyecto_AccionLaboral.Controllers
 {
-    public class ClientTrackingsController : ApiController
+    public class TrackingsController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
-        // GET api/ClientTrackings
-        public IQueryable<ClientTracking> GetClientTrackings()
+        // GET api/Trackings
+        public IQueryable<Tracking> GetTrackings()
         {
-            return db.ClientTrackings;
+            return db.Trackings;
         }
 
-        // GET api/ClientTrackings/5
-        [ResponseType(typeof(ClientTracking))]
+        // GET api/Trackings/5
+        [ResponseType(typeof(Tracking))]
         public IHttpActionResult GetClientTracking(int id)
         {
-            ClientTracking clienttracking = db.ClientTrackings.Find(id);
+            Tracking clienttracking = db.Trackings.Find(id);
             if (clienttracking == null)
             {
                 return NotFound();
@@ -35,15 +35,15 @@ namespace Proyecto_AccionLaboral.Controllers
             return Ok(clienttracking);
         }
 
-        // PUT api/ClientTrackings/5
-        public IHttpActionResult PutClientTracking(int id, ClientTracking clienttracking)
+        // PUT api/Trackings/5
+        public IHttpActionResult PutClientTracking(int id, Tracking clienttracking)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != clienttracking.ClientTrackingId)
+            if (id != clienttracking.TrackingId)
             {
                 return BadRequest();
             }
@@ -69,32 +69,32 @@ namespace Proyecto_AccionLaboral.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST api/ClientTrackings
-        [ResponseType(typeof(ClientTracking))]
-        public IHttpActionResult PostClientTracking(ClientTracking clienttracking)
+        // POST api/Trackings
+        [ResponseType(typeof(Tracking))]
+        public IHttpActionResult PostClientTracking(Tracking clienttracking)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.ClientTrackings.Add(clienttracking);
+            db.Trackings.Add(clienttracking);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = clienttracking.ClientTrackingId }, clienttracking);
+            return CreatedAtRoute("DefaultApi", new { id = clienttracking.TrackingId }, clienttracking);
         }
 
-        // DELETE api/ClientTrackings/5
-        [ResponseType(typeof(ClientTracking))]
+        // DELETE api/Trackings/5
+        [ResponseType(typeof(Tracking))]
         public IHttpActionResult DeleteClientTracking(int id)
         {
-            ClientTracking clienttracking = db.ClientTrackings.Find(id);
+            Tracking clienttracking = db.Trackings.Find(id);
             if (clienttracking == null)
             {
                 return NotFound();
             }
 
-            db.ClientTrackings.Remove(clienttracking);
+            db.Trackings.Remove(clienttracking);
             db.SaveChanges();
 
             return Ok(clienttracking);
@@ -111,7 +111,7 @@ namespace Proyecto_AccionLaboral.Controllers
 
         private bool ClientTrackingExists(int id)
         {
-            return db.ClientTrackings.Count(e => e.ClientTrackingId == id) > 0;
+            return db.Trackings.Count(e => e.TrackingId == id) > 0;
         }
     }
 }

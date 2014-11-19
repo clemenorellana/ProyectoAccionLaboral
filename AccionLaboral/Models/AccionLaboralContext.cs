@@ -61,7 +61,7 @@ namespace Proyecto_AccionLaboral.Models
 
         public DbSet<Client> Clients { get; set; }
 
-        public DbSet<ClientTracking> ClientTrackings { get; set; }
+        public DbSet<Tracking> Trackings { get; set; }
 
         public DbSet<KnownLanguage> KnownLanguages { get; set; }
 

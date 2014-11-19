@@ -17,11 +17,11 @@ namespace Proyecto_AccionLaboral.Models
         [Required]
         public string Description { get; set; }
         public int ShipmentTypeId { get; set; }
-        public int ClientTrackingId { get; set; }
+        public int TrackingId { get; set; }
 
 
         public ShipmentType ShipmentType { get; set; }
-        public ClientTracking ClientTracking { get; set; }
+        public Tracking Tracking { get; set; }
         
 
     }
