@@ -33,7 +33,7 @@ namespace AccionLaboral.Models
         public int UserId { get; set; }
 
 
-        public Role Role { get; set; }
+        //public Role Role { get; set; }
         public User User { get; set; }
         public Career Career { get; set; }
     }
