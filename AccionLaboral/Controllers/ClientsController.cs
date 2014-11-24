@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using System.Web.Mvc;
 
 namespace AccionLaboral.Controllers
 {
@@ -113,5 +114,10 @@ namespace AccionLaboral.Controllers
         {
             return db.Clients.Count(e => e.ClientId == id) > 0;
         }
+
+        //public ActionResult Test()
+        //{
+        //    return View();
+        //}
     }
 }

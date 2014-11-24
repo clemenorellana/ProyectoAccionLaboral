@@ -8,16 +8,17 @@ namespace AccionLaboral.Controllers
 {
     public class HomeController : Controller
     {
+        //[Authorize]
         public ActionResult Index()
         {
-            return View();
+            return new FilePathResult("/Views/Home/Index.html", "text/html");
         }
 
-        public ActionResult About()
+        public ActionResult RegisterClient()
         {
             ViewBag.Message = "Your application description page.";
 
-            return View();
+            return new FilePathResult("/Views/Clientes/RegisterClient.html", "text/html");
         }
 
         public ActionResult Contact()
