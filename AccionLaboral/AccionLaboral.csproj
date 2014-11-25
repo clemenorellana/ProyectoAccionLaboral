@@ -40,13 +40,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.9.5\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.Entity.6.9.5\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Web, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Web.6.9.5\lib\net45\MySql.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -144,7 +158,6 @@
     <Compile Include="Controllers\CarrersController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
-    <Compile Include="Controllers\ClientTrackingsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\ContactsByCompanyController.cs" />
     <Compile Include="Controllers\ContractTemplatesController.cs" />
@@ -163,6 +176,7 @@
     <Compile Include="Controllers\ShipmentTypesController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
     <Compile Include="Controllers\TrackingDetailsController.cs" />
+    <Compile Include="Controllers\TrackingsController.cs" />
     <Compile Include="Controllers\TrackingTypesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VacantLevelsController.cs" />
@@ -172,12 +186,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411250238014_ALMigration.cs" />
+    <Compile Include="Migrations\201411250238014_ALMigration.Designer.cs">
+      <DependentUpon>201411250238014_ALMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicEducation.cs" />
     <Compile Include="Models\AcademicLevel.cs" />
     <Compile Include="Models\Career.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Client.cs" />
-    <Compile Include="Models\ClientTracking.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\ContactByCompany.cs" />
     <Compile Include="Models\ContractTemplate.cs" />
@@ -195,6 +213,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ShipmentType.cs" />
     <Compile Include="Models\State.cs" />
+    <Compile Include="Models\Tracking.cs" />
     <Compile Include="Models\TrackingDetail.cs" />
     <Compile Include="Models\TrackingType.cs" />
     <Compile Include="Models\User.cs" />
@@ -209,8 +228,210 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="CSS\bootstrap.min.css" />
+    <Content Include="CSS\css.css" />
+    <Content Include="CSS\css2.css" />
+    <Content Include="CSS\css\AdminLTE.css" />
+    <Content Include="CSS\css\bootstrap-slider\slider.css" />
+    <Content Include="CSS\css\bootstrap-wysihtml5\bootstrap3-wysihtml5.css" />
+    <Content Include="CSS\css\bootstrap-wysihtml5\bootstrap3-wysihtml5.min.css" />
+    <Content Include="CSS\css\colorpicker\bootstrap-colorpicker.css" />
+    <Content Include="CSS\css\colorpicker\bootstrap-colorpicker.min.css" />
+    <Content Include="CSS\css\datatables\dataTables.bootstrap.css" />
+    <Content Include="CSS\css\datatables\images\sort_asc.png" />
+    <Content Include="CSS\css\datatables\images\sort_asc_disabled.png" />
+    <Content Include="CSS\css\datatables\images\sort_both.png" />
+    <Content Include="CSS\css\datatables\images\sort_desc.png" />
+    <Content Include="CSS\css\datatables\images\sort_desc_disabled.png" />
+    <Content Include="CSS\css\datepicker\datepicker3.css" />
+    <Content Include="CSS\css\daterangepicker\daterangepicker-bs3.css" />
+    <Content Include="CSS\css\iCheck\all.css" />
+    <Content Include="CSS\css\iCheck\flat\aero%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\aero.css" />
+    <Content Include="CSS\css\iCheck\flat\aero.png" />
+    <Content Include="CSS\css\iCheck\flat\blue%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\blue.css" />
+    <Content Include="CSS\css\iCheck\flat\blue.png" />
+    <Content Include="CSS\css\iCheck\flat\flat%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\flat.css" />
+    <Content Include="CSS\css\iCheck\flat\flat.png" />
+    <Content Include="CSS\css\iCheck\flat\green%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\green.css" />
+    <Content Include="CSS\css\iCheck\flat\green.png" />
+    <Content Include="CSS\css\iCheck\flat\grey%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\grey.css" />
+    <Content Include="CSS\css\iCheck\flat\grey.png" />
+    <Content Include="CSS\css\iCheck\flat\orange%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\orange.css" />
+    <Content Include="CSS\css\iCheck\flat\orange.png" />
+    <Content Include="CSS\css\iCheck\flat\pink%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\pink.css" />
+    <Content Include="CSS\css\iCheck\flat\pink.png" />
+    <Content Include="CSS\css\iCheck\flat\purple%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\purple.css" />
+    <Content Include="CSS\css\iCheck\flat\purple.png" />
+    <Content Include="CSS\css\iCheck\flat\red%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\red.css" />
+    <Content Include="CSS\css\iCheck\flat\red.png" />
+    <Content Include="CSS\css\iCheck\flat\yellow%402x.png" />
+    <Content Include="CSS\css\iCheck\flat\yellow.css" />
+    <Content Include="CSS\css\iCheck\flat\yellow.png" />
+    <Content Include="CSS\css\iCheck\flat\_all.css" />
+    <Content Include="CSS\css\iCheck\futurico\futurico%402x.png" />
+    <Content Include="CSS\css\iCheck\futurico\futurico.css" />
+    <Content Include="CSS\css\iCheck\futurico\futurico.png" />
+    <Content Include="CSS\css\iCheck\line\aero.css" />
+    <Content Include="CSS\css\iCheck\line\blue.css" />
+    <Content Include="CSS\css\iCheck\line\green.css" />
+    <Content Include="CSS\css\iCheck\line\grey.css" />
+    <Content Include="CSS\css\iCheck\line\line%402x.png" />
+    <Content Include="CSS\css\iCheck\line\line.css" />
+    <Content Include="CSS\css\iCheck\line\line.png" />
+    <Content Include="CSS\css\iCheck\line\orange.css" />
+    <Content Include="CSS\css\iCheck\line\pink.css" />
+    <Content Include="CSS\css\iCheck\line\purple.css" />
+    <Content Include="CSS\css\iCheck\line\red.css" />
+    <Content Include="CSS\css\iCheck\line\yellow.css" />
+    <Content Include="CSS\css\iCheck\line\_all.css" />
+    <Content Include="CSS\css\iCheck\minimal\aero%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\aero.css" />
+    <Content Include="CSS\css\iCheck\minimal\aero.png" />
+    <Content Include="CSS\css\iCheck\minimal\blue%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\blue.css" />
+    <Content Include="CSS\css\iCheck\minimal\blue.png" />
+    <Content Include="CSS\css\iCheck\minimal\green%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\green.css" />
+    <Content Include="CSS\css\iCheck\minimal\green.png" />
+    <Content Include="CSS\css\iCheck\minimal\grey%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\grey.css" />
+    <Content Include="CSS\css\iCheck\minimal\grey.png" />
+    <Content Include="CSS\css\iCheck\minimal\minimal%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\minimal.css" />
+    <Content Include="CSS\css\iCheck\minimal\minimal.png" />
+    <Content Include="CSS\css\iCheck\minimal\orange%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\orange.css" />
+    <Content Include="CSS\css\iCheck\minimal\orange.png" />
+    <Content Include="CSS\css\iCheck\minimal\pink%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\pink.css" />
+    <Content Include="CSS\css\iCheck\minimal\pink.png" />
+    <Content Include="CSS\css\iCheck\minimal\purple%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\purple.css" />
+    <Content Include="CSS\css\iCheck\minimal\purple.png" />
+    <Content Include="CSS\css\iCheck\minimal\red%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\red.css" />
+    <Content Include="CSS\css\iCheck\minimal\red.png" />
+    <Content Include="CSS\css\iCheck\minimal\yellow%402x.png" />
+    <Content Include="CSS\css\iCheck\minimal\yellow.css" />
+    <Content Include="CSS\css\iCheck\minimal\yellow.png" />
+    <Content Include="CSS\css\iCheck\minimal\_all.css" />
+    <Content Include="CSS\css\iCheck\polaris\polaris%402x.png" />
+    <Content Include="CSS\css\iCheck\polaris\polaris.css" />
+    <Content Include="CSS\css\iCheck\polaris\polaris.png" />
+    <Content Include="CSS\css\iCheck\square\aero%402x.png" />
+    <Content Include="CSS\css\iCheck\square\aero.css" />
+    <Content Include="CSS\css\iCheck\square\aero.png" />
+    <Content Include="CSS\css\iCheck\square\blue%402x.png" />
+    <Content Include="CSS\css\iCheck\square\blue.css" />
+    <Content Include="CSS\css\iCheck\square\blue.png" />
+    <Content Include="CSS\css\iCheck\square\green%402x.png" />
+    <Content Include="CSS\css\iCheck\square\green.css" />
+    <Content Include="CSS\css\iCheck\square\green.png" />
+    <Content Include="CSS\css\iCheck\square\grey%402x.png" />
+    <Content Include="CSS\css\iCheck\square\grey.css" />
+    <Content Include="CSS\css\iCheck\square\grey.png" />
+    <Content Include="CSS\css\iCheck\square\orange%402x.png" />
+    <Content Include="CSS\css\iCheck\square\orange.css" />
+    <Content Include="CSS\css\iCheck\square\orange.png" />
+    <Content Include="CSS\css\iCheck\square\pink%402x.png" />
+    <Content Include="CSS\css\iCheck\square\pink.css" />
+    <Content Include="CSS\css\iCheck\square\pink.png" />
+    <Content Include="CSS\css\iCheck\square\purple%402x.png" />
+    <Content Include="CSS\css\iCheck\square\purple.css" />
+    <Content Include="CSS\css\iCheck\square\purple.png" />
+    <Content Include="CSS\css\iCheck\square\red%402x.png" />
+    <Content Include="CSS\css\iCheck\square\red.css" />
+    <Content Include="CSS\css\iCheck\square\red.png" />
+    <Content Include="CSS\css\iCheck\square\square%402x.png" />
+    <Content Include="CSS\css\iCheck\square\square.css" />
+    <Content Include="CSS\css\iCheck\square\square.png" />
+    <Content Include="CSS\css\iCheck\square\yellow%402x.png" />
+    <Content Include="CSS\css\iCheck\square\yellow.css" />
+    <Content Include="CSS\css\iCheck\square\yellow.png" />
+    <Content Include="CSS\css\iCheck\square\_all.css" />
+    <Content Include="CSS\css\images\animated-overlay.gif" />
+    <Content Include="CSS\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="CSS\css\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="CSS\css\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="CSS\css\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="CSS\css\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="CSS\css\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="CSS\css\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="CSS\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="CSS\css\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="CSS\css\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="CSS\css\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="CSS\css\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="CSS\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="CSS\css\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="CSS\css\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="CSS\css\ionslider\ion.rangeSlider.css" />
+    <Content Include="CSS\css\ionslider\ion.rangeSlider.skinFlat.css" />
+    <Content Include="CSS\css\ionslider\ion.rangeSlider.skinNice.css" />
+    <Content Include="CSS\css\jvectormap\jquery-jvectormap-1.2.2.css" />
+    <Content Include="CSS\css\morris\morris.css" />
+    <Content Include="CSS\css\timepicker\bootstrap-timepicker.css" />
+    <Content Include="CSS\css\timepicker\bootstrap-timepicker.min.css" />
+    <Content Include="CSS\font-awesome.min.css" />
+    <Content Include="CSS\ionicons.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\ajax-loader.gif" />
+    <Content Include="Images\ajax-loader1.gif" />
+    <Content Include="Images\avatar.png" />
+    <Content Include="Images\avatar04.png" />
+    <Content Include="Images\avatar2.png" />
+    <Content Include="Images\avatar3.png" />
+    <Content Include="Images\avatar5.png" />
+    <Content Include="Images\blur-background04.jpg" />
+    <Content Include="Images\blur-background08.jpg" />
+    <Content Include="Images\blur-background09.jpg" />
+    <Content Include="Images\icons.png" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\logo_accionlaboral.png" />
+    <Content Include="Images\sprite-skin-flat.png" />
+    <Content Include="Images\sprite-skin-nice.png" />
+    <Content Include="Images\user-bg.png" />
+    <Content Include="Images\user.jpg" />
+    <Content Include="Images\user2.jpg" />
+    <Content Include="pages\calendar.html" />
+    <Content Include="pages\charts\empty.html" />
+    <Content Include="pages\charts\flot.html" />
+    <Content Include="pages\charts\inline.html" />
+    <Content Include="pages\charts\morris.html" />
+    <Content Include="pages\empty.html" />
+    <Content Include="pages\examples\404.html" />
+    <Content Include="pages\examples\500.html" />
+    <Content Include="pages\examples\blank.html" />
+    <Content Include="pages\examples\invoice.html" />
+    <Content Include="pages\examples\lockscreen.html" />
+    <Content Include="pages\examples\login.html" />
+    <Content Include="pages\examples\register.html" />
+    <Content Include="pages\forms\advanced.html" />
+    <Content Include="pages\forms\editors.html" />
+    <Content Include="pages\forms\empty.html" />
+    <Content Include="pages\forms\general.html" />
+    <Content Include="pages\mailbox.html" />
+    <Content Include="pages\tables\data.html" />
+    <Content Include="pages\tables\empty.html" />
+    <Content Include="pages\tables\simple.html" />
+    <Content Include="pages\UI\buttons.html" />
+    <Content Include="pages\UI\empty.html" />
+    <Content Include="pages\UI\general.html" />
+    <Content Include="pages\UI\icons.html" />
+    <Content Include="pages\UI\jquery-ui.html" />
+    <Content Include="pages\UI\sliders.html" />
+    <Content Include="pages\UI\timeline.html" />
+    <Content Include="pages\widgets.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -230,7 +451,10 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Views\Clientes\RegisterClient.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -246,8 +470,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Clientes\CrearCliente.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201411250238014_ALMigration.resx">
+      <DependentUpon>201411250238014_ALMigration.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

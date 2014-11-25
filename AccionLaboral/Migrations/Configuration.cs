@@ -10,6 +10,7 @@ namespace AccionLaboral.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());    // This will add our MySQLClient as SQL Generator
         }
 
         protected override void Seed(AccionLaboral.Models.AccionLaboralContext context)

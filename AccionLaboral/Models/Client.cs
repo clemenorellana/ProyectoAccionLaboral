@@ -14,7 +14,8 @@ namespace AccionLaboral.Models
         public int ClientId { get; set; }
         [Required]
         [Index(IsUnique=true)]
-        public string Correlative { get; set; }
+        [StringLength(10)]
+        public string CorrelativeCode { get; set; }
         [Required]
         [Index("IX_ClientFirstNameLastName", 1, IsUnique = true)]
         public string FirstName { get; set; }
