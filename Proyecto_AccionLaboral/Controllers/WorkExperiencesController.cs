@@ -8,13 +8,13 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Proyecto_AccionLaboral.Models;
+using AccionLaboral.Models;
 
 namespace Proyecto_AccionLaboral.Controllers
 {
     public class WorkExperiencesController : ApiController
     {
-        private Proyecto_AccionLaboralContext db = new Proyecto_AccionLaboralContext();
+        private AccionLaboralContext db = new Proyecto_AccionLaboralContext();
 
         // GET api/WorkExperiences
         public IQueryable<WorkExperience> GetWorkExperiences()

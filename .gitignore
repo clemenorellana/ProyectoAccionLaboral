@@ -41,3 +41,12 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+AccionLaboral/bin/AccionLaboral.dll.config
+*.dll
+*.suo
+*.pdb
+*.xml
+*.config
+*.user
+*.csproj
