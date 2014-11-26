@@ -14,12 +14,15 @@ namespace AccionLaboral.Models
         public int ClientId { get; set; }
         [Required]
         [Index(IsUnique=true)]
-        public string Correlative { get; set; }
+        [StringLength(10)]
+        public string CorrelativeCode { get; set; }
         [Required]
         [Index("IX_ClientFirstNameLastName", 1, IsUnique = true)]
+        [StringLength(100)]
         public string FirstName { get; set; }
         [Required]
         [Index("IX_ClientFirstNameLastName", 2, IsUnique = true)]
+        [StringLength(100)]
         public string LastName { get; set; }
         public DateTime Birthday { get; set; }
         public int Age { get; set; }
