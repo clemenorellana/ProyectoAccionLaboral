@@ -19,6 +19,11 @@ namespace AccionLaboral.Models
         {
         }
 
+        static AccionLaboralContext()
+        {
+                DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
+        }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<Career> Careers { get; set; }

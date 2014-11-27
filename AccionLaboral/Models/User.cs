@@ -14,6 +14,7 @@ namespace AccionLaboral.Models
         public int UserId {get; set;}
         [Required]
         [Index(IsUnique=true)]
+        [StringLength(25)]
         public string UserName { get; set; }
         [Required]
         public string Password { get; set; }

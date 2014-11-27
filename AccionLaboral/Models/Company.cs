@@ -14,6 +14,7 @@ namespace AccionLaboral.Models
         public int CompanyId { get; set; }
         [Required]
         [Index(IsUnique = true)]
+        [StringLength(50)]
         public string Name { get; set; }
         public string Area { get; set; }
         public DateTime DateCreated { get; set; }
