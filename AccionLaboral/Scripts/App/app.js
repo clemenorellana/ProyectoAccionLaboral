@@ -4,7 +4,10 @@
 
 var acLabApp = angular.module('AccionLaboralApp', [
   'ngRoute',
-  'accionLabControllers'
+  'ngGrid',
+  'clientsController',
+  'clientsRepository'
+  
 ]);
 
 acLabApp.config(['$routeProvider',
@@ -12,10 +15,7 @@ acLabApp.config(['$routeProvider',
       $routeProvider.
         when('/RegisterClient', {
             templateUrl: '/Home/RegisterClient',
-            controller: 'registerController'
-        }).
-        when('/', {
-            controller: 'mainController'
+            controller: 'newCustomerController'
         }).
         otherwise({
             redirectTo: '/'

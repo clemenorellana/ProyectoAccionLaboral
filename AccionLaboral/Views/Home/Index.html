@@ -6,6 +6,7 @@
     <title>Acción Laboral </title>
     <link rel="shortcut icon" href="../../Images/logo.png">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link href="../../Content/ng-grid.min.css" rel="stylesheet" />
     <link href="../../CSS/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
@@ -382,7 +383,7 @@
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">
             <!-- Content Header (Page header) -->
-            <section class="content-header" ng-controller="mainController">
+            <section class="content-header">
                 <h1>
                     {{title}}
                     <small>Control panel</small>
@@ -416,7 +417,10 @@
     <script src="../../Scripts/js/AdminLTE/app.js" type="text/javascript"></script>
 
     <!-- Angular App -->
+    <script src="../../Scripts/js/ng-grid.min.js"></script>
     <script src="../../Scripts/App/app.js" type="text/javascript"></script>
-    <script src="../../Scripts/App/Controllers.js"></script>
+    <!--<script src="../../Scripts/App/Controllers.js"></script>-->
+    <script src="../../Scripts/App/Controllers/clientsController.js"></script>
+    <script src="../../Scripts/App/Services/clientRepository.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<div class="col-md-6" data-ng-controller="registerController">
+﻿<div class="col-md-6" ng-controller="newCustomerController">
     <!-- general form elements disabled -->
     <div class="box box-warning">
         <div class="box-header">
@@ -9,15 +9,15 @@
                 <!-- text input -->
                 <div class="form-group">
                     <label>Correlativo</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Correlative">
                 </div>
                 <div class="form-group">
                     <label>Primer Nombre</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName">
                 </div>
                 <div class="form-group">
                     <label>Apellido</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName">
                 </div>
                 <div class="form-group">
                     <label>Fecha de Nacimiento</label>
@@ -25,17 +25,17 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="">
+                        <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday">
                     </div><!-- /.input group -->
                 </div>
-                
+
                 <div class="form-group">
                     <label>Edad</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age">
                     </div>
                 </div>
 
@@ -43,27 +43,27 @@
                     <label>Sexo</label>
                     <div class="radio">
                         <label class="">
-                            <div class="iradio_minimal checked" aria-checked="true" aria-disabled="false" style="position: relative;"><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
+                            <div class="iradio_minimal checked" aria-checked="true" aria-disabled="false" style="position: relative;"><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);" ng-model="New.Gender"></ins></div>
                             Femenino
                         </label>
                     </div>
                     <div class="radio">
                         <label class="">
-                            <div class="iradio_minimal" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
+                            <div class="iradio_minimal" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);" ng-model="New.Gender"></ins></div>
                             Masculino
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Correo</label>
-                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                    <span class="input-group-addon"><i class="fa fa-envelope" ng-model="New.Email"></i></span>
                     <input type="text" class="form-control" placeholder="Ingresar ...">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Ciundad</label>
-                    <select class="form-control">
+                    <select class="form-control" ng-model="New.CityId">
                         <option>option 1</option>
                         <option>option 2</option>
                         <option>option 3</option>
@@ -74,94 +74,94 @@
 
                 <div class="form-group">
                     <label>Barrio</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Dirección Completa</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Celular:</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-phone"></i>
                         </div>
-                        <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="">
+                        <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
                     </div><!-- /.input group -->
                 </div>
-                
+
                 <div class="form-group">
                     <label>Teléfono:</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-phone"></i>
                         </div>
-                        <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="">
+                        <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
                     </div><!-- /.input group -->
                 </div>
 
                 <!-- textarea -->
                 <div class="form-group">
                     <label>Pasatiempo</label>
-                    <textarea class="form-control" rows="3" placeholder="Ingresar ..."></textarea>
+                    <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="exampleInputFile">Foto</label>
-                    <input type="file" id="exampleInputFile">
+                    <input type="file" id="exampleInputFile" ng-model="New.Photo">
                     <p class="help-block">Example block-level help text here.</p>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Estudios Actuales</label>
-                    <textarea class="form-control" rows="3" placeholder="Ingresar ..."></textarea>
+                    <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.CurrentStudies"></textarea>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Aspiración Salarial</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.WageAspiration">
                 </div>
 
                 <div class="form-group">
                     <label>Plaza Deseada</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.DesiredEmployment">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Facebook</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FacebookEmail">
                 </div>
-                
+
                 <div class="form-group">
                     <label>BBPin</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.BBPin">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Twitter</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Twitter">
                 </div>
 
                 <div class="form-group">
                     <label>Mencione las ultimas empresas donde a solicitado empleo, esto para no enviarlo nuevamente</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompaniesWithPreviouslyRequested">
                 </div>
 
                 <div class="form-group">
                     <label>Clases aprobadas en la universidad</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Approved">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Causa de rechazo</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.RejectionDesciption">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Estado</label>
-                    <select class="form-control">
+                    <select class="form-control" ng-model="New.CurrentStateId">
                         <option>option 1</option>
                         <option>option 2</option>
                         <option>option 3</option>
@@ -169,10 +169,10 @@
                         <option>option 5</option>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Asesor</label>
-                    <select class="form-control">
+                    <select class="form-control" ng-model="New.AdvisorId">
                         <option>option 1</option>
                         <option>option 2</option>
                         <option>option 3</option>
@@ -181,8 +181,8 @@
                     </select>
                 </div>
 
-
-</form>
+                <input id="Submit1" ng-click="update()" type="submit" value="submit" />
+            </form>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </div>
