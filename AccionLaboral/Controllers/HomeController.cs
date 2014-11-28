@@ -14,18 +14,18 @@ namespace AccionLaboral.Controllers
             return new FilePathResult("/Views/Home/Index.html", "text/html");
         }
 
-        public ActionResult RegisterClient()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return new FilePathResult("/Views/Clientes/RegisterClient.html", "text/html");
-        }
-
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult RegisterClient()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return new FilePathResult("/Views/Clientes/RegisterClient.html", "text/html");
         }
     }
 }

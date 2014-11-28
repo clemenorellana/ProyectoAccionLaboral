@@ -8,11 +8,12 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
     return {
         getCustomers: function (callback) {
 
-            $http.get(url).success(callback);
+            return $http.get(url);
         }
         ,
         //method for insert
-        insertclient: function (callback, client) {
+        InsertCustomer: function (callback, client) {
+            debugger;
             var client = {
                 "clientId": client.clientId, "Correlative": client.Correlative, "FirstName": client.FirstName,
                 "LastName": client.LastName, "Birthday": client.Birthday, "Age": client.Age,
@@ -23,11 +24,11 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
                 "CityId": client.CityId, "AdvisorId": client.AdvisorId
             };
-            $http.post(url, client).success(callback);
+            return $http.post(url, client);
         }
             ,
         //method for update
-        updateclient: function (callback, client) {
+        UpdateCustomer: function (callback, client) {
             var client = {
                 "clientId": client.clientId, "Correlative": client.Correlative, "FirstName": client.FirstName,
                 "LastName": client.LastName, "Birthday": client.Birthday, "Age": client.Age,
@@ -38,12 +39,12 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
                 "CityId": client.CityId, "AdvisorId": client.AdvisorId
             };
-            $http.put(url + '/' + client.id, client).success(callback);
+            return $http.put(url + '/' + client.id, client);
         }
         ,
         //method for delete
-        deleteclient: function (callback, id) {
-            $http.delete(url + '/' + id).success(callback);
+        DeleteCustomer: function (callback, id) {
+            return $http.delete(url + '/' + id);
         }
 
 

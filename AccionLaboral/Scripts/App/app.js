@@ -1,6 +1,4 @@
 ﻿/// <reference path="../../Views/Clientes/_RegisterClient.html" />
-/// <reference path="../../Views/Clientes/_RegisterClient.html" />
-/// <reference path="../../Views/Clientes/_RegisterClient.html" />
 
 var acLabApp = angular.module('AccionLaboralApp', [
   'ngRoute',
@@ -14,8 +12,12 @@ acLabApp.config(['$routeProvider',
   function ($routeProvider) {
       $routeProvider.
         when('/RegisterClient', {
-            templateUrl: '/Home/RegisterClient',
-            controller: 'newCustomerController'
+            templateUrl: '/Clients/Create',
+            controller: 'CustomerController'
+        }).
+        when('/AllClients', {
+            templateUrl: '/Clients/Index',
+            controller: 'CustomerController'
         }).
         otherwise({
             redirectTo: '/'
