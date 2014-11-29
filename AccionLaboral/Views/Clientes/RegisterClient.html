@@ -14,171 +14,35 @@
                 <p class="help-block">Seleccione una foto</p>
             </div>
         </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <button type="submit" class="btn btn-primary" ng-click="update()">Registrar</button>
+                </div>
+                <div class="col-md-6 text-center">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
+    
 </div>
 
-<div class="col-md-9" ng-controller="newCustomerController">
-    <!-- general form elements disabled -->
-    <!--<div class="box box-info">
-        <div class="box-header">
-            <h3 class="box-title">Registrar Cliente</h3>
-        </div>
-        <div class="box-body">
-            <form role="form">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Apellido</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName">
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Fecha de Nacimiento</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday" placeholder="Ingresar ...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Edad</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Genero</label>
-                            <div class="form-group">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked ng-model="New.Gender">
-                                        Femenino
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" ng-model="New.Gender">
-                                        Masculino
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Correo Electrónico</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-envelope" ng-model="New.Email"></i></span>
-                                <input type="text" class="form-control" placeholder="Ingresar ...">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Celular:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-mobile-phone"></i>
-                                </div>
-                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Teléfono Fijo:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-phone"></i>
-                                </div>
-                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Barrio / Colonia</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Ciudad</label>
-                            <select class="form-control" ng-model="New.CityId">
-                                <option selected>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Dirección Completa</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
-                </div>
-                <div class="form-group">
-                    <label>Pasatiempo</label>
-                    <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
-                </div>
-
-                <div class="box-footer">
-                    <div class="row">
-                        <div class="col-md-6 text-center">
-                            <button type="submit" class="btn btn-primary" ng-click="update()">Registrar Usuario</button>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <button type="button" class="btn btn-file" data-dismiss="modal">Cancelar</button>
-                        </div>
-                    </div>
-                </div>
-
-            </form>
-        </div>
-    </div>-->
+<div class="col-md-9" ng-controller="newCustomerController">    
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
             <li class="active"><a href="RegisterClient#personalInfo" data-toggle="tab">Datos Personales</a></li>
-            <li><a href="RegisterClient#academicEducationInfo" data-toggle="tab">Formaciones Academicas</a></li>
+            <li><a href="RegisterClient#academicEducationInfo" data-toggle="tab">Información Académica</a></li>
             <li><a href="RegisterClient#workExperienceInfo" data-toggle="tab">Experiencia Laboral</a></li>
             <li><a href="RegisterClient#referencesInfo" data-toggle="tab">Referencias</a></li>
-            <li><a href="RegisterClient#additionalTrainingInfo" data-toggle="tab">Formaciones Adicionales</a></li>
+            <li><a href="RegisterClient#additionalTrainingInfo" data-toggle="tab">Información Adicional</a></li>
         </ul>
         <div class="tab-content">
+            <!--Tab Datos Personales-->
             <div class="tab-pane active" id="personalInfo">
-                <section >
+                <section>
                     <h4 class="page-header">Datos Personales</h4>
-                    <!--<div class="box box-info">-->
-                    <!--<div class="box-header">
-                        <h3 class="box-title">Registrar Cliente</h3>
-                    </div>-->
-                    <!-- /.box-header -->
                     <div class="box-body">
                         <form role="form">
                             <div class="row">
@@ -204,7 +68,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday" placeholder="Ingresar ...">
+                                            <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday" >
                                         </div>
                                     </div>
                                 </div>
@@ -252,7 +116,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Celular:</label>
+                                        <label>Celular</label>
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-mobile-phone"></i>
@@ -263,7 +127,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Teléfono Fijo:</label>
+                                        <label>Teléfono Fijo</label>
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-phone"></i>
@@ -299,153 +163,704 @@
                                 <label>Dirección Completa</label>
                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
                             </div>
-                            <div class="form-group">
-                                <label>Pasatiempo</label>
-                                <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
-                            </div>
-
-                            <div class="box-footer">
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        <button type="submit" class="btn btn-primary" ng-click="update()">Registrar Usuario</button>
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        <button type="button" class="btn btn-file" data-dismiss="modal">Cancelar</button>
-                                    </div>
-                                </div>
-                            </div>
-
                         </form>
                     </div><!-- /.box-body -->
                     <!--</div>--><!-- /.box -->
                 </section>
-            </div>
+                
+            </div><!--End Tab Datos Personales-->
+
+            <!--Tab Formaciones Académicas-->    
             <div class="tab-pane" id="academicEducationInfo">
                 <section >
-                    <h4 class="page-header">Formaciones Academicas</h4>
-                    
+                    <h4 class="page-header">Formaciones Académicas</h4>                    
                         <div class="box-body">
                             <form role="form">
-                                <div class="box">
+                                <!--Begin Estudios Academicos Box-->
+                                <div class="box box-info">
                                     <div class="box-header">
-                                        <h3 class="box-title">Estudios Academicos</h3>
-                                        <div class="box-tools">
-                                            <div class="input-group">
-                                                <div class="input-group-btn">
-                                                    <button type="submit" class="btn btn-primary pull-right">Nuevo</button>
-                                                </div>
-                                            </div>
+                                        <h3 class="box-title">Estudios Académicos</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicInfo" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>                                    
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Año</th>
+                                                <th>País</th>
+                                                <th>Ciudad</th>
+                                                <th>Nivel Académico</th>
+                                                <th>Título Obtenido</th>
+                                                <th>Institución</th>
+                                            </tr>
+                                            <tr>
+                                                
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <!-- End Estudios Academicos Box -->
+
+                                <!--Begin Idiomas Manejados Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Idiomas Manejados</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#languagesInfo" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="box-body">
                                         <table class="table table-bordered">
                                             <tr>
                                                 <th style="width: 10px">#</th>
-                                                <th>Programa</th>
+                                                <th>Idioma</th>
+                                                <th>Nivel</th>
+                                                <th>Porcentaje</th>
                                             </tr>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
+                                                
                                             </tr>
                                         </table>
                                     </div><!-- /.box-body -->
-                                </div><!-- /.box -->
+                                </div>
+                                <!-- End Idiomas Manejados Box -->
 
-                                <div class="box">
-                                    <div class="box-header">
-                                        <h3 class="box-title">Ideomas Manejados</h3>
-                                        <div class="box-tools">
-                                            <div class="input-group">
-                                                <div class="input-group-btn">
-                                                    <button type="submit" class="btn btn-primary pull-right" ng-click="">Nuevo</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="box-body">
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <th style="width: 10px">#</th>
-                                                <th>Programa</th>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </table>
-                                    </div><!-- /.box-body -->
-                                </div><!-- /.box -->
-
-                                <div class="box">
+                                <!--Begin Programas Manejados Box-->
+                                <div class="box box-info">
                                     <div class="box-header">
                                         <h3 class="box-title">Programas Manejados</h3>
-                                        <div class="box-tools">
-                                            <div class="input-group">
-                                                <div class="input-group-btn">
-                                                    <button type="submit" class="btn btn-primary pull-right" ng-click="">Nuevo</button>
-                                                </div>
-                                            </div>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#programsInfo" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="box-body">
+                                    <div class="box-body ">
                                         <table class="table table-bordered">
                                             <tr>
                                                 <th style="width: 10px">#</th>
                                                 <th>Programa</th>
                                             </tr>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
+                                                
                                             </tr>
                                         </table>
                                     </div><!-- /.box-body -->
-                                </div><!-- /.box -->
+                                </div>
+                                <!-- End Programas Manejados Box -->
                             </form>
                         </div>
                     
                 </section>
-            </div>
+            </div><!--End Tab Formaciones Académicas-->    
+            
+            <!--Tab Experiencia Laboral-->    
             <div class="tab-pane" id="workExperienceInfo">
                 <section>
                     <h4 class="page-header">Experiencia Laboral</h4>
-
                     <div class="box-body">
-                        <form role="form"></form>
+                        <form role="form">
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#experienceInfo" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Inicio</th>
+                                            <th>Fin</th>
+                                            <th>País</th>
+                                            <th>Ciudad</th>
+                                            <th>Empresa</th>
+                                            <th>Cargo Ocupado</th>
+                                        </tr>
+                                        <tr>
+                                           
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                        </form>
                     </div><!-- /.box-body -->
 
                 </section>
-            </div>
+            </div> <!--EndTab Experiencia Laboral-->    
+            
+            <!--Tab Referencias-->    
             <div class="tab-pane" id="referencesInfo">
                 <section>
                     <h4 class="page-header">Referencias</h4>
 
                     <div class="box-body">
-                        <form role="form"></form>
-                    </div><!-- /.box-body -->
-
+                        <form role="form">
+                            <!--Begin Referencias Laborales Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Referencias Laborales</h3>
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#workRefInfo" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Nombre</th>
+                                            <th>Empresa</th>
+                                            <th>Cargo</th>
+                                            <th>Teléfono</th>
+                                            <th>Correo Electrónico</th>
+                                            <th>Ciudad</th>
+                                            <th>País</th>
+                                        </tr>
+                                        <tr>
+                                            
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Referencias Laborales Box -->
+                            <!--Begin Referencias Personales Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Referencias Personales</h3>
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#personalRefInfo" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Nombre</th>
+                                            <th>Ocupación</th>
+                                            <th>Parentezco</th>
+                                            <th>Teléfono</th>
+                                            <th>Correo Electrónico</th>
+                                            <th>Ciudad</th>
+                                            <th>País</th>
+                                        </tr>
+                                        <tr>
+                                            
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Referencias Personales Box -->                            
+                        </form>
+                    </div>
                 </section>
-            </div>
+            </div><!--End Tab Referencias-->  
+            
+            <!--Tab Formaciones Adicionales-->  
             <div class="tab-pane" id="additionalTrainingInfo">
                 <section>
                     <h4 class="page-header">Formaciones Adicionales</h4>
-
                     <div class="box-body">
                         <form role="form">
-                            
-                            <div class="form-group">
-                                <label>Pasatiempo</label>
-                                <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
+                            <!--Begin Formaciones Adicionales Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Formaciones Adicionales</h3>
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicTrainingInfo" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Año</th>
+                                            <th>País</th>
+                                            <th>Ciudad</th>
+                                            <th>Tipo de Formación</th>
+                                            <th>Título de la Formación</th>
+                                            <th>Institución</th>
+                                        </tr>
+                                        <tr>
+                                            
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
                             </div>
-
-                            
-
+                            <!-- End Formaciones Adicionales Box -->
+                            <!--Begin Pasatiempos Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Pasatiempos u otras activiades</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label>Actividades</label>
+                                        <textarea class="form-control ng-pristine ng-valid ng-touched" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Idiomas Manejados Box -->                            
                         </form>
                     </div>
 
                 </section>
-            </div>
+            </div> <!--End Tab Formaciones Adicionales-->  
         </div><!-- /.tab-content -->
     </div><!-- /.nav-tabs-custom -->
-
+    
 </div>
 
+<!-- ADD ACADECIM INFO MODAL -->
+<div class="modal fade" id="academicInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Agregar Formación Académica</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>Año</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>País</label>
+                            <select class="form-control">
+                                <option>Honduras</option>
+                                <option>EE. UU.</option>
+                                <option>Canada</option>
+                                <option>España</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label>Ciudad</label>
+                            <select class="form-control">
+                                <option>San Pedro Sula</option>
+                                <option>Tegucigalpa</option>
+                                <option>La Ceiba</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Nivel Académico</label>
+                            <select class="form-control">
+                                <option>Primaria</option>
+                                <option>Secundaria</option>
+                                <option>Universitaria</option>
+                                <option>Maestria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>Título Obtenido</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Nombre de la Institución</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- ADD LANGUAGES INFO MODAL -->
+<div class="modal fade" id="languagesInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Agregar Idioma Manejado</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Idioma</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>Nivel</label>
+                            <select class="form-control">
+                                <option>Básico</option>
+                                <option>Intermedio</option>
+                                <option>Avanzado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>Porcentaje</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- ADD PROGRAMS INFO MODAL -->
+<div class="modal fade" id="programsInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Agregar Programa Manejado</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre del Programa</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ...">
+                    </div>
+
+                    <div class="modal-footer clearfix">
+                        <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- ADD WORK EXPERIENCE MODAL -->
+<div class="modal fade" id="experienceInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Agregar Experiencia Laboral</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Fecha Inicio</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Fecha Fin</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>País</label>
+                            <select class="form-control">
+                                <option>Honduras</option>
+                                <option>EE. UU.</option>
+                                <option>Canada</option>
+                                <option>España</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Ciudad</label>
+                            <select class="form-control">
+                                <option>San Pedro Sula</option>
+                                <option>Tegucigalpa</option>
+                                <option>La Ceiba</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>Nombre de la Empresa</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Sector</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Cargo Ocupado</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Tareas o Logros Realizados</label>
+                            <textarea class="form-control" rows="3" placeholder="Ingresar ..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- ADD WORK REFERENCES MODAL -->
+<div class="modal fade" id="workRefInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Agregar Referencia Laboral</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Apellido</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" >
+                                </div><!-- /.input group -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope" ></i></span>
+                                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>País</label>
+                            <select class="form-control">
+                                <option>Honduras</option>
+                                <option>EE. UU.</option>
+                                <option>Canada</option>
+                                <option>España</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Ciudad</label>
+                            <select class="form-control">
+                                <option>San Pedro Sula</option>
+                                <option>Tegucigalpa</option>
+                                <option>La Ceiba</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Empresa</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." >
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." >
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- ADD PERSONAL REFERENCES MODAL -->
+<div class="modal fade" id="personalRefInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Agregar Referencia Personal</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Apellido</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="">
+                                </div><!-- /.input group -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                    <input type="text" class="form-control" placeholder="Ingresar ...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>País</label>
+                            <select class="form-control">
+                                <option>Honduras</option>
+                                <option>EE. UU.</option>
+                                <option>Canada</option>
+                                <option>España</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Ciudad</label>
+                            <select class="form-control">
+                                <option>San Pedro Sula</option>
+                                <option>Tegucigalpa</option>
+                                <option>La Ceiba</option>
+                            </select>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <label>Ocupación</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Parentezco</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ...">
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- ADD ADDITIONAL TRAINING MODAL -->
+<div class="modal fade" id="academicTrainingInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Agregar Formación Adicional</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>Año</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>País</label>
+                            <select class="form-control">
+                                <option>Honduras</option>
+                                <option>EE. UU.</option>
+                                <option>Canada</option>
+                                <option>España</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label>Ciudad</label>
+                            <select class="form-control">
+                                <option>San Pedro Sula</option>
+                                <option>Tegucigalpa</option>
+                                <option>La Ceiba</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Tipo de Formación</label>
+                            <select class="form-control">
+                                <option>Curso</option>
+                                <option>Diplomado</option>
+                                <option>Congreso</option>
+                                <option>Concurso</option>
+                                <option>Proyecto Humanitario</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>Título de la formación</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Nombre de la Institución</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
