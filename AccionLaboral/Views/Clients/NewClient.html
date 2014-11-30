@@ -1,188 +1,445 @@
-﻿<div class="col-md-6" ng-controller="CustomerController">
-    <!-- general form elements disabled -->
-    <div class="box box-warning">
+﻿<div class="col-md-3">
+    <div class="box box-info">
         <div class="box-header">
-            <h3 class="box-title">Registrar Cliente</h3>
+            <h3 class="box-title">Foto de Perfil</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
+            <div class="text-center">
+                <img src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="exampleInputFile">Cambiar foto de Perfil</label>
+                <input type="file" id="exampleInputFile" ng-model="New.Photo" base-sixty-four-input>
+                <p class="help-block">Seleccione una foto</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-9" ng-controller="CustomerController">
+    <!-- general form elements disabled -->
+    <!--<div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">Registrar Cliente</h3>
+        </div>
+        <div class="box-body">
             <form role="form">
-                <!-- text input -->
+                <div class="row">
+                    <div class="col-md-6">
                 <div class="form-group">
-                    <label>Correlativo</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Correlative">
-                </div>
-                <div class="form-group">
-                    <label>Primer Nombre</label>
+                            <label>Nombre</label>
                     <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName">
                 </div>
+                    </div>
+                    <div class="col-md-6">
                 <div class="form-group">
                     <label>Apellido</label>
                     <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName">
                 </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
                 <div class="form-group">
                     <label>Fecha de Nacimiento</label>
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday">
-                    </div><!-- /.input group -->
+                                <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday" placeholder="Ingresar ...">
                 </div>
-
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                 <div class="form-group">
                     <label>Edad</label>
                     <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </div>
                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age">
                     </div>
                 </div>
-
+                    </div>
+                    <div class="col-md-4">
                 <div class="form-group">
-                    <label>Sexo</label>
+                            <label>Genero</label>
+                            <div class="form-group">
                     <div class="radio">
-                        <label class="">
-                            <div class="iradio_minimal checked" aria-checked="true" aria-disabled="false" style="position: relative;"><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);" ng-model="New.Gender"></ins></div>
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked ng-model="New.Gender">
                             Femenino
                         </label>
                     </div>
                     <div class="radio">
-                        <label class="">
-                            <div class="iradio_minimal" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);" ng-model="New.Gender"></ins></div>
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" ng-model="New.Gender">
                             Masculino
                         </label>
                     </div>
                 </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-md-6">
                 <div class="form-group">
-                    <label>Correo</label>
+                            <label>Correo Electrónico</label>
+                            <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-envelope" ng-model="New.Email"></i></span>
                     <input type="text" class="form-control" placeholder="Ingresar ...">
                 </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-md-6">
                 <div class="form-group">
-                    <label>Ciundad</label>
+                            <label>Celular:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-mobile-phone"></i>
+                                </div>
+                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Teléfono Fijo:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Barrio / Colonia</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Ciudad</label>
                     <select class="form-control" ng-model="New.CityId">
-                        <option>option 1</option>
+                                <option selected>option 1</option>
                         <option>option 2</option>
                         <option>option 3</option>
                         <option>option 4</option>
                         <option>option 5</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label>Barrio</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label>Dirección Completa</label>
                     <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
                 </div>
-
-                <div class="form-group">
-                    <label>Celular:</label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                        <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
-                    </div><!-- /.input group -->
-                </div>
-
-                <div class="form-group">
-                    <label>Teléfono:</label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                        <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
-                    </div><!-- /.input group -->
-                </div>
-
-                <!-- textarea -->
                 <div class="form-group">
                     <label>Pasatiempo</label>
                     <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="exampleInputFile">Foto</label>
-                    <input type="file" id="exampleInputFile" ng-model="New.Photo">
-                    <p class="help-block">Example block-level help text here.</p>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <button type="submit" class="btn btn-primary" ng-click="update()">Registrar Usuario</button>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <button type="button" class="btn btn-file" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Estudios Actuales</label>
-                    <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.CurrentStudies"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Aspiración Salarial</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.WageAspiration">
-                </div>
-
-                <div class="form-group">
-                    <label>Plaza Deseada</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.DesiredEmployment">
-                </div>
-
-                <div class="form-group">
-                    <label>Facebook</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FacebookEmail">
-                </div>
-
-                <div class="form-group">
-                    <label>BBPin</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.BBPin">
-                </div>
-
-                <div class="form-group">
-                    <label>Twitter</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Twitter">
-                </div>
-
-                <div class="form-group">
-                    <label>Mencione las ultimas empresas donde a solicitado empleo, esto para no enviarlo nuevamente</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompaniesWithPreviouslyRequested">
-                </div>
-
-                <div class="form-group">
-                    <label>Clases aprobadas en la universidad</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Approved">
-                </div>
-
-                <div class="form-group">
-                    <label>Causa de rechazo</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.RejectionDesciption">
-                </div>
-
-                <div class="form-group">
-                    <label>Estado</label>
-                    <select class="form-control" ng-model="New.CurrentStateId">
-                        <option>option 1</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Asesor</label>
-                    <select class="form-control" ng-model="New.AdvisorId">
-                        <option>option 1</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
-                    </select>
-                </div>
-
-                <input id="Submit1" ng-click="update()" type="submit" value="submit" />
             </form>
-        </div><!-- /.box-body -->
-    </div><!-- /.box -->
+        </div>
+    </div>-->
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="RegisterClient#personalInfo" data-toggle="tab">Datos Personales</a></li>
+            <li><a href="RegisterClient#academicEducationInfo" data-toggle="tab">Formaciones Academicas</a></li>
+            <li><a href="RegisterClient#workExperienceInfo" data-toggle="tab">Experiencia Laboral</a></li>
+            <li><a href="RegisterClient#referencesInfo" data-toggle="tab">Referencias</a></li>
+            <li><a href="RegisterClient#additionalTrainingInfo" data-toggle="tab">Formaciones Adicionales</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="personalInfo">
+                <section>
+                    <h4 class="page-header">Datos Personales</h4>
+                    <!--<div class="box box-info">-->
+                    <!--<div class="box-header">
+                        <h3 class="box-title">Registrar Cliente</h3>
+                    </div>-->
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <form role="form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Apellido</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Fecha de Nacimiento</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday" placeholder="Ingresar ...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Edad</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <div class="form-group">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked ng-model="New.Gender">
+                                                    Femenino
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" ng-model="New.Gender">
+                                                    Masculino
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Correo Electrónico</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-envelope" ng-model="New.Email"></i></span>
+                                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Celular:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-mobile-phone"></i>
+                                            </div>
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
+                                        </div><!-- /.input group -->
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Teléfono Fijo:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-phone"></i>
+                                            </div>
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
+                                        </div><!-- /.input group -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Barrio / Colonia</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Ciudad</label>
+                                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Dirección Completa</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
+                            </div>
+                            <div class="form-group">
+                                <label>Pasatiempo</label>
+                                <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
+                            </div>
+
+                            <div class="box-footer">
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <button type="submit" class="btn btn-primary" ng-click="update()">Registrar Usuario</button>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <button type="button" class="btn btn-file" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div><!-- /.box-body -->
+                    <!--</div>--><!-- /.box -->
+                </section>
+            </div>
+            <div class="tab-pane" id="academicEducationInfo">
+                <section>
+                    <h4 class="page-header">Formaciones Academicas</h4>
+
+                    <div class="box-body">
+                        <form role="form">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Estudios Academicos</h3>
+                                    <div class="box-tools">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-primary pull-right">Nuevo</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Programa</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div><!-- /.box -->
+
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Ideomas Manejados</h3>
+                                    <div class="box-tools">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-primary pull-right" ng-click="">Nuevo</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Programa</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div><!-- /.box -->
+
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Programas Manejados</h3>
+                                    <div class="box-tools">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-primary pull-right" ng-click="">Nuevo</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Programa</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div><!-- /.box -->
+                        </form>
+                    </div>
+
+                </section>
+            </div>
+            <div class="tab-pane" id="workExperienceInfo">
+                <section>
+                    <h4 class="page-header">Experiencia Laboral</h4>
+
+                    <div class="box-body">
+                        <form role="form"></form>
+                    </div><!-- /.box-body -->
+
+                </section>
+            </div>
+            <div class="tab-pane" id="referencesInfo">
+                <section>
+                    <h4 class="page-header">Referencias</h4>
+
+                    <div class="box-body">
+                        <form role="form"></form>
+                    </div><!-- /.box-body -->
+
+                </section>
+            </div>
+            <div class="tab-pane" id="additionalTrainingInfo">
+                <section>
+                    <h4 class="page-header">Formaciones Adicionales</h4>
+
+                    <div class="box-body">
+                        <form role="form">
+
+                            <div class="form-group">
+                                <label>Pasatiempo</label>
+                                <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+
+                </section>
+            </div>
+        </div><!-- /.tab-content -->
+    </div><!-- /.nav-tabs-custom -->
+
 </div>
+

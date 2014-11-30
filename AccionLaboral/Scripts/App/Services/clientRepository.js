@@ -9,8 +9,11 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         getCustomers: function (callback) {
 
             return $http.get(url);
-        }
-        ,
+        },
+        getCities: function (callback) {
+
+            return $http.get('api/Cities');
+        },
         //method for insert
         InsertCustomer: function (callback, client) {
             debugger;

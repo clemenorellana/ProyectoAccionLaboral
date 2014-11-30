@@ -8,6 +8,29 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
         });
     }*/
 
+    
+    $scope.handleFileSelectAdd = function (evt) {
+        debugger;
+        var f = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (function (theFile) {
+            return function (e) {
+                var filePayload = e.target.result;
+                $scope.episodeImgData = e.target.result;
+                document.getElementById('imagen').src = $scope.episodeImgData;
+            };
+        })(f);
+        reader.readAsDataURL(f);
+    };
+    var imageElement = document.getElementById('exampleInputFile');
+    if(imageElement)
+    imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
+//////////
+
+    customerRepository.getCities().success(function (data) {
+        $scope.Cities = data;
+    });
+
     customerRepository.getCustomers().success(function (data) {
         $scope.customerData = data;
         $scope.totalServerItems = data.totalItems;
@@ -112,6 +135,9 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
 
     $scope.update = function () {
         debugger;
+        if ($scope.episodeImgData) {
+            $scope.New.Photo = $scope.episodeImgData;
+        }
         if ($scope.action == 'edit') {
             customerRepository.UpdateCustomer(function () {
                 $scope.status = 'customer updated successfully';
