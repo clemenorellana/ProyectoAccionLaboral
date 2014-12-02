@@ -14,5 +14,7 @@ namespace AccionLaboral.Models
         public int AcademicLevelId { get; set; }
         [Required]
         public string Name { get; set; }
+
+        public ICollection<Career> Careers { get; set; }
     }
 }

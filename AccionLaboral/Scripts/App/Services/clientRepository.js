@@ -7,25 +7,42 @@ var url = 'api/Clients';
 accionLabControllers.factory('customerRepository',['$http', function ($http) {
     return {
         getCustomers: function (callback) {
-
             return $http.get(url);
         },
         getCities: function (callback) {
-
             return $http.get('api/Cities');
+        },
+        getCountries: function (callback) {
+            return $http.get('api/Countries');
+        },
+        getAcademicLevels: function (callback) {
+            return $http.get('api/AcademicLevels');
+        },
+        getCareers: function (callback) {
+            return $http.get('api/Careers');
+        },
+        getEducationTypes: function (callback) {
+            return $http.get('api/EducationTypes');
+        },
+        getLanguages: function (callback) {
+            return $http.get('api/Languages');
+        },
+        getLanguageLevels: function (callback) {
+            return $http.get('api/LanguageLevels');
         },
         //method for insert
         InsertCustomer: function (callback, client) {
             debugger;
             var client = {
-                "clientId": client.clientId, "Correlative": client.Correlative, "FirstName": client.FirstName,
+                 "Correlative": client.Correlative, "FirstName": client.FirstName,
                 "LastName": client.LastName, "Birthday": client.Birthday, "Age": client.Age,
                 "Gender": client.Gender, "Email": client.Email, "Neighborhood": client.Neighborhood,
                 "CompleteAddress": client.CompleteAddress, "Cellphone": client.Cellphone, "HomePhone": client.HomePhone,
                 "Hobby": client.Hobby, "Photo": client.Photo, "CurrentStudies": client.CurrentStudies,
                 "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
-                "CityId": client.CityId, "AdvisorId": client.AdvisorId
+                "CityId": client.CityId.CityId, "AdvisorId": client.AdvisorId, "CareerId": client.CareerId,
+                "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms
             };
             return $http.post(url, client);
         }

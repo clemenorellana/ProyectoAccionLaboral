@@ -12,7 +12,7 @@ namespace AccionLaboral.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int ClientId { get; set; }
-        [Required]
+    //[Required]
         [Index(IsUnique=true)]
         [StringLength(10)]
         public string CorrelativeCode { get; set; }

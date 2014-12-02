@@ -78,7 +78,7 @@ namespace AccionLaboral.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             db.Clients.Add(client);
             db.SaveChanges();
 

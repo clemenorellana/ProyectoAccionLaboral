@@ -16,7 +16,7 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
-        // GET api/AcademicEducations
+        // GET api/client/{clientId}/academicEducations
         [Route("api/client/{clientId}/academicEducations")]
         [HttpGet]
         public IQueryable<AcademicEducation> GetAcademicEducations(int clientId)

@@ -17,9 +17,12 @@ namespace AccionLaboral.Controllers
         private AccionLaboralContext db = new AccionLaboralContext();
 
         // GET api/AcademicLevels
-        public IQueryable<AcademicLevel> GetAcademicLevels()
+        public dynamic GetAcademicLevels()
         {
-            return db.AcademicLevels;
+            return
+                db.AcademicLevels.Include("Careers")
+                    .Select(i => new {i.AcademicLevelId, i.Name, i.Careers})
+                    .AsQueryable();
         }
 
         // GET api/AcademicLevels/5

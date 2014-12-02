@@ -13,8 +13,8 @@ namespace AccionLaboral.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int KnownProgramId { get; set; }
         [Required]
-        public int Name { get; set;  }
-        [Required]
+        public string Name { get; set;  }
+        
         public int ClientId { get; set; }
 
         public Client Client { get; set; }

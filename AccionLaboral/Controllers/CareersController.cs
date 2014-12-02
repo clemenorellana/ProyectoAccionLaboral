@@ -9,20 +9,23 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using Newtonsoft.Json;
 
 namespace AccionLaboral.Controllers
 {
-    public class CarrersController : ApiController
+    public class CareersController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
-
-        // GET api/Carrers
-        public IQueryable<Career> GetCareers()
+        
+        // GET api/AcademicLevel/{AcademicLevelId}/Careers
+        [Route("api/AcademicLevel/{AcademicLevelId}/Careers")]
+        [HttpGet]
+        public IQueryable<Career> GetCareers(int academicLevelId)
         {
             return db.Careers;
         }
 
-        // GET api/Carrers/5
+        // GET api/Careers/5
         [ResponseType(typeof(Career))]
         public IHttpActionResult GetCareer(int id)
         {
@@ -35,7 +38,7 @@ namespace AccionLaboral.Controllers
             return Ok(career);
         }
 
-        // PUT api/Carrers/5
+        // PUT api/Careers/5
         public IHttpActionResult PutCareer(int id, Career career)
         {
             if (!ModelState.IsValid)
@@ -69,7 +72,7 @@ namespace AccionLaboral.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST api/Carrers
+        // POST api/Careers
         [ResponseType(typeof(Career))]
         public IHttpActionResult PostCareer(Career career)
         {
@@ -84,7 +87,7 @@ namespace AccionLaboral.Controllers
             return CreatedAtRoute("DefaultApi", new { id = career.CareerId }, career);
         }
 
-        // DELETE api/Carrers/5
+        // DELETE api/Careers/5
         [ResponseType(typeof(Career))]
         public IHttpActionResult DeleteCareer(int id)
         {
