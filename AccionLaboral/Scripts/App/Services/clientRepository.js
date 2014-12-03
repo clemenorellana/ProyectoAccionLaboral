@@ -42,7 +42,8 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
                 "CityId": client.CityId.CityId, "AdvisorId": client.AdvisorId, "CareerId": client.CareerId,
-                "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms
+                "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
+                "WorkExperiences": client.workExperiences, "References": client.workReferences
             };
             return $http.post(url, client);
         }

@@ -13,6 +13,6 @@ namespace AccionLaboral.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int ReferenceTypeId { get; set; }
         [Required]
-        public int Name { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -16,7 +16,7 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
         reader.readAsDataURL(f);
     };
     
-    $scope.academicEducations = [], $scope.knownLaguages = [], $scope.knownPrograms = [], $scope.references = [], $scope.workExperiences=[];
+    $scope.academicEducations = [], $scope.knownLaguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences=[];
 
     var imageElement = document.getElementById('exampleInputFile');
     if(imageElement)
@@ -52,6 +52,18 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
 
     $scope.removeKnowProgram = function (index) {
         $scope.knownPrograms.splice(index, 1);
+    }; 
+
+    $scope.removeWorkExperience = function (index) {
+        $scope.workExperiences.splice(index, 1);
+    };
+
+    $scope.removeWorkReference = function (index) {
+        $scope.workReferences.splice(index, 1);
+    };
+
+    $scope.removePersonalReference = function (index) {
+        $scope.personalReferences.splice(index, 1);
     };
 
     $scope.addKnownLaguage = function() {
@@ -77,15 +89,78 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
         $scope.NameProgram = "";
     }
 
-    $scope.addReference = function (reference) {
-        if(reference)
-        $scope.references.push(reference);
-    }
+    $scope.addWorkExperience = function() {
+        var experience = {
+            CompanyName: $scope.CompanyName,
+            CompanyArea: $scope.CompanyArea,
+            Charge: $scope.Charge,
+            StartDate: $scope.StartDate,
+            EndDate: $scope.EndDate,
+            Achievements: $scope.Achievements,
+            WorkCity: $scope.WorkCity,
+            WorkCountry: $scope.WorkCountry
+        };
 
-    $scope.addWorkExperience = function (workExperience) {
-        if(workExperience)
-        $scope.workExperiences.push(workExperience);
-    }
+        $scope.workExperiences.push(experience);
+        $scope.CompanyName = "";
+        $scope.CompanyArea = "";
+        $scope.Charge = "";
+        $scope.StartDate = "";
+        $scope.EndDate = "";
+        $scope.Achievements = "";
+        $scope.WorkCountry = "";
+        $scope.WorkCity = "";
+    };
+
+    $scope.addWorkReference = function() {
+        var wReference = {
+            FirstName: $scope.FirstNameWRef,
+            LastName: $scope.LastNameWRef,
+            Charge: $scope.ChargeWRef,
+            CellPhone: $scope.CellPhoneWRef,
+            Email: $scope.EmailWRef,
+            CompanyName: $scope.CompanyNameWRef,
+            Relationship: $scope.RelationshipWRef,
+            City: $scope.CityWRef,
+            Country: $scope.CountryWRef
+        };
+        $scope.workReferences.push(wReference);
+
+        $scope.FirstNameWRef = "";
+        $scope.LastNameWRef = "";
+        $scope.ChargeWRef = "";
+        $scope.CellPhoneWRef = "";
+        $scope.EmailWRef = "";
+        $scope.CompanyNameWRef = "";
+        $scope.RelationshipWRef = "";
+        $scope.CityWRef = "";
+        $scope.CountryWRef = "";
+    };
+
+    $scope.addPersonalReference = function () {
+        var pReference = {
+            FirstName: $scope.FirstNamePRef,
+            LastName: $scope.LastNamePRef,
+            Charge: $scope.ChargePRef,
+            CellPhone: $scope.CellPhonePRef,
+            Email: $scope.EmailPRef,
+            CompanyName: $scope.CompanyNamePRef,
+            Relationship: $scope.RelationshipPRef,
+            City: $scope.CityPRef
+        };
+        $scope.personalReferences.push(pReference);
+
+        $scope.FirstNamePRef = "";
+        $scope.LastNamePRef = "";
+        $scope.ChargePRef = "";
+        $scope.CellPhonePRef = "";
+        $scope.EmailPRef = "";
+        $scope.CompanyNamePRef = "";
+        $scope.RelationshipPRef = "";
+        $scope.CityPRef = "";
+        $scope.CountryPRef = "";
+    };
+
 
     customerRepository.getCities().success(function (data) {
         $scope.Cities = data;
@@ -226,9 +301,10 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
         
         if ($scope.episodeImgData)
             $scope.New.Photo = $scope.episodeImgData.replace(/data:image\/jpeg;base64,/g, '');
-        if ($scope.academicEducations) {
-            //$scope.New.AcademicEducations = $scope.academicEducations;
-            $scope.New.AcademicEducations = [];
+
+        $scope.New.AcademicEducations = [];
+        if ($scope.academicEducations.length>0) {
+            
             for (var i = 0; i < $scope.academicEducations.length; i++) {
                 var academic = {
                     Year: $scope.academicEducations[i].Year,
@@ -243,8 +319,8 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
                 $scope.New.AcademicEducations.push(academic);
             }
         }
-
-        if ($scope.knownLaguages) {
+        
+        if ($scope.knownLaguages.length > 0) {
             $scope.New.Languages = [];
             for (var j = 0; j < $scope.knownLaguages.length; j++) {
                 var language = {
@@ -255,13 +331,67 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
                 $scope.New.Languages.push(language);
             }
         }
-        if ($scope.knownPrograms) {
+        if ($scope.knownPrograms.length > 0) {
             $scope.New.KnownPrograms = [];
             for (var j = 0; j < $scope.knownPrograms.length; j++) {
                     var program = {
                         Name: $scope.knownPrograms[j].Name
                     };
                     $scope.New.KnownPrograms.push(program);
+                }
+        }
+        
+        if ($scope.workExperiences.length > 0) {
+            $scope.New.workExperiences = [];
+            for (var k = 0; k < $scope.workExperiences.length; k++) {
+                var experience = {
+                    CompanyName: $scope.workExperiences[k].CompanyName,
+                    CompanyArea: $scope.workExperiences[k].CompanyArea,
+                    Charge: $scope.workExperiences[k].Charge,
+                    StartDate: $scope.workExperiences[k].StartDate,
+                    EndDate: $scope.workExperiences[k].EndDate,
+                    Achievements: $scope.workExperiences[k].Achievements,
+                    CityId: $scope.workExperiences[k].WorkCity.CityId
+                };
+                $scope.New.workExperiences.push(experience);
+            }
+        }
+        
+        if ($scope.workReferences.length > 0) {
+            $scope.New.workReferences = [];
+                for (var l = 0; l < $scope.workReferences.length; l++) {
+                    var wExperience = {
+                        FirstName: $scope.workReferences[l].FirstName,
+                        LastName: $scope.workReferences[l].LastName,
+                        Charge: $scope.workReferences[l].Charge,
+                        Cellphone: $scope.workReferences[l].CellPhone,
+                        Email: $scope.workReferences[l].Email,
+                        CompanyName: $scope.workReferences[l].CompanyName,
+                        Relationship: $scope.workReferences[l].Relationship,
+                        ReferenceTypeId: 1,
+                        CityId: $scope.workReferences[l].City.CityId
+                    }
+
+                    $scope.New.workReferences.push(wExperience);
+                }
+            }
+            
+        if ($scope.personalReferences.length > 0) {
+            $scope.New.personalReferences = [];
+                for (var l = 0; l < $scope.personalReferences.length; l++) {
+                    var pExperience = {
+                        FirstName: $scope.personalReferences[l].FirstName,
+                        LastName: $scope.personalReferences[l].LastName,
+                        Charge: $scope.personalReferences[l].Charge,
+                        Cellphone: $scope.personalReferences[l].CellPhone,
+                        Email: $scope.personalReferences[l].Email,
+                        CompanyName: $scope.personalReferences[l].CompanyName,
+                        Relationship: $scope.personalReferences[l].Relationship,
+                        ReferenceTypeId: 2,
+                        CityId: $scope.personalReferences[l].City.CityId
+                    }
+
+                    $scope.New.workReferences.push(pExperience);
                 }
             }
             

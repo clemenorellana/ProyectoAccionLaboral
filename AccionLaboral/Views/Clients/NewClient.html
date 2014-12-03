@@ -291,16 +291,25 @@
                                 <div class="box-body">
                                     <table class="table table-bordered">
                                         <tr>
-                                            <th style="width: 10px">#</th>
+                                            <!--<th style="width: 10px">#</th>-->
                                             <th>Inicio</th>
                                             <th>Fin</th>
                                             <th>País</th>
                                             <th>Ciudad</th>
                                             <th>Empresa</th>
                                             <th>Cargo Ocupado</th>
+                                            <th>Opción</th>
                                         </tr>
-                                        <tr>
-                                           
+                                        <tr ng-repeat="workExperience in workExperiences">
+                                            <td>{{workExperience.StartDate}}</td>
+                                            <td>{{workExperience.EndDate}}</td>
+                                            <td>{{workExperience.WorkCountry.Name}}</td>
+                                            <td>{{workExperience.WorkCity.Name}}</td>
+                                            <td>{{workExperience.CompanyName}}</td>
+                                            <td>{{workExperience.Charge}}</td>
+                                            <td>
+                                                <button type="button" ng-click=" removeWorkExperience($index)">Eliminar</button>
+                                            </td>
                                         </tr>
                                     </table>
                     </div><!-- /.box-body -->
@@ -331,7 +340,7 @@
                                 <div class="box-body">
                                     <table class="table table-bordered">
                                         <tr>
-                                            <th style="width: 10px">#</th>
+                                            <!--<th style="width: 10px">#</th>-->
                                             <th>Nombre</th>
                                             <th>Empresa</th>
                                             <th>Cargo</th>
@@ -339,9 +348,19 @@
                                             <th>Correo Electrónico</th>
                                             <th>Ciudad</th>
                                             <th>País</th>
+                                            <th>Opción</th>
                                         </tr>
-                                        <tr>
-                                            
+                                        <tr ng-repeat="workReference in workReferences">
+                                            <td>{{workReference.FirstName}}</td>
+                                            <td>{{workReference.LastName}}</td>
+                                            <td>{{workReference.Charge}}</td>
+                                            <td>{{workReference.CellPhone}}</td>
+                                            <td>{{workReference.Email}}</td>
+                                            <td>{{workReference.City.Name}}</td>
+                                            <td>{{workReference.Country.Name}}</td>
+                                            <td>
+                                                <button type="button" ng-click=" removeWorkReference($index)">Eliminar</button>
+                                            </td>
                                         </tr>
                                     </table>
                     </div><!-- /.box-body -->
@@ -360,7 +379,7 @@
                                 <div class="box-body">
                                     <table class="table table-bordered">
                                         <tr>
-                                            <th style="width: 10px">#</th>
+                                            <!--<th style="width: 10px">#</th>-->
                                             <th>Nombre</th>
                                             <th>Ocupación</th>
                                             <th>Parentezco</th>
@@ -368,9 +387,19 @@
                                             <th>Correo Electrónico</th>
                                             <th>Ciudad</th>
                                             <th>País</th>
+                                            <th>Opción</th>
                                         </tr>
-                                        <tr>
-
+                                        <tr ng-repeat="personalReference in personalReferences">
+                                            <td>{{personalReference.FirstName}}</td>
+                                            <td>{{personalReference.LastName}}</td>
+                                            <td>{{personalReference.Charge}}</td>
+                                            <td>{{personalReference.CellPhone}}</td>
+                                            <td>{{personalReference.Email}}</td>
+                                            <td>{{personalReference.City.Name}}</td>
+                                            <td>{{personalReference.Country.Name}}</td>
+                                            <td>
+                                                <button type="button" ng-click=" removePersonalReference($index)">Eliminar</button>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div><!-- /.box-body -->
@@ -603,7 +632,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="">
+                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="StartDate">
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -612,51 +641,51 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="">
+                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="EndDate">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control">
-                                <option>Honduras</option>
-                                <option>EE. UU.</option>
-                                <option>Canada</option>
-                                <option>España</option>
+                            <select class="form-control" ng-options="Country.Name for Country in Countries" ng-model="WorkCountry">
+                                <!--<option>Honduras</option>
+        <option>EE. UU.</option>
+        <option>Canada</option>
+        <option>España</option>-->
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control">
-                                <option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>
+                            <select class="form-control" ng-options="City.Name for City in Cities" ng-model="WorkCity">
+                                <!--<option>San Pedro Sula</option>
+        <option>Tegucigalpa</option>
+        <option>La Ceiba</option>-->
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label>Nombre de la Empresa</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyName">
                         </div>
                         <div class="form-group col-md-12">
                             <label>Sector</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyArea">
                         </div>
                         <div class="form-group col-md-12">
                             <label>Cargo Ocupado</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Charge">
                         </div>
                         <div class="form-group col-md-12">
                             <label>Tareas o Logros Realizados</label>
-                            <textarea class="form-control" rows="3" placeholder="Ingresar ..."></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="Achievements"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                    <button type="submit" class="btn btn-primary  text-center" ng-click="addWorkExperience()" data-dismiss="modal">Agregar</button>
                     </div>
             </form>
         </div><!-- /.modal-content -->
@@ -677,13 +706,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nombre</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNameWRef">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Apellido</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." >
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNameWRef">
                             </div>
                         </div>
                     </div>
@@ -695,7 +724,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" >
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellPhoneWRef">
                                 </div><!-- /.input group -->
                             </div>
                         </div>
@@ -704,42 +733,42 @@
                                 <label>Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope" ></i></span>
-                                    <input type="email" class="form-control" placeholder="Ingresar ...">
+                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group col-md-6">
+                        <label>Ciudad</label>
+                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="CityWRef">
+                            <!--<option>San Pedro Sula</option>
+            <option>Tegucigalpa</option>
+            <option>La Ceiba</option>-->
+                        </select>
+                    </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control">
-                                <option>Honduras</option>
-                                <option>EE. UU.</option>
-                                <option>Canada</option>
-                                <option>España</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Ciudad</label>
-                            <select class="form-control">
-                                <option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>
+                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryWRef">
+                                <!--<option>Honduras</option>
+                                    <option>EE. UU.</option>
+                                    <option>Canada</option>
+                                    <option>España</option>-->
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Empresa</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." >
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyNameWRef">
                     </div>
                     <div class="form-group">
                         <label>Cargo</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." >
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargeWRef">
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addWorkReference()">Agregar</button>
             </div>
             </form>
         </div><!-- /.modal-content -->
@@ -760,13 +789,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nombre</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNamePRef">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Apellido</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ...">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNamePRef">
                             </div>
                         </div>
                     </div>
@@ -778,7 +807,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="">
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellPhonePRef">
                                 </div><!-- /.input group -->
                             </div>
                         </div>
@@ -787,7 +816,7 @@
                                 <label>Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" placeholder="Ingresar ...">
+                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailPRef">
                                 </div>
                             </div>
                         </div>
@@ -795,34 +824,34 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control">
-                                <option>Honduras</option>
-                                <option>EE. UU.</option>
-                                <option>Canada</option>
-                                <option>España</option>
+                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryPRef">
+                                <!--<option>Honduras</option>
+        <option>EE. UU.</option>
+        <option>Canada</option>
+        <option>España</option>-->
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control">
-                                <option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>
+                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="CityPRef">
+                                <!--<option>San Pedro Sula</option>
+        <option>Tegucigalpa</option>
+        <option>La Ceiba</option>-->
                             </select>
                         </div>
                     </div>                    
                     <div class="form-group">
                         <label>Ocupación</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ...">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargePRef">
                     </div>
                     <div class="form-group">
                         <label>Parentezco</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ...">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="RelationshipPRef">
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addPersonalReference()">Agregar</button>
 </div>
             </form>
         </div><!-- /.modal-content -->
