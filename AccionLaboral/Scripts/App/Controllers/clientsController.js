@@ -1,9 +1,21 @@
-﻿var customersApp = angular.module("clientsController", []);
+﻿'use strict';
 
-customersApp.controller('CustomerController', ['$scope', 'customerRepository', function ($scope, customerRepository) {
+angular.module("clientsController", ['ngRoute', 'clientsRepository'])
+.config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.
+        when('/RegisterClient', {
+            templateUrl: '/Clients/Create',
+            controller: 'CustomerController'
+        }).
+        when('/AllClients', {
+            templateUrl: '/Clients/Index',
+            controller: 'CustomerController'
+        });
+}]
+)
+.controller('CustomerController', ['$scope', 'customerRepository', function ($scope, customerRepository) {
     
     $scope.handleFileSelectAdd = function (evt) {
-        debugger;
         var f = evt.target.files[0];
         var reader = new FileReader();
         reader.onload = (function (theFile) {
@@ -397,16 +409,12 @@ customersApp.controller('CustomerController', ['$scope', 'customerRepository', f
             
         if ($scope.action == 'edit') {
             customerRepository.UpdateCustomer(function () {
-                $scope.status = 'customer updated successfully';
-                alert('customer updated successfully');
-                getCustomers();
             }, $scope.New);
             $scope.action = '';
         }
         else {
             customerRepository.InsertCustomer(function () {
-                alert('customer inserted successfully');
-                getCustomers();
+                
             }, $scope.New);
 
         }

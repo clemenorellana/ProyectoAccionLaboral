@@ -1,24 +1,14 @@
 ﻿/// <reference path="../../Views/Clientes/_RegisterClient.html" />
+'use strict';
 
-var acLabApp = angular.module('AccionLaboralApp', [
+angular.module('AccionLaboralApp', [
   'ngRoute',
   'ngGrid',
-  'clientsController',
-  'clientsRepository'
-  
-]);
-
-acLabApp.config(['$routeProvider',
+  'clientsController'
+])
+.config(['$routeProvider',
   function ($routeProvider) {
       $routeProvider.
-        when('/RegisterClient', {
-            templateUrl: '/Clients/Create',
-            controller: 'CustomerController'
-        }).
-        when('/AllClients', {
-            templateUrl: '/Clients/Index',
-            controller: 'CustomerController'
-        }).
         otherwise({
             redirectTo: '/'
         });
