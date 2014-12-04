@@ -28,32 +28,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         reader.readAsDataURL(f);
     };
     
-    $scope.academicEducations = [], $scope.knownLaguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences=[];
+    $scope.academicEducations = [], $scope.knownLaguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
 
     var imageElement = document.getElementById('exampleInputFile');
     if(imageElement)
     imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
 
-    $scope.addAcademicEducation = function() {
-        var education = {
-            TrainingName: $scope.TrainingName,
-            InstitutionName: $scope.InstitutionName,
-            AcademicLevel: $scope.AcademicLevel,
-            CareerId: $scope.CareerId,
-            EducationTypeId: $scope.EducationTypeId,
-            City: $scope.City,
-            Year: $scope.Year,
-            Country: $scope.Country
-        };
-        $scope.academicEducations.push(education);
-        $scope.TrainingName = "",
-            $scope.InstitutionName = "",
-            $scope.AcademicLevel = "",
-            $scope.City = "",
-            $scope.Year = "",
-            $scope.Country = "";
-    };
-
+   
     $scope.removeAcademicEducation = function (index) {
         $scope.academicEducations.splice(index, 1);
     };
@@ -76,6 +57,30 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
     $scope.removePersonalReference = function (index) {
         $scope.personalReferences.splice(index, 1);
+    }; 
+
+    $scope.removeTranning = function (index) {
+        $scope.Trannings.splice(index, 1);
+    };
+
+    $scope.addAcademicEducation = function () {
+        var education = {
+            TrainingName: $scope.TrainingName,
+            InstitutionName: $scope.InstitutionName,
+            AcademicLevel: $scope.AcademicLevel,
+            CareerId: $scope.CareerId,
+            EducationTypeId: $scope.EducationTypeId,
+            City: $scope.City,
+            Year: $scope.Year,
+            Country: $scope.Country
+        };
+        $scope.academicEducations.push(education);
+        $scope.TrainingName = "",
+            $scope.InstitutionName = "",
+            $scope.AcademicLevel = "",
+            $scope.City = "",
+            $scope.Year = "",
+            $scope.Country = "";
     };
 
     $scope.addKnownLaguage = function() {
@@ -173,6 +178,24 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.CountryPRef = "";
     };
 
+    $scope.addTranning = function () {
+        var tranning = {
+            TrainingName: $scope._TrainingName,
+            InstitutionName: $scope._InstitutionName,
+            CareerId: $scope._CareerId,
+            EducationTypeId: $scope._EducationTypeId,
+            City: $scope._City,
+            Year: $scope._Year,
+            Country: $scope._Country
+        };
+        $scope.Trannings.push(tranning);
+        $scope._TrainingName = "",
+            $scope._InstitutionName = "",
+            $scope._AcademicLevel = "",
+            $scope._City = "",
+            $scope._Year = "",
+            $scope._Country = "";
+    };
 
     customerRepository.getCities().success(function (data) {
         $scope.Cities = data;
@@ -405,7 +428,24 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
                     $scope.New.workReferences.push(pExperience);
                 }
+        }
+
+        if ($scope.Trannings.length > 0) {
+            $scope.New.Trannings = [];
+            for (var l = 0; l < $scope.Trannings.length; l++) {
+                var tranning = {
+                    Year: $scope.Trannings[i]._Year,
+                    CountryId: $scope.Trannings[i]._Country.CountryId,
+                    CityId: $scope.Trannings[i]._City.CityId,
+                    TrainingName: $scope.Trannings[i]._TrainingName,
+                    InstitutionName: $scope.Trannings[i]._InstitutionName,
+                    CareerId: $scope.Trannings[i]._CareerId,
+                    EducationTypeId: $scope.Trannings[i]._EducationTypeId
+                }
+
+                $scope.New.AcademicEducations.push(tranning);
             }
+        }
             
         if ($scope.action == 'edit') {
             customerRepository.UpdateCustomer(function () {
