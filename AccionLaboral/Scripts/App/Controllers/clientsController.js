@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 .config(['$routeProvider', function ($routeProvider) {
@@ -33,8 +33,58 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     var imageElement = document.getElementById('exampleInputFile');
     if(imageElement)
     imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
+    $scope.index = -1;
+    $scope.action = '';
+    $scope.addAcademicEducation = function () {
+        if ($scope.action == 'edit') {
+            $scope.academicEducations[$scope.index].TrainingName = $scope.TrainingName,
+                $scope.academicEducations[$scope.index].InstitutionName = $scope.InstitutionName,
+                $scope.academicEducations[$scope.index].AcademicLevel = $scope.AcademicLevel,
+                $scope.academicEducations[$scope.index].CareerId = $scope.CareerId,
+                $scope.academicEducations[$scope.index].EducationTypeId = $scope.EducationTypeId,
+                $scope.academicEducations[$scope.index].City = $scope.City,
+                $scope.academicEducations[$scope.index].Year = $scope.Year,
+                $scope.academicEducations[$scope.index].Country = $scope.Country;
+        }else{
+        var education = {
+            TrainingName: $scope.TrainingName,
+            InstitutionName: $scope.InstitutionName,
+            AcademicLevel: $scope.AcademicLevel,
+            CareerId: $scope.CareerId,
+            EducationTypeId: $scope.EducationTypeId,
+            City: $scope.City,
+            Year: $scope.Year,
+            Country: $scope.Country
+        };
+        $scope.academicEducations.push(education);
+        }
+        $scope.action = '';
+        $scope.index = -1;
+    };
 
-   
+    $scope.fillAcademicEducation = function (index) {
+        $scope.TrainingName = $scope.academicEducations[index].TrainingName,
+            $scope.InstitutionName = $scope.academicEducations[index].InstitutionName,
+            $scope.AcademicLevel = $scope.academicEducations[index].AcademicLevel,
+            $scope.CareerId = $scope.academicEducations[index].CareerId,
+            $scope.EducationTypeId = $scope.academicEducations[index].EducationTypeId,
+            $scope.City = $scope.academicEducations[index].City,
+            $scope.Year = $scope.academicEducations[index].Year,
+            $scope.Country = $scope.academicEducations[index].Country;
+        $scope.action = 'edit';
+        $scope.index = index;
+    }
+
+    $scope.clearAcademicEducation = function(){
+      $scope.TrainingName = "",
+            $scope.InstitutionName = "",
+            $scope.AcademicLevel = "",
+            $scope.EducationTypeId = "";
+            $scope.City = "",
+            $scope.Year = "",
+            $scope.Country = "";  
+    };
+
     $scope.removeAcademicEducation = function (index) {
         $scope.academicEducations.splice(index, 1);
     };
@@ -61,26 +111,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
     $scope.removeTranning = function (index) {
         $scope.Trannings.splice(index, 1);
-    };
-
-    $scope.addAcademicEducation = function () {
-        var education = {
-            TrainingName: $scope.TrainingName,
-            InstitutionName: $scope.InstitutionName,
-            AcademicLevel: $scope.AcademicLevel,
-            CareerId: $scope.CareerId,
-            EducationTypeId: $scope.EducationTypeId,
-            City: $scope.City,
-            Year: $scope.Year,
-            Country: $scope.Country
-        };
-        $scope.academicEducations.push(education);
-        $scope.TrainingName = "",
-            $scope.InstitutionName = "",
-            $scope.AcademicLevel = "",
-            $scope.City = "",
-            $scope.Year = "",
-            $scope.Country = "";
     };
 
     $scope.addKnownLaguage = function() {
@@ -434,13 +464,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.New.Trannings = [];
             for (var l = 0; l < $scope.Trannings.length; l++) {
                 var tranning = {
-                    Year: $scope.Trannings[i]._Year,
-                    CountryId: $scope.Trannings[i]._Country.CountryId,
-                    CityId: $scope.Trannings[i]._City.CityId,
-                    TrainingName: $scope.Trannings[i]._TrainingName,
-                    InstitutionName: $scope.Trannings[i]._InstitutionName,
-                    CareerId: $scope.Trannings[i]._CareerId,
-                    EducationTypeId: $scope.Trannings[i]._EducationTypeId
+                    Year: $scope.Trannings[l].Year,
+                    CountryId: $scope.Trannings[l].Country.CountryId,
+                    CityId: $scope.Trannings[l].City.CityId,
+                    TrainingName: $scope.Trannings[l].TrainingName,
+                    InstitutionName: $scope.Trannings[l].InstitutionName,
+                    CareerId: $scope.Trannings[l]._CareerId,
+                    EducationTypeId: $scope.Trannings[l].EducationTypeId.EducationTypeId
                 }
 
                 $scope.New.AcademicEducations.push(tranning);
