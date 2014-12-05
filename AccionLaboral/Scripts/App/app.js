@@ -4,7 +4,8 @@
 angular.module('AccionLaboralApp', [
   'ngRoute',
   'ngGrid',
-  'clientsController'
+  'clientsController',
+  'careersController'
 ])
 .config(['$routeProvider',
   function ($routeProvider) {

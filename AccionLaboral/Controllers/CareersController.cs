@@ -16,6 +16,13 @@ namespace AccionLaboral.Controllers
     public class CareersController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
+
+
+        // GET api/Careers
+        public IQueryable<Career> GetCareers()
+        {
+            return db.Careers;
+        }
         
         // GET api/AcademicLevel/{AcademicLevelId}/Careers
         [Route("api/AcademicLevel/{AcademicLevelId}/Careers")]
