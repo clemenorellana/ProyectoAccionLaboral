@@ -28,10 +28,6 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         
     };
 
-    $scope.removeCareer = function (index) {
-        $scope.careerList.splice(index, 1);
-    }; 
-
     $scope.addNewCareer = function () {
         debugger
         var lang = {
@@ -50,5 +46,17 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     //    $scope.CarrerAcademicLevels = data;
     //});
     
+    $scope.removeCareer = function (index) {
+        $scope.careerList.splice(index, 1);
+    };
 
+    $scope.deleteCareer = function (index) {
+        var id = $scope.careerList[index].CareerId;
+        $scope.removeCareer(index);
+        careersRepo.deleteCareer(function () {            
+            alert('Career deleted');
+            //removeCareer(index);
+        }, id);
+        
+    }
 }]);
