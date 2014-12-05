@@ -13,6 +13,10 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
 
     $scope.careerList = [];
 
+    careersRepo.getAcademicLevels().success(function (data) {
+        $scope.Career_AcademicLevels = data;
+    });
+
     careersRepo.getCarrerList().success(function (data) {
         $scope.careerList = data;
         $scope.totalServerItems = data.totalItems;
@@ -24,15 +28,17 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
             $scope.loading = false;
         });
 
+    
+
     $scope.editCareer = function (index) {
         
     };
 
     $scope.addNewCareer = function () {
-        debugger
         var lang = {
             Name: $scope.Name,
-            AcademicLevelId: $scope.AcademicLevelId
+            AcademicLevelId: $scope.Career_AcademicLevel.AcademicLevelId,
+            AcademicLevelName: $scope.Career_AcademicLevel.Name
         };
 
         $scope.careerList.push(lang);
@@ -40,11 +46,6 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         $scope.Name = "",
         $scope.AcademicLevelId = "";
     };
-    
-    //careersRepo.getAcademicLevels().success(function (data) {
-    //    debugger
-    //    $scope.CarrerAcademicLevels = data;
-    //});
     
     $scope.removeCareer = function (index) {
         $scope.careerList.splice(index, 1);

@@ -6,6 +6,9 @@ accionLabControllers.factory('careersRepo', ['$http', function ($http) {
         getCarrerList: function (callback) {
             return $http.get(url);
         },
+        getAcademicLevels: function (callback) {
+            return $http.get('api/AcademicLevels');
+        },
         //method for delete
         deleteCareer: function (callback, id) {
             return $http.delete(url + '/' + id);
