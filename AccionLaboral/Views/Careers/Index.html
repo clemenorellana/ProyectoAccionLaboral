@@ -3,7 +3,7 @@
         <div class="box-header">
             <h3 class="box-title">Mantenimiento de Carreras</h3>
             <div class="pull-right box-tools">
-                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#careersInfo" title="" data-original-title="Collapse">
+                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#careersInfo" title="" data-original-title="Collapse" ng-click="setActionCareer('add')">
                     <i class="fa  fa-plus"></i>
                 </button>
             </div>
@@ -11,18 +11,18 @@
         <div class="box-body">
             <table class="table table-bordered">
                 <tr>
-                    <th>#</th>
+                    <!--<th>#</th>-->
                     <th>Carrera</th>
                     <th>Nivel Académico</th>
                     <th>Opción</th>
                 </tr>
                 <tr ng-repeat="career in careerList">
-                    <td>{{career.CareerId}}</td>
+                    <!--<td>{{career.CareerId}}</td>-->
                     <td>{{career.Name}}</td>
                     <td>{{career.AcademicLevelId}} - {{career.AcademicLevelName}}</td>
                     <td>
-                        <button type="button" ng-click="editCareer($index)">Editar</button>
-                        <button type="button" ng-click="deleteCareer($index)">Eliminar</button>
+                        <button type="button" id="editCareer" data-toggle="modal" data-target="#careersInfo" ng-click="setActionCareer('edit',$index)">Editar</button>
+                        <button type="button" id="deleteCareer" ng-click="deleteCareer($index)">Eliminar</button>
                     </td>
                 </tr>
             </table>
@@ -37,7 +37,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><i class="fa "></i>Agregar Carrera</h4>
+                <h4 class="modal-title"><i class="fa "></i>{{career_modalTitle}}</h4>
             </div>
             <form action="#" method="post">
                 <div class="modal-body">
@@ -49,12 +49,12 @@
                     </div>
                     <div class="form-group">
                         <label>Nombre de la Carrera</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Name">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Career_Name">
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addNewCareer(career)">Agregar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="saveCareer(career)">{{career_buttonName}}</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
