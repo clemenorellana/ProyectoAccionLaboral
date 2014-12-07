@@ -21,9 +21,9 @@ namespace AccionLaboral.Controllers
         // GET api/Careers
         public IQueryable<Career> GetCareers()
         {
-            return db.Careers;
+            return db.Careers;//.Include("AcademicLevel");
         }
-        
+
         // GET api/AcademicLevel/{AcademicLevelId}/Careers
         [Route("api/AcademicLevel/{AcademicLevelId}/Careers")]
         [HttpGet]

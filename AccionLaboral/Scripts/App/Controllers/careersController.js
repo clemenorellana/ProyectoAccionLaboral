@@ -19,6 +19,7 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     });
 
     careersRepo.getCarrerList().success(function (data) {
+        debugger
         $scope.careerList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;

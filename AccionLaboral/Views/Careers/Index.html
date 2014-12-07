@@ -19,7 +19,7 @@
                 <tr ng-repeat="career in careerList">
                     <!--<td>{{career.CareerId}}</td>-->
                     <td>{{career.Name}}</td>
-                    <td>{{career.AcademicLevelId}} - {{career.AcademicLevelName}}</td>
+                    <td>{{career.AcademicLevelId}} - {{career.AcademicLevel.Name}}</td>
                     <td>
                         <button type="button" id="editCareer" data-toggle="modal" data-target="#careersInfo" ng-click="setActionCareer('edit',$index)">Editar</button>
                         <button type="button" id="deleteCareer" ng-click="deleteCareer($index)">Eliminar</button>
