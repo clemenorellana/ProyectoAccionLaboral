@@ -175,7 +175,7 @@
                                     <div class="box-header">
                                         <h3 class="box-title">Estudios Académicos</h3>
                                         <div class="pull-right box-tools">
-                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicInfo" title="" data-original-title="Collapse">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicInfo" title="" data-original-title="Collapse" ng-click="clearAcademicEducation()">
                                                 <i class="fa  fa-plus"></i>
                                             </button>
                                                 </div>
@@ -202,6 +202,9 @@
                                                 <td>{{education.InstitutionName}}</td>
                                                 <td>
                                                     <button type="button" ng-click="removeAcademicEducation($index)">Eliminar</button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)">Editar</button>
                                                 </td>
                                             </tr>
                                         </table>
@@ -429,16 +432,25 @@
                                 <div class="box-body">
                                     <table class="table table-bordered">
                                         <tr>
-                                            <th style="width: 10px">#</th>
+                                            <!--<th style="width: 10px">#</th>-->
                                             <th>Año</th>
                                             <th>País</th>
                                             <th>Ciudad</th>
                                             <th>Tipo de Formación</th>
                                             <th>Título de la Formación</th>
                                             <th>Institución</th>
+                                            <th>Opción</th>
                                         </tr>
-                                        <tr>
-                            
+                                        <tr ng-repeat="tranning in Trannings">
+                                            <td>{{tranning.Year}}</td>
+                                            <td>{{tranning.Country.Name}}</td>
+                                            <td>{{tranning.City.Name}}</td>
+                                            <td>{{tranning.EducationTypeId.Name}}</td>
+                                            <td>{{tranning.TrainingName}}</td>
+                                            <td>{{tranning.InstitutionName}}</td>
+                                            <td>
+                                                <button type="button" ng-click=" removeTranning($index)">Eliminar</button>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div><!-- /.box-body -->
@@ -535,7 +547,7 @@
                     </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addAcademicEducation(academicEducation)">Agregar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addAcademicEducation()">Agregar</button>
                             </div>
             </form>
         </div><!-- /.modal-content -->
@@ -871,52 +883,61 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Año</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year">
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>
-                            <select class="form-control">
-                                <option>Honduras</option>
+                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="_Country">
+                                <!--<option>Honduras</option>
                                 <option>EE. UU.</option>
                                 <option>Canada</option>
-                                <option>España</option>
+                                <option>España</option>-->
                             </select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control">
-                                <option>San Pedro Sula</option>
+                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="_City">
+                                <!--<option>San Pedro Sula</option>
                                 <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>
+                                <option>La Ceiba</option>-->
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Tipo de Formación</label>
-                            <select class="form-control">
-                                <option>Curso</option>
-                                <option>Diplomado</option>
-                                <option>Congreso</option>
-                                <option>Concurso</option>
-                                <option>Proyecto Humanitario</option>
+                            <select class="form-control" ng-options="educationType.Name for educationType in EducationTypes" ng-model="_EducationTypeId">
+                                <!--<option>Curso</option>
+        <option>Diplomado</option>
+        <option>Congreso</option>
+        <option>Concurso</option>
+        <option>Proyecto Humanitario</option>-->
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Carrera</label>
+                            <select class="form-control" ng-options="career.Name for career in Careers" ng-model="_Career">
+                                <!--<option>Honduras</option>
+                                    <option>EE. UU.</option>
+                                    <option>Canada</option>
+                                    <option>España</option>-->
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label>Título de la formación</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName">
                         </div>
                         <div class="form-group col-md-12">
                             <label>Nombre de la Institución</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ...">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_InstitutionName">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center">Agregar</button>
+                    <button type="submit" class="btn btn-primary text-center" ng-click="addTranning()" data-dismiss="modal">Agregar</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
