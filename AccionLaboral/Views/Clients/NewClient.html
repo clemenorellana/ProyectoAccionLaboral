@@ -202,8 +202,6 @@
                                                 <td>{{education.InstitutionName}}</td>
                                                 <td>
                                                     <button type="button" ng-click="removeAcademicEducation($index)">Eliminar</button>
-                                                </td>
-                                                <td>
                                                     <button type="button" data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)">Editar</button>
                                                 </td>
                                             </tr>
@@ -217,7 +215,7 @@
                                     <div class="box-header">
                                         <h3 class="box-title">Idiomas Manejados</h3>
                                         <div class="pull-right box-tools">
-                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#languagesInfo" title="" data-original-title="Collapse">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#languagesInfo" ng-click="clearKnownLanguages()" title="" data-original-title="Collapse">
                                                 <i class="fa  fa-plus"></i>
                                             </button>
                                                 </div>
@@ -231,12 +229,13 @@
                                                 <th>Porcentaje</th>
                                                 <th>Opción</th>
                                             </tr>
-                                            <tr ng-repeat="knownLanguage in knownLaguages">
+                                            <tr ng-repeat="knownLanguage in knownLanguages">
                                                 <td>{{knownLanguage.Language.Name}}</td>
                                                 <td>{{knownLanguage.LanguageLevel.Name}}</td>
                                                 <td>{{knownLanguage.Percentage}}</td>
                                                 <td>
                                                     <button type="button" ng-click="removeKnowLanguage($index)">Eliminar</button>
+                                                    <button type="button" data-toggle="modal" data-target="#languagesInfo" ng-click="fillKnownLanguage($index)">Editar</button>
                                                 </td>
                                             </tr>
                                         </table>
@@ -249,7 +248,7 @@
                                     <div class="box-header">
                                         <h3 class="box-title">Programas Manejados</h3>
                                         <div class="pull-right box-tools">
-                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#programsInfo" title="" data-original-title="Collapse">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#programsInfo" ng-click="clearProgram()" title="" data-original-title="Collapse">
                                                 <i class="fa  fa-plus"></i>
                                             </button>
                                                 </div>
@@ -265,6 +264,7 @@
                                                 <td>{{knownProgram.Name}}</td>
                                                 <td>
                                                     <button type="button" ng-click="removeKnowProgram($index)">Eliminar</button>
+                                                    <button type="button" data-toggle="modal" data-target="#programsInfo" ng-click="fillKnownProgram($index)">Editar</button>
                                                 </td>
                                             </tr>
                                         </table>
@@ -286,7 +286,7 @@
                             <div class="box box-info">
                                 <div class="box-header">
                                     <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#experienceInfo" title="" data-original-title="Collapse">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#experienceInfo" ng-click="clearWorkExperience()" title="" data-original-title="Collapse">
                                             <i class="fa  fa-plus"></i>
                                         </button>
                                     </div>
@@ -312,6 +312,7 @@
                                             <td>{{workExperience.Charge}}</td>
                                             <td>
                                                 <button type="button" ng-click=" removeWorkExperience($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#experienceInfo" ng-click="fillWorkExperience($index)">Editar</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -335,7 +336,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Referencias Laborales</h3>
                                     <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#workRefInfo" title="" data-original-title="Collapse">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#workRefInfo" ng-click="clearWorkReference()" title="" data-original-title="Collapse">
                                             <i class="fa  fa-plus"></i>
                                         </button>
                                     </div>
@@ -363,6 +364,7 @@
                                             <td>{{workReference.Country.Name}}</td>
                                             <td>
                                                 <button type="button" ng-click=" removeWorkReference($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)">Editar</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -374,7 +376,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Referencias Personales</h3>
                                     <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#personalRefInfo" title="" data-original-title="Collapse">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#personalRefInfo" ng-click="clearPersonalReference()" title="" data-original-title="Collapse">
                                             <i class="fa  fa-plus"></i>
                                         </button>
                                     </div>
@@ -402,6 +404,7 @@
                                             <td>{{personalReference.Country.Name}}</td>
                                             <td>
                                                 <button type="button" ng-click=" removePersonalReference($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)">Editar</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -424,7 +427,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Formaciones Adicionales</h3>
                                     <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicTrainingInfo" title="" data-original-title="Collapse">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="clearTranning()" title="" data-original-title="Collapse">
                                             <i class="fa  fa-plus"></i>
                                         </button>
                                     </div>
@@ -450,6 +453,7 @@
                                             <td>{{tranning.InstitutionName}}</td>
                                             <td>
                                                 <button type="button" ng-click=" removeTranning($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="fillTranning($index)">Editar</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -593,7 +597,7 @@
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addKnownLaguage()">Agregar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addKnownLanguage()">Agregar</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

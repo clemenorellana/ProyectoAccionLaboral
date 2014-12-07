@@ -28,13 +28,15 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         reader.readAsDataURL(f);
     };
     
-    $scope.academicEducations = [], $scope.knownLaguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
+    $scope.academicEducations = [], $scope.knownLanguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
 
     var imageElement = document.getElementById('exampleInputFile');
     if(imageElement)
     imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
     $scope.index = -1;
     $scope.action = '';
+
+    /*AcademicEducations*/
     $scope.addAcademicEducation = function () {
         if ($scope.action == 'edit') {
             $scope.academicEducations[$scope.index].TrainingName = $scope.TrainingName,
@@ -58,11 +60,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         };
         $scope.academicEducations.push(education);
         }
-        $scope.action = '';
-        $scope.index = -1;
     };
-
-    $scope.fillAcademicEducation = function (index) {
+    $scope.fillAcademicEducation = function(index) {
         $scope.TrainingName = $scope.academicEducations[index].TrainingName,
             $scope.InstitutionName = $scope.academicEducations[index].InstitutionName,
             $scope.AcademicLevel = $scope.academicEducations[index].AcademicLevel,
@@ -73,8 +72,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.Country = $scope.academicEducations[index].Country;
         $scope.action = 'edit';
         $scope.index = index;
-    }
-
+    };
     $scope.clearAcademicEducation = function(){
       $scope.TrainingName = "",
             $scope.InstitutionName = "",
@@ -82,73 +80,77 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.EducationTypeId = "";
             $scope.City = "",
             $scope.Year = "",
-            $scope.Country = "";  
+            $scope.Country = "";
+            $scope.action = '';
+            $scope.index = -1;
     };
-
     $scope.removeAcademicEducation = function (index) {
         $scope.academicEducations.splice(index, 1);
     };
-    
-    $scope.removeKnowLanguage = function (index) {
-        $scope.knownLaguages.splice(index, 1);
-    };
 
-    $scope.removeKnowProgram = function (index) {
-        $scope.knownPrograms.splice(index, 1);
-    }; 
-
-    $scope.removeWorkExperience = function (index) {
-        $scope.workExperiences.splice(index, 1);
-    };
-
-    $scope.removeWorkReference = function (index) {
-        $scope.workReferences.splice(index, 1);
-    };
-
-    $scope.removePersonalReference = function (index) {
-        $scope.personalReferences.splice(index, 1);
-    }; 
-
-    $scope.removeTranning = function (index) {
-        $scope.Trannings.splice(index, 1);
-    };
-
-    $scope.addKnownLaguage = function() {
-        var lang = {
-            Percentage: $scope.Percentage,
-            Language: $scope.Language,
-            LanguageLevel: $scope.LanguageLevel
-        };
-
-        $scope.knownLaguages.push(lang);
-
+    /*Languages*/
+    $scope.clearKnowLanguage = function () {
         $scope.Percentage = "",
             $scope.Language = "",
             $scope.LanguageLevel = "";
+        $scope.action = '';
+        $scope.index = -1;
     };
+    $scope.fillKnownLanguage = function(index) {
+        $scope.Percentage = $scope.knownLanguages[index].Percentage,
+            $scope.Language = $scope.knownLanguages[index].Language,
+            $scope.LanguageLevel = $scope.knownLanguages[index].LanguageLevel;
+        $scope.action = 'edit';
+        $scope.index = index;
+    };
+    $scope.addKnownLanguage = function () {
+        if ($scope.action=='edit') {
+            $scope.knownLanguages[$scope.index].Percentage = $scope.Percentage,
+                $scope.knownLanguages[$scope.index].Language = $scope.Language,
+                $scope.knownLanguages[$scope.index].LanguageLevel = $scope.LanguageLevel;
+        } else {
+            var lang = {
+                Percentage: $scope.Percentage,
+                Language: $scope.Language,
+                LanguageLevel: $scope.LanguageLevel
+            };
 
-    $scope.addKnownProgram = function () {
-        var program = {
-            Name: $scope.NameProgram
-        };
-        $scope.knownPrograms.push(program);
-
+            $scope.knownLanguages.push(lang);
+            $scope.clearKnowLanguage();
+        }
+    };
+    $scope.removeKnowLanguage = function (index) {
+        $scope.knownLanguages.splice(index, 1);
+    };
+    
+    /*Programs*/
+    $scope.clearProgram = function () {
         $scope.NameProgram = "";
-    }
-
-    $scope.addWorkExperience = function() {
-        var experience = {
-            CompanyName: $scope.CompanyName,
-            CompanyArea: $scope.CompanyArea,
-            Charge: $scope.Charge,
-            StartDate: $scope.StartDate,
-            EndDate: $scope.EndDate,
-            Achievements: $scope.Achievements,
-            WorkCity: $scope.WorkCity,
-            WorkCountry: $scope.WorkCountry
-        };
-
-        $scope.workExperiences.push(experience);
+        $scope.action = '';
+        $scope.index = -1;
+    };
+    $scope.fillKnownProgram = function(index) {
+        $scope.NameProgram = $scope.knownPrograms[index].Name;
+        $scope.action = 'edit';
+        $scope.index = index;
+    };
+    $scope.addKnownProgram = function () {
+        if ($scope.action == 'edit') {
+            $scope.knownPrograms[$scope.index].Name = $scope.NameProgram;
+        } else {
+            var program = {
+                Name: $scope.NameProgram
+            };
+            $scope.knownPrograms.push(program);
+            $scope.clearProgram();
+        }
+    };
+    $scope.removeKnowProgram = function (index) {
+        $scope.knownPrograms.splice(index, 1);
+    };
+    
+    /*WorkExperience*/
+    $scope.clearWorkExperience = function () {
         $scope.CompanyName = "";
         $scope.CompanyArea = "";
         $scope.Charge = "";
@@ -157,22 +159,53 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.Achievements = "";
         $scope.WorkCountry = "";
         $scope.WorkCity = "";
+        $scope.action = '';
+        $scope.index = -1;
+    };
+    $scope.fillWorkExperience = function (index) {
+        $scope.CompanyName = $scope.workExperiences[index].CompanyName,
+            $scope.CompanyArea = $scope.workExperiences[index].CompanyArea,
+            $scope.Charge = $scope.workExperiences[index].Charge,
+            $scope.StartDate = $scope.workExperiences[index].StartDate,
+            $scope.EndDate = $scope.workExperiences[index].EndDate,
+            $scope.Achievements = $scope.workExperiences[index].Archievements,
+            $scope.WorkCity = $scope.workExperiences[index].WorkCity,
+            $scope.WorkCountry = $scope.workExperiences[index].WorkCountry;
+        $scope.action = 'edit';
+        $scope.index = index;
+    };
+    $scope.addWorkExperience = function () {
+        if ($scope.action == 'edit') {
+            $scope.workExperiences[$scope.index].CompanyName = $scope.CompanyName,
+                $scope.workExperiences[$scope.index].CompanyArea = $scope.CompanyArea,
+                $scope.workExperiences[$scope.index].Charge = $scope.Charge,
+                $scope.workExperiences[$scope.index].StartDate = $scope.StartDate,
+                $scope.workExperiences[$scope.index].EndDate = $scope.EndDate,
+                $scope.workExperiences[$scope.index].Archievements = $scope.Achievements,
+                $scope.workExperiences[$scope.index].WorkCity = $scope.WorkCity,
+                $scope.workExperiences[$scope.index].WorkCountry = $scope.WorkCountry;
+        } else {
+            var experience = {
+                CompanyName: $scope.CompanyName,
+                CompanyArea: $scope.CompanyArea,
+                Charge: $scope.Charge,
+                StartDate: $scope.StartDate,
+                EndDate: $scope.EndDate,
+                Achievements: $scope.Achievements,
+                WorkCity: $scope.WorkCity,
+                WorkCountry: $scope.WorkCountry
+            };
+
+            $scope.workExperiences.push(experience);
+            $scope.clearWorkExperience();
+        }
+    };
+    $scope.removeWorkExperience = function (index) {
+        $scope.workExperiences.splice(index, 1);
     };
 
-    $scope.addWorkReference = function() {
-        var wReference = {
-            FirstName: $scope.FirstNameWRef,
-            LastName: $scope.LastNameWRef,
-            Charge: $scope.ChargeWRef,
-            CellPhone: $scope.CellPhoneWRef,
-            Email: $scope.EmailWRef,
-            CompanyName: $scope.CompanyNameWRef,
-            Relationship: $scope.RelationshipWRef,
-            City: $scope.CityWRef,
-            Country: $scope.CountryWRef
-        };
-        $scope.workReferences.push(wReference);
-
+    /*WorkReference*/
+    $scope.clearWorkReference = function() {
         $scope.FirstNameWRef = "";
         $scope.LastNameWRef = "";
         $scope.ChargeWRef = "";
@@ -182,21 +215,56 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.RelationshipWRef = "";
         $scope.CityWRef = "";
         $scope.CountryWRef = "";
+        $scope.action = '';
+        $scope.index = -1;
+    };
+    $scope.fillWorkReference = function(index) {
+        $scope.FirstNameWRef = $scope.workReferences[index].FirstName,
+            $scope.LastNameWRef = $scope.workReferences[index].LastName,
+            $scope.ChargeWRef = $scope.workReferences[index].Charge,
+            $scope.CellPhoneWRef = $scope.workReferences[index].CellPhone,
+            $scope.EmailWRef = $scope.workReferences[index].Email,
+            $scope.CompanyNameWRef = $scope.workReferences[index].CompanyName,
+            $scope.RelationshipWRef = $scope.workReferences[index].Relationship,
+            $scope.CityWRef = $scope.workReferences[index].City,
+            $scope.CountryWRef = $scope.workReferences[index].Country;
+        $scope.action = 'edit';
+        $scope.index = index;
+    };
+    $scope.addWorkReference = function () {
+        if ($scope.action == 'edit') {
+            $scope.workReferences[$scope.index].FirstName = $scope.FirstNameWRef,
+                $scope.workReferences[$scope.index].LastName = $scope.LastNameWRef,
+                $scope.workReferences[$scope.index].Charge = $scope.ChargeWRef,
+                $scope.workReferences[$scope.index].CellPhone = $scope.CellPhoneWRef,
+                $scope.workReferences[$scope.index].Email = $scope.EmailWRef,
+                $scope.workReferences[$scope.index].CompanyName = $scope.CompanyNameWRef,
+                $scope.workReferences[$scope.index].Relationship = $scope.RelationshipWRef,
+                $scope.workReferences[$scope.index].City = $scope.CityWRef,
+                $scope.workReferences[$scope.index].Country = $scope.CountryWRef;
+        } else {
+            var wReference = {
+                FirstName: $scope.FirstNameWRef,
+                LastName: $scope.LastNameWRef,
+                Charge: $scope.ChargeWRef,
+                CellPhone: $scope.CellPhoneWRef,
+                Email: $scope.EmailWRef,
+                CompanyName: $scope.CompanyNameWRef,
+                Relationship: $scope.RelationshipWRef,
+                City: $scope.CityWRef,
+                Country: $scope.CountryWRef
+            };
+            $scope.workReferences.push(wReference);
+
+            $scope.clearWorkReference();
+        }
+    };
+    $scope.removeWorkReference = function (index) {
+        $scope.workReferences.splice(index, 1);
     };
 
-    $scope.addPersonalReference = function () {
-        var pReference = {
-            FirstName: $scope.FirstNamePRef,
-            LastName: $scope.LastNamePRef,
-            Charge: $scope.ChargePRef,
-            CellPhone: $scope.CellPhonePRef,
-            Email: $scope.EmailPRef,
-            CompanyName: $scope.CompanyNamePRef,
-            Relationship: $scope.RelationshipPRef,
-            City: $scope.CityPRef
-        };
-        $scope.personalReferences.push(pReference);
-
+    /*PersonalReference*/
+    $scope.clearPersonalReference = function() {
         $scope.FirstNamePRef = "";
         $scope.LastNamePRef = "";
         $scope.ChargePRef = "";
@@ -206,25 +274,101 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.RelationshipPRef = "";
         $scope.CityPRef = "";
         $scope.CountryPRef = "";
+        $scope.action = '';
+        $scope.index = -1;
+    };
+    $scope.fillPersonalReference = function(index) {
+        $scope.FirstNamePRef = $scope.personalReferences[index].FirstName,
+            $scope.LastNamePRef = $scope.personalReferences[index].LastName,
+            $scope.ChargePRef = $scope.personalReferences[index].Charge,
+            $scope.CellPhonePRef = $scope.personalReferences[index].CellPhone,
+            $scope.EmailPRef = $scope.personalReferences[index].Email,
+            $scope.CompanyNamePRef = $scope.personalReferences[index].CompanyName,
+            $scope.RelationshipPRef = $scope.personalReferences[index].Relationship,
+            $scope.CityPRef = $scope.personalReferences[index].City;
+        $scope.action = 'edit';
+        $scope.index = index;
+    };
+    $scope.addPersonalReference = function () {
+        if ($scope.action == 'edit') {
+            $scope.personalReferences[$scope.index].FirstName = $scope.FirstNamePRef,
+                $scope.personalReferences[$scope.index].LastName = $scope.LastNamePRef,
+                $scope.personalReferences[$scope.index].Charge = $scope.ChargePRef,
+                $scope.personalReferences[$scope.index].CellPhone = $scope.CellPhonePRef,
+                $scope.personalReferences[$scope.index].Email = $scope.EmailPRef,
+                $scope.personalReferences[$scope.index].CompanyName = $scope.CompanyNamePRef,
+                $scope.personalReferences[$scope.index].Relationship = $scope.RelationshipPRef,
+                $scope.personalReferences[$scope.index].City = $scope.CityPRef,
+                $scope.personalReferences[$scope.index].Country = $scope.CountryPRef;
+        } else {
+            var pReference = {
+                FirstName: $scope.FirstNamePRef,
+                LastName: $scope.LastNamePRef,
+                Charge: $scope.ChargePRef,
+                CellPhone: $scope.CellPhonePRef,
+                Email: $scope.EmailPRef,
+                CompanyName: $scope.CompanyNamePRef,
+                Relationship: $scope.RelationshipPRef,
+                City: $scope.CityPRef,
+                Country: $scope.CountryPRef
+            };
+
+            $scope.personalReferences.push(pReference);
+            $scope.clearPersonalReference();
+        }
+    };
+    $scope.removePersonalReference = function (index) {
+        $scope.personalReferences.splice(index, 1);
     };
 
-    $scope.addTranning = function () {
-        var tranning = {
-            TrainingName: $scope._TrainingName,
-            InstitutionName: $scope._InstitutionName,
-            CareerId: $scope._CareerId,
-            EducationTypeId: $scope._EducationTypeId,
-            City: $scope._City,
-            Year: $scope._Year,
-            Country: $scope._Country
-        };
-        $scope.Trannings.push(tranning);
+    /*Tranning*/
+    $scope.clearTranning = function() {
         $scope._TrainingName = "",
             $scope._InstitutionName = "",
             $scope._AcademicLevel = "",
+            $scope._EducationTypeId="",
             $scope._City = "",
             $scope._Year = "",
             $scope._Country = "";
+        $scope.action = '';
+        $scope.index = -1;
+    };
+    $scope.fillTranning = function(index) {
+        $scope._TrainingName = $scope.Trannings[index].TrainingName,
+            $scope._InstitutionName = $scope.Trannings[index].InstitutionName,
+            $scope._CareerId = $scope.Trannings[index].CareerId,
+            $scope._EducationTypeId = $scope.Trannings[index].EducationTypeId,
+            $scope._City = $scope.Trannings[index].City,
+            $scope._Year = $scope.Trannings[index].Year,
+            $scope._Country = $scope.Trannings[index].Country;
+        $scope.action = 'edit';
+        $scope.index = index;
+    };
+    $scope.addTranning = function () {
+        if ($scope.action == 'edit') {
+            $scope.Trannings[$scope.index].TrainingName = $scope._TrainingName,
+                $scope.Trannings[$scope.index].InstitutionName = $scope._InstitutionName,
+                $scope.Trannings[$scope.index].CareerId = $scope._CareerId,
+                $scope.Trannings[$scope.index].EducationTypeId = $scope._EducationTypeId,
+                $scope.Trannings[$scope.index].City = $scope._City,
+                $scope.Trannings[$scope.index].Year = $scope._Year,
+                $scope.Trannings[$scope.index].Country = $scope._Country;
+        } else {
+            var tranning = {
+                TrainingName: $scope._TrainingName,
+                InstitutionName: $scope._InstitutionName,
+                CareerId: $scope._CareerId,
+                EducationTypeId: $scope._EducationTypeId,
+                City: $scope._City,
+                Year: $scope._Year,
+                Country: $scope._Country
+            };
+            $scope.Trannings.push(tranning);
+            $scope.clearTranning();
+        }
+    };
+    $scope.removeTranning = function (index) {
+        $scope.Trannings.splice(index, 1);
     };
 
     customerRepository.getCities().success(function (data) {
@@ -385,13 +529,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             }
         }
         
-        if ($scope.knownLaguages.length > 0) {
+        if ($scope.knownLanguages.length > 0) {
             $scope.New.Languages = [];
-            for (var j = 0; j < $scope.knownLaguages.length; j++) {
+            for (var j = 0; j < $scope.knownLanguages.length; j++) {
                 var language = {
-                    LanguageId: $scope.knownLaguages[j].Language.LanguageId,
-                    LanguageLevelId: $scope.knownLaguages[j].LanguageLevel.LanguageLevelId,
-                    Percentage: $scope.knownLaguages[j].Percentage
+                    LanguageId: $scope.knownLanguages[j].Language.LanguageId,
+                    LanguageLevelId: $scope.knownLanguages[j].LanguageLevel.LanguageLevelId,
+                    Percentage: $scope.knownLanguages[j].Percentage
                 };
                 $scope.New.Languages.push(language);
             }

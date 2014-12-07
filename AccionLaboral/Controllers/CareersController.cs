@@ -18,11 +18,11 @@ namespace AccionLaboral.Controllers
         private AccionLaboralContext db = new AccionLaboralContext();
         
         // GET api/AcademicLevel/{AcademicLevelId}/Careers
-        [Route("api/AcademicLevel/{AcademicLevelId}/Careers")]
+        [Route("api/Careers")]
         [HttpGet]
-        public IQueryable<Career> GetCareers(int academicLevelId)
+        public IQueryable<Career> GetCareers()
         {
-            return db.Careers;
+            return db.Careers.Include("AcademicLevel");
         }
 
         // GET api/Careers/5
