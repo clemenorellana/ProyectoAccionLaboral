@@ -1,18 +1,17 @@
 ﻿<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
-            <h3 class="box-title">Agregar Plantilla de Contrato</h3>
+            <h3 class="box-title">{{contract_modalTitle}}</h3>
         </div>
         <div class="box-body">
-            <h1>{{ model.message }}</h1>
             <div class="form-group">
                 <label>Nombre de la plantilla</label>
-                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="contractName">
+                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Contract_Name">
             </div>
             <div class='box-body pad'>
                 <label>Contenido del Contrato</label>
                 <form>
-                    <textarea id="editor1" name="editor1" rows="10" cols="80" ng-model="contractDescription">
+                    <textarea id="editor1" name="editor1" rows="10" cols="80" ng-model="Contract_Description">
                         This is my textarea to be replaced with CKEditor.
                     </textarea>
                 </form>
@@ -22,7 +21,7 @@
         <div class="box-footer">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <button type="submit" class="btn btn-primary" ng-click="saveContract()">Agregar</button>
+                    <button type="submit" class="btn btn-primary" ng-click="saveContract()">{{contract_buttonName}}</button>
                 </div>
                 <div class="col-md-6 text-left">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="contract_cancelRedirect()">Cancelar</button>

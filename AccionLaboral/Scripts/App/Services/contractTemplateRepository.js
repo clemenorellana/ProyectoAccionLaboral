@@ -1,7 +1,8 @@
 ﻿var accionLabControllers = angular.module('contractTemplatesRepository', []);
-var url = 'api/ContractTemplates';
+
 
 accionLabControllers.factory('contractTemplatesRepo', ['$http', function ($http) {
+    var url = 'api/ContractTemplates';
     return {
         getContractTemplateList: function (callback) {
             return $http.get(url);
@@ -15,8 +16,8 @@ accionLabControllers.factory('contractTemplatesRepo', ['$http', function ($http)
             };
             return $http.post(url, contract);
         },
-        getContractTemplate: function (callback, id) {
-            return $http.get(url + "/Edit/" + id);
+        getContractTemplate: function (id) {
+            return $http.get(url + "/" + id);
         },
         //method for update
         updateContractTemplate: function (callback, contract) {
