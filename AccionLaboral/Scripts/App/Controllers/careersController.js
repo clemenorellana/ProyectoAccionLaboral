@@ -46,7 +46,15 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         var careerToEdit = $scope.careerList[index];
         $scope.Career_CareerId = careerToEdit.CareerId
         $scope.Career_Name = careerToEdit.Name;
-        $scope.Career_AcademicLevel = careerToEdit.AcademicLevelId;
+
+        var i = 0;
+        for (i = 0; i < $scope.Career_AcademicLevels.length; i++) {
+            var academic = $scope.Career_AcademicLevels[i];
+            if (academic.AcademicLevelId == careerToEdit.AcademicLevelId)
+                break;
+        }
+
+        $scope.Career_AcademicLevel = $scope.Career_AcademicLevels[i];
     };
 
     $scope.career_refresh = function () {
