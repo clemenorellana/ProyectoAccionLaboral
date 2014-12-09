@@ -16,13 +16,22 @@ namespace AccionLaboral.Controllers
     public class CareersController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
-        
-        // GET api/AcademicLevel/{AcademicLevelId}/Careers
+
+
+        // GET api/Careers
         [Route("api/Careers")]
         [HttpGet]
         public IQueryable<Career> GetCareers()
         {
             return db.Careers.Include("AcademicLevel");
+        }
+
+        // GET api/AcademicLevel/{AcademicLevelId}/Careers
+        [Route("api/AcademicLevel/{AcademicLevelId}/Careers")]
+        [HttpGet]
+        public IQueryable<Career> GetCareers(int academicLevelId)
+        {
+            return db.Careers;
         }
 
         // GET api/Careers/5
@@ -73,6 +82,8 @@ namespace AccionLaboral.Controllers
         }
 
         // POST api/Careers
+        [Route("api/Careers")]
+        [HttpPost]
         [ResponseType(typeof(Career))]
         public IHttpActionResult PostCareer(Career career)
         {

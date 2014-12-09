@@ -3,7 +3,7 @@
         <div class="box-header">
             <h3 class="box-title">Mantenimiento de Carreras</h3>
             <div class="pull-right box-tools">
-                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#careersInfo" title="" data-original-title="Collapse" ng-click="setActionCareer('add')">
+                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#careersInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionCareer('add')">
                     <i class="fa  fa-plus"></i>
                 </button>
             </div>
@@ -19,10 +19,14 @@
                 <tr ng-repeat="career in careerList">
                     <!--<td>{{career.CareerId}}</td>-->
                     <td>{{career.Name}}</td>
-                    <td>{{career.AcademicLevelId}} - {{career.AcademicLevel.Name}}</td>
-                    <td>
-                        <button type="button" id="editCareer" data-toggle="modal" data-target="#careersInfo" ng-click="setActionCareer('edit',$index)">Editar</button>
-                        <button type="button" id="deleteCareer" ng-click="deleteCareer($index)">Eliminar</button>
+                    <td>{{career.AcademicLevel.Name}}</td>
+                    <td align="center" style="width: 168px;">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#careersInfo" ng-click="setActionCareer('edit',$index)" title="Editar">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCareersInfo" ng-click="setCareerToDelete($index)" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -53,8 +57,30 @@
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
-                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="careerClearData()">Cancelar</button>
                     <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="saveCareer(career)">{{career_buttonName}}</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteCareersInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Borrar Carrera</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro que desea borrar la Carrera?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="cancelCareertDelete()">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="deleteCareer()">Si</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

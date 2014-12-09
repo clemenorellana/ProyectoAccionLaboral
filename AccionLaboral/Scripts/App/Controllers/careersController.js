@@ -19,7 +19,6 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     });
 
     careersRepo.getCarrerList().success(function (data) {
-        debugger
         $scope.careerList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
@@ -31,7 +30,6 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         });
 
     $scope.setActionCareer = function (action, index) {
-        debugger
         $scope.actionCareer = action;
         if (action == "add") {
             $scope.career_modalTitle = "Agregar Carrera";
@@ -45,16 +43,42 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     }
 
     $scope.editCareer = function (index) {
-        debugger
         var careerToEdit = $scope.careerList[index];
         $scope.Career_CareerId = careerToEdit.CareerId
         $scope.Career_Name = careerToEdit.Name;
-        $scope.Career_AcademicLevel = careerToEdit.AcademicLevelId;
+
+        var i = 0;
+        for (i = 0; i < $scope.Career_AcademicLevels.length; i++) {
+            var academic = $scope.Career_AcademicLevels[i];
+            if (academic.AcademicLevelId == careerToEdit.AcademicLevelId)
+                break;
+        }
+
+        $scope.Career_AcademicLevel = $scope.Career_AcademicLevels[i];
     };
 
-    $scope.saveCareer = function () {
-        debugger
+    $scope.career_refresh = function () {
+        careersRepo.getCarrerList().success(function (data) {
+            $scope.careerList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.loading = false;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.loading = false;
+        })
+    };
+
+    $scope.careerClearData = function () {
+        $scope.actionCareer = "";
+        $scope.Career_CareerId
+        $scope.Career_Name = "",
+        $scope.Career_AcademicLevel = "";
+    }
+
         
+    $scope.saveCareer = function () {
         var career;
 
         if ($scope.actionCareer == "add") {
@@ -80,28 +104,39 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
             careersRepo.updateCareer(function () {
             }, career);
               
-            //refresh table with la values edited
         }
 
-        $scope.actionCareer = "";
-        //$scope.Career_CareerId
-        $scope.Name = "",
-        $scope.Career_AcademicLevel = "";
+        $scope.careerClearData();
+
+        $scope.career_refresh();
         
     };
+        
+    $scope.setCareerToDelete = function (index) {
+        var id = $scope.careerList[index].CareerId;
+        $scope.careerToDeleteId = id;
+        $scope.careerToDeleteIndex = index;
+    };
 
+    $scope.cancelCareertDelete = function () {
+        $scope.careerToDeleteId = "";
+        $scope.careerToDeleteIndex = "";
+    };
     
     $scope.removeCareer = function (index) {
         $scope.careerList.splice(index, 1);
     };
 
-    $scope.deleteCareer = function (index) {
-        var id = $scope.careerList[index].CareerId;
-        $scope.removeCareer(index);
+    $scope.deleteCareer = function () {
+        var id = $scope.careerToDeleteId;
+        $scope.removeCareer($scope.careerToDeleteIndex);
         careersRepo.deleteCareer(function () {            
             alert('Career deleted');
             //removeCareer(index);
         }, id);
-        
+        $scope.cancelCareertDelete();
     }
+
+
+        
 }]);
