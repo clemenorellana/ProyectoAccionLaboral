@@ -6,31 +6,33 @@ using System.Web.Mvc;
 
 namespace AccionLaboral.Controllers.Home
 {
-    public class ClientsController : Controller
+    public class ContractTemplatesController : Controller
     {
         //
-        // GET: /Clients/
+        // GET: /ContractTemplates/
         public ActionResult Index()
         {
-            return new FilePathResult("/Views/Clients/Index.html", "text/html");
+            //return View();
+            return new FilePathResult("/Views/ContractTemplates/Index.html", "text/html");
         }
 
         //
-        // GET: /Clients/Details/5
+        // GET: /ContractTemplates/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
         //
-        // GET: /Clients/Create
+        // GET: /ContractTemplates/Create
         public ActionResult Create()
         {
-            return new FilePathResult("/Views/Clients/NewClient.html", "text/html");
+            //return View();
+            return new FilePathResult("/Views/ContractTemplates/Create.html", "text/html");
         }
 
         //
-        // POST: /Clients/Create
+        // POST: /ContractTemplates/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -47,14 +49,16 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
-        // GET: /Clients/Edit/
-        public ActionResult Edit()
+        // GET: /ContractTemplates/Edit/5
+        public ActionResult Edit(int id)
         {
-            return new FilePathResult("/Views/Clients/EditClient.html", "text/html");
+            //return View();
+            //return new FilePathResult("/Views/ContractTemplates/Edit.html", "text/html");
+            return new FilePathResult("/Views/ContractTemplates/Create.html", "text/html");
         }
 
         //
-        // POST: /Clients/Edit/5
+        // POST: /ContractTemplates/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -71,14 +75,14 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
-        // GET: /Clients/Delete/5
+        // GET: /ContractTemplates/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
         //
-        // POST: /Clients/Delete/5
+        // POST: /ContractTemplates/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

@@ -1,8 +1,8 @@
-﻿'use strict';
+'use strict';
 
 angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepository'])
 .config(['$routeProvider', function ($routeProvider) {
-    debugger
+    
     $routeProvider.
         when('/Contracts', {
             templateUrl: '/ContractTemplates/Index',

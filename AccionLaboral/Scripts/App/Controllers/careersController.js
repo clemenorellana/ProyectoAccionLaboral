@@ -84,7 +84,7 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         }
 
         $scope.actionCareer = "";
-        $scope.Career_CareerId
+        //$scope.Career_CareerId
         $scope.Name = "",
         $scope.Career_AcademicLevel = "";
         

@@ -1,16 +1,19 @@
 ﻿
 //following is our application module.ngGrid is the angular grid that we need to use to display data.
 var accionLabControllers = angular.module('clientsRepository', []);
-var url = 'api/Clients';
+var urlCustomer = 'api/clients/';
 
 //the factory object for the webAPI call.
 accionLabControllers.factory('customerRepository',['$http', function ($http) {
     return {
-        getCustomers: function (callback) {
-            return $http.get(url);
+        getCustomers: function () {
+            return $http.get(urlCustomer);
         },
         getCities: function (callback) {
             return $http.get('api/Cities');
+        },
+        getCustomer: function (id) {
+            return $http.get(urlCustomer + id);
         },
         getCountries: function (callback) {
             return $http.get('api/Countries');
@@ -45,7 +48,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
                 "WorkExperiences": client.workExperiences, "References": client.workReferences
             };
-            return $http.post(url, client);
+            return $http.post(urlCustomer, client);
         }
             ,
         //method for update
@@ -60,12 +63,12 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
                 "CityId": client.CityId, "AdvisorId": client.AdvisorId
             };
-            return $http.put(url + '/' + client.id, client);
+            return $http.put(urlCustomer + '/' + client.id, client);
         }
         ,
         //method for delete
         DeleteCustomer: function (callback, id) {
-            return $http.delete(url + '/' + id);
+            return $http.delete(urlCustomer + '/' + id);
         }
 
 

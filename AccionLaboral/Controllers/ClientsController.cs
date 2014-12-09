@@ -20,14 +20,36 @@ namespace AccionLaboral.Controllers
         // GET api/Clients
         public IQueryable<Client> GetClients()
         {
-            return db.Clients;
+            return db.Clients.Include(r => r.AcademicEducations.Select(c => c.City))
+                .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
+                .Include(r => r.AcademicEducations.Select(c => c.Career))
+                .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                .Include(r => r.KnownPrograms)
+                .Include(r => r.Languages.Select(l => l.Language))
+                .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                .Include(r => r.References.Select(c => c.City))
+                .Include(r => r.References.Select(t => t.ReferenceType))
+                .Include(r => r.WorkExperiences)
+                .Include(r => r.WorkExperiences.Select(c => c.City));
         }
 
         // GET api/Clients/5
         [ResponseType(typeof(Client))]
         public IHttpActionResult GetClient(int id)
         {
-            Client client = db.Clients.Find(id);
+            Client client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City))
+                .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
+                .Include(r => r.AcademicEducations.Select(c => c.Career))
+                .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                .Include(r => r.KnownPrograms)
+                .Include(r => r.Languages.Select(l=>l.Language))
+                .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                .Include(r => r.References.Select(c=>c.City))
+                .Include(r => r.References.Select(t => t.ReferenceType))
+                .Include(r => r.WorkExperiences)
+                .Include(r => r.WorkExperiences.Select(c => c.City))
+                .First(r => r.ClientId == id);
+
             if (client == null)
             {
                 return NotFound();

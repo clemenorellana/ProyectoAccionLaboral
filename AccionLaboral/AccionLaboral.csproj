@@ -163,7 +163,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AcademicEducationsController.cs" />
     <Compile Include="Controllers\AcademicLevelsController.cs" />
-    <Compile Include="Controllers\CarrersController.cs" />
+    <Compile Include="Controllers\CareersController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
@@ -173,6 +173,10 @@
     <Compile Include="Controllers\EducationTypesController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Home\AcademicEducationsController.cs" />
+    <Compile Include="Controllers\Home\CareersController.cs" />
+    <Compile Include="Controllers\Home\ClientsController.cs" />
+    <Compile Include="Controllers\Home\ContractTemplatesController.cs" />
     <Compile Include="Controllers\KnownLanguagesController.cs" />
     <Compile Include="Controllers\KnownProgramsController.cs" />
     <Compile Include="Controllers\LanguageLevelsController.cs" />
@@ -405,6 +409,7 @@
     <Content Include="Images\blur-background08.jpg" />
     <Content Include="Images\blur-background09.jpg" />
     <Content Include="Images\icons.png" />
+    <Content Include="Images\loading.gif" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\logo_accionlaboral.png" />
     <Content Include="Images\sprite-skin-flat.png" />
@@ -412,7 +417,6 @@
     <Content Include="Images\user-bg.png" />
     <Content Include="Images\user.jpg" />
     <Content Include="Images\user2.jpg" />
-    <Content Include="index.html" />
     <Content Include="pages\forms\advanced.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
@@ -437,8 +441,12 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\App\Controllers\careersController.js" />
     <Content Include="Scripts\App\Controllers\clientsController.js" />
+    <Content Include="Scripts\App\Controllers\contracTemplatesController.js" />
+    <Content Include="Scripts\App\Services\careerRepository.js" />
     <Content Include="Scripts\App\Services\clientRepository.js" />
+    <Content Include="Scripts\App\Services\contractTemplateRepository.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -475,6 +483,12 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Views\Careers\Index.html" />
+    <Content Include="Views\Clients\EditClient.html" />
+    <Content Include="Views\Clients\Index.html" />
+    <Content Include="Views\Clients\NewClient.html" />
+    <Content Include="Views\ContractTemplates\Create.html" />
+    <Content Include="Views\ContractTemplates\Index.html" />
     <Content Include="Views\Home\Index.html">
       <SubType>Code</SubType>
     </Content>

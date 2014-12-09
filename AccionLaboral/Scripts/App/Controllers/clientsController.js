@@ -10,10 +10,14 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         when('/AllClients', {
             templateUrl: '/Clients/Index',
             controller: 'CustomerController'
+        }).when("/editClient/:id", {
+            title: 'Editar usuario',
+            templateUrl: "/Clients/Edit",
+            controller: "editCustomerController"
         });
 }]
 )
-.controller('CustomerController', ['$scope', 'customerRepository', function ($scope, customerRepository) {
+.controller('CustomerController', ['$scope', '$location', 'customerRepository', function ($scope, $location, customerRepository) {
     
     $scope.handleFileSelectAdd = function (evt) {
         var f = evt.target.files[0];
@@ -35,6 +39,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
     $scope.index = -1;
     $scope.action = '';
+    $scope.load = true;
 
     /*AcademicEducations*/
     $scope.addAcademicEducation = function () {
@@ -61,7 +66,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.academicEducations.push(education);
         }
     };
-    $scope.fillAcademicEducation = function(index) {
+    $scope.fillAcademicEducation = function (index) {
+        $scope.textButton = "Editar";
         $scope.TrainingName = $scope.academicEducations[index].TrainingName,
             $scope.InstitutionName = $scope.academicEducations[index].InstitutionName,
             $scope.AcademicLevel = $scope.academicEducations[index].AcademicLevel,
@@ -73,7 +79,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.action = 'edit';
         $scope.index = index;
     };
-    $scope.clearAcademicEducation = function(){
+    $scope.clearAcademicEducation = function () {
+        $scope.textButton = "Agregar";
       $scope.TrainingName = "",
             $scope.InstitutionName = "",
             $scope.AcademicLevel = "",
@@ -90,13 +97,15 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
     /*Languages*/
     $scope.clearKnowLanguage = function () {
+        $scope.textButton = "Agregar";
         $scope.Percentage = "",
             $scope.Language = "",
             $scope.LanguageLevel = "";
         $scope.action = '';
         $scope.index = -1;
     };
-    $scope.fillKnownLanguage = function(index) {
+    $scope.fillKnownLanguage = function (index) {
+        $scope.textButton = "Editar";
         $scope.Percentage = $scope.knownLanguages[index].Percentage,
             $scope.Language = $scope.knownLanguages[index].Language,
             $scope.LanguageLevel = $scope.knownLanguages[index].LanguageLevel;
@@ -125,11 +134,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     
     /*Programs*/
     $scope.clearProgram = function () {
+        $scope.textButton = "Agregar";
         $scope.NameProgram = "";
         $scope.action = '';
         $scope.index = -1;
     };
-    $scope.fillKnownProgram = function(index) {
+    $scope.fillKnownProgram = function (index) {
+        $scope.textButton = "Editar";
         $scope.NameProgram = $scope.knownPrograms[index].Name;
         $scope.action = 'edit';
         $scope.index = index;
@@ -151,6 +162,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     
     /*WorkExperience*/
     $scope.clearWorkExperience = function () {
+        $scope.textButton = "Agregar";
         $scope.CompanyName = "";
         $scope.CompanyArea = "";
         $scope.Charge = "";
@@ -163,6 +175,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.index = -1;
     };
     $scope.fillWorkExperience = function (index) {
+        $scope.textButton = "Editar";
         $scope.CompanyName = $scope.workExperiences[index].CompanyName,
             $scope.CompanyArea = $scope.workExperiences[index].CompanyArea,
             $scope.Charge = $scope.workExperiences[index].Charge,
@@ -205,7 +218,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     };
 
     /*WorkReference*/
-    $scope.clearWorkReference = function() {
+    $scope.clearWorkReference = function () {
+        $scope.textButton = "Agregar";
         $scope.FirstNameWRef = "";
         $scope.LastNameWRef = "";
         $scope.ChargeWRef = "";
@@ -218,7 +232,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.action = '';
         $scope.index = -1;
     };
-    $scope.fillWorkReference = function(index) {
+    $scope.fillWorkReference = function (index) {
+        $scope.textButton = "Editar";
         $scope.FirstNameWRef = $scope.workReferences[index].FirstName,
             $scope.LastNameWRef = $scope.workReferences[index].LastName,
             $scope.ChargeWRef = $scope.workReferences[index].Charge,
@@ -264,7 +279,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     };
 
     /*PersonalReference*/
-    $scope.clearPersonalReference = function() {
+    $scope.clearPersonalReference = function () {
+        $scope.textButton = "Agregar";
         $scope.FirstNamePRef = "";
         $scope.LastNamePRef = "";
         $scope.ChargePRef = "";
@@ -277,7 +293,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.action = '';
         $scope.index = -1;
     };
-    $scope.fillPersonalReference = function(index) {
+    $scope.fillPersonalReference = function (index) {
+        $scope.textButton = "Editar";
         $scope.FirstNamePRef = $scope.personalReferences[index].FirstName,
             $scope.LastNamePRef = $scope.personalReferences[index].LastName,
             $scope.ChargePRef = $scope.personalReferences[index].Charge,
@@ -322,7 +339,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     };
 
     /*Tranning*/
-    $scope.clearTranning = function() {
+    $scope.clearTranning = function () {
+        $scope.textButton = "Agregar";
         $scope._TrainingName = "",
             $scope._InstitutionName = "",
             $scope._AcademicLevel = "",
@@ -333,7 +351,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.action = '';
         $scope.index = -1;
     };
-    $scope.fillTranning = function(index) {
+    $scope.fillTranning = function (index) {
+        $scope.textButton = "Editar";
         $scope._TrainingName = $scope.Trannings[index].TrainingName,
             $scope._InstitutionName = $scope.Trannings[index].InstitutionName,
             $scope._CareerId = $scope.Trannings[index].CareerId,
@@ -371,6 +390,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.Trannings.splice(index, 1);
     };
 
+
     customerRepository.getCities().success(function (data) {
         $scope.Cities = data;
     });
@@ -403,22 +423,23 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         if ($scope.AcademicLevel)
         $scope.Careers = $scope.AcademicLevel.Careers;
     }
-
+   
     customerRepository.getCustomers().success(function (data) {
         $scope.customerData = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
-        $scope.loading = false;
+        $scope.load = false;
     })
             .error(function (data) {
                 $scope.error = "An Error has occured while loading posts! " + data.ExceptionMessage;
-                $scope.loading = false;
+                $scope.load = false;
             });
 
     $scope.setScope = function (obj, action) {
 
         $scope.action = action;
         $scope.New = obj;
+        $location.url('editClient/'+obj.ClientId);
     }
 
     // filter
@@ -644,4 +665,68 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
     }
 
+}]).directive('loading', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        template: '<div class="loading"><img src="../../Images/loading.gif" width="50" height="50" />CARGANDO...</div>',
+        link: function (scope, element, attr) {
+            scope.$watch('loading', function (val) {
+                if (val)
+                    $(element).show();
+                else
+                    $(element).hide();
+            });
+        }
+    }
+}).controller("editCustomerController", ['$scope', '$routeParams', '$filter', 'customerRepository', function ($scope, $routeParams, $filter, customerRepository) {
+    customerRepository.getCustomer($routeParams.id).success(function (data) {
+        if (data.Birthday)
+            data.Birthday = new Date(data.Birthday);
+        $scope.AcademicEducations = data.AcademicEducations;
+        $scope.Languages = data.Languages;
+        $scope.knownPrograms = data.KnownPrograms;
+        $scope.workExperiences = data.WorkExperiences;
+        $scope.Trannings = data.Trannings;
+        $scope.workReferences = [],
+            $scope.personalReferences = [];
+        for (var i = 0; i < data.References.length; i++) {
+            if (data.References[i].ReferenceType.Name == 'L')
+                $scope.workReferences.push(data.References[i]);
+            else
+                $scope.personalReferences.push(data.References[i]);
+        }
+
+        $scope.New = data;
+        /*
+        //$scope.New.Correlative = data.Correlative,
+            $scope.New.FirstName = data.FirstName,
+            $scope.New.LastName = data.LastName,
+            $scope.New.Birthday = data.Birthday.toDateString(),
+            $scope.New.Age = data.Age,
+            $scope.New.Gender = data.Age,
+            $scope.New.Email = data.Email,
+            $scope.New.Neighborhood = data.Neighborhood,
+            $scope.New.CompleteAddress = data.CompleteAddress,
+            $scope.New.Cellphone = data.Cellphone,
+            $scope.New.Homephone = data.HomePhone,
+            $scope.New.Hobby = data.Hobby,
+            $scope.New.Photo = data.Photo,
+            $scope.New.CurrentStudies = data.Photo,
+            $scope.New.WageAspiration = data.WageAspiration,
+            $scope.New.FacebookEmail = data.WageAspiration,
+            $scope.New.BBPin = data.WageAspiration,
+            $scope.New.Twitter = data.Twitter,
+            $scope.New.DesiredEmployment = data.Twitter,
+            $scope.New.CompaniesWithPreviouslyRequested = data.CompaniesWithPreviouslyRequested,
+            $scope.New.CityId.CityId = data.CityId,
+            $scope.New.AdvisorId = data.AdvisorId,
+            $scope.New.CareerId = data.CareerId,
+            $scope.New.AcademicEducations = data.AcademicEducations,
+            $scope.New.Languages = data.Languages,
+            $scope.New.KnownPrograms = data.KnownPrograms,
+            $scope.New.workExperiences = data.workExperiences,
+            $scope.New.workReferences = data.workReferences;
+        */
+    });
 }]);
