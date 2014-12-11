@@ -6,7 +6,8 @@ angular.module('AccionLaboralApp', [
   'ngGrid',
   'clientsController',
   'careersController',
-  'contractTemplatesController'
+  'contractTemplatesController',
+  'employeesController'
 ])
 .config(['$routeProvider',
   function ($routeProvider) {

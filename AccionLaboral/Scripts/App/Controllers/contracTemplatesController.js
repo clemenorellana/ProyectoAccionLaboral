@@ -16,7 +16,13 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
                 return '/ContractTemplates/Edit/' + params.id;
             },
             controller: 'contractTemplatesCtrl'
-        })    
+        }).
+        when('/Contracts/Preview/:id', {
+            templateUrl: function (params) {
+                return '/ContractTemplates/Details/' + params.id;
+            },
+            controller: 'contractTemplatesCtrl'
+        })
     ;
 }]
 )
@@ -62,6 +68,11 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     $scope.contract_editRedirect = function (index) {
         var id = $scope.contractTemplateList[index].ContractTemplateId;
         window.location = "#/Contracts/Edit/" + id;
+    }
+
+    $scope.contract_viewRedirect = function (index) {
+        var id = $scope.contractTemplateList[index].ContractTemplateId;
+        window.location = "#/Contracts/Preview/" + id;
     }
 
     $scope.contract_cancelRedirect = function () {

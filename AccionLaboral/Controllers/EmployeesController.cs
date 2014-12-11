@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using Newtonsoft.Json;
 
 namespace AccionLaboral.Controllers
 {
@@ -17,9 +18,11 @@ namespace AccionLaboral.Controllers
         private AccionLaboralContext db = new AccionLaboralContext();
 
         // GET api/Employees
+        [Route("api/Employees")]
+        [HttpGet]
         public IQueryable<Employee> GetEmployees()
         {
-            return db.Employees;
+            return db.Employees;//.Include("Career").Include("User");//.Include("Role");
         }
 
         // GET api/Employees/5
@@ -70,6 +73,8 @@ namespace AccionLaboral.Controllers
         }
 
         // POST api/Employees
+        [Route("api/Employees")]
+        [HttpPost]
         [ResponseType(typeof(Employee))]
         public IHttpActionResult PostEmployee(Employee employee)
         {
