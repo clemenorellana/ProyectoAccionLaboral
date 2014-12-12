@@ -40,27 +40,10 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
 
     var actionEmployee = "";
     $scope.employeesList = [];
+    $scope.careersList = [];
+    $scope.usersList = [];
+    $scope.rolesList = [];
     $scope.employeeId = $routeParams.id;
-
-    if ($scope.employeeId == null) {
-        actionEmployee = "add";
-        $scope.employee_modalTitle = "Agregar Empleado";
-        $scope.employee_buttonName = "Agregar";
-    }
-    else {
-        actionEmployee = "edit";
-        $scope.employee_modalTitle = "Editar Empleado";
-        $scope.employee_buttonName = "Editar";
-        var id = $scope.employeeId;
-
-        employeesRepo.getEmployee(id).success(function (data) {
-            var employeeToEdit = data;
-            $scope.Employee_EmployeeId = employeeToEdit.EmployeeId;
-            $scope.Employee_Name = employeeToEdit.Name;
-            $scope.Employee_Description = employeeToEdit.Description;
-            $scope.Employee_Active = employeeToEdit.Active;
-        });
-    }
 
     employeesRepo.getEmployeesList().success(function (data) {
         $scope.employeesList = data;
@@ -80,15 +63,74 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         $scope.usersList = data;
     });
 
-    employeesRepo.getRoles().success(function(data){
+    employeesRepo.getRoles().success(function (data) {
         $scope.rolesList = data;
     });
+
+    if ($scope.employeeId == null) {
+        actionEmployee = "add";
+        $scope.employee_modalTitle = "Agregar Empleado";
+        $scope.employee_buttonName = "Agregar";
+    }
+    else {
+        actionEmployee = "edit";
+        $scope.employee_modalTitle = "Editar Empleado";
+        $scope.employee_buttonName = "Editar";
+        var id = $scope.employeeId;
+
+        employeesRepo.getEmployee(id).success(function (data) {
+            debugger
+            var employeeToEdit = data;
+
+            var c = 0;
+            for (c = 0; c < $scope.careersList.length; c++) {
+                var career = $scope.careersList[c];
+                if (career.CareerId == employeeToEdit.CareerId)
+                    break;
+            }
+
+            var r = 0;
+            for (r = 0; r < $scope.rolesList.length; r++) {
+                var role = $scope.rolesList[r];
+                if (role.RoleId == employeeToEdit.RoleId)
+                    break;
+            }
+
+            var u = 0;
+            for (u = 0; u < $scope.usersList.length; u++) {
+                var user = $scope.usersList[u];
+                if (user.UserId == employeeToEdit.UserId)
+                    break;
+            }
+
+
+            
+            $scope.employee_EmployeeId = employeeToEdit.EmployeeId;
+            $scope.employee_FirstName = employeeToEdit.FirstName;
+            $scope.employee_LastName = employeeToEdit.LastName;
+            $scope.employee_Email = employeeToEdit.Email;
+            $scope.employee_Birthday = new Date(employeeToEdit.Birthday);
+            $scope.employee_Age = employeeToEdit.Age;
+            $scope.employee_Cellphone = employeeToEdit.Cellphone;
+            $scope.employee_HomePhone = employeeToEdit.HomePhone;
+            $scope.employee_Address = employeeToEdit.Address;
+            $scope.employee_Gender = employeeToEdit.Gender;
+            $scope.employee_EmployeeAlias = employeeToEdit.EmployeeAlias;
+            $scope.employee_AdmissionDate = employeeToEdit.AdmissionDate;
+            $scope.employee_Career = $scope.careersList[c];//employeeToEdit.Career;
+            $scope.employee_Role = $scope.rolesList[r];//employeeToEdit.Role;
+            $scope.employee_User = $scope.usersList[u];//employeeToEdit.User;
+        });
+    }
+
+    
 
     $scope.employee_addNewRedirect = function () {
         window.location = "#/Employees/Create";
     }
 
     $scope.employee_editRedirect = function (index) {
+        debugger
         var id = $scope.employeesList[index].EmployeeId;
         window.location = "#/Employees/Edit/" + id;
     }
@@ -120,10 +162,10 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         $scope.employee_Address = "";
         $scope.employee_Gender = "";
         $scope.employee_EmployeeAlias = "";
-        //sionDate: new Date(),
-        $scope.employee_Career.CareerId = "";
-        $scope.employee_Role.RoleId = "";
-        $scope.employee_User.UserId = "";
+        $scope.employee_AdmissionDate = "";
+        $scope.employee_Career = "";
+        $scope.employee_Role = "";
+        $scope.employee_User = "";
     }
 
     $scope.saveEmployee = function () {
@@ -165,7 +207,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
                 Address: $scope.employee_Address,
                 Gender: $scope.employee_Gender,
                 EmployeeAlias: $scope.employee_EmployeeAlias,
-                AdmissionDate: new Date(),
+                AdmissionDate: $scope.employee_AdmissionDate,
                 CareerId: $scope.employee_Career.CareerId,
                 RoleId: $scope.employee_Role.RoleId,
                 UserId: $scope.employee_User.UserId
@@ -176,8 +218,9 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         }
 
         $scope.clearData();
-        $scope.employee_cancelRedirect();
         $scope.employee_refresh();
+        $scope.employee_cancelRedirect();
+        
     };
 
     $scope.setEmployeeToDelete = function (index) {

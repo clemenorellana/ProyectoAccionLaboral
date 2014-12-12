@@ -22,7 +22,7 @@ namespace AccionLaboral.Controllers
         [HttpGet]
         public IQueryable<Employee> GetEmployees()
         {
-            return db.Employees;//.Include("Career").Include("User");//.Include("Role");
+            return db.Employees.Include("Career").Include("User");//.Include("Role");
         }
 
         // GET api/Employees/5

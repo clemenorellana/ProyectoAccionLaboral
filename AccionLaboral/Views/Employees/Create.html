@@ -1,8 +1,8 @@
-﻿<div class="col-md-3">
+﻿<!--<div class="col-md-3">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Foto de Perfil</h3>
-        </div><!-- /.box-header -->
+        </div>
         <div class="box-body">
             <div class="text-center">
                 <img src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="">
@@ -28,9 +28,9 @@
         </div>
     </div>
 
-</div>
+</div>-->
 
-<div class="col-md-9">
+<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">{{employee_modalTitle}}</h3>
@@ -161,16 +161,20 @@
                 </div>
             </div>
         </div><!-- /.box-body -->
-        <!--<div class="box-footer">
+        <div class="box-footer">
             <div class="row">
-                <div class="col-md-6 text-right">
-                    <button type="submit" class="btn btn-primary" ng-click="saveContract()">{{employee_buttonName}}</button>
-                </div>
-                <div class="col-md-6 text-left">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
-                </div>
+                <!--<div class="col-md-6 text-center">-->
+                    <div class="col-md-6 text-right">
+                        <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">{{employee_buttonName}}</button>
+                    </div>
+                <!--</div>
+                <div class="col-md-6 text-center">-->
+                    <div class="col-md-6 text-left">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
+                    </div>
+                <!--</div>-->
             </div>
-        </div>-->
+        </div>
     </div>
 
 </div>

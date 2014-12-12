@@ -16,7 +16,7 @@
                     <th>Correo Electrónico</th>
                     <th>Celular</th>
                     <th>Fecha de Ingreso</th>
-                    <th>Rol</th>
+                    <!--<th>Rol</th>-->
                     <th>Opción</th>
                 </tr>
                 <tr ng-repeat="employee in employeesList">
@@ -25,12 +25,12 @@
                     <td>{{employee.Email}}</td>
                     <td>{{employee.Cellphone }}</td>
                     <td>{{employee.AdmissionDate | dateFormat }} </td>
-                    <td>{{employee.RoleId}}</td>
+                    <!--<td>{{employee.RoleId}}</td>-->
                     <td align="center">
-                        <button class="btn btn-info" ng-click="" title="Ver">
+                        <!--<button class="btn btn-info" ng-click="" title="Ver">
                             <i class="fa fa-file-text"></i>
-                        </button>
-                        <button class="btn btn-info" ng-click="employee_editRedirect()" title="Editar">
+                        </button>-->
+                        <button class="btn btn-info" ng-click="employee_editRedirect($index)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>
                         <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEmployeeInfo" ng-click="setEmployeeToDelete($index)" title="Eliminar">

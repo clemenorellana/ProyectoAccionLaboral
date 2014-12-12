@@ -17,6 +17,9 @@ accionLabControllers.factory('employeesRepo', ['$http', function ($http) {
         getCareers: function (callback) {
             return $http.get('api/Careers');
         },
+        getEmployee: function (id) {
+            return $http.get(url + "/" + id);
+        },
         //method for insert
         insertEmployee: function (callback, employee) {
             debugger
@@ -41,12 +44,23 @@ accionLabControllers.factory('employeesRepo', ['$http', function ($http) {
         //method for update
         updateEmployee: function (callback, employee) {
             var employee = {
-                "employeeTemplateId": employee.employeeTemplateId,
-                "Name": employee.Name,
-                "Description": employee.Description,
-                "Active": employee.Active
+                "EmployeeId": employee.EmployeeId,
+                "FirstName": employee.FirstName,
+                "LastName": employee.LastName,
+                "Email": employee.Email,
+                "Birthday": employee.Birthday,
+                "Age": employee.Age,
+                "Cellphone": employee.Cellphone,
+                "HomePhone": employee.HomePhone,
+                "Address": employee.Address,
+                "Gender": employee.Gender,
+                "EmployeeAlias": employee.EmployeeAlias,
+                "AdmissionDate": employee.AdmissionDate,
+                "CareerId": employee.CareerId,
+                "RoleId": employee.RoleId,
+                "UserId": employee.UserId
             };
-            return $http.put(url + '/' + employee.employeeTemplateId, employee);
+            return $http.put(url + '/' + employee.EmployeeId, employee);
         },
         //method for delete
         deleteEmployee: function (callback, id) {
