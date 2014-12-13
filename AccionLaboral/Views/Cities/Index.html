@@ -1,0 +1,86 @@
+﻿<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">Listado de Ciudades</h3>
+            <div class="pull-right box-tools">
+                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#citiesInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionCity('add')">
+                    <i class="fa  fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Ciudad</th>
+                    <th>País</th>
+                    <th>Opción</th>
+                </tr>
+                <tr ng-repeat="city in citiesList">
+                    <td>{{city.Name}}</td>
+                    <td>{{city.Country.Name}}</td>
+                    <td align="center" style="width: 168px;">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#citiesInfo" ng-click="setActionCity('edit',$index)" title="Editar">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCitiesInfo" ng-click="setCityToDelete($index)" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div><!-- /.box-body -->
+    </div>
+
+</div>
+
+<!-- ADD CITY MODAL -->
+<div class="modal fade" id="citiesInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>{{city_modalTitle}}</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>País</label>
+                            <select class="form-control" ng-options="country.Name for country in City_Countries" ng-model="City_Country"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre de la Ciudad</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="City_Name">
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="cityClearData()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="saveCity(city)">{{city_buttonName}}</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteCitiesInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Borrar Ciudad</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro que desea borrar la Ciudad?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="cancelCitytDelete()">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="deleteCity()">Si</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
