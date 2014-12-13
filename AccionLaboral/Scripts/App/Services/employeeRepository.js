@@ -5,16 +5,15 @@ accionLabControllers.factory('employeesRepo', ['$http', function ($http) {
     var url = 'api/Employees';
     return {
         getEmployeesList: function (callback) {
-            debugger
             return $http.get(url);
         },
-        getRoles: function (callback) {
+        getEmployeesRoles: function (callback) {
             return $http.get('api/Roles');
         },
-        getUsers: function (callback) {
+        getEmployeesUsers: function (callback) {
             return $http.get('api/Users');
         },
-        getCareers: function (callback) {
+        getEmployeesCareers: function (callback) {
             return $http.get('api/Careers');
         },
         getEmployee: function (id) {
@@ -22,7 +21,6 @@ accionLabControllers.factory('employeesRepo', ['$http', function ($http) {
         },
         //method for insert
         insertEmployee: function (callback, employee) {
-            debugger
             var employee = {
                 "FirstName": employee.FirstName,
                 "LastName": employee.LastName,

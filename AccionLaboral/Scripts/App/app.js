@@ -7,7 +7,8 @@ angular.module('AccionLaboralApp', [
   'clientsController',
   'careersController',
   'contractTemplatesController',
-  'employeesController'
+  'employeesController',
+  'usersController'
 ])
 .config(['$routeProvider',
   function ($routeProvider) {

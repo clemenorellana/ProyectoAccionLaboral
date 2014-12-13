@@ -17,6 +17,8 @@ namespace AccionLaboral.Controllers
         private AccionLaboralContext db = new AccionLaboralContext();
 
         // GET api/Users
+        [Route("api/Users")]
+        [HttpGet]
         public IQueryable<User> GetUsers()
         {
             return db.Users;
@@ -70,6 +72,8 @@ namespace AccionLaboral.Controllers
         }
 
         // POST api/Users
+        [Route("api/Users")]
+        [HttpPost]
         [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(User user)
         {

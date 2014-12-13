@@ -30,6 +30,13 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     var actionContractTemplate = "";
     $scope.contractTemplateList = [];
     $scope.contractId = $routeParams.id;
+
+    $scope.$watch('$routeChangeSuccess', function () {
+        contractTemplatesRepo.getContractTemplateList().success(function (data) {
+            $scope.contractTemplateList = data;
+        });
+    });
+
    
     if ($scope.contractId == null) {
         actionContractTemplate = "add";

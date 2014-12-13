@@ -135,7 +135,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Carrera</label>
-                        <select class="form-control" ng-options="career.Name for career in careersList" ng-model="employee_Career"></select>
+                        <select class="form-control" ng-options="career.Name for career in employeesCareersList" ng-model="employee_Career"></select>
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Tipo de Empleado</label>
-                        <select class="form-control" ng-options="rol.Name for rol in rolesList" ng-model="employee_Role"></select>
+                        <select class="form-control" ng-options="rol.Name for rol in employeesRolesList" ng-model="employee_Role"></select>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -156,7 +156,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Usuario</label>
-                        <select class="form-control" ng-options="user.UserName for user in usersList" ng-model="employee_User"></select>
+                        <select class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User"></select>
                     </div>
                 </div>
             </div>

@@ -58,7 +58,10 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     };
 
     $scope.career_refresh = function () {
+        
         careersRepo.getCarrerList().success(function (data) {
+            debugger
+            $scope.careerList = [];
             $scope.careerList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
@@ -72,8 +75,8 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
 
     $scope.careerClearData = function () {
         $scope.actionCareer = "";
-        $scope.Career_CareerId
-        $scope.Career_Name = "",
+        $scope.Career_CareerId = "";
+        $scope.Career_Name = "";
         $scope.Career_AcademicLevel = "";
     }
 

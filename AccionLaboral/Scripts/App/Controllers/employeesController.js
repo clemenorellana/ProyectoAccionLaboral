@@ -1,5 +1,5 @@
 ﻿'use strict';
-debugger
+
 angular.module("employeesController", ['ngRoute', 'employeesRepository'])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -40,10 +40,16 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
 
     var actionEmployee = "";
     $scope.employeesList = [];
-    $scope.careersList = [];
-    $scope.usersList = [];
-    $scope.rolesList = [];
+    $scope.employeesCareersList = [];
+    $scope.employeesUsersList = [];
+    $scope.employeesRolesList = [];
     $scope.employeeId = $routeParams.id;
+
+    $scope.$watch('$routeChangeSuccess', function () {
+        employeesRepo.getEmployeesList().success(function (data) {
+            $scope.employeesList = data;
+        });
+    });
 
     employeesRepo.getEmployeesList().success(function (data) {
         $scope.employeesList = data;
@@ -55,16 +61,16 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         $scope.loading = false;
     });
 
-    employeesRepo.getCareers().success(function (data) {
-        $scope.careersList = data;
+    employeesRepo.getEmployeesCareers().success(function (data) {
+        $scope.employeesCareersList = data;
     });
 
-    employeesRepo.getUsers().success(function (data) {
-        $scope.usersList = data;
+    employeesRepo.getEmployeesUsers().success(function (data) {
+        $scope.employeesUsersList = data;
     });
 
-    employeesRepo.getRoles().success(function (data) {
-        $scope.rolesList = data;
+    employeesRepo.getEmployeesRoles().success(function (data) {
+        $scope.employeesRolesList = data;
     });
 
     if ($scope.employeeId == null) {
@@ -83,22 +89,22 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
             var employeeToEdit = data;
 
             var c = 0;
-            for (c = 0; c < $scope.careersList.length; c++) {
-                var career = $scope.careersList[c];
+            for (c = 0; c < $scope.employeesCareersList.length; c++) {
+                var career = $scope.employeesCareersList[c];
                 if (career.CareerId == employeeToEdit.CareerId)
                     break;
             }
 
             var r = 0;
-            for (r = 0; r < $scope.rolesList.length; r++) {
-                var role = $scope.rolesList[r];
+            for (r = 0; r < $scope.employeesRolesList.length; r++) {
+                var role = $scope.employeesRolesList[r];
                 if (role.RoleId == employeeToEdit.RoleId)
                     break;
             }
 
             var u = 0;
-            for (u = 0; u < $scope.usersList.length; u++) {
-                var user = $scope.usersList[u];
+            for (u = 0; u < $scope.employeesUsersList.length; u++) {
+                var user = $scope.employeesUsersList[u];
                 if (user.UserId == employeeToEdit.UserId)
                     break;
             }
@@ -117,9 +123,9 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
             $scope.employee_Gender = employeeToEdit.Gender;
             $scope.employee_EmployeeAlias = employeeToEdit.EmployeeAlias;
             $scope.employee_AdmissionDate = employeeToEdit.AdmissionDate;
-            $scope.employee_Career = $scope.careersList[c];//employeeToEdit.Career;
-            $scope.employee_Role = $scope.rolesList[r];//employeeToEdit.Role;
-            $scope.employee_User = $scope.usersList[u];//employeeToEdit.User;
+            $scope.employee_Career = $scope.employeesCareersList[c];//employeeToEdit.Career;
+            $scope.employee_Role = $scope.employeesRolesList[r];//employeeToEdit.Role;
+            $scope.employee_User = $scope.employeesUsersList[u];//employeeToEdit.User;
         });
     }
 
@@ -218,7 +224,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         }
 
         $scope.clearData();
-        $scope.employee_refresh();
+        //$scope.employee_refresh();
         $scope.employee_cancelRedirect();
         
     };
