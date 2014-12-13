@@ -149,7 +149,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Ciudad</label>
-                                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
+                                        <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="New.CityId"></select>
                                     </div>
                                 </div>
                             </div>
@@ -193,7 +193,7 @@
                                             <th>Opción</th>
                                         </tr>
 
-                                        <tr ng-repeat="education in AcademicEducations">
+                                        <tr ng-repeat="education in academicEducations">
                                             <td>{{education.Year}}</td>
                                             <td>{{education.Country.Name}}</td>
                                             <td>{{education.City.Name}}</td>
@@ -228,7 +228,7 @@
                                             <th>Porcentaje</th>
                                             <th>Opción</th>
                                         </tr>
-                                        <tr ng-repeat="knownLanguage in Languages">
+                                        <tr ng-repeat="knownLanguage in knownLanguages">
                                             <td>{{knownLanguage.Language.Name}}</td>
                                             <td>{{knownLanguage.LanguageLevel.Name}}</td>
                                             <td>{{knownLanguage.Percentage}}</td>
@@ -258,7 +258,7 @@
                                             <th>Programa</th>
                                             <th>Opción</th>
                                         </tr>
-                                        <tr ng-repeat="knownProgram in KnownPrograms">
+                                        <tr ng-repeat="knownProgram in knownPrograms">
                                             <td>{{knownProgram.Name}}</td>
                                             <td>
                                                 <button type="button" ng-click="removeKnowProgram($index)">Eliminar</button>
@@ -301,8 +301,8 @@
                                             <th>Opción</th>
                                         </tr>
                                         <tr ng-repeat="workExperience in workExperiences">
-                                            <td>{{workExperience.StartDate}}</td>
-                                            <td>{{workExperience.EndDate}}</td>
+                                            <td>{{workExperience.StartDate | date: 'dd/MM/yyyy'}}</td>
+                                            <td>{{workExperience.EndDate | date: 'dd/MM/yyyy'}}</td>
                                             <td>{{workExperience.WorkCountry.Name}}</td>
                                             <td>{{workExperience.WorkCity.Name}}</td>
                                             <td>{{workExperience.CompanyName}}</td>
@@ -495,21 +495,21 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="Country"></select>
+                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="Country.CountryId"></select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="City"></select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="City.CityId"></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Nivel Académico</label>
-                            <select class="form-control" ng-options="academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevel">
+                            <select class="form-control" ng-options="academicLevel.AcademicLevelId as academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevel.AcademicLevelId">
                                 <!--<option>Primaria</option>
-                                    <option>Secundaria</option>
-                                    <option>Universitaria</option>
-                                    <option>Maestria</option>-->
+        <option>Secundaria</option>
+        <option>Universitaria</option>
+        <option>Maestria</option>-->
                             </select>
                         </div>
                         <div class="form-group col-md-6">
@@ -565,20 +565,20 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Idioma</label>
-                            <select class="form-control" ng-options="Language.Name for Language in Languages" ng-model="Language">
+                            <select class="form-control" ng-options="Language.LanguageId as Language.Name for Language in Languages" ng-model="LanguageId">
                                 <!--<option>Básico</option>
-                                    <option>Intermedio</option>
-                                    <option>Avanzado</option>-->
+        <option>Intermedio</option>
+        <option>Avanzado</option>-->
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label>Nivel</label>
-                            <select class="form-control" ng-options="LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevel">
+                            <select class="form-control" ng-options="LanguageLevel.LanguageLevelId as LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevelId">
                                 <!--<option>Básico</option>
-                                <option>Intermedio</option>
-                                <option>Avanzado</option>-->
+        <option>Intermedio</option>
+        <option>Avanzado</option>-->
                             </select>
                         </div>
                     </div>
