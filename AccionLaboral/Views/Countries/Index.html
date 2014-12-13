@@ -1,0 +1,79 @@
+﻿<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">Listado de Paises</h3>
+            <div class="pull-right box-tools">
+                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#countriesInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionCountry('add')">
+                    <i class="fa  fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre País</th>
+                    <th>Opción</th>
+                </tr>
+                <tr ng-repeat="country in countriesList">
+                    <td>{{country.CountryId}}</td>
+                    <td>{{country.Name}}</td>
+                    <td align="center">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#countriesInfo" ng-click="setActionCountry('edit',$index)" title="Editar">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCountryInfo" ng-click="setCountryToDelete($index)" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ADD USER MODAL -->
+<div class="modal fade" id="countriesInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>{{country_modalTitle}}</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre del País</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Country_Name">
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="clearCountryData()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="saveCountry(country)">{{country_buttonName}}</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteCountryInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Borrar País</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro que desea borrar el País?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="cancelCountryDelete()">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="deleteCountry()">Si</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /.modal -->
