@@ -13,16 +13,16 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
 
     $scope.usersList = [];
     $scope.actionUser = "";
-
+    $scope.load = true;
     usersRepo.getUsersList().success(function (data) {
         $scope.usersList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
-        $scope.loading = false;
+        $scope.load = false;
     })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         });
 
     $scope.setActionUser = function (action, index) {
@@ -53,11 +53,11 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
             $scope.usersList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
-            $scope.loading = false;
+            $scope.load = false;
         })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         })
     };
 

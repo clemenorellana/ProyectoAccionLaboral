@@ -13,17 +13,17 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
     debugger
     $scope.countriesList = [];
     $scope.actionCountry = "";
-
+    $scope.load = true;
     
     countriesRepo.getCountriesList().success(function (data) {
         $scope.countriesList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
-        $scope.loading = false;
+        $scope.load = false;
     })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         });
 
     $scope.setActionCountry = function (action, index) {
@@ -54,11 +54,11 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
             $scope.countriesList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
-            $scope.loading = false;
+            $scope.load = false;
         })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         })
     };
 

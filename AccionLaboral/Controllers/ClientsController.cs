@@ -20,14 +20,36 @@ namespace AccionLaboral.Controllers
         // GET api/Clients
         public IQueryable<Client> GetClients()
         {
-            return db.Clients;
+            return db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
+                .Include(r => r.AcademicEducations.Select(c => c.Career))
+                .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                .Include(r => r.KnownPrograms)
+                .Include(r => r.Languages.Select(l => l.Language))
+                .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                .Include(r => r.References.Select(c => c.City))
+                .Include(r => r.References.Select(t => t.ReferenceType))
+                .Include(r => r.WorkExperiences)
+                .Include(r => r.WorkExperiences.Select(c => c.City));
         }
 
         // GET api/Clients/5
         [ResponseType(typeof(Client))]
         public IHttpActionResult GetClient(int id)
         {
-            Client client = db.Clients.Find(id);
+            Client client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
+                .Include(r => r.AcademicEducations.Select(c => c.Career))
+                .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                .Include(r => r.KnownPrograms)
+                .Include(r => r.Languages.Select(l=>l.Language))
+                .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                .Include(r => r.References.Select(c=>c.City))
+                .Include(r => r.References.Select(t => t.ReferenceType))
+                .Include(r => r.WorkExperiences)
+                .Include(r => r.WorkExperiences.Select(c => c.City))
+                .First(r => r.ClientId == id);
+
             if (client == null)
             {
                 return NotFound();
@@ -39,6 +61,7 @@ namespace AccionLaboral.Controllers
         // PUT api/Clients/5
         public IHttpActionResult PutClient(int id, Client client)
         {
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -48,9 +71,107 @@ namespace AccionLaboral.Controllers
             {
                 return BadRequest();
             }
+            var dbClients = db.Clients
+                       .Include(x => x.AcademicEducations)
+                       .Include(x => x.Languages)
+                       .Include(x => x.KnownPrograms)
+                       .Include(x => x.WorkExperiences)
+                       .Include(x => x.References)
+                       //.Include(x => x.Trackings)
+                       .Single(c => c.ClientId == client.ClientId);
 
-            db.Entry(client).State = EntityState.Modified;
+            // Update foo (works only for scalar properties)
+            db.Entry(dbClients).CurrentValues.SetValues(client);
 
+            ///AcademicEducations
+            // Delete subFoos from database that are not in the newFoo.SubFoo collection
+            foreach (var dbSubFoo in dbClients.AcademicEducations.ToList())
+                if (!client.AcademicEducations.Any(s => s.AcademicEducationId == dbSubFoo.AcademicEducationId))
+                    db.AcademicEducations.Remove(dbSubFoo);
+
+            foreach (var newSubFoo in client.AcademicEducations)
+            {
+                var dbSubFoo = dbClients.AcademicEducations.SingleOrDefault(s => s.AcademicEducationId == newSubFoo.AcademicEducationId);
+                if (dbSubFoo != null)
+                    // Update subFoos that are in the newFoo.SubFoo collection
+                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                else
+                    // Insert subFoos into the database that are not
+                    // in the dbFoo.subFoo collection
+                    dbClients.AcademicEducations.Add(newSubFoo);
+            }
+
+
+            ///Languajes
+            foreach (var dbSubFoo in dbClients.Languages.ToList())
+                if (!client.Languages.Any(s => s.KnownLanguageId == dbSubFoo.KnownLanguageId))
+                    db.KnownLanguages.Remove(dbSubFoo);
+
+            foreach (var newSubFoo in client.Languages)
+            {
+                var dbSubFoo = dbClients.Languages.SingleOrDefault(s => s.KnownLanguageId == newSubFoo.KnownLanguageId);
+                if (dbSubFoo != null)
+                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                else
+                    dbClients.Languages.Add(newSubFoo);
+            }
+
+
+            //KnownPrograms
+            foreach (var dbSubFoo in dbClients.KnownPrograms.ToList())
+                if (!client.KnownPrograms.Any(s => s.KnownProgramId == dbSubFoo.KnownProgramId))
+                    db.KnownPrograms.Remove(dbSubFoo);
+
+            foreach (var newSubFoo in client.KnownPrograms)
+            {
+                var dbSubFoo = dbClients.KnownPrograms.SingleOrDefault(s => s.KnownProgramId == newSubFoo.KnownProgramId);
+                if (dbSubFoo != null)
+                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                else
+                    dbClients.KnownPrograms.Add(newSubFoo);
+            }
+
+            //WorkExperiences
+            foreach (var dbSubFoo in dbClients.WorkExperiences.ToList())
+                if (!client.WorkExperiences.Any(s => s.WorkExperienceId == dbSubFoo.WorkExperienceId))
+                    db.WorkExperiences.Remove(dbSubFoo);
+
+            foreach (var newSubFoo in client.WorkExperiences)
+            {
+                var dbSubFoo = dbClients.WorkExperiences.SingleOrDefault(s => s.WorkExperienceId == newSubFoo.WorkExperienceId);
+                if (dbSubFoo != null)
+                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                else
+                    dbClients.WorkExperiences.Add(newSubFoo);
+            }
+
+            //References
+            foreach (var dbSubFoo in dbClients.References.ToList())
+                if (!client.References.Any(s => s.ReferenceId == dbSubFoo.ReferenceId))
+                    db.References.Remove(dbSubFoo);
+
+            foreach (var newSubFoo in client.References)
+            {
+                var dbSubFoo = dbClients.References.SingleOrDefault(s => s.ReferenceId == newSubFoo.ReferenceId);
+                if (dbSubFoo != null)
+                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                else
+                    dbClients.References.Add(newSubFoo);
+            }
+            /*
+            //Trackings
+            foreach (var dbSubFoo in dbClients.Trackings.ToList())
+                if (!client.Trackings.Any(s => s.TrackingId == dbSubFoo.TrackingId))
+                    db.Trackings.Remove(dbSubFoo);
+
+            foreach (var newSubFoo in client.Trackings)
+            {
+                var dbSubFoo = dbClients.Trackings.SingleOrDefault(s => s.TrackingId == newSubFoo.TrackingId);
+                if (dbSubFoo != null)
+                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                else
+                    dbClients.Trackings.Add(newSubFoo);
+            }*/
             try
             {
                 db.SaveChanges();
@@ -115,6 +236,101 @@ namespace AccionLaboral.Controllers
             return db.Clients.Count(e => e.ClientId == id) > 0;
         }
 
+        private void AddAcademicEducations(IEnumerable<AcademicEducation> academicEducations, Client client)
+        {
+            foreach (AcademicEducation academicEducation in academicEducations)
+            {
+                if (!AcademicEducationExists(academicEducation.AcademicEducationId))
+                {
+                    db.AcademicEducations.Add(academicEducation);
+                    client.AcademicEducations.Remove(academicEducation);
+                }
+            }
+        }
+        private bool AcademicEducationExists(int id)
+        {
+            return db.AcademicEducations.Count(e => e.AcademicEducationId == id) > 0;
+        }
+
+        private void AddKnownLanguage(IEnumerable<KnownLanguage> knownLanguages, Client client)
+        {
+            foreach (KnownLanguage knownLanguage in knownLanguages)
+            {
+                if (!KnownLanguageExists(knownLanguage.KnownLanguageId))
+                {
+                    db.KnownLanguages.Add(knownLanguage);
+                    client.Languages.Remove(knownLanguage);
+                }
+            }
+        }
+        private bool KnownLanguageExists(int id)
+        {
+            return db.KnownLanguages.Count(e => e.KnownLanguageId == id) > 0;
+        }
+
+        private void AddKnownPrograms(IEnumerable<KnownProgram> knownPrograms, Client client)
+        {
+            foreach (KnownProgram knownProgram in knownPrograms)
+            {
+                if (!KnownProgramExists(knownProgram.KnownProgramId))
+                {
+                    db.KnownPrograms.Add(knownProgram);
+                    client.KnownPrograms.Remove(knownProgram);
+                }
+            }
+        }
+        private bool KnownProgramExists(int id)
+        {
+            return db.KnownPrograms.Count(e => e.KnownProgramId == id) > 0;
+        }
+
+        private void AddWorkExperience(IEnumerable<WorkExperience> workExperiences, Client client)
+        {
+            foreach (WorkExperience workExperience in workExperiences)
+            {
+                if (!WorkExperienceExists(workExperience.WorkExperienceId))
+                {
+                    db.WorkExperiences.Add(workExperience);
+                    client.WorkExperiences.Remove(workExperience);
+                }
+            }
+        }
+        private bool WorkExperienceExists(int id)
+        {
+            return db.WorkExperiences.Count(e => e.WorkExperienceId == id) > 0;
+        }
+
+        private void AddReferences(IEnumerable<Reference> references, Client client)
+        {
+            foreach (Reference reference in references)
+            {
+                if (!ReferenceExists(reference.ReferenceId))
+                {
+                    db.References.Add(reference);
+                    client.References.Remove(reference);
+                }
+            }
+        }
+        private bool ReferenceExists(int id)
+        {
+            return db.References.Count(e => e.ReferenceId == id) > 0;
+        }
+
+        private void AddTranckings(IEnumerable<Tracking> trackings, Client client)
+        {
+            foreach (Tracking tracking in trackings)
+            {
+                if (!TranckingExists(tracking.TrackingId))
+                {
+                    db.Trackings.Add(tracking);
+                    client.Trackings.Remove(tracking);
+                }
+            }
+        }
+        private bool TranckingExists(int id)
+        {
+            return db.Trackings.Count(e => e.TrackingId == id) > 0;
+        }
         //public ActionResult Test()
         //{
         //    return View();

@@ -13,6 +13,7 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
 
     $scope.careerList = [];
     $scope.actionCareer = "";
+    $scope.load = true;
     
     careersRepo.getAcademicLevels().success(function (data) {
         $scope.Career_AcademicLevels = data;
@@ -22,11 +23,11 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         $scope.careerList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
-        $scope.loading = false;
+        $scope.load = false;
     })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         });
 
     $scope.setActionCareer = function (action, index) {
@@ -65,11 +66,11 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
             $scope.careerList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
-            $scope.loading = false;
+            $scope.load = false;
         })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         })
     };
 
@@ -80,7 +81,7 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         $scope.Career_AcademicLevel = "";
     }
 
-
+        
     $scope.saveCareer = function () {
         var career;
 
@@ -114,7 +115,7 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         $scope.career_refresh();
         
     };
-
+        
     $scope.setCareerToDelete = function (index) {
         var id = $scope.careerList[index].CareerId;
         $scope.careerToDeleteId = id;
@@ -141,5 +142,5 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     }
 
 
-
+        
 }]);

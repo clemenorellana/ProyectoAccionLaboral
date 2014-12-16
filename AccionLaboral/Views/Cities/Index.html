@@ -6,10 +6,14 @@
                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#citiesInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionCity('add')">
                     <i class="fa  fa-plus"></i>
                 </button>
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="city_refresh()">
+                    <i class="fa  fa-refresh"></i>
+                </button>
             </div>
         </div>
         <div class="box-body">
-            <table class="table table-bordered">
+            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+            <table class="table table-bordered" ng-show="!load">
                 <tr>
                     <th>Ciudad</th>
                     <th>País</th>

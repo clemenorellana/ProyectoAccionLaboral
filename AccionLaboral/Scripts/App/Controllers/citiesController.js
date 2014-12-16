@@ -13,6 +13,7 @@ angular.module("citiesController", ['ngRoute', 'citiesRepository'])
     debugger
     $scope.citiesList = [];
     $scope.actionCity = "";
+    $scope.load = true;
 
     citiesRepo.getCityCountries().success(function (data) {
         debugger
@@ -23,11 +24,11 @@ angular.module("citiesController", ['ngRoute', 'citiesRepository'])
         $scope.citiesList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
-        $scope.loading = false;
+        $scope.load = false;
     })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         });
 
     $scope.setActionCity = function (action, index) {
@@ -66,11 +67,11 @@ angular.module("citiesController", ['ngRoute', 'citiesRepository'])
             $scope.citiesList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
-            $scope.loading = false;
+            $scope.load = false;
         })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         })
     };
 

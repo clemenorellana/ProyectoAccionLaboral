@@ -21,7 +21,7 @@ namespace AccionLaboral.Controllers
         [HttpGet]
         public IQueryable<City> GetCities()
         {
-            return db.Cities.Include("Country");
+            return db.Cities.Include(r=>r.Country);
         }
 
         // GET api/Cities/5

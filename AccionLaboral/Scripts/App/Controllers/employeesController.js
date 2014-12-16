@@ -37,7 +37,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
 })
 .controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', function ($scope, employeesRepo, $routeParams) {
     debugger
-
+    $scope.load = true;
     var actionEmployee = "";
     $scope.employeesList = [];
     $scope.employeesCareersList = [];
@@ -48,17 +48,24 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
     $scope.$watch('$routeChangeSuccess', function () {
         employeesRepo.getEmployeesList().success(function (data) {
             $scope.employeesList = data;
-        });
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load= false;
+        })
     });
 
     employeesRepo.getEmployeesList().success(function (data) {
         $scope.employeesList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
-        $scope.loading = false;
+        $scope.load = false;
     }).error(function (data) {
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-        $scope.loading = false;
+        $scope.load = false;
     });
 
     employeesRepo.getEmployeesCareers().success(function (data) {
@@ -153,6 +160,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
     $scope.employee_refresh = function () {
         employeesRepo.getEmployeesList().success(function (data) {
             $scope.employeesList = data;
+            $scope.load = false;
         });
     }
 

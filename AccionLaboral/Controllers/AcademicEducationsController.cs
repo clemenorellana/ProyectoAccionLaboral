@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace AccionLaboral.Controllers
 {
@@ -16,38 +17,28 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
-        // GET api/client/{clientId}/academicEducations
-        [Route("api/client/{clientId}/academicEducations")]
+        // GET api/academicEducations
+        
         [HttpGet]
-        public IQueryable<AcademicEducation> GetAcademicEducations(int clientId)
+        public IQueryable<AcademicEducation> GetAcademicEducations()
         {
-            var client = db.Clients.Find(clientId);
-            if (client != null)
-            {
-                db.Entry(client).Collection("AcademicEducations").Load();
-                return client.AcademicEducations.AsQueryable();
-            }
-            else 
-            {
-                return new List<AcademicEducation>().AsQueryable();
-            }
+            return db.AcademicEducations.Include(r => r.City)
+                .Include(r => r.AcademicLevel).Include(r => r.EducationType);
         }
 
         // GET api/AcademicEducations/5
         [ResponseType(typeof(AcademicEducation))]
-        [Route("api/client/{clientId}/academicEducations/{academicEducationId}")]
+        //[Route("api/client/{clientId}/academicEducations/{academicEducationId}")]
         [HttpGet]
-        public IHttpActionResult GetAcademicEducation(int clientId, int academicEducationId)
+        public IHttpActionResult GetAcademicEducation(int academicEducationId)
         {
-            var client = db.Clients.Find(clientId);
-            if (client == null)
-            {
-                return NotFound();
-            }            
-            
-            db.Entry(client).Collection("AcademicEducations").Load();
 
-            AcademicEducation academiceducation = client.AcademicEducations.FirstOrDefault(a => a.AcademicEducationId == academicEducationId);
+            AcademicEducation academiceducation = db.AcademicEducations.Include(r => r.AcademicLevel)
+                .Include(r => r.Career)
+                .Include(r => r.City)
+                .Include(r => r.Client)
+                .Include(r => r.EducationType)
+                .First(r => r.AcademicEducationId == academicEducationId);
             
             if (academiceducation == null)
             {

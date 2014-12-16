@@ -1,4 +1,49 @@
-﻿<div class="table-responsive">
-    <div class="gridStyle" ng-grid="gridOptions"></div>
-</div>
+﻿<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">Mantenimiento de Clientes</h3>
+            <div class="pull-right box-tools">
+                <button class="btn btn-info btn-sm" ng-click="client_addNewRedirect()" title="">
+                    <i class="fa  fa-plus"></i>
+                </button>
 
+            </div>
+        </div>
+        <div class="box-body">
+            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+            <table class="table table-bordered" ng-show="!load">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Correo</th>
+                    <th>Dirección</th>
+                    <th>Celular</th>
+                    <th>Opciones</th>
+                </tr>
+                <tr ng-repeat="customer in customerData">
+                    <td>{{customer.FirstName}}</td>
+                    <td>{{customer.LastName}}</td>
+                    <td>{{customer.Age}}</td>
+                    <td>{{customer.Email}}</td>
+                    <td>{{customer.CompleteAddress}}</td>
+                    <td>{{customer.Cellphone}}</td>
+                    <!--<td>
+                        <button type="button" id="editCustomer" ng-click="setScope(customer,'edit')">Editar</button>
+                        <button type="button" id="deleteCustomer" ng-click="DeleteUser(row.entity.id)">Eliminar</button>
+                    </td>-->
+                    <td align="center" style="width: 168px;">
+                        <button class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" id="deleteCustomer" ng-click="DeleteUser(row.entity.id)" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+</div>

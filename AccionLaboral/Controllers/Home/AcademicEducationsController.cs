@@ -6,31 +6,31 @@ using System.Web.Mvc;
 
 namespace AccionLaboral.Controllers.Home
 {
-    public class ClientsController : Controller
+    public class AcademicEducationsController : Controller
     {
         //
-        // GET: /Clients/
+        // GET: /AcademicEducations/
         public ActionResult Index()
         {
-            return new FilePathResult("/Views/Clients/Index.html", "text/html");
+            return View();
         }
 
         //
-        // GET: /Clients/Details/5
+        // GET: /AcademicEducations/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
         //
-        // GET: /Clients/Create
+        // GET: /AcademicEducations/Create
         public ActionResult Create()
         {
-            return new FilePathResult("/Views/Clients/NewClient.html", "text/html");
+            return View();
         }
 
         //
-        // POST: /Clients/Create
+        // POST: /AcademicEducations/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -47,14 +47,14 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
-        // GET: /Clients/Edit/
-        public ActionResult Edit()
+        // GET: /AcademicEducations/Edit/5
+        public ActionResult Edit(int id)
         {
-            return new FilePathResult("/Views/Clients/EditClient.html", "text/html");
+            return View();
         }
 
         //
-        // POST: /Clients/Edit/5
+        // POST: /AcademicEducations/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -71,14 +71,14 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
-        // GET: /Clients/Delete/5
+        // GET: /AcademicEducations/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
         //
-        // POST: /Clients/Delete/5
+        // POST: /AcademicEducations/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepository'])
 .config(['$routeProvider', function ($routeProvider) {
@@ -30,15 +30,22 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     var actionContractTemplate = "";
     $scope.contractTemplateList = [];
     $scope.contractId = $routeParams.id;
+    $scope.load = true;
 
     $scope.$watch('$routeChangeSuccess', function () {
         contractTemplatesRepo.getContractTemplateList().success(function (data) {
             $scope.contractTemplateList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
         });
     });
 
-   
-    if ($scope.contractId == null) {
+   if ($scope.contractId == null) {
         actionContractTemplate = "add";
         $scope.contract_modalTitle = "Agregar Plantilla de Contrato";
         $scope.contract_buttonName = "Agregar";
@@ -48,7 +55,7 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         $scope.contract_modalTitle = "Editar Plantilla de Contrato";
         $scope.contract_buttonName = "Editar";        
         var id = $scope.contractId;
-
+    
         contractTemplatesRepo.getContractTemplate(id).success(function (data) {
             var contractToEdit = data;
             $scope.Contract_ContractTemplateId = contractToEdit.ContractTemplateId;
@@ -62,16 +69,16 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         $scope.contractTemplateList = data;
         $scope.totalServerItems = data.totalItems;
         $scope.items = data.items;
-        $scope.loading = false;
+        $scope.load = false;
     }).error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.loading = false;
+            $scope.load = false;
         });
-    
+
     $scope.contract_addNewRedirect = function () {
         window.location = "#/Contracts/Create";
     }
-        
+
     $scope.contract_editRedirect = function (index) {
         var id = $scope.contractTemplateList[index].ContractTemplateId;
         window.location = "#/Contracts/Edit/" + id;
@@ -89,9 +96,10 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     $scope.contract_refresh = function () {
         contractTemplatesRepo.getContractTemplateList().success(function (data) {
             $scope.contractTemplateList = data;
+            $scope.load = false;
         });
     };
-
+        
     $scope.saveContract = function () {
         var contract;
 
@@ -124,11 +132,11 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         $scope.Contract_Name = "",
         $scope.Contract_Description = "";
         $scope.Contract_Active = "";
-        
+
         $scope.contract_cancelRedirect();
         $scope.contract_refresh();
     };
-    
+
     $scope.setContractToDelete = function (index) {
         var id = $scope.contractTemplateList[index].ContractTemplateId;
         $scope.contractToDeleteId = id;
