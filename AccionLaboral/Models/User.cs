@@ -19,7 +19,7 @@ namespace AccionLaboral.Models
         [Required]
         public string Password { get; set; }
 
-        public ICollection<Role> Rols { get; set; }
+        //public ICollection<Role> Rols { get; set; }
     }
 
 }

@@ -48,7 +48,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         $scope.index = -1;
         $scope.action = '';
         $scope.load = true;
-
+        $scope.selectedClient = -1;
+        
+        $scope.setClientToDelete = function(id) {
+            $scope.selectedClient = id;
+        }
         $scope.addAcademicEducation = function () {
             if ($scope.action == 'edit') {
                 $scope.academicEducations[$scope.index].TrainingName = $scope.TrainingName,
@@ -237,7 +241,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.FirstNameWRef = "";
                 $scope.LastNameWRef = "";
                 $scope.ChargeWRef = "";
-                $scope.CellPhoneWRef = "";
+                $scope.CellphoneWRef = "";
                 $scope.EmailWRef = "";
                 $scope.CompanyNameWRef = "";
                 $scope.RelationshipWRef = "";
@@ -251,7 +255,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.FirstNameWRef = $scope.workReferences[index].FirstName,
                 $scope.LastNameWRef = $scope.workReferences[index].LastName,
                 $scope.ChargeWRef = $scope.workReferences[index].Charge,
-                $scope.CellPhoneWRef = $scope.workReferences[index].CellPhone,
+                $scope.CellphoneWRef = $scope.workReferences[index].Cellphone,
                 $scope.EmailWRef = $scope.workReferences[index].Email,
                 $scope.CompanyNameWRef = $scope.workReferences[index].CompanyName,
                 $scope.RelationshipWRef = $scope.workReferences[index].Relationship,
@@ -265,7 +269,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.workReferences[$scope.index].FirstName = $scope.FirstNameWRef,
                     $scope.workReferences[$scope.index].LastName = $scope.LastNameWRef,
                     $scope.workReferences[$scope.index].Charge = $scope.ChargeWRef,
-                    $scope.workReferences[$scope.index].CellPhone = $scope.CellPhoneWRef,
+                    $scope.workReferences[$scope.index].Cellphone = $scope.CellphoneWRef,
                     $scope.workReferences[$scope.index].Email = $scope.EmailWRef,
                     $scope.workReferences[$scope.index].CompanyName = $scope.CompanyNameWRef,
                     $scope.workReferences[$scope.index].Relationship = $scope.RelationshipWRef,
@@ -276,7 +280,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     FirstName: $scope.FirstNameWRef,
                     LastName: $scope.LastNameWRef,
                     Charge: $scope.ChargeWRef,
-                    CellPhone: $scope.CellPhoneWRef,
+                    Cellphone: $scope.CellphoneWRef,
                     Email: $scope.EmailWRef,
                     CompanyName: $scope.CompanyNameWRef,
                     Relationship: $scope.RelationshipWRef,
@@ -297,7 +301,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     $scope.FirstNamePRef = "";
                     $scope.LastNamePRef = "";
                     $scope.ChargePRef = "";
-                    $scope.CellPhonePRef = "";
+                    $scope.CellphonePRef = "";
                     $scope.EmailPRef = "";
                     $scope.CompanyNamePRef = "";
                     $scope.RelationshipPRef = "";
@@ -311,7 +315,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.FirstNamePRef = $scope.personalReferences[index].FirstName,
                 $scope.LastNamePRef = $scope.personalReferences[index].LastName,
                 $scope.ChargePRef = $scope.personalReferences[index].Charge,
-                $scope.CellPhonePRef = $scope.personalReferences[index].CellPhone,
+                $scope.CellphonePRef = $scope.personalReferences[index].Cellphone,
                 $scope.EmailPRef = $scope.personalReferences[index].Email,
                 $scope.CompanyNamePRef = $scope.personalReferences[index].CompanyName,
                 $scope.RelationshipPRef = $scope.personalReferences[index].Relationship,
@@ -324,7 +328,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.personalReferences[$scope.index].FirstName = $scope.FirstNamePRef,
                     $scope.personalReferences[$scope.index].LastName = $scope.LastNamePRef,
                     $scope.personalReferences[$scope.index].Charge = $scope.ChargePRef,
-                    $scope.personalReferences[$scope.index].CellPhone = $scope.CellPhonePRef,
+                    $scope.personalReferences[$scope.index].Cellphone = $scope.CellphonePRef,
                     $scope.personalReferences[$scope.index].Email = $scope.EmailPRef,
                     $scope.personalReferences[$scope.index].CompanyName = $scope.CompanyNamePRef,
                     $scope.personalReferences[$scope.index].Relationship = $scope.RelationshipPRef,
@@ -335,7 +339,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     FirstName: $scope.FirstNamePRef,
                     LastName: $scope.LastNamePRef,
                     Charge: $scope.ChargePRef,
-                    CellPhone: $scope.CellPhonePRef,
+                    Cellphone: $scope.CellphonePRef,
                     Email: $scope.EmailPRef,
                     CompanyName: $scope.CompanyNamePRef,
                     Relationship: $scope.RelationshipPRef,
@@ -551,7 +555,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                                 TrainingName: $scope.academicEducations[i].TrainingName,
                                 InstitutionName: $scope.academicEducations[i].InstitutionName,
                                 CareerId: $scope.academicEducations[i].CareerId,
-                                EducationTypeId: $scope.academicEducations[i].EducationTypeId
+                                EducationTypeId: 1
                             };
                             $scope.New.AcademicEducations.push(academic);
                         }
@@ -601,7 +605,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                                 FirstName: $scope.workReferences[l].FirstName,
                                 LastName: $scope.workReferences[l].LastName,
                                 Charge: $scope.workReferences[l].Charge,
-                                Cellphone: $scope.workReferences[l].CellPhone,
+                                Cellphone: $scope.workReferences[l].Cellphone,
                                 Email: $scope.workReferences[l].Email,
                                 CompanyName: $scope.workReferences[l].CompanyName,
                                 Relationship: $scope.workReferences[l].Relationship,
@@ -620,7 +624,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                                 FirstName: $scope.personalReferences[l].FirstName,
                                 LastName: $scope.personalReferences[l].LastName,
                                 Charge: $scope.personalReferences[l].Charge,
-                                Cellphone: $scope.personalReferences[l].CellPhone,
+                                Cellphone: $scope.personalReferences[l].Cellphone,
                                 Email: $scope.personalReferences[l].Email,
                                 CompanyName: $scope.personalReferences[l].CompanyName,
                                 Relationship: $scope.personalReferences[l].Relationship,
@@ -629,6 +633,21 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                             }
 
                             $scope.New.workReferences.push(pExperience);
+                        }
+                    }
+
+                    if ($scope.Trannings.length > 0) {
+                        for (var i = 0; i < $scope.Trannings.length; i++) {
+                            var tranning = {
+                                Year: $scope.Trannings[i].Year,
+                                CountryId: $scope.Trannings[i].Country.CountryId,
+                                CityId: $scope.Trannings[i].City.CityId,
+                                TrainingName: $scope.Trannings[i].TrainingName,
+                                InstitutionName: $scope.Trannings[i].InstitutionName,
+                                CareerId: $scope.Trannings[i].CareerId,
+                                EducationTypeId: 2
+                            };
+                            $scope.New.AcademicEducations.push(tranning);
                         }
                     }
 
@@ -699,13 +718,21 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.Trannings =[];   
                 if (data.Birthday)
                     data.Birthday = new Date(data.Birthday);
-                $scope.academicEducations = data.AcademicEducations;
+                $scope.academicEducations = [];
+                var educations = data.AcademicEducations;
                 $scope.knownLanguages = data.Languages;
                 $scope.knownPrograms = data.KnownPrograms;
                 $scope.workExperiences = data.WorkExperiences;
-                $scope.Trannings = data.Trannings;
+                $scope.Trannings = [];
                 $scope.workReferences = [],
                     $scope.personalReferences = [];
+                for (var j = 0; j < data.AcademicEducations.length; j++) {
+                    if (data.AcademicEducations[j].EducationType.Name == 'ACADEMICA') {
+                        $scope.academicEducations.push(data.AcademicEducations[j]);
+                    } else {
+                        $scope.Trannings.push(data.AcademicEducations[j]);
+                    }
+                }
                 for (var i = 0; i < data.References.length; i++) {
                     if (data.References[i].ReferenceType.Name == 'L')
                         $scope.workReferences.push(data.References[i]);
@@ -722,25 +749,32 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.load = true;
 
             $scope.addAcademicEducation = function () {
+                var index = $scope.countryIndex;
                 if ($scope.action == 'edit') {
                     $scope.academicEducations[$scope.index].TrainingName = $scope.TrainingName,
                         $scope.academicEducations[$scope.index].InstitutionName = $scope.InstitutionName,
-                        $scope.academicEducations[$scope.index].AcademicLevel = $scope.AcademicLevel,
+                        $scope.academicEducations[$scope.index].AcademicLevel = $filter('filter')($scope.AcademicLevels, { AcademicLevelId: $scope.AcademicLevelId })[0],
+                        $scope.academicEducations[$scope.index].AcademicLevelId = $scope.AcademicLevelId,
                         $scope.academicEducations[$scope.index].CareerId = $scope.CareerId,
                         $scope.academicEducations[$scope.index].EducationTypeId = $scope.EducationTypeId,
-                        $scope.academicEducations[$scope.index].City = $scope.City,
+                        $scope.academicEducations[$scope.index].City = $filter('filter')($scope.Cities, { CityId: $scope.CityId })[0],
+                        $scope.academicEducations[$scope.index].CityId = $scope.CityId,
                         $scope.academicEducations[$scope.index].Year = $scope.Year,
-                        $scope.academicEducations[$scope.index].Country = $scope.Country;
+                        $scope.academicEducations[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.CountryId })[0],
+                        $scope.academicEducations[$scope.index].CountryId = $scope.CountryId;
                 } else {
                     var education = {
                         TrainingName: $scope.TrainingName,
                         InstitutionName: $scope.InstitutionName,
-                        AcademicLevel: $scope.AcademicLevel,
+                        AcademicLevelId: $scope.AcademicLevelId,
+                        AcademicLevel: $filter('filter')($scope.AcademicLevels, { AcademicLevelId: $scope.AcademicLevelId })[0],
                         CareerId: $scope.CareerId,
                         EducationTypeId: $scope.EducationTypeId,
-                        City: $scope.City,
+                        CityId: $scope.CityId,
+                        City: $filter('filter')($scope.Cities, { CityId: $scope.CityId })[0],
                         Year: $scope.Year,
-                        Country: $scope.Country
+                        CountryId: $scope.CountryId,
+                        Country: $filter('filter')($scope.Countries, { CountryId: $scope.CountryId })[0]
                     };
                     $scope.academicEducations.push(education);
                 }
@@ -751,13 +785,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.textButton = 'Editar';
                 $scope.TrainingName = $scope.academicEducations[index].TrainingName,
                     $scope.InstitutionName = $scope.academicEducations[index].InstitutionName,
-                    $scope.AcademicLevel = $scope.academicEducations[index].AcademicLevel,
+                    $scope.AcademicLevelId = $scope.academicEducations[index].AcademicLevel.AcademicLevelId,
                     $scope.Careers = $scope.academicEducations[index].AcademicLevel.Careers,
                     $scope.CareerId = $scope.academicEducations[index].CareerId,
                     $scope.EducationTypeId = $scope.academicEducations[index].EducationTypeId,
-                    $scope.City = $scope.academicEducations[index].City,
+                    $scope.CityId = $scope.academicEducations[index].CityId,
                     $scope.Year = $scope.academicEducations[index].Year,
-                    $scope.Country = $scope.academicEducations[index].City.Country;
+                    $scope.CountryId = $scope.academicEducations[index].City.CountryId;
                 $scope.action = 'edit';
                 $scope.index = index;
             }
@@ -765,11 +799,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.textButton = 'Agregar';
                 $scope.TrainingName = "",
                 $scope.InstitutionName = "",
-                $scope.AcademicLevel = "",
+                $scope.AcademicLevelId = "",
                 $scope.EducationTypeId = "";
-                $scope.City = "",
+                $scope.CityId = "",
                 $scope.Year = "",
-                $scope.Country = "";
+                $scope.CountryId = "";
+                $scope.action = "";
             };
             $scope.removeAcademicEducation = function (index) {
                 $scope.academicEducations.splice(index, 1);
@@ -779,8 +814,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.clearKnownLanguage = function () {
                 $scope.textButton = 'Agregar';
                 $scope.Percentage = "",
-                $scope.Language = "",
-                $scope.LanguageLevel = "";
+                $scope.LanguageId = "",
+                $scope.LanguageLevelId = "";
                 $scope.action = '';
                 $scope.index = -1;
             };
@@ -795,13 +830,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.addKnownLanguage = function () {
                 if ($scope.action == 'edit') {
                     $scope.knownLanguages[$scope.index].Percentage = $scope.Percentage,
-                        $scope.knownLanguages[$scope.index].Language = $scope.Language,
-                        $scope.knownLanguages[$scope.index].LanguageLevel = $scope.LanguageLevel;
+                        $scope.knownLanguages[$scope.index].Language = $filter('filter')($scope.Languages, { LanguageId: $scope.LanguageId })[0],
+                        $scope.knownLanguages[$scope.index].LanguageId = $scope.LanguageId,
+                        $scope.knownLanguages[$scope.index].LanguageLevel = $filter('filter')($scope.LanguageLevels, {LanguageLevelId: $scope.LanguageLevelId})[0],
+                        $scope.knownLanguages[$scope.index].LanguageLevelId = $scope.LanguageLevelId;
+                
                 } else {
                     var lang = {
                         Percentage: $scope.Percentage,
-                        Language: $scope.Language,
-                        LanguageLevel: $scope.LanguageLevel
+                        Language: $filter('filter')($scope.Languages, { LanguageId: $scope.LanguageId })[0],
+                        LanguageId: $scope.LanguageId,
+                        LanguageLevel: $filter('filter')($scope.LanguageLevels, {LanguageLevelId: $scope.LanguageLevelId})[0],
+                        LanguageLevelId: $scope.LanguageLevelId
                     };
                     $scope.knownLanguages.push(lang);
                     $scope.clearKnownLanguage();
@@ -810,16 +850,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.removeKnownLanguage = function (index) {
                 $scope.knownLanguages.splice(index, 1);
             };
-            $scope.removeWorkExperience = function (index) {
-                $scope.workExperiences.splice(index, 1);
-            };
-            $scope.removeWorkReference = function (index) {
-                $scope.workReferences.splice(index, 1);
-            };
-            $scope.removePersonalReference = function (index) {
-                $scope.personalReferences.splice(index, 1);
-            };
-
 
             /*Programs*/
             $scope.clearProgram = function () {
@@ -858,8 +888,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.StartDate = "";
                 $scope.EndDate = "";
                 $scope.Achievements = "";
-                $scope.WorkCountry = "";
-                $scope.WorkCity = "";
+                $scope.WorkCountryId = "";
+                $scope.WorkCityId = "";
                 $scope.action = '';
                 $scope.index = -1;
             };
@@ -871,8 +901,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     $scope.StartDate = new Date($scope.workExperiences[index].StartDate),
                     $scope.EndDate = new Date($scope.workExperiences[index].EndDate),
                     $scope.Achievements = $scope.workExperiences[index].Archievements,
-                    $scope.WorkCity = $scope.workExperiences[index].WorkCity,
-                    $scope.WorkCountry = $scope.workExperiences[index].WorkCountry;
+                    $scope.WorkCityId = $scope.workExperiences[index].CityId,
+                    $scope.WorkCountryId = $scope.workExperiences[index].City.CountryId;
                 $scope.action = 'edit';
                 $scope.index = index;
             };
@@ -884,8 +914,10 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                         $scope.workExperiences[$scope.index].StartDate = $scope.StartDate,
                         $scope.workExperiences[$scope.index].EndDate = $scope.EndDate,
                         $scope.workExperiences[$scope.index].Archievements = $scope.Achievements,
-                        $scope.workExperiences[$scope.index].WorkCity = $scope.WorkCity,
-                        $scope.workExperiences[$scope.index].WorkCountry = $scope.WorkCountry;
+                        $scope.workExperiences[$scope.index].City = $filter('filter')($scope.Cities, { CityId: $scope.WorkCityId })[0],
+                        $scope.workExperiences[$scope.index].CityId = $scope.WorkCityId, 
+                        $scope.workExperiences[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.WorkCountryId })[0],
+                        $scope.workExperiences[$scope.index].CountryId = $scope.WorkCountryId;
                 } else {
                     var experience = {
                         CompanyName: $scope.CompanyName,
@@ -894,8 +926,10 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                         StartDate: $scope.StartDate,
                         EndDate: $scope.EndDate,
                         Achievements: $scope.Achievements,
-                        WorkCity: $scope.WorkCity,
-                        WorkCountry: $scope.WorkCountry
+                        City: $filter('filter')($scope.Cities, { CityId: $scope.WorkCityId })[0],
+                        CityId: $scope.WorkCityId,
+                        Country: $filter('filter')($scope.Countries, { CountryId: $scope.WorkCountryId })[0],
+                        CountryId: $scope.WorkCountryId
                     };
                     $scope.workExperiences.push(experience);
                     $scope.clearWorkExperience();
@@ -904,13 +938,14 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.removeWorkExperience = function (index) {
                 $scope.workExperiences.splice(index, 1);
             };
+
             /*WorkReference*/
             $scope.clearWorkReference = function () {
                 $scope.textButton = "Agregar";
                 $scope.FirstNameWRef = "";
                 $scope.LastNameWRef = "";
                 $scope.ChargeWRef = "";
-                $scope.CellPhoneWRef = "";
+                $scope.CellphoneWRef = "";
                 $scope.EmailWRef = "";
                 $scope.CompanyNameWRef = "";
                 $scope.RelationshipWRef = "";
@@ -924,12 +959,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.FirstNameWRef = $scope.workReferences[index].FirstName,
                     $scope.LastNameWRef = $scope.workReferences[index].LastName,
                     $scope.ChargeWRef = $scope.workReferences[index].Charge,
-                    $scope.CellPhoneWRef = $scope.workReferences[index].CellPhone,
+                    $scope.CellphoneWRef = $scope.workReferences[index].Cellphone,
                     $scope.EmailWRef = $scope.workReferences[index].Email,
                     $scope.CompanyNameWRef = $scope.workReferences[index].CompanyName,
                     $scope.RelationshipWRef = $scope.workReferences[index].Relationship,
-                    $scope.CityWRef = $scope.workReferences[index].City,
-                    $scope.CountryWRef = $scope.workReferences[index].Country;
+                    $scope.CityIdWRef = $scope.workReferences[index].City.CityId,
+                    $scope.CountryIdWRef = $scope.workReferences[index].City.Country.CountryId;
                 $scope.action = 'edit';
                 $scope.index = index;
             };
@@ -938,23 +973,27 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     $scope.workReferences[$scope.index].FirstName = $scope.FirstNameWRef,
                         $scope.workReferences[$scope.index].LastName = $scope.LastNameWRef,
                         $scope.workReferences[$scope.index].Charge = $scope.ChargeWRef,
-                        $scope.workReferences[$scope.index].CellPhone = $scope.CellPhoneWRef,
+                        $scope.workReferences[$scope.index].Cellphone = $scope.CellphoneWRef,
                         $scope.workReferences[$scope.index].Email = $scope.EmailWRef,
                         $scope.workReferences[$scope.index].CompanyName = $scope.CompanyNameWRef,
                         $scope.workReferences[$scope.index].Relationship = $scope.RelationshipWRef,
-                        $scope.workReferences[$scope.index].City = $scope.CityWRef,
-                        $scope.workReferences[$scope.index].Country = $scope.CountryWRef;
+                        $scope.workReferences[$scope.index].City = $filter('filter')($scope.Cities, { CityId: $scope.CityIdWRef })[0],
+                        $scope.workReferences[$scope.index].CityId = $scope.CityIdWRef,
+                        $scope.workReferences[$scope.index].Country = $filter('filter')($scope.Cities, { CountryId: $scope.CountryIdWRef })[0],
+                        $scope.workReferences[$scope.index].CountryId = $scope.CountryIdWRef;
                 } else {
                     var wReference = {
                         FirstName: $scope.FirstNameWRef,
                         LastName: $scope.LastNameWRef,
                         Charge: $scope.ChargeWRef,
-                        CellPhone: $scope.CellPhoneWRef,
+                        Cellphone: $scope.CellphoneWRef,
                         Email: $scope.EmailWRef,
                         CompanyName: $scope.CompanyNameWRef,
                         Relationship: $scope.RelationshipWRef,
-                        City: $scope.CityWRef,
-                        Country: $scope.CountryWRef
+                        City: $filter('filter')($scope.Cities, { CityId: $scope.CityIdWRef })[0],
+                        CityId: $scope.CityIdWRef,
+                        Country: $filter('filter')($scope.Cities, { CountryId: $scope.CountryIdWRef })[0],
+                        CountryId: $scope.CountryIdWRef
                     };
                     $scope.workReferences.push(wReference);
                     $scope.clearWorkReference();
@@ -970,12 +1009,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.FirstNamePRef = "";
                 $scope.LastNamePRef = "";
                 $scope.ChargePRef = "";
-                $scope.CellPhonePRef = "";
+                $scope.CellphonePRef = "";
                 $scope.EmailPRef = "";
                 $scope.CompanyNamePRef = "";
                 $scope.RelationshipPRef = "";
-                $scope.CityPRef = "";
-                $scope.CountryPRef = "";
+                $scope.CityIdPRef = "";
+                $scope.CountryIdPRef = "";
                 $scope.action = '';
                 $scope.index = -1;
             };
@@ -984,11 +1023,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.FirstNamePRef = $scope.personalReferences[index].FirstName,
                     $scope.LastNamePRef = $scope.personalReferences[index].LastName,
                     $scope.ChargePRef = $scope.personalReferences[index].Charge,
-                    $scope.CellPhonePRef = $scope.personalReferences[index].CellPhone,
+                    $scope.CellphonePRef = $scope.personalReferences[index].Cellphone,
                     $scope.EmailPRef = $scope.personalReferences[index].Email,
                     $scope.CompanyNamePRef = $scope.personalReferences[index].CompanyName,
                     $scope.RelationshipPRef = $scope.personalReferences[index].Relationship,
-                    $scope.CityPRef = $scope.personalReferences[index].City;
+                    $scope.CityIdPRef = $scope.personalReferences[index].CityId,
+                    $scope.CountryIdPRef = $scope.personalReferences[index].City.CountryId;
                 $scope.action = 'edit';
                 $scope.index = index;
             };
@@ -997,23 +1037,27 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     $scope.personalReferences[$scope.index].FirstName = $scope.FirstNamePRef,
                         $scope.personalReferences[$scope.index].LastName = $scope.LastNamePRef,
                         $scope.personalReferences[$scope.index].Charge = $scope.ChargePRef,
-                        $scope.personalReferences[$scope.index].CellPhone = $scope.CellPhonePRef,
+                        $scope.personalReferences[$scope.index].Cellphone = $scope.CellphonePRef,
                         $scope.personalReferences[$scope.index].Email = $scope.EmailPRef,
                         $scope.personalReferences[$scope.index].CompanyName = $scope.CompanyNamePRef,
                         $scope.personalReferences[$scope.index].Relationship = $scope.RelationshipPRef,
-                        $scope.personalReferences[$scope.index].City = $scope.CityPRef,
-                        $scope.personalReferences[$scope.index].Country = $scope.CountryPRef;
+                        $scope.personalReferences[$scope.index].CityId = $scope.CityIdPRef,
+                        $scope.personalReferences[$scope.index].City = $filter('filter')($scope.Cities, { CityId: $scope.CityPRef })[0],
+                        $scope.personalReferences[$scope.index].CountryId = $scope.CountryIdPRef,
+                        $scope.personalReferences[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.CountryIdPRef })[0];
                 } else {
                     var pReference = {
                         FirstName: $scope.FirstNamePRef,
                         LastName: $scope.LastNamePRef,
                         Charge: $scope.ChargePRef,
-                        CellPhone: $scope.CellPhonePRef,
+                        Cellphone: $scope.CellphonePRef,
                         Email: $scope.EmailPRef,
                         CompanyName: $scope.CompanyNamePRef,
                         Relationship: $scope.RelationshipPRef,
-                        City: $scope.CityPRef,
-                        Country: $scope.CountryPRef
+                        CityId: $scope.CityIdPRef,
+                        City: $filter('filter')($scope.Cities, { CityId: $scope.CityPRef })[0],
+                        CountryId: $scope.CountryIdPRef,
+                        Country: $filter('filter')($scope.Countries, { CountryId: $scope.CountryIdPRef })[0]
                     };
                     $scope.personalReferences.push(pReference);
                     $scope.clearPersonalReference();
@@ -1022,7 +1066,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.removePersonalReference = function (index) {
                 $scope.personalReferences.splice(index, 1);
             };
-
+           
             /*Tranning*/
             $scope.clearTranning = function () {
                 $scope.textButton = 'Agregar';
@@ -1030,9 +1074,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     $scope._InstitutionName = "",
                     $scope._AcademicLevel = "",
                     $scope._EducationTypeId = "",
-                    $scope._City = "",
+                    $scope._CityId = "",
                     $scope._Year = "",
-                    $scope._Country = "";
+                    $scope._CountryId = "";
                 $scope.action = '';
                 $scope.index = -1;
             };
@@ -1042,31 +1086,36 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     $scope._InstitutionName = $scope.Trannings[index].InstitutionName,
                     $scope._CareerId = $scope.Trannings[index].CareerId,
                     $scope._EducationTypeId = $scope.Trannings[index].EducationTypeId,
-                    $scope._City = $scope.Trannings[index].City,
+                    $scope._CityId = $scope.Trannings[index].CityId,
                     $scope._Year = $scope.Trannings[index].Year,
-                    $scope._Country = $scope.Trannings[index].Country;
+                    $scope._CountryId = $scope.Trannings[index].City.CountryId;
                 $scope.action = 'edit';
                 $scope.index = index;
             };
-            
             $scope.addTranning = function () {
                 if ($scope.action == 'edit') {
-                    $scope.Trannings[$scope.index].TrainingName = $scope._TrainingName,
-                        $scope.Trannings[$scope.index].InstitutionName = $scope._InstitutionName,
-                        $scope.Trannings[$scope.index].CareerId = $scope._CareerId,
-                        $scope.Trannings[$scope.index].EducationTypeId = $scope._EducationTypeId,
-                        $scope.Trannings[$scope.index].City = $scope._City,
-                        $scope.Trannings[$scope.index].Year = $scope._Year,
-                        $scope.Trannings[$scope.index].Country = $scope._Country;
+                    $scope.Trannings[$scope.index].TrainingName = $scope._TrainingName;
+                    $scope.Trannings[$scope.index].InstitutionName = $scope._InstitutionName;
+                    $scope.Trannings[$scope.index].Career = $filter('filter')($scope.AllCarees, { CareerId: $scope._CareerId })[0];
+                    $scope.Trannings[$scope.index].CareerId = $scope._CareerId;
+                    $scope.Trannings[$scope.index].EducationTypeId = $scope._EducationTypeId;
+                    $scope.Trannings[$scope.index].City = $filter('filter')($scope.Cities, { CityId: $scope._CityId })[0];
+                    $scope.Trannings[$scope.index].CityId = $scope._CityId;
+                    $scope.Trannings[$scope.index].Year = $scope._Year;
+                    $scope.Trannings[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope._CountryId })[0];
+                    $scope.Trannings[$scope.index].CountryId = $scope._CountryId;
                 } else {
                     var tranning = {
                         TrainingName: $scope._TrainingName,
                         InstitutionName: $scope._InstitutionName,
+                        Career: $filter('filter')($scope.AllCarees, { CareerId: $scope._CareerId })[0],
                         CareerId: $scope._CareerId,
                         EducationTypeId: $scope._EducationTypeId,
-                        City: $scope._City,
+                        City: $filter('filter')($scope.Cities, { CityId: $scope._CityId })[0],
+                        CityId: $scope._CityId,
                         Year: $scope._Year,
-                        Country: $scope._Country
+                        Country: $filter('filter')($scope.Countries, { CountryId: $scope._CountryId })[0],
+                        CountryId: $scope._CountryId
                     };
                     if(!$scope.Trannings)
                         $scope.Trannings = [];
@@ -1081,6 +1130,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
             customerRepository.getCities().success(function (data) {
                 $scope.Cities = data;
+            });
+            customerRepository.getCareers().success(function (data) {
+                $scope.AllCarees = data;
             });
             customerRepository.getCountries().success(function (data) {
                 $scope.Countries = data;
@@ -1111,11 +1163,83 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 }
             };
             $scope.assignCareers = function () {
-                if ($scope.AcademicLevel)
-                    $scope.Careers = $scope.getCareersByAcademicLevel($scope.AcademicLevel);
+                if ($scope.AcademicLevelId)
+                    $scope.Careers = $filter('filter')($scope.AcademicLevels, { AcademicLevelId: $scope.AcademicLevelId })[0].Careers;
             }
 
             $scope.update = function() {
+                $scope.New.References = [];
+                $scope.New.AcademicEducations = [];
+
+                if ($scope.academicEducations.length > 0) {
+
+                    for (var i = 0; i < $scope.academicEducations.length; i++) {
+                        var academic = {
+                            AcademicEducationId: ($scope.academicEducations[i].AcademicEducationId) ? $scope.academicEducations[i].AcademicEducationId : 0,
+                            Year: $scope.academicEducations[i].Year,
+                            CountryId: $scope.academicEducations[i].City.Country.CountryId,
+                            CityId: $scope.academicEducations[i].City.CityId,
+                            AcademicLevelId: $scope.academicEducations[i].AcademicLevel.AcademicLevelId,
+                            TrainingName: $scope.academicEducations[i].TrainingName,
+                            InstitutionName: $scope.academicEducations[i].InstitutionName,
+                            CareerId: $scope.academicEducations[i].CareerId,
+                            EducationTypeId: 1
+                        };
+                        $scope.New.AcademicEducations.push(academic);
+                    }
+                }
+                if ($scope.Trannings.length > 0) {
+                    for (var i = 0; i < $scope.Trannings.length; i++) {
+                        var tranning = {
+                            AcademicEducationId: ($scope.Trannings[i].AcademicEducationId) ? $scope.Trannings[i].AcademicEducationId : 0,
+                            Year: $scope.Trannings[i].Year,
+                            CountryId: $scope.Trannings[i].City.Country.CountryId,
+                            CityId: $scope.Trannings[i].City.CityId,
+                            TrainingName: $scope.Trannings[i].TrainingName,
+                            InstitutionName: $scope.Trannings[i].InstitutionName,
+                            CareerId: $scope.Trannings[i].CareerId,
+                            EducationTypeId: 2
+                        };
+                        $scope.New.AcademicEducations.push(tranning);
+                    }
+                }
+                if ($scope.workReferences.length > 0) {
+                        for (var l = 0; l < $scope.workReferences.length; l++) {
+                            var wExperience = {
+                                ReferenceId: ($scope.workReferences[l].ReferenceId) ? $scope.workReferences[l].ReferenceId : null,
+                                FirstName: $scope.workReferences[l].FirstName,
+                                LastName: $scope.workReferences[l].LastName,
+                                Charge: $scope.workReferences[l].Charge,
+                                Cellphone: $scope.workReferences[l].Cellphone,
+                                Email: $scope.workReferences[l].Email,
+                                CompanyName: $scope.workReferences[l].CompanyName,
+                                Relationship: $scope.workReferences[l].Relationship,
+                                ReferenceTypeId: 1,
+                                CityId: $scope.workReferences[l].City.CityId
+                            }
+
+                            $scope.New.References.push(wExperience);
+                        }
+                    }
+
+                    if ($scope.personalReferences.length > 0) {
+                        for (var l = 0; l < $scope.personalReferences.length; l++) {
+                            var pExperience = {
+                                ReferenceId: ($scope.personalReferences[l].ReferenceId) ? $scope.personalReferences[l].ReferenceId : null,
+                                FirstName: $scope.personalReferences[l].FirstName,
+                                LastName: $scope.personalReferences[l].LastName,
+                                Charge: $scope.personalReferences[l].Charge,
+                                Cellphone: $scope.personalReferences[l].Cellphone,
+                                Email: $scope.personalReferences[l].Email,
+                                CompanyName: $scope.personalReferences[l].CompanyName,
+                                Relationship: $scope.personalReferences[l].Relationship,
+                                ReferenceTypeId: 2,
+                                CityId: $scope.personalReferences[l].City.CityId
+                            }
+
+                            $scope.New.References.push(pExperience);
+                        }
+                    }
                 customerRepository.UpdateCustomer($scope.New);
             }
         

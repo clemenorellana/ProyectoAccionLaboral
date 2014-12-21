@@ -7,6 +7,7 @@ using System.Web;
 
 namespace AccionLaboral.Models
 {
+    [Table("academiceducations")]
     public class AcademicEducation
     {
         [Key]
@@ -16,7 +17,7 @@ namespace AccionLaboral.Models
         public string InstitutionName { get; set; }        
         public string TrainingName { get; set; }
         public int CityId { get; set; }
-        public int AcademicLevelId { get; set; }
+        public int? AcademicLevelId { get; set; }
         public int CareerId { get; set; }
         public int EducationTypeId { get; set; }
         public int ClientId { get; set; }

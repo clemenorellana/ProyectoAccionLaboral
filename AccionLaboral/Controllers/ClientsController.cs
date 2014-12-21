@@ -27,10 +27,10 @@ namespace AccionLaboral.Controllers
                 .Include(r => r.KnownPrograms)
                 .Include(r => r.Languages.Select(l => l.Language))
                 .Include(r => r.Languages.Select(l => l.LanguageLevel))
-                .Include(r => r.References.Select(c => c.City))
+                .Include(r => r.References.Select(c => c.City.Country))
                 .Include(r => r.References.Select(t => t.ReferenceType))
                 .Include(r => r.WorkExperiences)
-                .Include(r => r.WorkExperiences.Select(c => c.City));
+                .Include(r => r.WorkExperiences.Select(c => c.City.Country));
         }
 
         // GET api/Clients/5
@@ -79,84 +79,113 @@ namespace AccionLaboral.Controllers
                        .Include(x => x.References)
                        //.Include(x => x.Trackings)
                        .Single(c => c.ClientId == client.ClientId);
-
-            // Update foo (works only for scalar properties)
+            
             db.Entry(dbClients).CurrentValues.SetValues(client);
 
-            ///AcademicEducations
-            // Delete subFoos from database that are not in the newFoo.SubFoo collection
-            foreach (var dbSubFoo in dbClients.AcademicEducations.ToList())
-                if (!client.AcademicEducations.Any(s => s.AcademicEducationId == dbSubFoo.AcademicEducationId))
-                    db.AcademicEducations.Remove(dbSubFoo);
+            foreach (var dbAcademicEducation in dbClients.AcademicEducations.ToList())
+                if (!client.AcademicEducations.Any(s => s.AcademicEducationId == dbAcademicEducation.AcademicEducationId))
+                    db.AcademicEducations.Remove(dbAcademicEducation);
 
-            foreach (var newSubFoo in client.AcademicEducations)
+            foreach (var newAcademicEducation in client.AcademicEducations)
             {
-                var dbSubFoo = dbClients.AcademicEducations.SingleOrDefault(s => s.AcademicEducationId == newSubFoo.AcademicEducationId);
-                if (dbSubFoo != null)
-                    // Update subFoos that are in the newFoo.SubFoo collection
-                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                newAcademicEducation.ClientId = client.ClientId;
+                if (newAcademicEducation.AcademicEducationId != 0)
+                {
+                    var dbAcademicEducation = dbClients.AcademicEducations.SingleOrDefault(s => s.AcademicEducationId == newAcademicEducation.AcademicEducationId);
+                    db.Entry(dbAcademicEducation).CurrentValues.SetValues(newAcademicEducation);
+                }   
                 else
-                    // Insert subFoos into the database that are not
-                    // in the dbFoo.subFoo collection
-                    dbClients.AcademicEducations.Add(newSubFoo);
+                {
+                    newAcademicEducation.City = null;
+                    newAcademicEducation.Career = null;
+                    newAcademicEducation.AcademicLevel = null;
+                    newAcademicEducation.EducationType = null;
+                    dbClients.AcademicEducations.Add(newAcademicEducation);
+                }
             }
-
 
             ///Languajes
-            foreach (var dbSubFoo in dbClients.Languages.ToList())
-                if (!client.Languages.Any(s => s.KnownLanguageId == dbSubFoo.KnownLanguageId))
-                    db.KnownLanguages.Remove(dbSubFoo);
+            foreach (var dbLanguage in dbClients.Languages.ToList())
+                if (!client.Languages.Any(s => s.KnownLanguageId == dbLanguage.KnownLanguageId))
+                    db.KnownLanguages.Remove(dbLanguage);
 
-            foreach (var newSubFoo in client.Languages)
+            foreach (var newLanguage in client.Languages)
             {
-                var dbSubFoo = dbClients.Languages.SingleOrDefault(s => s.KnownLanguageId == newSubFoo.KnownLanguageId);
-                if (dbSubFoo != null)
-                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                
+                newLanguage.ClientId = client.ClientId;
+                newLanguage.LanguageLevel = null;
+                newLanguage.LanguageLevel = null;
+                if (newLanguage.KnownLanguageId != 0)
+                {
+                    var dbLanguage = dbClients.Languages.SingleOrDefault(s => s.KnownLanguageId == newLanguage.KnownLanguageId);
+                    db.Entry(dbLanguage).CurrentValues.SetValues(newLanguage);
+                }
                 else
-                    dbClients.Languages.Add(newSubFoo);
+                {
+                    dbClients.Languages.Add(newLanguage);
+                }
             }
 
-
             //KnownPrograms
-            foreach (var dbSubFoo in dbClients.KnownPrograms.ToList())
-                if (!client.KnownPrograms.Any(s => s.KnownProgramId == dbSubFoo.KnownProgramId))
-                    db.KnownPrograms.Remove(dbSubFoo);
+            foreach (var dbProgram in dbClients.KnownPrograms.ToList())
+                if (!client.KnownPrograms.Any(s => s.KnownProgramId == dbProgram.KnownProgramId))
+                    db.KnownPrograms.Remove(dbProgram);
 
-            foreach (var newSubFoo in client.KnownPrograms)
+            foreach (var newProgram in client.KnownPrograms)
             {
-                var dbSubFoo = dbClients.KnownPrograms.SingleOrDefault(s => s.KnownProgramId == newSubFoo.KnownProgramId);
-                if (dbSubFoo != null)
-                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                newProgram.ClientId = client.ClientId;
+                if (newProgram.KnownProgramId != 0)
+                {
+                    var dbProgram = dbClients.KnownPrograms.SingleOrDefault(s => s.KnownProgramId == newProgram.KnownProgramId);
+                    db.Entry(dbProgram).CurrentValues.SetValues(newProgram);
+                }
                 else
-                    dbClients.KnownPrograms.Add(newSubFoo);
+                {
+                    dbClients.KnownPrograms.Add(newProgram);
+                }
+                    
             }
 
             //WorkExperiences
-            foreach (var dbSubFoo in dbClients.WorkExperiences.ToList())
-                if (!client.WorkExperiences.Any(s => s.WorkExperienceId == dbSubFoo.WorkExperienceId))
-                    db.WorkExperiences.Remove(dbSubFoo);
+            foreach (var dbWorkExperience in dbClients.WorkExperiences.ToList())
+                if (!client.WorkExperiences.Any(s => s.WorkExperienceId == dbWorkExperience.WorkExperienceId))
+                    db.WorkExperiences.Remove(dbWorkExperience);
 
-            foreach (var newSubFoo in client.WorkExperiences)
+            foreach (var newWorkExperience in client.WorkExperiences)
             {
-                var dbSubFoo = dbClients.WorkExperiences.SingleOrDefault(s => s.WorkExperienceId == newSubFoo.WorkExperienceId);
-                if (dbSubFoo != null)
-                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                newWorkExperience.ClientId = client.ClientId;
+                if (newWorkExperience.WorkExperienceId != 0)
+                {
+                    var dbWorkExperience = dbClients.WorkExperiences.SingleOrDefault(s => s.WorkExperienceId == newWorkExperience.WorkExperienceId);
+                    db.Entry(dbWorkExperience).CurrentValues.SetValues(newWorkExperience);
+                }
                 else
-                    dbClients.WorkExperiences.Add(newSubFoo);
+                {
+                    newWorkExperience.City = null;
+                    dbClients.WorkExperiences.Add(newWorkExperience);
+                }
             }
 
             //References
-            foreach (var dbSubFoo in dbClients.References.ToList())
-                if (!client.References.Any(s => s.ReferenceId == dbSubFoo.ReferenceId))
-                    db.References.Remove(dbSubFoo);
+            foreach (var dbReference in dbClients.References.ToList())
+                if (!client.References.Any(s => s.ReferenceId == dbReference.ReferenceId))
+                    db.References.Remove(dbReference);
 
-            foreach (var newSubFoo in client.References)
+            foreach (var newReference in client.References)
             {
-                var dbSubFoo = dbClients.References.SingleOrDefault(s => s.ReferenceId == newSubFoo.ReferenceId);
-                if (dbSubFoo != null)
-                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                newReference.City = null;
+                newReference.ReferenceType = null;
+                newReference.ClientId = client.ClientId;
+                if (newReference.ReferenceId != 0)
+                {
+                    var dbReference = dbClients.References.SingleOrDefault(s => s.ReferenceId == newReference.ReferenceId);
+                    db.Entry(dbReference).CurrentValues.SetValues(newReference);   
+                }
                 else
-                    dbClients.References.Add(newSubFoo);
+                {
+                    dbClients.References.Add(newReference);
+                }
+                    
             }
             /*
             //Trackings

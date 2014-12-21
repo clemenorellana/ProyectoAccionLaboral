@@ -28,6 +28,7 @@
                     <td>{{customer.Email}}</td>
                     <td>{{customer.CompleteAddress}}</td>
                     <td>{{customer.Cellphone}}</td>
+
                     <!--<td>
                         <button type="button" id="editCustomer" ng-click="setScope(customer,'edit')">Editar</button>
                         <button type="button" id="deleteCustomer" ng-click="DeleteUser(row.entity.id)">Eliminar</button>
@@ -39,6 +40,11 @@
                         <button class="btn btn-danger" id="deleteCustomer" ng-click="DeleteUser(row.entity.id)" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </button>
+
+                    <td>
+                        <button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger" id="deleteCustomer" ng-click="DeleteUser(row.entity.id)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+
                     </td>
                 </tr>
             </table>
