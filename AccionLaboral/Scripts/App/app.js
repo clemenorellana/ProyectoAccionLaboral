@@ -16,7 +16,7 @@ angular.module('AccionLaboralApp', [
   function ($routeProvider) {
       $routeProvider.
         otherwise({
-            redirectTo: '/'
+            redirectTo: '/Login'
         });
   }]);
 /*

@@ -17,6 +17,14 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
+        // GET: /Login/
+        public ActionResult Login()
+        {
+            //return View();
+            return new FilePathResult("/Views/Home/Login.html", "text/html");
+        }
+
+        //
         // GET: /Users/Details/5
         public ActionResult Details(int id)
         {

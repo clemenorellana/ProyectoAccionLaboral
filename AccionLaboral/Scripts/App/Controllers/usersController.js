@@ -6,6 +6,10 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
         when('/Users', {
             templateUrl: '/Users/Index',
             controller: 'usersCtrl'
+        }).
+        when('/Login', {
+            templateUrl: '/Users/Login',
+            controller: 'usersCtrl'
         });
 }]
 )
@@ -126,6 +130,20 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
         $scope.cancelUsertDelete();
     }
 
+    $scope.login = function () {
+        debugger
+        
+        usersRepo.login($scope.userName, $scope.password).success(function (data) {
+            var user = data;
+            $scope.console = "loged in";
+        }).error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+            $scope.console = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+        });
 
+
+        window.location = "#/";
+    }
 
 }]);

@@ -21,4 +21,5 @@ namespace AccionLaboral.Models
 
         public ICollection<Role> Rols { get; set; }
     }
+
 }
