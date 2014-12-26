@@ -6,34 +6,31 @@ using System.Web.Mvc;
 
 namespace AccionLaboral.Controllers.Home
 {
-    public class ContractTemplatesController : Controller
+    public class CountriesController : Controller
     {
         //
-        // GET: /ContractTemplates/
+        // GET: /Countries/
         public ActionResult Index()
         {
-            //return View();
-            return new FilePathResult("/Views/ContractTemplates/Index.html", "text/html");
+            return new FilePathResult("/Views/Countries/Index.html", "text/html");
         }
 
         //
-        // GET: /ContractTemplates/Details/5
+        // GET: /Countries/Details/5
         public ActionResult Details(int id)
         {
-            //return View();
-            return new FilePathResult("/Views/ContractTemplates/Detail.html", "text/html");
+            return View();
         }
 
         //
-        // GET: /ContractTemplates/Create
+        // GET: /Countries/Create
         public ActionResult Create()
         {
-            //return View();
-            return new FilePathResult("/Views/ContractTemplates/Create.html", "text/html");
+            return View();
         }
 
         //
-        // POST: /ContractTemplates/Create
+        // POST: /Countries/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -50,16 +47,14 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
-        // GET: /ContractTemplates/Edit/5
+        // GET: /Countries/Edit/5
         public ActionResult Edit(int id)
         {
-            //return View();
-            //return new FilePathResult("/Views/ContractTemplates/Edit.html", "text/html");
-            return new FilePathResult("/Views/ContractTemplates/Create.html", "text/html");
+            return View();
         }
 
         //
-        // POST: /ContractTemplates/Edit/5
+        // POST: /Countries/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -76,14 +71,14 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
-        // GET: /ContractTemplates/Delete/5
+        // GET: /Countries/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
         //
-        // POST: /ContractTemplates/Delete/5
+        // POST: /Countries/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

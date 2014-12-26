@@ -1,0 +1,34 @@
+﻿<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">{{Contract_Name}}</h3>
+            <!--<div class="col-md-6 text-right">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="contract_cancelRedirect()">Cancelar</button>
+            </div>-->
+            <div class="pull-right box-tools">
+                <button class="btn btn-danger" ng-click="contract_cancelRedirect()" title="">
+                    <i class="fa"></i>Cancelar
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class='box-body pad'>
+                <label>Contenido del Contrato</label>
+                <form>
+                    <textarea disabled id="editor1" name="editor1" rows="20" cols="165" ng-model="Contract_Description">
+                    </textarea>
+                </form>
+            </div>
+
+        </div><!-- /.box-body -->
+        <div class="box-footer">
+            <div class="row">
+                <!--<div class="col-md-6 text-right">
+                    <button type="submit" class="btn btn-primary" ng-click="saveContract()">{{contract_buttonName}}</button>
+                </div>-->
+                
+            </div>
+        </div>
+    </div>
+
+</div>

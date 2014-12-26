@@ -1,0 +1,72 @@
+﻿<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">Listado de Empleados</h3>
+            <div class="pull-right box-tools">
+                <button class="btn btn-info btn-sm" ng-click="employee_addNewRedirect()" title="Agregar">
+                    <i class="fa  fa-plus"></i>
+                </button>
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="employee_refresh()">
+                    <i class="fa  fa-refresh"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+            <table class="table table-bordered" ng-show="!load">
+                <tr>
+                    <th>Alias</th>
+                    <th>Nombre</th>
+                    <th>Correo Electrónico</th>
+                    <th>Celular</th>
+                    <th>Fecha de Ingreso</th>
+                    <!--<th>Rol</th>-->
+                    <th>Opción</th>
+                </tr>
+                <tr ng-repeat="employee in employeesList">
+                    <td>{{employee.EmployeeAlias}}</td>
+                    <td>{{employee.FirstName }} {{employee.LastName}}</td>
+                    <td>{{employee.Email}}</td>
+                    <td>{{employee.Cellphone }}</td>
+                    <td>{{employee.AdmissionDate | dateFormat }} </td>
+                    <!--<td>{{employee.RoleId}}</td>-->
+                    <td align="center">
+                        <!--<button class="btn btn-info" ng-click="" title="Ver">
+                            <i class="fa fa-file-text"></i>
+                        </button>-->
+                        <button class="btn btn-info" ng-click="employee_editRedirect($index)" title="Editar">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEmployeeInfo" ng-click="setEmployeeToDelete($index)" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteEmployeeInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Borrar Empleado</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro que desea borrar el Empleado?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="cancelEmployeeDelete()">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="deleteEmployee()">Si</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /.modal -->

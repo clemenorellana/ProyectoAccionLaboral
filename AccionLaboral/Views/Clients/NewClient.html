@@ -215,6 +215,51 @@
                                                 <i class="fa  fa-plus"></i>
                                             </button>
                                         </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <!--<th style="width: 10px">#</th>-->
+                                            <th>Año</th>
+                                            <th>País</th>
+                                            <th>Ciudad</th>
+                                            <th>Nivel Académico</th>
+                                            <!--<th>Título Obtenido</th>-->
+                                            <th>Institución</th>
+                                            <th>Opción</th>
+                                        </tr>
+
+                                        <tr ng-repeat="education in academicEducations">
+                                            <td>{{education.Year}}</td>
+                                            <td>{{education.Country.Name}}</td>
+                                            <td>{{education.City.Name}}</td>
+                                            <td>{{education.AcademicLevel.Name}}</td>
+                                            <!--<td>{{education.TrainingName}}</td>-->
+                                            <td>{{education.InstitutionName}}</td>
+                                            <!--<td>
+                                                <button type="button" ng-click="removeAcademicEducation($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)">Editar</button>
+                                            </td>-->
+                                            <td align="center" style="width: 168px;">
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)" title="Editar">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger" ng-click="removeAcademicEducation($index)" title="Eliminar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Estudios Academicos Box -->
+                            <!--Begin Idiomas Manejados Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Idiomas Manejados</h3>
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#languagesInfo" ng-click="clearKnownLanguage()" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
                                     </div>
                                     <div class="box-body">
                                         <table class="table table-bordered">
@@ -247,6 +292,44 @@
                                                 <i class="fa  fa-plus"></i>
                                             </button>
                                         </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <!--<th style="width: 10px">#</th>-->
+                                            <th>Idioma</th>
+                                            <th>Nivel</th>
+                                            <th>Porcentaje</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                        <tr ng-repeat="knownLanguage in knownLanguages">
+                                            <td>{{knownLanguage.Language.Name}}</td>
+                                            <td>{{knownLanguage.LanguageLevel.Name}}</td>
+                                            <td>{{knownLanguage.Percentage}}</td>
+                                            <!--<td>
+                                                <button type="button" ng-click="removeKnownLanguage($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#languagesInfo" ng-click="fillKnownLanguage($index)">Editar</button>
+                                            </td>-->
+                                            <td align="center" style="width: 168px;">
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#languagesInfo" ng-click="fillKnownLanguage($index)" title="Editar">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger" ng-click="removeKnownLanguage($index)" title="Eliminar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Idiomas Manejados Box -->
+                            <!--Begin Programas Manejados Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Programas Manejados</h3>
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#programsInfo" ng-click="clearProgram()" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
                                     </div>
                                     <div class="box-body ">
                                         <table class="table table-bordered">
@@ -268,6 +351,34 @@
                                 <!-- End Programas Manejados Box -->
                             </form>
                         </div>
+                                <div class="box-body ">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <!--<th style="width: 10px">#</th>-->
+                                            <th>Programa</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                        <tr ng-repeat="knownProgram in knownPrograms">
+                                            <td>{{knownProgram.Name}}</td>
+                                            <!--<td>
+                                                <button type="button" ng-click="removeKnownProgram($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#programsInfo" ng-click="fillKnownProgram($index)">Editar</button>
+                                            </td>-->
+                                            <td align="center" style="width: 168px;">
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#programsInfo" ng-click="fillKnownProgram($index)" title="Editar">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger" ng-click="removeKnownProgram($index)" title="Eliminar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Programas Manejados Box -->
+                        </form>
+                    </div>
 
                     </section>
                 </ng-form><!--End Tab Formaciones Académicas-->
@@ -314,6 +425,43 @@
                                 </div>
                             </form>
                         </div><!-- /.box-body -->
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <!--<th style="width: 10px">#</th>-->
+                                            <th>Inicio</th>
+                                            <th>Fin</th>
+                                            <th>País</th>
+                                            <th>Ciudad</th>
+                                            <th>Empresa</th>
+                                            <th>Cargo Ocupado</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                        <tr ng-repeat="workExperience in workExperiences">
+                                            <td>{{workExperience.StartDate | dateFormat }} </td>
+                                            <td>{{workExperience.EndDate | dateFormat }} </td>
+                                            <td>{{workExperience.WorkCountry.Name}}</td>
+                                            <td>{{workExperience.WorkCity.Name}}</td>
+                                            <td>{{workExperience.CompanyName}}</td>
+                                            <td>{{workExperience.Charge}}</td>
+                                            <!--<td>
+                                                <button type="button" ng-click=" removeWorkExperience($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#experienceInfo" ng-click="fillWorkExperience($index)">Editar</button>
+                                            </td>-->
+                                            <td align="center" style="width: 168px;">
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#experienceInfo" ng-click="fillWorkExperience($index)" title="Editar">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger" ng-click=" removeWorkExperience($index)" title="Eliminar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                        </form>
+                    </div><!-- /.box-body -->
 
                     </section>
                 </ng-form> <!--EndTab Experiencia Laboral-->
@@ -373,6 +521,52 @@
                                                 <i class="fa  fa-plus"></i>
                                             </button>
                                         </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <!--<th style="width: 10px">#</th>-->
+                                            <th>Nombre</th>
+                                            <th>Empresa</th>
+                                            <th>Cargo</th>
+                                            <th>Teléfono</th>
+                                            <th>Correo Electrónico</th>
+                                            <th>Ciudad</th>
+                                            <th>País</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                        <tr ng-repeat="workReference in workReferences">
+                                            <td>{{workReference.FirstName}}</td>
+                                            <td>{{workReference.LastName}}</td>
+                                            <td>{{workReference.Charge}}</td>
+                                            <td>{{workReference.CellPhone}}</td>
+                                            <td>{{workReference.Email}}</td>
+                                            <td>{{workReference.City.Name}}</td>
+                                            <td>{{workReference.Country.Name}}</td>
+                                            <!--<td>
+                                                <button type="button" ng-click=" removeWorkReference($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)">Editar</button>
+                                            </td>-->
+                                            <td align="center" style="width: 168px;">
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)" title="Editar">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger" ng-click=" removeWorkReference($index)" title="Eliminar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Referencias Laborales Box -->
+                            <!--Begin Referencias Personales Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Referencias Personales</h3>
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#personalRefInfo" ng-click="clearPersonalReference()" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
                                     </div>
                                     <div class="box-body">
                                         <table class="table table-bordered">
@@ -423,6 +617,62 @@
                                                 <i class="fa  fa-plus"></i>
                                             </button>
                                         </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <!--<th style="width: 10px">#</th>-->
+                                            <th>Nombre</th>
+                                            <th>Ocupación</th>
+                                            <th>Parentezco</th>
+                                            <th>Teléfono</th>
+                                            <th>Correo Electrónico</th>
+                                            <th>Ciudad</th>
+                                            <th>País</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                        <tr ng-repeat="personalReference in personalReferences">
+                                            <td>{{personalReference.FirstName}}</td>
+                                            <td>{{personalReference.LastName}}</td>
+                                            <td>{{personalReference.Charge}}</td>
+                                            <td>{{personalReference.CellPhone}}</td>
+                                            <td>{{personalReference.Email}}</td>
+                                            <td>{{personalReference.City.Name}}</td>
+                                            <td>{{personalReference.Country.Name}}</td>
+                                            <!--<td>
+                                                <button type="button" ng-click=" removePersonalReference($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)">Editar</button>
+                                            </td>-->
+                                            <td align="center" style="width: 168px;">
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)" title="Editar">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger" ng-click=" removePersonalReference($index)" title="Eliminar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Referencias Personales Box -->
+                        </form>
+                    </div>
+                </section>
+            </div><!--End Tab Referencias-->
+            <!--Tab Formaciones Adicionales-->
+            <div class="tab-pane" id="additionalTrainingInfo">
+                <section>
+                    <h4 class="page-header">Formaciones Adicionales</h4>
+                    <div class="box-body">
+                        <form role="form">
+                            <!--Begin Formaciones Adicionales Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Formaciones Adicionales</h3>
+                                    <div class="pull-right box-tools">
+                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="clearTranning()" title="" data-original-title="Collapse">
+                                            <i class="fa  fa-plus"></i>
+                                        </button>
                                     </div>
                                     <div class="box-body">
                                         <table class="table table-bordered">
@@ -461,6 +711,46 @@
                                             <textarea class="form-control ng-pristine ng-valid ng-touched" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
                                         </div>
                                     </div><!-- /.box-body -->
+                                <div class="box-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <!--<th style="width: 10px">#</th>-->
+                                            <th>Año</th>
+                                            <th>País</th>
+                                            <th>Ciudad</th>
+                                            <th>Tipo de Formación</th>
+                                            <th>Título de la Formación</th>
+                                            <th>Institución</th>
+                                            <th>Opción</th>
+                                        </tr>
+                                        <tr ng-repeat="tranning in Trannings">
+                                            <td>{{tranning.Year}}</td>
+                                            <td>{{tranning.Country.Name}}</td>
+                                            <td>{{tranning.City.Name}}</td>
+                                            <td>{{tranning.EducationTypeId.Name}}</td>
+                                            <td>{{tranning.TrainingName}}</td>
+                                            <td>{{tranning.InstitutionName}}</td>
+                                            <!--<td>
+                                                <button type="button" ng-click=" removeTranning($index)">Eliminar</button>
+                                                <button type="button" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="fillTranning($index)">Editar</button>
+                                            </td>-->
+                                            <td align="center" style="width: 168px;">
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="fillTranning($index)" title="Editar">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger" ng-click=" removeTranning($index)" title="Eliminar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <!-- End Formaciones Adicionales Box -->
+                            <!--Begin Pasatiempos Box-->
+                            <div class="box box-info">
+                                <div class="box-header">
+                                    <h3 class="box-title">Pasatiempos u otras activiades</h3>
                                 </div>
                                 <!-- End Idiomas Manejados Box -->
                             </form>
@@ -523,11 +813,19 @@
                             </select>
                         </div>
                     </div>
+                    <!--<div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Tipo de Educación</label>
+                            <select class="form-control" ng-options="EducationType.EducationTypeId as EducationType.Name for EducationType in EducationTypes" ng-model="EducationTypeId">
+                                
+                            </select>
+                        </div>
+                    </div>-->
                     <div class="row">
-                        <div class="form-group col-md-12">
+                        <!--<div class="form-group col-md-12">
                             <label>Título Obtenido</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="TrainingName">
-                        </div>
+                        </div>-->
                         <div class="form-group col-md-12">
                             <label>Nombre de la Institución</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="InstitutionName">
@@ -535,7 +833,7 @@
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
-                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger text-center"  ng-click="client_cancelRedirect()">Cancelar</button>
                     <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addAcademicEducation()">{{textButton}}</button>
                 </div>
             </form>
@@ -861,12 +1159,13 @@
                     </div>
                     <div class="row">
                         
-                        <div class="form-group col-md-4">
+                        <!--<div class="form-group col-md-4">
                             <label>Carrera</label>
                             <select class="form-control" ng-options="career.Name for career in AllCarees" ng-model="_Career">
                                 
+                            <select class="form-control" ng-options="career.Name for career in Careers" ng-model="_Career">
                             </select>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">

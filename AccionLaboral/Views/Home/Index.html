@@ -259,10 +259,10 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="#" class="btn btn-default btn-flat">Perfil</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="pages/examples/login.html" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="#/Login" class="btn btn-default btn-flat">Cerrar Sesión</a>
                                 </div>
                             </li>
                         </ul>
@@ -310,11 +310,11 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-angle-double-right"></i> Usuarios</a></li>
-                            <li><a href="#"><i class="fa fa-angle-double-right"></i> Empleados</a></li>
-                            <li><a href="#"><i class="fa fa-angle-double-right"></i> Paises</a></li>
-                            <li><a href="#"><i class="fa fa-angle-double-right"></i> Ciudades</a></li>
-                            <li><a href="#"><i class="fa fa-angle-double-right"></i> Tipos de Empleados</a></li>
+                            <li><a href="#/Users"><i class="fa fa-angle-double-right"></i> Usuarios</a></li>
+                            <li><a href="#/Employees"><i class="fa fa-angle-double-right"></i> Empleados</a></li>
+                            <li><a href="#/Countries"><i class="fa fa-angle-double-right"></i> Paises</a></li>
+                            <li><a href="#/Cities"><i class="fa fa-angle-double-right"></i> Ciudades</a></li>
+                            <!--<li><a href="#"><i class="fa fa-angle-double-right"></i> Tipos de Empleados</a></li>-->
                             <li><a href="#/Careers"><i class="fa fa-angle-double-right"></i> Tipos de Carreras</a></li>
                             <li><a href="#/Contracts"><i class="fa fa-angle-double-right"></i> Plantillas de Contratos</a></li>
 
@@ -439,7 +439,14 @@
     <script src="../../Scripts/App/Services/careerRepository.js"></script>
     <script src="../../Scripts/App/Controllers/contracTemplatesController.js"></script>
     <script src="../../Scripts/App/Services/contractTemplateRepository.js"></script>
-
+    <script src="../../Scripts/App/Controllers/employeesController.js"></script>
+    <script src="../../Scripts/App/Services/employeeRepository.js"></script>
+    <script src="../../Scripts/App/Controllers/usersController.js"></script>
+    <script src="../../Scripts/App/Services/userRepository.js"></script>
+    <script src="../../Scripts/App/Controllers/countriesController.js"></script>
+    <script src="../../Scripts/App/Services/countryRepository.js"></script>
+    <script src="../../Scripts/App/Controllers/citiesController.js"></script>
+    <script src="../../Scripts/App/Services/cityRepository.js"></script>
 
 </body>
 </html>

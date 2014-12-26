@@ -7,13 +7,17 @@ angular.module('AccionLaboralApp', [
   'ngGrid',
   'clientsController',
   'careersController',
-  'contractTemplatesController'
+  'contractTemplatesController',
+  'employeesController',
+  'usersController',
+  'countriesController',
+  'citiesController'
 ])
 .config(['$routeProvider',
   function ($routeProvider) {
       $routeProvider.
         otherwise({
-            redirectTo: '/'
+            redirectTo: '/Login'
         });
   }]).filter('startFrom', function () {
       return function (input, start) {

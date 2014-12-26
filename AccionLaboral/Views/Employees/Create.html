@@ -1,0 +1,182 @@
+﻿<!--<div class="col-md-3">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">Foto de Perfil</h3>
+        </div>
+        <div class="box-body">
+            <div class="text-center">
+                <img src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="">
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="employeePhotoFile">Cambiar foto de Perfil</label>
+                <input type="file" id="employeePhotoFile" base-sixty-four-input>
+                <p class="help-block">Seleccione una foto</p>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-right">
+                        <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">{{employee_buttonName}}</button>
+                    </div>
+                </div>
+                <div class="col-md-6 text-left">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>-->
+
+<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">{{employee_modalTitle}}</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_FirstName">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Apellido</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_LastName">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Fecha de Nacimiento</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Edad</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Age">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Genero</label>
+                        <div class="form-group">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="employee_Gender">
+                                    Femenino
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="employee_Gender">
+                                    Masculino
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="employee_Email">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Celular</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-mobile-phone"></i>
+                            </div>
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_Cellphone">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Teléfono Fijo</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_HomePhone">
+                        </div><!-- /.input group -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Address">
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Carrera</label>
+                        <select class="form-control" ng-options="career.Name for career in employeesCareersList" ng-model="employee_Career"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Tipo de Empleado</label>
+                        <select class="form-control" ng-options="rol.Name for rol in employeesRolesList" ng-model="employee_Role"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Alias</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_EmployeeAlias">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <select class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User"></select>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.box-body -->
+        <div class="box-footer">
+            <div class="row">
+                <!--<div class="col-md-6 text-center">-->
+                    <div class="col-md-6 text-right">
+                        <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">{{employee_buttonName}}</button>
+                    </div>
+                <!--</div>
+                <div class="col-md-6 text-center">-->
+                    <div class="col-md-6 text-left">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
+                    </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

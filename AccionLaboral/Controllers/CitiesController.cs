@@ -17,6 +17,8 @@ namespace AccionLaboral.Controllers
         private AccionLaboralContext db = new AccionLaboralContext();
 
         // GET api/Cities
+        [Route("api/Cities")]
+        [HttpGet]
         public IQueryable<City> GetCities()
         {
             return db.Cities.Include(r=>r.Country);
@@ -70,6 +72,8 @@ namespace AccionLaboral.Controllers
         }
 
         // POST api/Cities
+        [Route("api/Cities")]
+        [HttpPost]
         [ResponseType(typeof(City))]
         public IHttpActionResult PostCity(City city)
         {
