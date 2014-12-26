@@ -1,8 +1,9 @@
-﻿/// <reference path="../../Views/Clientes/_RegisterClient.html" />
+/// <reference path="../../Views/Clientes/_RegisterClient.html" />
 'use strict';
 
 angular.module('AccionLaboralApp', [
   'ngRoute',
+  'ui.bootstrap',
   'ngGrid',
   'clientsController',
   'careersController',
@@ -14,7 +15,15 @@ angular.module('AccionLaboralApp', [
         otherwise({
             redirectTo: '/'
         });
-  }]);
+  }]).filter('startFrom', function () {
+      return function (input, start) {
+          if (input) {
+              start = +start; //parse to int
+              return input.slice(start);
+          }
+          return [];
+      }
+  });;
 /*
 acLabApp.controller('mainController', function ($scope) {
     $scope.title = "Pagina principal";

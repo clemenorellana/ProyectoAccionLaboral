@@ -5,7 +5,7 @@
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="text-center">
-                <img ng-show="New.Photo" ng-src="data:image/jpeg;base64,{{New.Photo}}" />
+                <img ng-show="New.Photo" />
                 <img ng-show="!New.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
             </div>
             <br />
@@ -15,16 +15,6 @@
                 <p class="help-block">Seleccione una foto</p>
             </div>
         </div>
-        <div class="box-footer">
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <button type="submit" class="btn btn-primary" ng-click="update()">Registrar</button>
-                </div>
-                <div class="col-md-6 text-center">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
     </div>
 
 </div>
@@ -32,447 +22,465 @@
 
 <div class="col-md-9">
     <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="RegisterClient#personalInfo" data-toggle="tab">Datos Personales</a></li>
-            <li><a href="RegisterClient#academicEducationInfo" data-toggle="tab">Información Académica</a></li>
-            <li><a href="RegisterClient#workExperienceInfo" data-toggle="tab">Experiencia Laboral</a></li>
-            <li><a href="RegisterClient#referencesInfo" data-toggle="tab">Referencias</a></li>
-            <li><a href="RegisterClient#additionalTrainingInfo" data-toggle="tab">Información Adicional</a></li>
+        <ul class="nav nav-tabs" ng-init="selected=1">
+            <li class="active" ng-click="selected=1"><a href="RegisterClient#personalInfo" data-toggle="tab">Datos Personales</a></li>
+            <li ng-click="selected=2"><a href="RegisterClient#academicEducationInfo" data-toggle="tab">Información Académica</a></li>
+            <li ng-click="selected=3"><a href="RegisterClient#workExperienceInfo" data-toggle="tab">Experiencia Laboral</a></li>
+            <li ng-click="selected=4"><a href="RegisterClient#referencesInfo" data-toggle="tab">Referencias</a></li>
+            <li ng-click="selected=5"><a href="RegisterClient#additionalTrainingInfo" data-toggle="tab">Información Adicional</a></li>
         </ul>
         <div class="tab-content">
-            <!--Tab Datos Personales-->
-            <div class="tab-pane active" id="personalInfo">
-                <section>
-                    <h4 class="page-header">Datos Personales</h4>
-                    <div class="box-body">
-                        <form role="form">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName">
+            
+                <!--Tab Datos Personales-->
+                <div class="tab-pane active" id="personalInfo" ng-show="selected==1">
+                    <section>
+                        <h4 class="page-header">Datos Personales</h4>
+                        <div class="box-body">
+                            <form name="clientForm" novalidate>
+                                <div class="row" show-errors>
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.FirstName }">
+                                            <label>Nombre</label>
+                                            <input type="text" class="form-control" id="firstName" placeholder="Ingresar ..." ng-model="New.FirstName" required>
+                                            <span style="color:red" ng-show="!New.FirstName">
+                                                <span ng-show="!New.FirstName">Nombre es requerido.</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.LastName }">
+                                            <label>Apellido</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName">
+                                            <span style="color:red" ng-show="!New.FirstName">
+                                                <span ng-show="!New.LastName">Apellido es requerido.</span>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Apellido</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName">
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Fecha de Nacimiento</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.Birthday }">
+                                            <label>Fecha de Nacimiento</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" ng-change="calculateAge()" data-mask="" ng-model="New.Birthday">
                                             </div>
-                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Edad</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age">
+                                    <div class="col-md-4">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.Age }">
+                                            <label>Edad</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Genero</label>
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="New.Gender">
-                                                    Femenino
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="New.Gender">
-                                                    Masculino
-                                                </label>
+                                            <label>Genero</label>
+                                            <div class="form-group" ng-class="{ 'has-error': !New.Gender }">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="New.Gender">
+                                                        Femenino
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="New.Gender">
+                                                        Masculino
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Correo Electrónico</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.Email }">
+                                            <label>Correo Electrónico</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                                <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Celular</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-mobile-phone"></i>
-                                            </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
-                                        </div><!-- /.input group -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.Cellphone }">
+                                            <label>Celular</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-mobile-phone"></i>
+                                                </div>
+                                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
+                                            </div><!-- /.input group -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.HomePhone }">
+                                            <label>Teléfono Fijo</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-phone"></i>
+                                                </div>
+                                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
+                                            </div><!-- /.input group -->
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Teléfono Fijo</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-phone"></i>
-                                            </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
-                                        </div><!-- /.input group -->
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Barrio / Colonia</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.Neighborhood }">
+                                            <label>Barrio / Colonia</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error': !New.CityId }">
+                                            <label>Ciudad</label>
+                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Ciudad</label>
-                                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label>Dirección Completa</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
-                            </div>
-                        </form>
-                    </div><!-- /.box-body -->
-                    <!--</div>--><!-- /.box -->
-                </section>
+                                <div class="form-group" ng-class="{ 'has-error': !New.CompleteAddress }">
+                                    <label>Dirección Completa</label>
+                                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
+                                </div>
+                            </form>
+                        </div><!-- /.box-body -->
+                        <!--</div>--><!-- /.box -->
+                    </section>
 
-            </div><!--End Tab Datos Personales-->
-            <!--Tab Formaciones Académicas-->
-            <div class="tab-pane" id="academicEducationInfo">
-                <section>
-                    <h4 class="page-header">Formaciones Académicas</h4>
-                    <div class="box-body">
-                        <form role="form">
-                            <!--Begin Estudios Academicos Box-->
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Estudios Académicos</h3>
-                                    <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicInfo" title="" data-original-title="Collapse" ng-click="clearAcademicEducation()">
-                                            <i class="fa  fa-plus"></i>
-                                        </button>
+                </div><!--End Tab Datos Personales-->
+                <!--Tab Formaciones Académicas-->
+                <ng-form class="tab-pane" id="academicEducationInfo" ng-show="selected==2">
+                    <section>
+                        <h4 class="page-header">Formaciones Académicas</h4>
+                        <div class="box-body">
+                            <form role="form">
+                                <!--Begin Estudios Academicos Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Estudios Académicos</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicInfo" title="" data-original-title="Collapse" ng-click="clearAcademicEducation()">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <!--<th style="width: 10px">#</th>-->
-                                            <th>Año</th>
-                                            <th>País</th>
-                                            <th>Ciudad</th>
-                                            <th>Nivel Académico</th>
-                                            <th>Título Obtenido</th>
-                                            <th>Institución</th>
-                                            <th>Opción</th>
-                                        </tr>
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <th>Año</th>
+                                                <th>País</th>
+                                                <th>Ciudad</th>
+                                                <th>Nivel Académico</th>
+                                                <th>Título Obtenido</th>
+                                                <th>Institución</th>
+                                                <th>Opción</th>
+                                            </tr>
 
-                                        <tr ng-repeat="education in academicEducations">
-                                            <td>{{education.Year}}</td>
-                                            <td>{{education.Country.Name}}</td>
-                                            <td>{{education.City.Name}}</td>
-                                            <td>{{education.AcademicLevel.Name}}</td>
-                                            <td>{{education.TrainingName}}</td>
-                                            <td>{{education.InstitutionName}}</td>
-                                            <td>
-                                                <button type="button" ng-click="removeAcademicEducation($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)">Editar</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div>
-                            <!-- End Estudios Academicos Box -->
-                            <!--Begin Idiomas Manejados Box-->
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Idiomas Manejados</h3>
-                                    <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#languagesInfo" ng-click="clearKnownLanguage()" title="" data-original-title="Collapse">
-                                            <i class="fa  fa-plus"></i>
-                                        </button>
-                                    </div>
+                                            <tr ng-repeat="education in academicEducations">
+                                                <td>{{education.Year}}</td>
+                                                <td>{{education.Country.Name}}</td>
+                                                <td>{{education.City.Name}}</td>
+                                                <td>{{education.AcademicLevel.Name}}</td>
+                                                <td>{{education.TrainingName}}</td>
+                                                <td>{{education.InstitutionName}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" ng-click="removeAcademicEducation($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)" title="Editar"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
                                 </div>
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <!--<th style="width: 10px">#</th>-->
-                                            <th>Idioma</th>
-                                            <th>Nivel</th>
-                                            <th>Porcentaje</th>
-                                            <th>Opción</th>
-                                        </tr>
-                                        <tr ng-repeat="knownLanguage in knownLanguages">
-                                            <td>{{knownLanguage.Language.Name}}</td>
-                                            <td>{{knownLanguage.LanguageLevel.Name}}</td>
-                                            <td>{{knownLanguage.Percentage}}</td>
-                                            <td>
-                                                <button type="button" ng-click="removeKnownLanguage($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#languagesInfo" ng-click="fillKnownLanguage($index)">Editar</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div>
-                            <!-- End Idiomas Manejados Box -->
-                            <!--Begin Programas Manejados Box-->
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Programas Manejados</h3>
-                                    <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#programsInfo" ng-click="clearProgram()" title="" data-original-title="Collapse">
-                                            <i class="fa  fa-plus"></i>
-                                        </button>
+                                <!-- End Estudios Academicos Box -->
+                                <!--Begin Idiomas Manejados Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Idiomas Manejados</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#languagesInfo" ng-click="clearKnownLanguage()" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <th>Idioma</th>
+                                                <th>Nivel</th>
+                                                <th>Porcentaje</th>
+                                                <th>Opción</th>
+                                            </tr>
+                                            <tr ng-repeat="knownLanguage in knownLanguages">
+                                                <td>{{knownLanguage.Language.Name}}</td>
+                                                <td>{{knownLanguage.LanguageLevel.Name}}</td>
+                                                <td>{{knownLanguage.Percentage}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" ng-click="removeKnownLanguage($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#languagesInfo" ng-click="fillKnownLanguage($index)" title="Editar"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
                                 </div>
-                                <div class="box-body ">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <!--<th style="width: 10px">#</th>-->
-                                            <th>Programa</th>
-                                            <th>Opción</th>
-                                        </tr>
-                                        <tr ng-repeat="knownProgram in knownPrograms">
-                                            <td>{{knownProgram.Name}}</td>
-                                            <td>
-                                                <button type="button" ng-click="removeKnownProgram($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#programsInfo" ng-click="fillKnownProgram($index)">Editar</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div>
-                            <!-- End Programas Manejados Box -->
-                        </form>
+                                <!-- End Idiomas Manejados Box -->
+                                <!--Begin Programas Manejados Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Programas Manejados</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#programsInfo" ng-click="clearProgram()" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body ">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <th>Programa</th>
+                                                <th>Opción</th>
+                                            </tr>
+                                            <tr ng-repeat="knownProgram in knownPrograms">
+                                                <td>{{knownProgram.Name}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" ng-click="removeKnownProgram($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#programsInfo" ng-click="fillKnownProgram($index)" title="Editar"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <!-- End Programas Manejados Box -->
+                            </form>
+                        </div>
+
+                    </section>
+                </ng-form><!--End Tab Formaciones Académicas-->
+                <!--Tab Experiencia Laboral-->
+                <ng-form class="tab-pane" id="workExperienceInfo" ng-show="selected==3">
+                    <section>
+                        <h4 class="page-header">Experiencia Laboral</h4>
+                        <div class="box-body">
+                            <form role="form">
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#experienceInfo" ng-click="clearWorkExperience()" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <th>Inicio</th>
+                                                <th>Fin</th>
+                                                <th>País</th>
+                                                <th>Ciudad</th>
+                                                <th>Empresa</th>
+                                                <th>Cargo Ocupado</th>
+                                                <th>Opción</th>
+                                            </tr>
+                                            <tr ng-repeat="workExperience in workExperiences">
+                                                <td>{{workExperience.StartDate}}</td>
+                                                <td>{{workExperience.EndDate}}</td>
+                                                <td>{{workExperience.WorkCountry.Name}}</td>
+                                                <td>{{workExperience.WorkCity.Name}}</td>
+                                                <td>{{workExperience.CompanyName}}</td>
+                                                <td>{{workExperience.Charge}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" ng-click=" removeWorkExperience($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#experienceInfo" ng-click="fillWorkExperience($index)" title="Editar"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
+                                </div>
+                            </form>
+                        </div><!-- /.box-body -->
+
+                    </section>
+                </ng-form> <!--EndTab Experiencia Laboral-->
+                <!--Tab Referencias-->
+                <ng-form class="tab-pane" id="referencesInfo" ng-show="selected==4">
+                    <section>
+                        <h4 class="page-header">Referencias</h4>
+
+                        <div class="box-body">
+                            <form role="form">
+                                <!--Begin Referencias Laborales Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Referencias Laborales</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#workRefInfo" ng-click="clearWorkReference()" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <th>Nombre</th>
+                                                <th>Empresa</th>
+                                                <th>Cargo</th>
+                                                <th>Teléfono</th>
+                                                <th>Correo Electrónico</th>
+                                                <th>Ciudad</th>
+                                                <th>País</th>
+                                                <th>Opción</th>
+                                            </tr>
+                                            <tr ng-repeat="workReference in workReferences">
+                                                <td>{{workReference.FirstName}}</td>
+                                                <td>{{workReference.LastName}}</td>
+                                                <td>{{workReference.Charge}}</td>
+                                                <td>{{workReference.Cellphone}}</td>
+                                                <td>{{workReference.Email}}</td>
+                                                <td>{{workReference.City.Name}}</td>
+                                                <td>{{workReference.Country.Name}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" ng-click=" removeWorkReference($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)" title="Editar"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <!-- End Referencias Laborales Box -->
+                                <!--Begin Referencias Personales Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Referencias Personales</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#personalRefInfo" ng-click="clearPersonalReference()" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <th>Nombre</th>
+                                                <th>Ocupación</th>
+                                                <th>Parentezco</th>
+                                                <th>Teléfono</th>
+                                                <th>Correo Electrónico</th>
+                                                <th>Ciudad</th>
+                                                <th>País</th>
+                                                <th>Opción</th>
+                                            </tr>
+                                            <tr ng-repeat="personalReference in personalReferences">
+                                                <td>{{personalReference.FirstName}}</td>
+                                                <td>{{personalReference.LastName}}</td>
+                                                <td>{{personalReference.Charge}}</td>
+                                                <td>{{personalReference.Cellphone}}</td>
+                                                <td>{{personalReference.Email}}</td>
+                                                <td>{{personalReference.City.Name}}</td>
+                                                <td>{{personalReference.Country.Name}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" ng-click=" removePersonalReference($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)" title="Editar"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <!-- End Referencias Personales Box -->
+                            </form>
+                        </div>
+                    </section>
+                </ng-form><!--End Tab Referencias-->
+                <!--Tab Formaciones Adicionales-->
+                <ng-form class="tab-pane" id="additionalTrainingInfo" ng-show="selected==5">
+                    <section>
+                        <h4 class="page-header">Formaciones Adicionales</h4>
+                        <div class="box-body">
+                            <form role="form">
+                                <!--Begin Formaciones Adicionales Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Formaciones Adicionales</h3>
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="clearTranning()" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <!--<th style="width: 10px">#</th>-->
+                                                <th>Año</th>
+                                                <th>País</th>
+                                                <th>Ciudad</th>
+                                                <th>Título de la Formación</th>
+                                                <th>Institución</th>
+                                                <th>Opción</th>
+                                            </tr>
+                                            <tr ng-repeat="tranning in Trannings">
+                                                <td>{{tranning.Year}}</td>
+                                                <td>{{tranning.Country.Name}}</td>
+                                                <td>{{tranning.City.Name}}</td>
+                                                <td>{{tranning.TrainingName}}</td>
+                                                <td>{{tranning.InstitutionName}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" ng-click=" removeTranning($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="fillTranning($index)" title="Editar"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <!-- End Formaciones Adicionales Box -->
+                                <!--Begin Pasatiempos Box-->
+                                <div class="box box-info">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Pasatiempos u otras activiades</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label>Actividades</label>
+                                            <textarea class="form-control ng-pristine ng-valid ng-touched" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                </div>
+                                <!-- End Idiomas Manejados Box -->
+                            </form>
+                        </div>
+
+                    </section>
+                </ng-form> <!--End Tab Formaciones Adicionales-->
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-1 text-center">
+                            <button type="submit" class="btn btn-primary" ng-click="update()"> Registrar </button>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <button type="button" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="has-error">
+                            <p class="help-block" ng-show="clientForm.$invalid">Complete todos los campos requeridos.</p>
+                        </div>
                     </div>
-
-                </section>
-            </div><!--End Tab Formaciones Académicas-->
-            <!--Tab Experiencia Laboral-->
-            <div class="tab-pane" id="workExperienceInfo">
-                <section>
-                    <h4 class="page-header">Experiencia Laboral</h4>
-                    <div class="box-body">
-                        <form role="form">
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#experienceInfo" ng-click="clearWorkExperience()" title="" data-original-title="Collapse">
-                                            <i class="fa  fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <!--<th style="width: 10px">#</th>-->
-                                            <th>Inicio</th>
-                                            <th>Fin</th>
-                                            <th>País</th>
-                                            <th>Ciudad</th>
-                                            <th>Empresa</th>
-                                            <th>Cargo Ocupado</th>
-                                            <th>Opción</th>
-                                        </tr>
-                                        <tr ng-repeat="workExperience in workExperiences">
-                                            <td>{{workExperience.StartDate}}</td>
-                                            <td>{{workExperience.EndDate}}</td>
-                                            <td>{{workExperience.WorkCountry.Name}}</td>
-                                            <td>{{workExperience.WorkCity.Name}}</td>
-                                            <td>{{workExperience.CompanyName}}</td>
-                                            <td>{{workExperience.Charge}}</td>
-                                            <td>
-                                                <button type="button" ng-click=" removeWorkExperience($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#experienceInfo" ng-click="fillWorkExperience($index)">Editar</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div>
-                        </form>
-                    </div><!-- /.box-body -->
-
-                </section>
-            </div> <!--EndTab Experiencia Laboral-->
-            <!--Tab Referencias-->
-            <div class="tab-pane" id="referencesInfo">
-                <section>
-                    <h4 class="page-header">Referencias</h4>
-
-                    <div class="box-body">
-                        <form role="form">
-                            <!--Begin Referencias Laborales Box-->
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Referencias Laborales</h3>
-                                    <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#workRefInfo" ng-click="clearWorkReference()" title="" data-original-title="Collapse">
-                                            <i class="fa  fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <!--<th style="width: 10px">#</th>-->
-                                            <th>Nombre</th>
-                                            <th>Empresa</th>
-                                            <th>Cargo</th>
-                                            <th>Teléfono</th>
-                                            <th>Correo Electrónico</th>
-                                            <th>Ciudad</th>
-                                            <th>País</th>
-                                            <th>Opción</th>
-                                        </tr>
-                                        <tr ng-repeat="workReference in workReferences">
-                                            <td>{{workReference.FirstName}}</td>
-                                            <td>{{workReference.LastName}}</td>
-                                            <td>{{workReference.Charge}}</td>
-                                            <td>{{workReference.CellPhone}}</td>
-                                            <td>{{workReference.Email}}</td>
-                                            <td>{{workReference.City.Name}}</td>
-                                            <td>{{workReference.Country.Name}}</td>
-                                            <td>
-                                                <button type="button" ng-click=" removeWorkReference($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)">Editar</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div>
-                            <!-- End Referencias Laborales Box -->
-                            <!--Begin Referencias Personales Box-->
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Referencias Personales</h3>
-                                    <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#personalRefInfo" ng-click="clearPersonalReference()" title="" data-original-title="Collapse">
-                                            <i class="fa  fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <!--<th style="width: 10px">#</th>-->
-                                            <th>Nombre</th>
-                                            <th>Ocupación</th>
-                                            <th>Parentezco</th>
-                                            <th>Teléfono</th>
-                                            <th>Correo Electrónico</th>
-                                            <th>Ciudad</th>
-                                            <th>País</th>
-                                            <th>Opción</th>
-                                        </tr>
-                                        <tr ng-repeat="personalReference in personalReferences">
-                                            <td>{{personalReference.FirstName}}</td>
-                                            <td>{{personalReference.LastName}}</td>
-                                            <td>{{personalReference.Charge}}</td>
-                                            <td>{{personalReference.CellPhone}}</td>
-                                            <td>{{personalReference.Email}}</td>
-                                            <td>{{personalReference.City.Name}}</td>
-                                            <td>{{personalReference.Country.Name}}</td>
-                                            <td>
-                                                <button type="button" ng-click=" removePersonalReference($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)">Editar</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div>
-                            <!-- End Referencias Personales Box -->
-                        </form>
-                    </div>
-                </section>
-            </div><!--End Tab Referencias-->
-            <!--Tab Formaciones Adicionales-->
-            <div class="tab-pane" id="additionalTrainingInfo">
-                <section>
-                    <h4 class="page-header">Formaciones Adicionales</h4>
-                    <div class="box-body">
-                        <form role="form">
-                            <!--Begin Formaciones Adicionales Box-->
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Formaciones Adicionales</h3>
-                                    <div class="pull-right box-tools">
-                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="clearTranning()" title="" data-original-title="Collapse">
-                                            <i class="fa  fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <!--<th style="width: 10px">#</th>-->
-                                            <th>Año</th>
-                                            <th>País</th>
-                                            <th>Ciudad</th>
-                                            <th>Tipo de Formación</th>
-                                            <th>Título de la Formación</th>
-                                            <th>Institución</th>
-                                            <th>Opción</th>
-                                        </tr>
-                                        <tr ng-repeat="tranning in Trannings">
-                                            <td>{{tranning.Year}}</td>
-                                            <td>{{tranning.Country.Name}}</td>
-                                            <td>{{tranning.City.Name}}</td>
-                                            <td>{{tranning.EducationTypeId.Name}}</td>
-                                            <td>{{tranning.TrainingName}}</td>
-                                            <td>{{tranning.InstitutionName}}</td>
-                                            <td>
-                                                <button type="button" ng-click=" removeTranning($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="fillTranning($index)">Editar</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div>
-                            <!-- End Formaciones Adicionales Box -->
-                            <!--Begin Pasatiempos Box-->
-                            <div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Pasatiempos u otras activiades</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label>Actividades</label>
-                                        <textarea class="form-control ng-pristine ng-valid ng-touched" rows="3" placeholder="Ingresar ..." ng-model="New.Hobby"></textarea>
-                                    </div>
-                                </div><!-- /.box-body -->
-                            </div>
-                            <!-- End Idiomas Manejados Box -->
-                        </form>
-                    </div>
-
-                </section>
-            </div> <!--End Tab Formaciones Adicionales-->
+                </div>
         </div><!-- /.tab-content -->
     </div><!-- /.nav-tabs-custom -->
 
@@ -495,41 +503,23 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.Name for country in Countries track by country.CountryId" ng-model="CountryId"></select>
+                            <select class="form-control" ng-options="country.Name for country in Countries track by country.CountryId" ng-model="Country"></select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="CityId"></select>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(Country.CountryId)" ng-model="City"></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Nivel Académico</label>
                             <select class="form-control" ng-options="academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevel">
-                                <!--<option>Primaria</option>
-                                    <option>Secundaria</option>
-                                    <option>Universitaria</option>
-                                    <option>Maestria</option>-->
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Carrera</label>
                             <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId">
-                                <!--<option>Primaria</option>
-                                    <option>Secundaria</option>
-                                    <option>Universitaria</option>
-                                    <option>Maestria</option>-->
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Tipo de Educación</label>
-                            <select class="form-control" ng-options="EducationType.EducationTypeId as EducationType.Name for EducationType in EducationTypes" ng-model="EducationTypeId">
-                                <!--<option>Primaria</option>
-                                    <option>Secundaria</option>
-                                    <option>Universitaria</option>
-                                    <option>Maestria</option>-->
+                            
                             </select>
                         </div>
                     </div>
@@ -657,19 +647,11 @@
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="Country.Name for Country in Countries" ng-model="WorkCountry">
-                                <!--<option>Honduras</option>
-                                <option>EE. UU.</option>
-                                <option>Canada</option>
-                                <option>España</option>-->
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="City.Name for City in Cities" ng-model="WorkCity">
-                                <!--<option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>-->
-                            </select>
+                            <select class="form-control" ng-options="City.Name for City in getCitiesByCountry(WorkCountry.CountryId)" ng-model="WorkCity"></select>
                         </div>
                     </div>
                     <div class="row">
@@ -731,7 +713,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellPhoneWRef">
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphoneWRef">
                                 </div><!-- /.input group -->
                             </div>
                         </div>
@@ -745,25 +727,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label>Ciudad</label>
-                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="CityWRef">
-                            <!--<option>San Pedro Sula</option>
-                            <option>Tegucigalpa</option>
-                            <option>La Ceiba</option>-->
-                        </select>
-                    </div>
+                    
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryWRef">
-                                <!--<option>Honduras</option>
-                                    <option>EE. UU.</option>
-                                    <option>Canada</option>
-                                    <option>España</option>-->
+                          
                             </select>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label>Ciudad</label>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryWRef.CountryId)" ng-model="CityWRef"></select>
+                        </div>
                     </div>
+                    
                     <div class="form-group">
                         <label>Empresa</label>
                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyNameWRef">
@@ -813,7 +790,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellPhonePRef">
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphonePRef">
                                 </div><!-- /.input group -->
                             </div>
                         </div>
@@ -831,19 +808,12 @@
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryPRef">
-                                <!--<option>Honduras</option>
-                                <option>EE. UU.</option>
-                                <option>Canada</option>
-                                <option>España</option>-->
+                             
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="CityPRef">
-                                <!--<option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>-->
-                            </select>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryPRef.CountryId)" ng-model="CityPRef"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -881,48 +851,29 @@
                         <div class="form-group col-md-4">
                             <label>País</label>
                             <select class="form-control" ng-options="country.Name for country in Countries" ng-model="_Country">
-                                <!--<option>Honduras</option>
-                                <option>EE. UU.</option>
-                                <option>Canada</option>
-                                <option>España</option>-->
+                               
                             </select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="_City">
-                                <!--<option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>-->
-                            </select>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(_Country.CountryId)" ng-model="_City"></select>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Tipo de Formación</label>
-                            <select class="form-control" ng-options="educationType.Name for educationType in EducationTypes" ng-model="_EducationTypeId">
-                                <!--<option>Curso</option>
-                                <option>Diplomado</option>
-                                <option>Congreso</option>
-                                <option>Concurso</option>
-                                <option>Proyecto Humanitario</option>-->
-                            </select>
-                        </div>
+                        
                         <div class="form-group col-md-4">
                             <label>Carrera</label>
-                            <select class="form-control" ng-options="career.Name for career in Careers" ng-model="_Career">
-                                <!--<option>Honduras</option>
-                                    <option>EE. UU.</option>
-                                    <option>Canada</option>
-                                    <option>España</option>-->
+                            <select class="form-control" ng-options="career.Name for career in AllCarees" ng-model="_Career">
+                                
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <label>Título de la formación</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName">
-                        </div>
-                        <div class="form-group col-md-12">
+                            <div class="form-group col-md-12">
+                                <label>Título de la formación</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName">
+                            </div>
                             <label>Nombre de la Institución</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_InstitutionName">
                         </div>

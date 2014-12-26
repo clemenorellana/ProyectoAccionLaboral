@@ -7,7 +7,6 @@ using System.Web;
 
 namespace AccionLaboral.Models
 {
-    [Table("academiceducations")]
     public class AcademicEducation
     {
         [Key]

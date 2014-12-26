@@ -21,7 +21,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         getAcademicLevels: function (callback) {
             return $http.get('api/AcademicLevels');
         },
-        getCareers: function (callback) {
+        getCareers: function () {
             return $http.get('api/Careers');
         },
         getEducationTypes: function (callback) {

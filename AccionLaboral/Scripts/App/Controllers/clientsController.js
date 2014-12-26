@@ -16,20 +16,71 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             controller: "editCustomerController"
         });
 }])
-.controller('CustomerController', ['$scope', '$location', 'customerRepository', function($scope, $location, customerRepository) {
-
+.controller('CustomerController', ['$scope', '$location', '$filter', 'customerRepository', 'filterFilter', function ($scope, $location, $filter, customerRepository, filterFilter) {
+    
+        $scope.calculateAge = function() {
+            var birthday = +new Date($scope.New.Birthday);
+            var age = ~~((Date.now() - birthday) / (31557600000));
+            $scope.New.Age = age;
+        }
         $scope.handleFileSelectAdd = function(evt) {
+            
             var f = evt.target.files[0];
             var reader = new FileReader();
             reader.onload = (function(theFile) {
-                return function(e) {
+                return function (e) {
                     var filePayload = e.target.result;
-                    $scope.episodeImgData = e.target.result;
-                    document.getElementById('imagen').src = $scope.episodeImgData;
+                    $scope.episodeImgData = filePayload.replace('data:'+f.type +';base64,', '');
+                    document.getElementById('imagen').src = filePayload;
                 };
             })(f);
             reader.readAsDataURL(f);
         };
+        $scope.itemsPerPageList = [1, 5, 10, 20, 30, 40, 50];
+        $scope.entryLimit = $scope.itemsPerPageList[0];
+        $scope.setData = function(){
+            customerRepository.getCustomers().success(function(data) {
+                        $scope.customerData = data;
+                        $scope.totalServerItems = data.totalItems;
+                        $scope.items = data.items;
+                        $scope.load = false;
+
+                        $scope.currentPage = 1; //current page
+                $scope.maxSize = 5; //pagination max size
+                 //max rows for data table
+
+                /* init pagination with $scope.list */
+                
+                $scope.noOfPages = ($scope.customerData) ? Math.ceil($scope.customerData.length / $scope.entryLimit) : 1;
+                
+                $scope.itemsInPage = ($scope.customerData.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.customerData.length) ?
+                        $scope.customerData.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                    
+                })
+                    .error(function(data) {
+                        $scope.error = "An Error has occured while loading posts! " + data.ExceptionMessage;
+                        $scope.load = false;
+                    });
+    
+        };
+
+        customerRepository.getCustomers().success(function(data) {
+                        $scope.customerData = data;
+                        $scope.totalServerItems = data.totalItems;
+                        $scope.items = data.items;
+                        $scope.load = false;
+                    })
+                    .error(function(data) {
+                        $scope.error = "An Error has occured while loading posts! " + data.ExceptionMessage;
+                        $scope.load = false;
+                    });
+$scope.setData();
+                
+                $scope.$watch('search', function (term) {
+                    // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+                    $scope.filtered = filterFilter($scope.customerData, term);
+                    $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+                });
 
         $scope.academicEducations = [], $scope.knownLanguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
 
@@ -88,6 +139,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             $scope.TrainingName = "",
             $scope.InstitutionName = "",
             $scope.AcademicLevel = "",
+            $scope.CareerId = "",
             $scope.EducationTypeId = "";
             $scope.City = "",
             $scope.Year = "",
@@ -243,7 +295,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             };
         $scope.fillWorkReference = function (index) {
             $scope.textButton = 'Editar';
-            $scope.FirstNameWRef = $scope.workReferences[index].FirstName,
+            $scope.FirstNameWRef = $scope.workReferences[indupex].FirstName,
                 $scope.LastNameWRef = $scope.workReferences[index].LastName,
                 $scope.ChargeWRef = $scope.workReferences[index].Charge,
                 $scope.CellphoneWRef = $scope.workReferences[index].Cellphone,
@@ -374,8 +426,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                     if ($scope.action == 'edit') {
                         $scope.Trannings[$scope.index].TrainingName = $scope._TrainingName,
                             $scope.Trannings[$scope.index].InstitutionName = $scope._InstitutionName,
-                            $scope.Trannings[$scope.index].CareerId = $scope._CareerId,
-                            $scope.Trannings[$scope.index].EducationTypeId = $scope._EducationTypeId,
+                            $scope.Trannings[$scope.index].CareerId = $scope._Career.CareerId,
                             $scope.Trannings[$scope.index].City = $scope._City,
                             $scope.Trannings[$scope.index].Year = $scope._Year,
                             $scope.Trannings[$scope.index].Country = $scope._Country;
@@ -383,7 +434,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                         var tranning = {
                             TrainingName: $scope._TrainingName,
                             InstitutionName: $scope._InstitutionName,
-                            CareerId: $scope._CareerId,
+                            CareerId: $scope._Career.CareerId,
                             EducationTypeId: $scope._EducationTypeId,
                             City: $scope._City,
                             Year: $scope._Year,
@@ -395,7 +446,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 };
         $scope.removeTranning = function(index) {
                     $scope.Trannings.splice(index, 1);
-                };
+        };
+
+                customerRepository.getCareers().success(function (data) {
+                    $scope.AllCarees = data;
+                });
 
                 customerRepository.getCities().success(function(data) {
                     $scope.Cities = data;
@@ -419,21 +474,16 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
                     $scope.LanguageLevels = data;
                 });
-                $scope.assignCareers = function() {
-                    if ($scope.AcademicLevel)
-                        $scope.Careers = $scope.AcademicLevel.Careers;
-                }
+        $scope.assignCareers = function() {
+            if ($scope.AcademicLevel)
+                $scope.Careers = $scope.AcademicLevel.Careers;
+        };
+        $scope.getCitiesByCountry = function(countryId) {
+            if (countryId)
+                return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
+        };
 
-                customerRepository.getCustomers().success(function(data) {
-                        $scope.customerData = data;
-                        $scope.totalServerItems = data.totalItems;
-                        $scope.items = data.items;
-                        $scope.load = false;
-                    })
-                    .error(function(data) {
-                        $scope.error = "An Error has occured while loading posts! " + data.ExceptionMessage;
-                        $scope.load = false;
-                    });
+                
 
                 $scope.setScope = function(obj, action) {
 
@@ -460,34 +510,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 $scope.sortOptions = {
                     fields: ["name"],
                     directions: ["ASC"]
-                };
-
-                $scope.gridOptions = {
-                    data: 'customerData',
-                    columnDefs: [
-                        { field: 'clientId', displayName: 'ID', width: '5%' },
-                        { field: 'FirstName', displayName: 'Nombre', width: '15%' },
-                        { field: 'LastName', displayName: 'Apellido', width: '15%' },
-                        { field: 'Age', displayName: 'Edad', width: '5%' },
-                        { field: 'Email', displayName: 'Email', width: '15%' },
-                        { field: 'CompleteAddress', displayName: 'CompleteAddress', width: '15%' },
-                        { field: 'Cellphone', displayName: 'Celular', width: '15%' },
-                        { displayName: 'Options', cellTemplate: '<input type="button" ng-click="setScope(row.entity,\'edit\')" name="edit"  value="Edit">&nbsp;<input type="button" ng-click="DeleteUser(row.entity.id)"  name="delete"  value="Delete">', width: '25%' }
-                    ],
-                    enablePaging: true,
-                    enablePinning: true,
-                    pagingOptions: $scope.pagingOptions,
-                    filterOptions: $scope.filterOptions,
-                    keepLastSelected: true,
-                    multiSelect: false,
-                    showColumnMenu: true,
-                    showFilter: true,
-                    showGroupPanel: true,
-                    showFooter: true,
-                    sortInfo: $scope.sortOptions,
-                    totalServerItems: "totalServerItems",
-                    useExternalSorting: true,
-                    i18n: "en"
                 };
 
                 $scope.refresh = function() {
@@ -530,132 +552,134 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
 
                 $scope.update = function() {
+                    if ($scope.clientForm.$valid) {
+                        if ($scope.episodeImgData)
+                            $scope.New.Photo = $scope.episodeImgData.replace(/data:image\/jpeg;base64,/g, '');
 
-                    if ($scope.episodeImgData)
-                        $scope.New.Photo = $scope.episodeImgData.replace(/data:image\/jpeg;base64,/g, '');
+                        $scope.New.AcademicEducations = [];
+                        if ($scope.academicEducations.length > 0) {
 
-                    $scope.New.AcademicEducations = [];
-                    if ($scope.academicEducations.length > 0) {
-
-                        for (var i = 0; i < $scope.academicEducations.length; i++) {
-                            var academic = {
-                                Year: $scope.academicEducations[i].Year,
-                                CountryId: $scope.academicEducations[i].Country.CountryId,
-                                CityId: $scope.academicEducations[i].City.CityId,
-                                AcademicLevelId: $scope.academicEducations[i].AcademicLevel.AcademicLevelId,
-                                TrainingName: $scope.academicEducations[i].TrainingName,
-                                InstitutionName: $scope.academicEducations[i].InstitutionName,
-                                CareerId: $scope.academicEducations[i].CareerId,
-                                EducationTypeId: 1
-                            };
-                            $scope.New.AcademicEducations.push(academic);
-                        }
-                    }
-
-                    if ($scope.knownLaguages.length > 0) {
-                        $scope.New.Languages = [];
-                        for (var j = 0; j < $scope.knownLaguages.length; j++) {
-                            var language = {
-                                LanguageId: $scope.knownLaguages[j].Language.LanguageId,
-                                LanguageLevelId: $scope.knownLaguages[j].LanguageLevel.LanguageLevelId,
-                                Percentage: $scope.knownLaguages[j].Percentage
-                            };
-                            $scope.New.Languages.push(language);
-                        }
-                    }
-                    if ($scope.knownPrograms.length > 0) {
-                        $scope.New.KnownPrograms = [];
-                        for (var j = 0; j < $scope.knownPrograms.length; j++) {
-                            var program = {
-                                Name: $scope.knownPrograms[j].Name
-                            };
-                            $scope.New.KnownPrograms.push(program);
-                        }
-                    }
-
-                    if ($scope.workExperiences.length > 0) {
-                        $scope.New.workExperiences = [];
-                        for (var k = 0; k < $scope.workExperiences.length; k++) {
-                            var experience = {
-                                CompanyName: $scope.workExperiences[k].CompanyName,
-                                CompanyArea: $scope.workExperiences[k].CompanyArea,
-                                Charge: $scope.workExperiences[k].Charge,
-                                StartDate: $scope.workExperiences[k].StartDate,
-                                EndDate: $scope.workExperiences[k].EndDate,
-                                Achievements: $scope.workExperiences[k].Achievements,
-                                CityId: $scope.workExperiences[k].WorkCity.CityId
-                            };
-                            $scope.New.workExperiences.push(experience);
-                        }
-                    }
-
-                    if ($scope.workReferences.length > 0) {
-                        $scope.New.workReferences = [];
-                        for (var l = 0; l < $scope.workReferences.length; l++) {
-                            var wExperience = {
-                                FirstName: $scope.workReferences[l].FirstName,
-                                LastName: $scope.workReferences[l].LastName,
-                                Charge: $scope.workReferences[l].Charge,
-                                Cellphone: $scope.workReferences[l].Cellphone,
-                                Email: $scope.workReferences[l].Email,
-                                CompanyName: $scope.workReferences[l].CompanyName,
-                                Relationship: $scope.workReferences[l].Relationship,
-                                ReferenceTypeId: 1,
-                                CityId: $scope.workReferences[l].City.CityId
+                            for (var i = 0; i < $scope.academicEducations.length; i++) {
+                                var academic = {
+                                    Year: $scope.academicEducations[i].Year,
+                                    CountryId: $scope.academicEducations[i].Country.CountryId,
+                                    CityId: $scope.academicEducations[i].City.CityId,
+                                    AcademicLevelId: $scope.academicEducations[i].AcademicLevel.AcademicLevelId,
+                                    TrainingName: $scope.academicEducations[i].TrainingName,
+                                    InstitutionName: $scope.academicEducations[i].InstitutionName,
+                                    CareerId: $scope.academicEducations[i].CareerId,
+                                    EducationTypeId: 1
+                                };
+                                $scope.New.AcademicEducations.push(academic);
                             }
-
-                            $scope.New.workReferences.push(wExperience);
                         }
-                    }
 
-                    if ($scope.personalReferences.length > 0) {
-                        $scope.New.personalReferences = [];
-                        for (var l = 0; l < $scope.personalReferences.length; l++) {
-                            var pExperience = {
-                                FirstName: $scope.personalReferences[l].FirstName,
-                                LastName: $scope.personalReferences[l].LastName,
-                                Charge: $scope.personalReferences[l].Charge,
-                                Cellphone: $scope.personalReferences[l].Cellphone,
-                                Email: $scope.personalReferences[l].Email,
-                                CompanyName: $scope.personalReferences[l].CompanyName,
-                                Relationship: $scope.personalReferences[l].Relationship,
-                                ReferenceTypeId: 2,
-                                CityId: $scope.personalReferences[l].City.CityId
+                        if ($scope.knownLanguages.length > 0) {
+                            $scope.New.Languages = [];
+                            for (var j = 0; j < $scope.knownLaguages.length; j++) {
+                                var language = {
+                                    LanguageId: $scope.knownLaguages[j].Language.LanguageId,
+                                    LanguageLevelId: $scope.knownLaguages[j].LanguageLevel.LanguageLevelId,
+                                    Percentage: $scope.knownLaguages[j].Percentage
+                                };
+                                $scope.New.Languages.push(language);
                             }
-
-                            $scope.New.workReferences.push(pExperience);
                         }
-                    }
-
-                    if ($scope.Trannings.length > 0) {
-                        for (var i = 0; i < $scope.Trannings.length; i++) {
-                            var tranning = {
-                                Year: $scope.Trannings[i].Year,
-                                CountryId: $scope.Trannings[i].Country.CountryId,
-                                CityId: $scope.Trannings[i].City.CityId,
-                                TrainingName: $scope.Trannings[i].TrainingName,
-                                InstitutionName: $scope.Trannings[i].InstitutionName,
-                                CareerId: $scope.Trannings[i].CareerId,
-                                EducationTypeId: 2
-                            };
-                            $scope.New.AcademicEducations.push(tranning);
+                        if ($scope.knownPrograms.length > 0) {
+                            $scope.New.KnownPrograms = [];
+                            for (var j = 0; j < $scope.knownPrograms.length; j++) {
+                                var program = {
+                                    Name: $scope.knownPrograms[j].Name
+                                };
+                                $scope.New.KnownPrograms.push(program);
+                            }
                         }
+
+                        if ($scope.workExperiences.length > 0) {
+                            $scope.New.workExperiences = [];
+                            for (var k = 0; k < $scope.workExperiences.length; k++) {
+                                var experience = {
+                                    CompanyName: $scope.workExperiences[k].CompanyName,
+                                    CompanyArea: $scope.workExperiences[k].CompanyArea,
+                                    Charge: $scope.workExperiences[k].Charge,
+                                    StartDate: $scope.workExperiences[k].StartDate,
+                                    EndDate: $scope.workExperiences[k].EndDate,
+                                    Achievements: $scope.workExperiences[k].Achievements,
+                                    CityId: $scope.workExperiences[k].WorkCity.CityId
+                                };
+                                $scope.New.workExperiences.push(experience);
+                            }
+                        }
+
+                        if ($scope.workReferences.length > 0) {
+                            $scope.New.workReferences = [];
+                            for (var l = 0; l < $scope.workReferences.length; l++) {
+                                var wExperience = {
+                                    FirstName: $scope.workReferences[l].FirstName,
+                                    LastName: $scope.workReferences[l].LastName,
+                                    Charge: $scope.workReferences[l].Charge,
+                                    Cellphone: $scope.workReferences[l].Cellphone,
+                                    Email: $scope.workReferences[l].Email,
+                                    CompanyName: $scope.workReferences[l].CompanyName,
+                                    Relationship: $scope.workReferences[l].Relationship,
+                                    ReferenceTypeId: 1,
+                                    CityId: $scope.workReferences[l].City.CityId
+                                }
+
+                                $scope.New.workReferences.push(wExperience);
+                            }
+                        }
+
+                        if ($scope.personalReferences.length > 0) {
+                            $scope.New.personalReferences = [];
+                            for (var l = 0; l < $scope.personalReferences.length; l++) {
+                                var pExperience = {
+                                    FirstName: $scope.personalReferences[l].FirstName,
+                                    LastName: $scope.personalReferences[l].LastName,
+                                    Charge: $scope.personalReferences[l].Charge,
+                                    Cellphone: $scope.personalReferences[l].Cellphone,
+                                    Email: $scope.personalReferences[l].Email,
+                                    CompanyName: $scope.personalReferences[l].CompanyName,
+                                    Relationship: $scope.personalReferences[l].Relationship,
+                                    ReferenceTypeId: 2,
+                                    CityId: $scope.personalReferences[l].City.CityId
+                                }
+
+                                $scope.New.workReferences.push(pExperience);
+                            }
+                        }
+
+                        if ($scope.Trannings.length > 0) {
+                            for (var i = 0; i < $scope.Trannings.length; i++) {
+                                var tranning = {
+                                    Year: $scope.Trannings[i].Year,
+                                    CountryId: $scope.Trannings[i].Country.CountryId,
+                                    CityId: $scope.Trannings[i].City.CityId,
+                                    TrainingName: $scope.Trannings[i].TrainingName,
+                                    InstitutionName: $scope.Trannings[i].InstitutionName,
+                                    CareerId: $scope.Trannings[i].CareerId,
+                                    EducationTypeId: 2
+                                };
+                                $scope.New.AcademicEducations.push(tranning);
+                            }
+                        }
+
+                        if ($scope.action == 'edit') {
+                            customerRepository.UpdateCustomer(function() {
+                            }, $scope.New);
+                            $scope.action = '';
+                        } else {
+                            customerRepository.InsertCustomer(function() {
+
+                            }, $scope.New);
+
+                        }
+
                     }
-
-                    if ($scope.action == 'edit') {
-                        customerRepository.UpdateCustomer(function() {
-                        }, $scope.New);
-                        $scope.action = '';
-                    } else {
-                        customerRepository.InsertCustomer(function() {
-
-                        }, $scope.New);
-
-                    }
-
-
                 }
-
+                $scope.selectedCustomer = function(id){
+                    $scope.selectedClient = id;
+                }
                 $scope.DeleteCustomer = function(id) {
                     customerRepository.DeleteCustomer(function() {
                         alert('Customer deleted');
@@ -680,25 +704,31 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         }
     }).controller("editCustomerController", [
         '$scope', '$routeParams', '$filter', 'customerRepository', function ($scope, $routeParams, $filter, customerRepository) {
-
+                
+                $scope.calculateAge = function() {
+                    var birthday = +new Date($scope.New.Birthday);
+                    var age = ~~((Date.now() - birthday) / (31557600000));
+                    $scope.New.Age = age;
+                }
             $scope.handleFileSelectAdd = function (evt) {
                 var f = evt.target.files[0];
                 var reader = new FileReader();
                 reader.onload = (function (theFile) {
                     return function (e) {
-                        var filePayload = e.target.result;
-                        $scope.episodeImgData = e.target.result;
-                        document.getElementById('imagen').src = $scope.episodeImgData;
-                        $scope.New.Photo = $scope.episodeImgData.replace(/data:image\/jpeg;base64,/g, '')
+                    var filePayload = e.target.result;
+                    $scope.New.Photo = filePayload.replace('data:'+f.type +';base64,', '');
+                    $scope.$apply(function(){
+                        
+                    }); 
                     };
                 })(f);
                 reader.readAsDataURL(f);
             };
-
-            var imageElement = document.getElementById('exampleInputFile');
+        
+        var imageElement = document.getElementById('exampleInputFile');
             if (imageElement)
                 imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
-
+                
             customerRepository.getCustomer($routeParams.id).success(function (data) {
             $scope.academicEducations = [],
             $scope.knownLaguages = [],
@@ -1148,11 +1178,17 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
         $scope.getCareersByAcademicLevel = function(academicLevelId) {
             for (var i = 0; i < $scope.AcademicLevels.length; i++) {
-                var id = $scope.AcademicLevels[i].AcademicLevelId
+                var id = $scope.AcademicLevels[i].AcademicLevelId;
                 if (academicLevelId.AcademicLevelId == id)
                     return $scope.AcademicLevels[i].Careers;
             }
         };
+
+        $scope.getCitiesByCountry = function (countryId) {
+            if (countryId)
+                return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
+        };
+
             $scope.assignCareers = function () {
                 if ($scope.AcademicLevelId)
                     $scope.Careers = $filter('filter')($scope.AcademicLevels, { AcademicLevelId: $scope.AcademicLevelId })[0].Careers;
@@ -1234,4 +1270,22 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 customerRepository.UpdateCustomer($scope.New);
             }
         }
-    ]);
+    ]).directive('showErrors', function () {
+      return {
+          restrict: 'A',
+          require: '^form',
+          link: function (scope, el, attrs, formCtrl) {
+              // find the text box element, which has the 'name' attribute
+              var inputEl = el[0].querySelector("[name]");
+              // convert the native text box element to an angular element
+              var inputNgEl = angular.element(inputEl);
+              // get the name on the text box
+              var inputName = inputNgEl.attr('name');
+
+              // only apply the has-error class after the user leaves the text box
+              inputNgEl.bind('blur', function () {
+                  el.toggleClass('has-error', formCtrl[inputName].$invalid);
+              })
+          }
+      }
+  });;

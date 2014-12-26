@@ -69,7 +69,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="New.Birthday">
+                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-change="calculateAge()" ng-model="New.Birthday">
                                         </div>
                                     </div>
                                 </div>
@@ -201,8 +201,8 @@
                                             <td>{{education.TrainingName}}</td>
                                             <td>{{education.InstitutionName}}</td>
                                             <td>
-                                                <button type="button" ng-click="removeAcademicEducation($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)">Editar</button>
+                                                <button type="button" class="btn btn-danger" ng-click="removeAcademicEducation($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#academicInfo" ng-click="fillAcademicEducation($index)" title="Editar"><i class="fa fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -233,8 +233,8 @@
                                             <td>{{knownLanguage.LanguageLevel.Name}}</td>
                                             <td>{{knownLanguage.Percentage}}</td>
                                             <td>
-                                                <button type="button" ng-click="removeKnownLanguage($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#languagesInfo" ng-click="fillKnownLanguage($index)">Editar</button>
+                                                <button type="button" class="btn btn-danger" ng-click="removeKnownLanguage($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#languagesInfo" ng-click="fillKnownLanguage($index)" title="Editar"><i class="fa fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -261,8 +261,8 @@
                                         <tr ng-repeat="knownProgram in knownPrograms">
                                             <td>{{knownProgram.Name}}</td>
                                             <td>
-                                                <button type="button" ng-click="removeKnownProgram($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#programsInfo" ng-click="fillKnownProgram($index)">Editar</button>
+                                                <button type="button" class="btn btn-danger" ng-click="removeKnownProgram($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#programsInfo" ng-click="fillKnownProgram($index)" title="Editar"><i class="fa fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -308,8 +308,8 @@
                                             <td>{{workExperience.CompanyName}}</td>
                                             <td>{{workExperience.Charge}}</td>
                                             <td>
-                                                <button type="button" ng-click=" removeWorkExperience($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#experienceInfo" ng-click="fillWorkExperience($index)">Editar</button>
+                                                <button type="button" class="btn btn-danger" ng-click=" removeWorkExperience($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#experienceInfo" ng-click="fillWorkExperience($index)" title="Editar"><i class="fa fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -359,8 +359,8 @@
                                             <td>{{workReference.City.Name}}</td>
                                             <td>{{workReference.City.Country.Name}}</td>
                                             <td>
-                                                <button type="button" ng-click=" removeWorkReference($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)">Editar</button>
+                                                <button type="button" class="btn btn-danger" ng-click=" removeWorkReference($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)" title="Editar"><i class="fa fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -399,8 +399,8 @@
                                             <td>{{personalReference.City.Name}}</td>
                                             <td>{{personalReference.City.Country.Name}}</td>
                                             <td>
-                                                <button type="button" ng-click=" removePersonalReference($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)">Editar</button>
+                                                <button type="button" class="btn btn-danger" ng-click=" removePersonalReference($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)" title="Editar"><i class="fa fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -445,8 +445,8 @@
                                             <td>{{tranning.TrainingName}}</td>
                                             <td>{{tranning.InstitutionName}}</td>
                                             <td>
-                                                <button type="button" ng-click=" removeTranning($index)">Eliminar</button>
-                                                <button type="button" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="fillTranning($index)">Editar</button>
+                                                <button type="button" class="btn btn-danger" ng-click=" removeTranning($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#academicTrainingInfo" ng-click="fillTranning($index)" title="Editar"><i class="fa fa-edit"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -497,37 +497,23 @@
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="CityId"></select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryId)" ng-model="CityId"></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Nivel Académico</label>
                             <select class="form-control" ng-options="academicLevel.AcademicLevelId as academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevelId">
-                                <!--<option>Primaria</option>
-        <option>Secundaria</option>
-        <option>Universitaria</option>
-        <option>Maestria</option>-->
+                                
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Carrera</label>
                             <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId">
-                                <!--<option>Primaria</option>
-                                    <option>Secundaria</option>
-                                    <option>Universitaria</option>
-                                    <option>Maestria</option>-->
-                            </select>
-                        </div>
-                    </div>
-                    <!--<div class="row">
-                        <div class="form-group col-md-6">
-                            <label>Tipo de Educación</label>
-                            <select class="form-control" ng-options="EducationType.EducationTypeId as EducationType.Name for EducationType in EducationTypes" ng-model="EducationTypeId">
                                 
                             </select>
                         </div>
-                    </div>-->
+                    </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label>Título Obtenido</label>
@@ -561,9 +547,7 @@
                         <div class="form-group col-md-6">
                             <label>Idioma</label>
                             <select class="form-control" ng-options="Language.LanguageId as Language.Name for Language in Languages" ng-model="LanguageId">
-                                <!--<option>Básico</option>
-        <option>Intermedio</option>
-        <option>Avanzado</option>-->
+                                
                             </select>
                         </div>
                     </div>
@@ -571,9 +555,7 @@
                         <div class="form-group col-md-4">
                             <label>Nivel</label>
                             <select class="form-control" ng-options="LanguageLevel.LanguageLevelId as LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevelId">
-                                <!--<option>Básico</option>
-        <option>Intermedio</option>
-        <option>Avanzado</option>-->
+                                
                             </select>
                         </div>
                     </div>
@@ -652,18 +634,13 @@
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="Country.CountryId as Country.Name for Country in Countries" ng-model="WorkCountryId">
-                                <!--<option>Honduras</option>
-        <option>EE. UU.</option>
-        <option>Canada</option>
-        <option>España</option>-->
+                              
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="City.CityId as City.Name for City in Cities" ng-model="WorkCityId">
-                                <!--<option>San Pedro Sula</option>
-        <option>Tegucigalpa</option>
-        <option>La Ceiba</option>-->
+                            <select class="form-control" ng-options="City.CityId as City.Name for City in getCitiesByCountry(WorkCountryId)" ng-model="WorkCityId">
+                               
                             </select>
                         </div>
                     </div>
@@ -744,19 +721,12 @@
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryIdWRef">
-                                <!--<option>Honduras</option>
-                <option>EE. UU.</option>
-                <option>Canada</option>
-                <option>España</option>-->
+                              
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="CityIdWRef">
-                                <!--<option>San Pedro Sula</option>
-                <option>Tegucigalpa</option>
-                <option>La Ceiba</option>-->
-                            </select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryIdWRef)" ng-model="CityIdWRef"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -809,7 +779,7 @@
                                         <i class="fa fa-phone"></i>
                                     </div>
                                     <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphonePRef">
-                                </div><!-- /.input group -->
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -826,19 +796,11 @@
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryIdPRef">
-                                <!--<option>Honduras</option>
-                                <option>EE. UU.</option>
-                                <option>Canada</option>
-                                <option>España</option>-->
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="CityIdPRef">
-                                <!--<option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>La Ceiba</option>-->
-                            </select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryIdPRef)" ng-model="CityIdPRef"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -880,8 +842,7 @@
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="_CityId">
-                            </select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(_CountryId)" ng-model="_CityId"></select>
                         </div>
                     </div>
                     <div class="row">
