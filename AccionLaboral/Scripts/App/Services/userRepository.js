@@ -1,4 +1,4 @@
-﻿var accionLabControllers = angular.module('usersRepository', []);
+var accionLabControllers = angular.module('usersRepository', []);
 
 accionLabControllers.factory('usersRepo', ['$http', function ($http) {
     var url = 'api/Users';
@@ -29,12 +29,12 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
         },
         //method for login
         login: function (userName, password) {
-            debugger
+            
             var user = {
                 "UserName": userName,
                 "Password": password
             };
-            return $http.post(url + '/Login/' + user);
+            return $http.post(url + '/Login', user);
         }
     }
 }]);

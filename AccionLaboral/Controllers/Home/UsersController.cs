@@ -21,7 +21,7 @@ namespace AccionLaboral.Controllers.Home
         public ActionResult Login()
         {
             //return View();
-            return new FilePathResult("/Views/Home/Login.html", "text/html");
+            return new FilePathResult("/Views/Login/Login.html", "text/html");
         }
 
         //

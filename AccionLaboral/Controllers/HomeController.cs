@@ -11,14 +11,12 @@ namespace AccionLaboral.Controllers
         //[Authorize]
         public ActionResult Index()
         {
-            return new FilePathResult("/Views/Home/Index.html", "text/html");
+            return new FilePathResult("/Views/Shared/_Layout.html", "text/html");   
         }
 
-        public ActionResult Contact()
+        public ActionResult Home()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return new FilePathResult("/Views/Home/Index.html", "text/html");
         }
 
         public ActionResult RegisterClient()

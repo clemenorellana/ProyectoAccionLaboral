@@ -46,7 +46,7 @@ a:focus {
   clear: both;
 }
 /* Header */
-body > .header {
+body > .header > div{
   position: absolute;
   top: 0;
   left: 0;
@@ -96,7 +96,7 @@ body > .header {
     By default the layout is not fixed but if you add the class .fixed to the body element
     the sidebar and the navbar will automatically become poisitioned fixed
 */
-body.fixed > .header,
+body.fixed > .header > div,
 body.fixed .left-side,
 body.fixed .navbar {
   position: fixed;

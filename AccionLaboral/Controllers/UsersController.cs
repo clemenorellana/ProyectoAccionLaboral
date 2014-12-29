@@ -25,6 +25,14 @@ namespace AccionLaboral.Controllers
             return db.Users;
         }
 
+        [Route("api/Users/Login")]
+        [HttpPost]
+        public bool Login(User user)
+        {
+            var users = db.Users.Where(r => r.UserName == user.UserName && r.Password == user.Password).ToList();
+            return users.Count > 0;
+        }
+        /*
         // GET api/Users/Login
         [Route("api/Users/Login")]
         [HttpPost]
@@ -35,8 +43,8 @@ namespace AccionLaboral.Controllers
             var user = model;
             if (ModelState.IsValid)
             {
-                user = db.Users.Find(model.UserName);
-                user = await db.Users.FindAsync(model.UserName, model.Password);
+                user = db.Users.First(r=> r.UserName == model.UserName);
+                user = await db.Users.SingleOrDefaultAsync(r=> r.UserName == model.UserName && r.Password == model.Password);
                 if (user != null)
                 {
                     //await SignInAsync(user, model.RememberMe);
@@ -54,7 +62,7 @@ namespace AccionLaboral.Controllers
             //    return true;
             //else
             //    return false;
-        }
+        }*/
 
         // GET api/Users/5
         [Route("api/Users")]

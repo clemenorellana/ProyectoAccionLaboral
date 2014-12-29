@@ -1,3 +1,5 @@
+using MySql.Data.Entity;
+
 namespace AccionLaboral.Migrations
 {
     using System;
@@ -9,8 +11,11 @@ namespace AccionLaboral.Migrations
     {
         public Configuration()
         {
+
             AutomaticMigrationsEnabled = true;
-             SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            AutomaticMigrationDataLossAllowed = true;
+            CodeGenerator = new MySql.Data.Entity.MySqlMigrationCodeGenerator();
+            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
 
         protected override void Seed(AccionLaboral.Models.AccionLaboralContext context)
