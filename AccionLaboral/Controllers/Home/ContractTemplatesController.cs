@@ -13,7 +13,7 @@ namespace AccionLaboral.Controllers.Home
         public ActionResult Index()
         {
             //return View();
-            return new FilePathResult("/Views/ContractTemplates/Index.html", "text/html");
+            return new FilePathResult("~/Views/ContractTemplates/Index.html", "text/html");
         }
 
         //
@@ -21,7 +21,7 @@ namespace AccionLaboral.Controllers.Home
         public ActionResult Details(int id)
         {
             //return View();
-            return new FilePathResult("/Views/ContractTemplates/Detail.html", "text/html");
+            return new FilePathResult("~/Views/ContractTemplates/Detail.html", "text/html");
         }
 
         //
@@ -29,7 +29,7 @@ namespace AccionLaboral.Controllers.Home
         public ActionResult Create()
         {
             //return View();
-            return new FilePathResult("/Views/ContractTemplates/Create.html", "text/html");
+            return new FilePathResult("~/Views/ContractTemplates/Create.html", "text/html");
         }
 
         //
@@ -55,7 +55,7 @@ namespace AccionLaboral.Controllers.Home
         {
             //return View();
             //return new FilePathResult("/Views/ContractTemplates/Edit.html", "text/html");
-            return new FilePathResult("/Views/ContractTemplates/Create.html", "text/html");
+            return new FilePathResult("~/Views/ContractTemplates/Create.html", "text/html");
         }
 
         //

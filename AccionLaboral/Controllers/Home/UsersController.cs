@@ -13,7 +13,7 @@ namespace AccionLaboral.Controllers.Home
         public ActionResult Index()
         {
             //return View();
-            return new FilePathResult("/Views/Users/Index.html", "text/html");
+            return new FilePathResult("~/Views/Users/Index.html", "text/html");
         }
 
         //
@@ -21,7 +21,7 @@ namespace AccionLaboral.Controllers.Home
         public ActionResult Login()
         {
             //return View();
-            return new FilePathResult("/Views/Login/Login.html", "text/html");
+            return new FilePathResult("~/Views/Login/Login.html", "text/html");
         }
 
         //

@@ -13,7 +13,7 @@ namespace AccionLaboral.Controllers.Home
         public ActionResult Index()
         {
             //return View();
-            return new FilePathResult("/Views/Careers/Index.html", "text/html");
+            return new FilePathResult("~/Views/Careers/Index.html", "text/html");
 
         }
 

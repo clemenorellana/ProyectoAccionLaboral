@@ -12,7 +12,7 @@ namespace AccionLaboral.Controllers.Home
         // GET: /Clients/
         public ActionResult Index()
         {
-            return new FilePathResult("/Views/Clients/Index.html", "text/html");
+            return new FilePathResult("~/Views/Clients/Index.html", "text/html");
         }
 
         //
@@ -26,7 +26,7 @@ namespace AccionLaboral.Controllers.Home
         // GET: /Clients/Create
         public ActionResult Create()
         {
-            return new FilePathResult("/Views/Clients/NewClient.html", "text/html");
+            return new FilePathResult("~/Views/Clients/NewClient.html", "text/html");
         }
 
         //
@@ -50,7 +50,7 @@ namespace AccionLaboral.Controllers.Home
         // GET: /Clients/Edit/
         public ActionResult Edit()
         {
-            return new FilePathResult("/Views/Clients/EditClient.html", "text/html");
+            return new FilePathResult("~/Views/Clients/EditClient.html", "text/html");
         }
 
         //

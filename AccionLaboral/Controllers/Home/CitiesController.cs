@@ -12,7 +12,7 @@ namespace AccionLaboral.Controllers.Home
         // GET: /Cities/
         public ActionResult Index()
         {
-            return new FilePathResult("/Views/Cities/Index.html", "text/html");
+            return new FilePathResult("~/Views/Cities/Index.html", "text/html");
         }
 
         //
