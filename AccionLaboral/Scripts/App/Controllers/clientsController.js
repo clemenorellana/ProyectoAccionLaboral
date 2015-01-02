@@ -23,7 +23,39 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         });
 }])
 .controller('CustomerController', ['$scope', '$location', '$filter', 'customerRepository', 'filterFilter', function ($scope, $location, $filter, customerRepository, filterFilter) {
-    
+    //enroll costumer
+    $scope.enrollClientExist = false;
+
+    $scope.enrollClient_cancel = function () {
+        $scope.enrollClientExist = false;
+        $scope.enrollClient = null;
+    }
+
+    $scope.searchClient = function () {
+        debugger
+        customerRepository.getCustomers().success(function (data) {
+            debugger
+            $scope.customer = data;
+            $scope.enrollClientExist = false;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].FirstName.toUpperCase() == $scope.enrollClient.FirstName.toUpperCase() && data[i].LastName.toUpperCase() == $scope.enrollClient.LastName.toUpperCase()) {
+                    $scope.enrollClientExist = true;
+                    $scope.enrollClient = data[i];
+                    break;
+                }
+            }
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los dato! " + data.ExceptionMessage;
+            $scope.load = false;
+        });
+    };
+
+
+
         $scope.calculateAge = function() {
             var birthday = +new Date($scope.New.Birthday);
             var age = ~~((Date.now() - birthday) / (31557600000));
@@ -80,9 +112,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                         $scope.error = "An Error has occured while loading posts! " + data.ExceptionMessage;
                         $scope.load = false;
                     });
-$scope.setData();
+        $scope.setData();
                 
-                $scope.$watch('search', function (term) {
+        $scope.$watch('search', function (term) {
                     // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
                     $scope.filtered = filterFilter($scope.customerData, term);
                     $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
