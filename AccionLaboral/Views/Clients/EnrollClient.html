@@ -1,0 +1,278 @@
+﻿<div class="box box-info hidden">
+    <div class="box-header">
+        <h3 class="box-title">Inscribir Cliente</h3>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Ingresar ..." ng-model="client.FirstName" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Apellido</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="client.LastName">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-center">
+                <button class="btn btn-info" ng-click="searchClient()">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page to eroll client -->
+<div class="box box-info">
+    <div class="box-header">
+        <h3 class="box-title">Solicitud de Servicios</h3>
+    </div>
+    <div class="box-body">
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Expediente #</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="" >
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" ng-model="client.FirstName">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>Fecha de Inscripción</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="StartDate">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Correo Electrónico de Facebook</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>BBPIN</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Dirección Residencia</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Twitter</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">@</span>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Edad</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Profesión/Oficio</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Porcentaje de Inglés</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>¿Estudia actualmente?</label>
+                    <div class="form-group" >
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="Si" checked ng-model="New.Gender">
+                                Si
+                            </label>
+                            <label>    </label>
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value=No" ng-model="New.Gender">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Plazas a las que aspira</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>¿Que estudia?</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Cantidad de clases en la Universidad</label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Aspiración Salarial</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="client.FirstName">
+                        <span class="input-group-addon">.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Posee Vehículo
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Posee Motocicleta
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Posee Licencia
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Tipo de Licencia </label>
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Referencias Personales Vigentes: (PREFERIBLEMENTE FAMILIARES CERCANOS)</label>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Nombre Completo</th>
+                                <th>Teléfono</th>
+                                <th>Parentesco</th>
+                                <th>Lugar de trabajo</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Mencione las últimas empresas donde a solicitado empleo, esto para no enviarlo nuevamente</label>
+                    <textarea class="form-control" placeholder="Ingresar ..." ng-model=""/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Observaciones</label>
+                    <textarea class="form-control" placeholder="Ingresar ..." ng-model="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <div class="row">
+            <div class="col-md-6 text-right">
+                <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">Incribir Cliente</button>
+            </div>
+            <div class="col-md-6 text-left">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

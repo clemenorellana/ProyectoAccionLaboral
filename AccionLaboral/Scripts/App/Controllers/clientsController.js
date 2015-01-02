@@ -10,10 +10,16 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
         when('/AllClients', {
             templateUrl: '/Clients/Index',
             controller: 'CustomerController'
-        }).when("/editClient/:id", {
+        }).
+        when("/editClient/:id", {
             title: 'Editar usuario',
             templateUrl: "/Clients/Edit",
             controller: "editCustomerController"
+        }).
+        when("/EnrollClient", {
+            title: 'Inscribir Cliente',
+            templateUrl: "/Clients/Enroll",
+            controller: "CustomerController"
         });
 }])
 .controller('CustomerController', ['$scope', '$location', '$filter', 'customerRepository', 'filterFilter', function ($scope, $location, $filter, customerRepository, filterFilter) {
