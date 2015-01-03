@@ -5,7 +5,6 @@ angular.module('AccionLaboralApp', [
         'ngRoute',
         'ngCookies',
         'ui.bootstrap',
-        'ngGrid',
         'clientsController',
         'careersController',
         'contractTemplatesController',
