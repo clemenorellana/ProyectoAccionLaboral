@@ -45,18 +45,18 @@
                 <section>
                     <h4 class="page-header">Datos Personales</h4>
                     <div class="box-body">
-                        <form role="form">
+                        <form role="form" name="editClientForm">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName">
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName" ng-class="{'loadinggif': New.FirstName==undefined}" ng-disabled="New.FirstName==undefined">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Apellido</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName">
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" ng-class="{'loadinggif': New.LastName==undefined}" ng-disabled="New.LastName==undefined">
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-change="calculateAge()" ng-model="New.Birthday">
+                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-change="calculateAge()" ng-model="New.Birthday" ng-class="{'loadinggif': New.Birthday==undefined}" ng-disabled="New.Birthday==undefined">
                                         </div>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                                     <div class="form-group">
                                         <label>Edad</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age">
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" ng-class="{'loadinggif': New.Age==undefined}" ng-disabled="New.Age==undefined">
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@
                                         <label>Correo Electrónico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email">
+                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': New.Email==undefined}" ng-disabled="New.Email==undefined">
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-mobile-phone"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone">
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone" ng-class="{'loadinggif': New.Cellphone==undefined}" ng-disabled="New.Cellphone==undefined">
                                         </div><!-- /.input group -->
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-phone"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone">
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone" ng-class="{'loadinggif': New.HomePhone==undefined}" ng-disabled="New.HomePhone==undefined">
                                         </div><!-- /.input group -->
                                     </div>
                                 </div>
@@ -143,20 +143,20 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Barrio / Colonia</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood">
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood" ng-class="{'loadinggif': New.Neighborhood==undefined}" ng-disabled="New.Neighborhood==undefined">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Ciudad</label>
-                                        <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="New.CityId"></select>
+                                        <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="New.CityId" ng-class="{'loadinggif': New.CityId==undefined}" ng-disabled="New.CityId==undefined"></select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Dirección Completa</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" ng-class="{'loadinggif': New.CompleteAddress==undefined}" ng-disabled="New.CompleteAddress==undefined">
                             </div>
                         </form>
                     </div><!-- /.box-body -->

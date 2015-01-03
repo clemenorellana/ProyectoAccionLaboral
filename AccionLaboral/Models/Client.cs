@@ -9,6 +9,7 @@ namespace AccionLaboral.Models
 {
     public class Client
     {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int ClientId { get; set; }
@@ -47,7 +48,16 @@ namespace AccionLaboral.Models
         public int CurrentStateId { get; set; }
         public int CityId { get; set; }
         public int AdvisorId { get; set; }
-        
+        public DateTime? EnrollDate { get; set; }
+        public string Occupation { get; set; }
+        public int? EnglishPercentage { get; set; }
+        public bool? IsStudying { get; set; }
+        public int? QtyClasses { get; set; }
+        public bool? HaveCar { get; set; }
+        public bool? HaveMotorcycle { get; set; }
+        public bool? HaveLicense { get; set; }
+        public string LicenseType { get; set; }
+        public string Comment { get; set; }
         public State CurrentState { get; set; }
         public City City { get; set; }
         public Employee Advisor { get; set; }

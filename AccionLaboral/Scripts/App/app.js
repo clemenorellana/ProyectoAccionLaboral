@@ -5,6 +5,7 @@ angular.module('AccionLaboralApp', [
         'ngRoute',
         'ngCookies',
         'ui.bootstrap',
+        'dialogs',
         'clientsController',
         'careersController',
         'contractTemplatesController',
@@ -30,7 +31,41 @@ angular.module('AccionLaboralApp', [
             return [];
         }
     }).controller('mainController', [
-        '$scope', '$location', '$cookies', '$rootScope', 'usersRepo', function ($scope, $location, $cookies, $rootScope, usersRepo) {
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo) {
+
+            $scope.alerts = [];
+            $scope.addAlert = function (type, msg) {
+                $scope.alerts[0] = {type: type, msg: msg};
+            };
+
+            $scope.closeAlert = function (index) {
+                $scope.alerts.splice(index, 1);
+            };
+            
+            var progress = 25;
+            var msgs = [
+              'Hey! I\'m waiting here...',
+              'About half way done...',
+              'Almost there?',
+              'Woo Hoo! I made it!'
+            ];
+            var i = 0;
+            var fakeProgress = function () {
+                $timeout(function () {
+                    if (progress < 100) {
+                        progress += 25;
+                        $rootScope.$broadcast('dialogs.wait.progress', { msg: msgs[i++], 'progress': progress });
+                        fakeProgress();
+                    } else {
+                        $rootScope.$broadcast('dialogs.wait.complete');
+                    }
+                }, 1000);
+            }; // end fakeProgress 
+
+            $scope.launch = function (dialog) {
+                $dialogs.wait(msgs[i++], progress);
+                fakeProgress();
+            };
 
             var userStored = $cookies.userName;
             if (userStored == "null" || (!userStored)) {
@@ -55,7 +90,9 @@ angular.module('AccionLaboralApp', [
 
             //$scope.skinClass = "bg-black";
             //$scope.template = "Users/Login";
-            $scope.validateUser = function(userName, password) {
+            $scope.validateUser = function (userName, password, isValidForm) {
+                $scope.launch('wait');
+                if(isValidForm){
                 usersRepo.login(userName, password).success(function (data) {
                         $scope.userValid = data;
                         if($scope.userValid == true){
@@ -66,11 +103,15 @@ angular.module('AccionLaboralApp', [
                         } else {
                             $scope.skinClass = "bg-black";
                             $scope.template = "Users/Login";
+                            $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
                         };
                     })
                     .error(function (message) {
-                    var error = message;
-                });
+                        $scope.addAlert("danger",message);
+                    });
+                } else {
+                    $scope.addAlert("danger", "Hay campos invalidos");
+                }
             }
 
         }

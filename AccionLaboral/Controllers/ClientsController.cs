@@ -79,7 +79,7 @@ namespace AccionLaboral.Controllers
                        .Include(x => x.References)
                        //.Include(x => x.Trackings)
                        .Single(c => c.ClientId == client.ClientId);
-            
+            client.EnrollDate = DateTime.Now;
             db.Entry(dbClients).CurrentValues.SetValues(client);
 
             foreach (var dbAcademicEducation in dbClients.AcademicEducations.ToList())
@@ -228,7 +228,7 @@ namespace AccionLaboral.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+            client.EnrollDate = DateTime.Now;
             db.Clients.Add(client);
             db.SaveChanges();
 

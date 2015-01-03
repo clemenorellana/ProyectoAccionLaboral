@@ -76,7 +76,7 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-md-6">
+            <!--<div class="form-group col-md-6">
                 <label>Fecha de Inscripción</label>
                 <div class="input-group">
                     <div class="input-group-addon">
@@ -84,7 +84,7 @@
                     </div>
                     <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="enrollClient.EnrollDate">
                 </div>
-            </div>
+            </div>-->
 
             <div class="col-md-6">
                 <div class="form-group">
@@ -152,13 +152,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Profesión/Oficio</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.Occupation">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Porcentaje de Inglés</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.EnglishPercentage">
                 </div>
             </div>
         </div>
@@ -170,12 +170,12 @@
                     <div class="form-group">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="Si" checked ng-model="">
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked ng-model="enrollClient.IsStudying">
                                 Si
                             </label>
                             <label>    </label>
                             <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="No" ng-model="">
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="0" ng-model="enrollClient.IsStudying">
                                 No
                             </label>
                         </div>
@@ -200,7 +200,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Cantidad de clases en la Universidad</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.QtyClasses">
                 </div>
             </div>
         </div>
@@ -219,28 +219,28 @@
             <div class="col-md-2">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"> Posee Vehículo
+                        <input type="checkbox" ng-model="enrollClient.HaveCar"> Posee Vehículo
                     </label>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"> Posee Motocicleta
+                        <input type="checkbox" ng-model="enrollClient.HaveMotorcycle"> Posee Motocicleta
                     </label>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"> Posee Licencia
+                        <input type="checkbox" ng-model="enrollClient.HaveLicense"> Posee Licencia
                     </label>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
                     <label>Tipo de Licencia </label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.LicenseType">
                 </div>
             </div>
 
@@ -283,7 +283,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Observaciones</label>
-                    <textarea class="form-control" placeholder="Ingresar ..." ng-model="" />
+                    <textarea class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.Comment" />
                 </div>
             </div>
         </div>

@@ -68,6 +68,13 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             return $http.put(urlCustomer + newClient.ClientId, newClient);
         }
         ,
+        inscribeCustomer: function (client) {
+            var newClient = angular.copy(client);
+            newClient.CurrentStateId = 2;
+            newClient.IsStudying = (client.IsStudying == "1");
+            return $http.put(urlCustomer + newClient.ClientId, newClient);
+        }
+        ,
         //method for delete
         DeleteCustomer: function (callback, id) {
             return $http.delete(urlCustomer + '/' + id);

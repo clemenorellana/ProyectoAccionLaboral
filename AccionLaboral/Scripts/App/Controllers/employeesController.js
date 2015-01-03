@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 angular.module("employeesController", ['ngRoute', 'employeesRepository'])
 .config(['$routeProvider', function ($routeProvider) {
@@ -36,7 +36,6 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
     };
 })
 .controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', function ($scope, employeesRepo, $routeParams) {
-    debugger
     $scope.load = true;
     var actionEmployee = "";
     $scope.employeesList = [];

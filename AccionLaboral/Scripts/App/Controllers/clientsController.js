@@ -45,7 +45,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
             for (var i = 0; i < data.length; i++) {
                 if (data[i].FirstName.toUpperCase() == $scope.enrollClient.FirstName.toUpperCase() && data[i].LastName.toUpperCase() == $scope.enrollClient.LastName.toUpperCase()) {
                     $scope.enrollClientExist = true;
-                    $scope.enrollClient = data[i];
+                    $scope.enrollClient = angular.copy(data[i]);
                     $scope.load = false;
                     $scope.showMsgErrorClient = false;
                     break;
@@ -63,7 +63,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     };
 
     $scope.saveEnrollClient = function () {
-        //save client
+        customerRepository.inscribeCustomer($scope.enrollClient);
         
         window.location = "#/AllClients";
     };
@@ -718,12 +718,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 
                         if ($scope.action == 'edit') {
                             customerRepository.UpdateCustomer(function() {
-                            }, $scope.New);
+                            }, $scope.New).success(function () {
+                                window.location = "#/AllClients";
+                            }).error(function () {
+                            });
                             $scope.action = '';
                         } else {
                             customerRepository.InsertCustomer(function() {
 
-                            }, $scope.New);
+                            }, $scope.New).success(function () {
+                                window.location = "#/AllClients";
+                            }).error(function () {
+                            });
 
                         }
 
@@ -734,8 +740,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                 }
                 $scope.DeleteCustomer = function(id) {
                     customerRepository.DeleteCustomer(function() {
-                        alert('Customer deleted');
-                        getCustomers();
                     }, id);
 
                 };
@@ -1319,7 +1323,17 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
                             $scope.New.References.push(pExperience);
                         }
                     }
-                customerRepository.UpdateCustomer($scope.New);
+                    if ($scope.editClientForm.$valid) {
+                        customerRepository.UpdateCustomer($scope.New).success(function () {
+
+                            $location.path("/AllClients");
+                        }).error(function () {
+
+                        });
+                    } else {
+
+                    }
+                
             }
         }
     ]).directive('showErrors', function () {

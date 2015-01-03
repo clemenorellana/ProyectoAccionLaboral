@@ -10,6 +10,15 @@
     Core: General style
 ----------------------------
 */
+
+.ng-invalid {
+   border:1px solid #f00;
+}
+
+.loadinggif {
+    background:url('../../Images/ajax-input-loader.gif') no-repeat right center;
+}
+
 .gridStyle {
     width: 100%;
     height: 400px;

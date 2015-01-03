@@ -1030,7 +1030,7 @@ $(window).load(function() {
                     g["blur" ==
                             d ? z : v](x)
             });
-            d.on("click mousedown mouseup mouseover mouseout touchbegin.i touchend.i", function(b) {
+            d.on("click mousedown mouseup mouseover mouseout touchbegin.i touchend.i", function (b) {
                 var d = b[n], e = /wn|up/.test(d) ? w : B;
                 if (!c[s]) {
                     if ("click" == d)
@@ -1046,9 +1046,9 @@ $(window).load(function() {
                     if (J)
                         b.stopPropagation();
                     else
-                        return!1
+                        return !1
                 }
-            })
+            });
         })
     }
 })(window.jQuery || window.Zepto);
