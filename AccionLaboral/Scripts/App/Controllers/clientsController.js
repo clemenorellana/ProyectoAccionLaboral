@@ -25,6 +25,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
 .controller('CustomerController', ['$scope', '$location', '$filter', 'customerRepository', 'filterFilter', function ($scope, $location, $filter, customerRepository, filterFilter) {
     //enroll costumer
     $scope.enrollClientExist = false;
+    $scope.showMsgErrorClient = false;
+
+    $scope.enrollClient_ClearData = function () {
+        enrollClient_cancel();
+        $scope.showMsgErrorClient = false;
+    };
 
     $scope.enrollClient_cancel = function () {
         $scope.enrollClientExist = false;
@@ -32,26 +38,34 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository'])
     }
 
     $scope.searchClient = function () {
-        debugger
+        $scope.load = true;
         customerRepository.getCustomers().success(function (data) {
-            debugger
             $scope.customer = data;
             $scope.enrollClientExist = false;
             for (var i = 0; i < data.length; i++) {
                 if (data[i].FirstName.toUpperCase() == $scope.enrollClient.FirstName.toUpperCase() && data[i].LastName.toUpperCase() == $scope.enrollClient.LastName.toUpperCase()) {
                     $scope.enrollClientExist = true;
                     $scope.enrollClient = data[i];
+                    $scope.load = false;
+                    $scope.showMsgErrorClient = false;
                     break;
                 }
             }
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
             $scope.load = false;
+            $scope.showMsgErrorClient = true;
         })
         .error(function (data) {
             $scope.error = "Ha ocurrido un error al cargar los dato! " + data.ExceptionMessage;
             $scope.load = false;
         });
+    };
+
+    $scope.saveEnrollClient = function () {
+        //save client
+        
+        window.location = "#/AllClients";
     };
 
 

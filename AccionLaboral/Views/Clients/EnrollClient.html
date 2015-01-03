@@ -25,6 +25,29 @@
     </div>
 </div>
 
+<!-- ALERT MODAL -->
+<div class="modal fade" id="clientAlert" tabindex="-1" role="dialog" aria-hidden="true" ng-show="showMsgErrorClient">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Error</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label> El cliente no existe. </label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="enrollClient_ClearData()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /.modal -->
+
+
+
 <!-- Page to eroll client -->
 <div class="box box-info" ng-show="enrollClientExist">
     <div class="box-header">
@@ -171,7 +194,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>¿Que estudia?</label>
-                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="">
+                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CurrentStudies">
                 </div>
             </div>
             <div class="col-md-6">
@@ -268,7 +291,7 @@
     <div class="box-footer">
         <div class="row">
             <div class="col-md-6 text-right">
-                <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">Incribir Cliente</button>
+                <button type="submit" class="btn btn-primary" ng-click="saveEnrollClient()">Incribir Cliente</button>
             </div>
             <div class="col-md-6 text-left">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="enrollClient_cancel()">Cancelar</button>
