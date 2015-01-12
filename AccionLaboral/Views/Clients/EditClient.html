@@ -1,4 +1,14 @@
-﻿<div class="col-md-3">
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+
+<div class="col-md-3">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Foto de Perfil</h3>
@@ -13,16 +23,6 @@
                 <label for="exampleInputFile">Cambiar foto de Perfil</label>
                 <input type="file" id="exampleInputFile" base-sixty-four-input>
                 <p class="help-block">Seleccione una foto</p>
-            </div>
-        </div>
-        <div class="box-footer">
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <button type="submit" class="btn btn-primary" ng-click="update()">Guardar</button>
-                </div>
-                <div class="col-md-6 text-center">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                </div>
             </div>
         </div>
     </div>
@@ -50,13 +50,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName" ng-class="{'loadinggif': New.FirstName==undefined}" ng-disabled="New.FirstName==undefined">
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName" ng-class="{'loadinggif': New.FirstName==undefined}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Apellido</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" ng-class="{'loadinggif': New.LastName==undefined}" ng-disabled="New.LastName==undefined">
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" ng-class="{'loadinggif': New.LastName==undefined}" required>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-change="calculateAge()" ng-model="New.Birthday" ng-class="{'loadinggif': New.Birthday==undefined}" ng-disabled="New.Birthday==undefined">
+                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-change="calculateAge()" ng-model="New.Birthday" ng-class="{'loadinggif': New.Birthday==undefined}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                                     <div class="form-group">
                                         <label>Edad</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" ng-class="{'loadinggif': New.Age==undefined}" ng-disabled="New.Age==undefined">
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" ng-class="{'loadinggif': New.Age==undefined}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -87,13 +87,13 @@
                                         <div class="form-group">
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="New.Gender">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked required>
                                                     Femenino
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="New.Gender">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="New.Gender" required>
                                                     Masculino
                                                 </label>
                                             </div>
@@ -108,7 +108,7 @@
                                         <label>Correo Electrónico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': New.Email==undefined}" ng-disabled="New.Email==undefined">
+                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': New.Email==undefined}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-mobile-phone"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone" ng-class="{'loadinggif': New.Cellphone==undefined}" ng-disabled="New.Cellphone==undefined">
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone" ng-class="{'loadinggif': New.Cellphone==undefined}" required>
                                         </div><!-- /.input group -->
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-phone"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone" ng-class="{'loadinggif': New.HomePhone==undefined}" ng-disabled="New.HomePhone==undefined">
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone" ng-class="{'loadinggif': New.HomePhone==undefined}" required>
                                         </div><!-- /.input group -->
                                     </div>
                                 </div>
@@ -143,20 +143,20 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Barrio / Colonia</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood" ng-class="{'loadinggif': New.Neighborhood==undefined}" ng-disabled="New.Neighborhood==undefined">
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood" ng-class="{'loadinggif': New.Neighborhood==undefined}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Ciudad</label>
-                                        <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="New.CityId" ng-class="{'loadinggif': New.CityId==undefined}" ng-disabled="New.CityId==undefined"></select>
+                                        <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="New.CityId" ng-class="{'loadinggif': New.CityId==undefined}" required></select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Dirección Completa</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" ng-class="{'loadinggif': New.CompleteAddress==undefined}" ng-disabled="New.CompleteAddress==undefined">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" ng-class="{'loadinggif': New.CompleteAddress==undefined}" required>
                             </div>
                         </form>
                     </div><!-- /.box-body -->
@@ -471,6 +471,20 @@
 
                 </section>
             </div> <!--End Tab Formaciones Adicionales-->
+
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-1 text-center">
+                        <button type="submit" class="btn btn-primary" ng-click="update()">Guardar</button>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="back()">Cancelar</button>
+                    </div>
+                    <div class="has-error">
+                        <p class="help-block" ng-show="!editClientForm.$valid">Complete todos los campos requeridos.</p>
+                    </div>
+                </div>
+            </div>
         </div><!-- /.tab-content -->
     </div><!-- /.nav-tabs-custom -->
 
@@ -484,44 +498,40 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{textButton}} Formación Académica</h4>
             </div>
-            <form action="#" method="post">
+            <form action="#" method="post" name="academicFormEdit">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Año</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryId"></select>
+                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryId" required></select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryId)" ng-model="CityId"></select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryId)" ng-model="CityId" required></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Nivel Académico</label>
-                            <select class="form-control" ng-options="academicLevel.AcademicLevelId as academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevelId">
-                                
-                            </select>
+                            <select class="form-control" ng-options="academicLevel.AcademicLevelId as academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevelId" required></select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Carrera</label>
-                            <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId">
-                                
-                            </select>
+                            <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId" required></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label>Título Obtenido</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="TrainingName">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="TrainingName" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Nombre de la Institución</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="InstitutionName">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="InstitutionName" required>
                         </div>
                     </div>
                 </div>
@@ -541,12 +551,12 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{textButton}} Idioma Manejado</h4>
             </div>
-            <form action="#" method="post">
+            <form action="#" method="post" name="languageFormEdit">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Idioma</label>
-                            <select class="form-control" ng-options="Language.LanguageId as Language.Name for Language in Languages" ng-model="LanguageId">
+                            <select class="form-control" ng-options="Language.LanguageId as Language.Name for Language in Languages" ng-model="LanguageId" required>
                                 
                             </select>
                         </div>
@@ -554,15 +564,13 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label>Nivel</label>
-                            <select class="form-control" ng-options="LanguageLevel.LanguageLevelId as LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevelId">
-                                
-                            </select>
+                            <select class="form-control" ng-options="LanguageLevel.LanguageLevelId as LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevelId" required></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Porcentaje</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Percentage">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Percentage" required>
                         </div>
                     </div>
                 </div>
@@ -583,11 +591,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{textButton}} Programa Manejado</h4>
             </div>
-            <form action="#" method="post">
+            <form action="#" method="post" name="programFormEdit">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Nombre del Programa</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="NameProgram">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="NameProgram" required>
                     </div>
 
                     <div class="modal-footer clearfix">
@@ -608,7 +616,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{textButton}} Experiencia Laboral</h4>
             </div>
-            <form action="#" method="post">
+            <form action="#" method="post" name="workExperienceFormEdit">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -617,7 +625,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="StartDate">
+                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="StartDate" required>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -626,40 +634,36 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="EndDate">
+                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="EndDate" required>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control" ng-options="Country.CountryId as Country.Name for Country in Countries" ng-model="WorkCountryId">
-                              
-                            </select>
+                            <select class="form-control" ng-options="Country.CountryId as Country.Name for Country in Countries" ng-model="WorkCountryId" required></select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="City.CityId as City.Name for City in getCitiesByCountry(WorkCountryId)" ng-model="WorkCityId">
-                               
-                            </select>
+                            <select class="form-control" ng-options="City.CityId as City.Name for City in getCitiesByCountry(WorkCountryId)" ng-model="WorkCityId" required></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label>Nombre de la Empresa</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyName">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyName" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Sector</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyArea">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyArea" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Cargo Ocupado</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Charge">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Charge" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Tareas o Logros Realizados</label>
-                            <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="Achievements"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="Achievements" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -679,19 +683,19 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{textButton}} Referencia Laboral</h4>
             </div>
-            <form action="#" method="post">
+            <form action="#" method="post" name="workReferenceFormEdit">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nombre</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNameWRef">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNameWRef" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Apellido</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNameWRef">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNameWRef" required>
                             </div>
                         </div>
                     </div>
@@ -703,7 +707,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphoneWRef">
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphoneWRef" required>
                                 </div><!-- /.input group -->
                             </div>
                         </div>
@@ -712,7 +716,7 @@
                                 <label>Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef">
+                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef" required>
                                 </div>
                             </div>
                         </div>
@@ -720,22 +724,20 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryIdWRef">
-                              
-                            </select>
+                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryIdWRef" required></select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryIdWRef)" ng-model="CityIdWRef"></select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryIdWRef)" ng-model="CityIdWRef" required></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Empresa</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyNameWRef">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyNameWRef" required>
                     </div>
                     <div class="form-group">
                         <label>Cargo</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargeWRef">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargeWRef" required>
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
@@ -754,19 +756,19 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{textButton}} Referencia Personal</h4>
             </div>
-            <form action="#" method="post">
+            <form action="#" method="post" name="personalReferenceFormEdit">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nombre</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNamePRef">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNamePRef" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Apellido</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNamePRef">
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNamePRef" required>
                             </div>
                         </div>
                     </div>
@@ -778,7 +780,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphonePRef">
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphonePRef" required>
                                 </div>
                             </div>
                         </div>
@@ -787,7 +789,7 @@
                                 <label>Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailPRef">
+                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailPRef" required>
                                 </div>
                             </div>
                         </div>
@@ -795,21 +797,20 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryIdPRef">
-                            </select>
+                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="CountryIdPRef" required></select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryIdPRef)" ng-model="CityIdPRef"></select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(CountryIdPRef)" ng-model="CityIdPRef" required></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Ocupación</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargePRef">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargePRef" required>
                     </div>
                     <div class="form-group">
                         <label>Parentezco</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="RelationshipPRef">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="RelationshipPRef" required>
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
@@ -828,38 +829,36 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{textButton}} Formación Adicional</h4>
             </div>
-            <form action="#" method="post">
+            <form action="#" method="post" name="trainigFormEdit">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Año</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="_CountryId">
-                            </select>
+                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="_CountryId" required></select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(_CountryId)" ng-model="_CityId"></select>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(_CountryId)" ng-model="_CityId" required></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label>Carrera</label>
-                            <select class="form-control" ng-options="career.CareerId as career.Name for career in AllCarees" ng-model="_CareerId">
-                            </select>
+                            <select class="form-control" ng-options="career.CareerId as career.Name for career in AllCarees" ng-model="_CareerId" required></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label>Título de la formación</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>Nombre de la Institución</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_InstitutionName">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_InstitutionName" required>
                         </div>
                     </div>
                 </div>

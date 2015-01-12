@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html ng-app="AccionLaboralApp" lang="es">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <title>Acción Laboral </title>
         <link rel="shortcut icon" href="../../Images/logo.png">
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -16,7 +16,7 @@
         <!--<link href="../../Content/bootstrap-combined.min.css" rel="stylesheet" />-->
         <!-- bootstrap wysihtml5 - text editor -->
         <link href="../../CSS/css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-
+        <link href="../../CSS/css/Alert/alert.css" rel="stylesheet" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -272,7 +272,7 @@
         </nav>
     </header>
 
-    <div ng-include="template"></div>
+    <div ng-include="template" ng-cloak></div>
 
     <script src="../../Scripts/jquery-1.10.2.min.js"></script>
     <!-- Bootstrap -->
@@ -288,7 +288,7 @@
     <!--<script src="../../Scripts/ui-bootstrap-tpls.js"></script>-->
     <!-- AdminLTE App -->
     <script src="../../Scripts/js/AdminLTE/app.js" type="text/javascript"></script>
-
+    <script src="../../Scripts/App/Services/Alert/alertService.js"></script>
     <!-- CK Editor -->
     <script src="../../Scripts/ckeditor.js"></script>
     <!-- Bootstrap WYSIHTML5 -->
