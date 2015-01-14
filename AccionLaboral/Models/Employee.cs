@@ -13,11 +13,11 @@ namespace AccionLaboral.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int EmployeeId { get; set; }
         [Required]
-        [Index("IX_EmployeeFirstNameLastName", 1, IsUnique = true)]
+        //[Index("IX_EmployeeFirstNameLastName", 1, IsUnique = true)]
         [StringLength(50)]
         public string FirstName { get; set; }
         [Required]
-        [Index("IX_EmployeeFirstNameLastName", 2, IsUnique = true)]
+        //[Index("IX_EmployeeFirstNameLastName", 2, IsUnique = true)]
         [StringLength(50)]
         public string LastName { get; set; }
         [EmailAddress]
