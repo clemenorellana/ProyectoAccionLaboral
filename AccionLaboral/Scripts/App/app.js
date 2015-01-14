@@ -108,7 +108,7 @@ angular.module('AccionLaboralApp', [
                         };
                     })
                     .error(function (message) {
-                        $scope.addAlert("danger",message);
+                        $scope.addAlert("danger","Ha ocurrido un error en el servidor.");
                     });
                 } else {
                     $scope.addAlert("danger", "Hay campos invalidos");

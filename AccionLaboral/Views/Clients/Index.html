@@ -1,4 +1,13 @@
-﻿<!-- Delete confirmation modal -->
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+<!-- Delete confirmation modal -->
 <div class="modal fade" id="deleteClientInfo" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -11,7 +20,7 @@
                     <label>¿Está seguro que desea borrar la Carrera?</label>
                 </div>
                 <div class="modal-footer clearfix">
-                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal" >No</button>
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
                     <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="DeleteCustomer(selectedClient)">Si</button>
                 </div>
             </form>
@@ -24,25 +33,36 @@
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Mantenimiento de Clientes</h3>
-            <div class="pull-right box-tools">
+            <!--<div class="pull-right box-tools">
                 <button class="btn btn-info btn-sm" ng-click="contract_addNewRedirect()" title="">
                     <i class="fa  fa-plus"></i>
                 </button>
-            </div>
+            </div>-->
         </div>
         <div class="box-body">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Edad</th>
-                    <th>Correo</th>
-                    <th>Dirección</th>
-                    <th>Celular</th>
-                    <th>Opciones</th>
-                </tr>
-                <tr ng-repeat="customer in customerData  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                <thead>
+                    <tr>
+                        <th href="#" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
+                        <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
+                        <th ng-click="sort='Age' ; reverse=!reverse">Edad</th>
+                        <th ng-click="sort='Email' ; reverse=!reverse">Correo</th>
+                        <th ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
+                        <th ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
+                        <th>Opciones</th>
+                    </tr>
+                    <tr>
+                        <th colspan="1"><input ng-model="FirstName" ng-class="reverse" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.LastName" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Age" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Email" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.CompleteAddress" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Cellphone" class="form-control" type="text" /></th>
+                        <th colspan="1"></th>
+                    </tr>
+                </thead>
+                <tr ng-repeat="customer in customerData | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{customer.FirstName}}</td>
                     <td>{{customer.LastName}}</td>
                     <td>{{customer.Age}}</td>
@@ -55,7 +75,7 @@
                     </td>
                 </tr>
             </table>
-            <br/>
+            <br />
             <div class="row">
                 <div class="col-md-4">
                     <label>Mostrando {{itemsInPage}} de {{customerData.length}} elementos</label>
@@ -69,12 +89,10 @@
                         <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setData()"></select>
                     </div>
                     <div class="col-xs-8">
-                        <label>registros por página</label>
+                        <label>Registros por página</label>
                     </div>
-                    
-                    
                 </div>
-                </div>
+            </div>
         </div>
     </div>
 
