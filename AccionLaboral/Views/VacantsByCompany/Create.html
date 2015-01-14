@@ -1,0 +1,116 @@
+﻿<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h4 class="box-title">Agregar Vacante Disponible</h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>Empresa</label>
+                        <select class="form-control" ng-options="company.Name for company in companyList" ng-model="companyList"></select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Nivel de la Vacante</label>
+                        <select class="form-control" ng-options="vacantLevel.Name for vacantLevel in vacantLevelList" ng-model="vacantLevelList"></select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-12">
+                        <label>Nombre de la Vacante</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="vacant_VacantName">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-12">
+                        <label>Descripción del Cargo</label>
+                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="vacant_ChargeDescription" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-12">
+                        <label>Requisitos</label>
+                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="vacant_Requirements" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>Nivel Académico</label>
+                        <select class="form-control" ng-options="academicLevel.Name for academicLevel in academicLevelList" ng-model="academicLevelList"></select>
+                    </div>                
+                    <div class="form-group col-md-6">
+                        <label>Carrera / Título</label>
+                        <select class="form-control" ng-options="career.Name for career in careerList" ng-model="careerList"></select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-3">
+                        <label>Genero</label>
+                        <div class="form-group">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="vacant_Gender" required>
+                                    Femenino
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="vacant_Gender" required>
+                                    Masculino
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="NA" ng-model="vacant_Gender" required>
+                                    Indiferente
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>Rando de Edad</label>
+                        <div class="row">
+                            <div class="form-group col-md-5">
+                                <input type="text" class="form-control" placeholder="Desde ..." ng-model="vacant_StartAge">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <input type="text" class="form-control" placeholder="Hasta ..." ng-model="vacant_EndAge">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Cantidad de Vacantes Disponibles</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="vacant_Quantity">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>Ciudad</label>
+                        <select class="form-control" ng-options="city.Name for city in cityList" ng-model="cityList"></select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Fecha de Solicitud</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_RequestDate" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-6 text-right">
+                    <button type="submit" class="btn btn-primary" ng-click="saveCompany()">Agregar</button>
+                </div>
+                <div class="col-md-6 text-left">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="company_cancelRedirect()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

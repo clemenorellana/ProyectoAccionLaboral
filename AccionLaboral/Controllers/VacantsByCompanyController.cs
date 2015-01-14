@@ -19,7 +19,11 @@ namespace AccionLaboral.Controllers
         // GET api/VacantsByCompany
         public IQueryable<VacantByCompany> GetVacantByCompanies()
         {
-            return db.VacantByCompanies;
+            return db.VacantByCompanies.Include(r => r.AcademicLevel)
+                                        .Include(r => r.Career)
+                                        .Include(r => r.City)
+                                        .Include(r => r.Company)
+                                        .Include(r => r.VacantLevel);
         }
 
         // GET api/VacantsByCompany/5
