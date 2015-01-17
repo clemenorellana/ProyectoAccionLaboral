@@ -1,18 +1,22 @@
 ﻿<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
-            <h4 class="box-title">Agregar Vacante Disponible</h4>
+            <h4 class="box-title">{{tittleVacantForm}}</h4>
         </div>
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Empresa</label>
-                        <select class="form-control" ng-options="company.Name for company in companyList" ng-model="companyList"></select>
+                        <select class="form-control" ng-options="vacant_company.Name for vacant_company in vacant_companyList" ng-model="vacant_companyList">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Nivel de la Vacante</label>
-                        <select class="form-control" ng-options="vacantLevel.Name for vacantLevel in vacantLevelList" ng-model="vacantLevelList"></select>
+                        <select class="form-control" ng-options="vacant_vacantLevel.Name for vacant_vacantLevel in vacant_vacantLevelList" ng-model="vacant_vacantLevelList">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -36,11 +40,15 @@
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Nivel Académico</label>
-                        <select class="form-control" ng-options="academicLevel.Name for academicLevel in academicLevelList" ng-model="academicLevelList"></select>
+                        <select class="form-control" ng-options="vacant_academicLevel.Name for vacant_academicLevel in vacant_academicLevelList" ng-model="vacant_academicLevelList">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>                
                     <div class="form-group col-md-6">
                         <label>Carrera / Título</label>
-                        <select class="form-control" ng-options="career.Name for career in careerList" ng-model="careerList"></select>
+                        <select class="form-control" ng-options="vacant_career.Name for vacant_career in vacant_careerList" ng-model="vacant_careerList">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -86,7 +94,9 @@
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Ciudad</label>
-                        <select class="form-control" ng-options="city.Name for city in cityList" ng-model="cityList"></select>
+                        <select class="form-control" ng-options="vacant_city.Name for vacant_city in vacant_cityList" ng-model="vacant_cityList">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Fecha de Solicitud</label>
@@ -104,10 +114,10 @@
         <div class="box-footer">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <button type="submit" class="btn btn-primary" ng-click="saveCompany()">Agregar</button>
+                    <button type="submit" class="btn btn-primary" ng-click="saveVacant()">{{buttonNameVacantForm}}</button>
                 </div>
                 <div class="col-md-6 text-left">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="company_cancelRedirect()">Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="vacant_cancelRedirect()">Cancelar</button>
                 </div>
             </div>
         </div>

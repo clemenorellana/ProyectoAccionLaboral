@@ -12,7 +12,7 @@
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="deleteCompany(companyToDelete)">Si</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="deleteVacant(vacantToDelete)">Si</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
@@ -25,7 +25,7 @@
         <div class="box-header">
             <h3 class="box-title">Listado de Vacantes</h3>
             <div class="pull-right box-tools">
-                <button class="btn btn-info btn-sm" ng-click="company_addNewRedirect()" title="">
+                <button class="btn btn-info btn-sm" ng-click="vacant_addNewRedirect()" title="">
                     <i class="fa  fa-plus"></i>
                 </button>
             </div>
@@ -53,8 +53,8 @@
                     <td>{{vacant.VacantLevel.Name}}</td>
                     <td>{{vacant.Active}}</td>
                     <td>
-                        <button type="button" class="btn btn-info"  ng-click="company_editRedirect(company.CompanyId)" title="Editar"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#deleteInfoModal" ng-click="setCompanyToDelete(company.CompanyId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                        <button type="button" class="btn btn-info" ng-click="vacant_editRedirect(vacant.VacantByCompanyId)" title="Editar"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInfoModal" ng-click="setVacantToDelete(vacant.VacantByCompanyId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                     </td>
                 </tr>
             </table>
