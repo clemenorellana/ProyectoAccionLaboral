@@ -20,7 +20,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         });
 }]
 )
-.controller('companiesCtrl', ['$scope', 'companiesRepo', '$routeParams', function ($scope, companiesRepo,  $routeParams) {
+.controller('companiesCtrl', ['$scope', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'companiesRepo', '$routeParams',  function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams) {
     
     $scope.companyList = [];
     $scope.load = true;
@@ -28,6 +28,22 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
     $scope.actionContact = 'Agregar'
     $scope.contactIndex;
     var actionCompany;
+    
+
+
+    $scope.$watch('$routeChangeSuccess', function () {
+            companiesRepo.getCompanyList().success(function (data) {
+                debugger
+                $scope.companyList = data;
+                $scope.totalServerItems = data.totalItems;
+                $scope.items = data.items;
+                $scope.load = false;
+            })
+            .error(function (data) {
+                $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+                $scope.load = false;
+            });
+    });
 
     $scope.companyId = $routeParams.id;
     debugger
@@ -52,6 +68,35 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
             //$scope.company_VacantsByCompany = companyToEdit.VacantsByCompany;
         });
     }
+
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+
+    $scope.setData = function () {
+        companiesRepo.getCompanyList().success(function (data) {
+            $scope.companyList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+            //max rows for data table
+
+            $scope.noOfPages = ($scope.companyList) ? Math.ceil($scope.companyList.length / $scope.entryLimit) : 1;
+
+            $scope.itemsInPage = ($scope.companyList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.companyList.length) ?
+                    $scope.companyList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
 
     companiesRepo.getCompanyList().success(function (data) {
         debugger
@@ -132,6 +177,21 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         $scope.contactsByCompanyList.splice(index, 1);
     }
 
+    $scope.refreshCompanies = function () {
+        $scope.load = true;
+        companiesRepo.getCompanyList().success(function (data) {
+            debugger
+            $scope.companyList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+    }
+
     $scope.saveCompany = function () {
         debugger
         var newCompany = {
@@ -177,29 +237,22 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         window.location = "#/AddCompany";
     }
 
-    $scope.setCompanyToDelete = function (id) {
+    $scope.setCompanyToDelete = function (id,index) {
         $scope.companyToDelete = id;
+        $scope.companyIndex = index;
     }
 
     $scope.deleteCompany = function (id) {
+        $scope.companyDeleted = 'delete';
+        debugger
+        $scope.load = true;
         companiesRepo.deleteCompany(function () {
         }, id);
+        $scope.companyList.splice($scope.companyIndex, 1);
         $scope.companyToDelete = 0;
+        $scope.companyIndex = -1;
         $scope.refreshCompanies();
-    }
-
-    $scope.refreshCompanies = function () {
-        companiesRepo.getCompanyList().success(function (data) {
-            debugger
-            $scope.companyList = data;
-            $scope.totalServerItems = data.totalItems;
-            $scope.items = data.items;
-            $scope.load = false;
-        })
-    .error(function (data) {
-        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
-    });
     }
 
     $scope.company_editRedirect = function (id) {

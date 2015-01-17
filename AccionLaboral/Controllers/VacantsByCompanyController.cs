@@ -30,7 +30,13 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(VacantByCompany))]
         public IHttpActionResult GetVacantByCompany(int id)
         {
-            VacantByCompany vacantbycompany = db.VacantByCompanies.Find(id);
+            VacantByCompany vacantbycompany = db.VacantByCompanies.Include(r => r.AcademicLevel)
+                                        .Include(r => r.Career)
+                                        .Include(r => r.City)
+                                        .Include(r => r.Company)
+                                        .Include(r => r.VacantLevel)
+                                        .First(r => r.VacantByCompanyId == id);
+                                        
             if (vacantbycompany == null)
             {
                 return NotFound();

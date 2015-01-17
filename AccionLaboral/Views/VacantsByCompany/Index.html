@@ -28,11 +28,35 @@
                 <button class="btn btn-info btn-sm" ng-click="vacant_addNewRedirect()" title="">
                     <i class="fa  fa-plus"></i>
                 </button>
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="refreshVacants()">
+                    <i class="fa  fa-refresh"></i>
+                </button>
             </div>
         </div>
         <div class="box-body">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
+                <!--<thead>
+                    <tr>
+                        <th href="#" ng-click="sort='Company.Name' ; reverse=!reverse">Nombre de la Empresa</th>
+                        <th ng-click="sort='VacantName' ; reverse=!reverse">Nombre de la Vacante</th>
+                        <th ng-click="sort='ChargeDescription' ; reverse=!reverse">Descripción de la Vacante</th>
+                        <th ng-click="sort='Career.Name' ; reverse=!reverse">Carrera</th>
+                        <th ng-click="sort='Gender' ; reverse=!reverse">Genero</th>
+                        <th ng-click="sort='VacantLevel.Name' ; reverse=!reverse">Tipo de Vacante</th>
+                        <th>Opciones</th>
+                    </tr>
+                    <tr>
+                        <th colspan="1"><input ng-model="Company.Name" ng-class="reverse" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.VacantName" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.ChargeDescription" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Career.Name" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Gender" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.VacantLevel.Name" class="form-control" type="text" /></th>
+                        <th colspan="1"></th>
+                    </tr>
+                    
+                </thead>-->
                 <tr>
                     <th>Nombre de la Empresa</th>
                     <th>Nombre de la Vacante</th>
@@ -40,31 +64,31 @@
                     <th>Carrera</th>
                     <th>Genero</th>
                     <th>Tipo de Vacante</th>
-                    <th>Estado</th>
+                    <!--<th ng-click="sort='Active' ; reverse=!reverse">Estado</th>-->
                     <th>Opciones</th>
                 </tr>
-                <!--<tr ng-repeat="company in companyList  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">-->
-                <tr ng-repeat="vacant in vacantList">
+                    <!--<tr ng-repeat="vacant in vacantList">-->
+                <tr ng-repeat="vacant in vacantList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{vacant.Company.Name}}</td>
                     <td>{{vacant.VacantName}}</td>
                     <td>{{vacant.ChargeDescription}}</td>
                     <td>{{vacant.Career.Name}}</td>
                     <td>{{vacant.Gender}}</td>
                     <td>{{vacant.VacantLevel.Name}}</td>
-                    <td>{{vacant.Active}}</td>
+                    <!--<td>{{vacant.Active}}</td>-->
                     <td>
                         <button type="button" class="btn btn-info" ng-click="vacant_editRedirect(vacant.VacantByCompanyId)" title="Editar"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInfoModal" ng-click="setVacantToDelete(vacant.VacantByCompanyId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInfoModal" ng-click="setVacantToDelete(vacant.VacantByCompanyId,$index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                     </td>
                 </tr>
             </table>
             <br />
-            <div class="row">
+            <div class="row" ng-show="!load">
                 <div class="col-md-4">
-                    <label>Mostrando {{itemsInPage}} de {{customerData.length}} elementos</label>
+                    <label>Mostrando {{itemsInPage}} de {{vacantList.length}} elementos</label>
                 </div>
                 <div class="col-md-4">
-                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="customerData.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="vacantList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                 </div>
                 <div class="col-md-4">
                     <div class="col-xs-4">

@@ -28,6 +28,9 @@
                 <button class="btn btn-info btn-sm" ng-click="company_addNewRedirect()" title="">
                     <i class="fa  fa-plus"></i>
                 </button>
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="refreshCompanies()">
+                    <i class="fa  fa-refresh"></i>
+                </button>
             </div>
         </div>
         <div class="box-body">
@@ -38,23 +41,35 @@
                     <th>Area / Rubro</th>
                     <th>Opciones</th>
                 </tr>
-                <!--<tr ng-repeat="company in companyList  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">-->
-                <tr ng-repeat="company in companyList">
+                <!--<thead>
+                    <tr>
+                        <th href="#" ng-click="sort='Name' ; reverse=!reverse">Nombre</th>
+                        <th ng-click="sort='Area' ; reverse=!reverse">Area / Rubro</th>
+                        <th>Opciones</th>
+                    </tr>
+                    <tr>
+                        <th colspan="1"><input ng-model="Name" ng-class="reverse" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Area" class="form-control" type="text" /></th>
+                        <th colspan="1"></th>
+                    </tr>
+                </thead>-->
+                <tr ng-repeat="company in companyList  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                <!--<tr ng-repeat="company in companyList">-->
                     <td>{{company.Name}}</td>
                     <td>{{company.Area}}</td>
                     <td>
                         <button type="button" class="btn btn-info" id="editCustomer" ng-click="company_editRedirect(company.CompanyId)" title="Editar"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteInfoModal" ng-click="setCompanyToDelete(company.CompanyId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                        <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteInfoModal" ng-click="setCompanyToDelete(company.CompanyId,$index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                     </td>
                 </tr>
             </table>
             <br />
-            <div class="row">
+            <div class="row" ng-show="!load">
                 <div class="col-md-4">
-                    <label>Mostrando {{itemsInPage}} de {{customerData.length}} elementos</label>
+                    <label>Mostrando {{itemsInPage}} de {{companyList.length}} elementos</label>
                 </div>
                 <div class="col-md-4">
-                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="customerData.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="companyList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                 </div>
                 <div class="col-md-4">
                     <div class="col-xs-4">

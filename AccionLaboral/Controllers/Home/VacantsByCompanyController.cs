@@ -50,7 +50,7 @@ namespace AccionLaboral.Controllers.Home
         // GET: /VacantsByCompany/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return new FilePathResult("~/Views/VacantsByCompany/Create.html", "text/html");
         }
 
         //
