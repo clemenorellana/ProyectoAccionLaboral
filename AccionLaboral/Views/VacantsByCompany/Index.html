@@ -64,10 +64,9 @@
                     <th>Carrera</th>
                     <th>Genero</th>
                     <th>Tipo de Vacante</th>
-                    <!--<th ng-click="sort='Active' ; reverse=!reverse">Estado</th>-->
+                    <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
-                    <!--<tr ng-repeat="vacant in vacantList">-->
                 <tr ng-repeat="vacant in vacantList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{vacant.Company.Name}}</td>
                     <td>{{vacant.VacantName}}</td>
@@ -75,7 +74,10 @@
                     <td>{{vacant.Career.Name}}</td>
                     <td>{{vacant.Gender}}</td>
                     <td>{{vacant.VacantLevel.Name}}</td>
-                    <!--<td>{{vacant.Active}}</td>-->
+                    <td>
+                        <div ng-if="vacant.Active">Activo</div>
+                        <div ng-if="!vacant.Active">Inactivo</div>
+                    </td>
                     <td>
                         <button type="button" class="btn btn-info" ng-click="vacant_editRedirect(vacant.VacantByCompanyId)" title="Editar"><i class="fa fa-edit"></i></button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInfoModal" ng-click="setVacantToDelete(vacant.VacantByCompanyId,$index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
@@ -85,14 +87,14 @@
             <br />
             <div class="row" ng-show="!load">
                 <div class="col-md-4">
-                    <label>Mostrando {{itemsInPage}} de {{vacantList.length}} elementos</label>
+                    <label>Mostrando {{vacant_itemsInPage}} de {{vacantList.length}} elementos</label>
                 </div>
                 <div class="col-md-4">
                     <pagination boundary-links="true" items-per-page="entryLimit" total-items="vacantList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                 </div>
                 <div class="col-md-4">
                     <div class="col-xs-4">
-                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setData()"></select>
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setVacantData()"></select>
                     </div>
                     <div class="col-xs-8">
                         <label>Registros por Página</label>

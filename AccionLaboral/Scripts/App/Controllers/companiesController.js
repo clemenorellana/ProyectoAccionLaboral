@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 angular.module("companiesController", ['ngRoute', 'companiesRepository'])
 .config(['$routeProvider', function ($routeProvider) {
@@ -28,22 +28,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
     $scope.actionContact = 'Agregar'
     $scope.contactIndex;
     var actionCompany;
-    
 
-
-    $scope.$watch('$routeChangeSuccess', function () {
-            companiesRepo.getCompanyList().success(function (data) {
-                debugger
-                $scope.companyList = data;
-                $scope.totalServerItems = data.totalItems;
-                $scope.items = data.items;
-                $scope.load = false;
-            })
-            .error(function (data) {
-                $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-                $scope.load = false;
-            });
-    });
 
     $scope.companyId = $routeParams.id;
     debugger
@@ -98,6 +83,13 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
 
     };
 
+
+    $scope.$watch('search', function (term) {
+        // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+        $scope.filtered = filterFilter($scope.companyList, term);
+        $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+    });
+
     companiesRepo.getCompanyList().success(function (data) {
         debugger
         $scope.companyList = data;
@@ -110,6 +102,8 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         $scope.load = false;
     });
 
+
+    
 
     $scope.setActionContact = function (index, action) {
         debugger
@@ -225,7 +219,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         else {
             companiesRepo.updateCompany(function () { }, newCompany);
         }
-
+        $scope.setData();
         window.location = "#/Companies";
     };
     
@@ -247,17 +241,19 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         debugger
         $scope.load = true;
         companiesRepo.deleteCompany(function () {
-        }, id);
-        $scope.companyList.splice($scope.companyIndex, 1);
-        $scope.companyToDelete = 0;
-        $scope.companyIndex = -1;
-        $scope.refreshCompanies();
-        $scope.load = false;
+        }, id).success(function () {
+                $scope.companyToDelete = 0;
+                $scope.companyIndex = -1;
+                $scope.refreshCompanies();
+                $scope.load = false;
+            }).error(function (error) {
+            
+            });
     }
 
     $scope.company_editRedirect = function (id) {
         window.location = "#/EditCompany/" + id;
     }
 
-
+    $scope.setData();
 }]);

@@ -35,7 +35,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         return _date;
     };
 })
-.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', function ($scope, employeesRepo, $routeParams) {
+.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, employeesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
     $scope.load = true;
     var actionEmployee = "";
     $scope.employeesList = [];
@@ -66,6 +66,35 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
     });
+
+
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+    $scope.setEmployeeData = function () {
+        employeesRepo.getEmployeesList().success(function (data) {
+            $scope.employeesList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+
+            $scope.noOfPages = ($scope.employeesList) ? Math.ceil($scope.employeesList.length / $scope.entryLimit) : 1;
+
+            $scope.itemsInPage = ($scope.employeesList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.employeesList.length) ?
+                                        $scope.employeesList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+
+    $scope.setEmployeeData();
 
     employeesRepo.getEmployeesCareers().success(function (data) {
         $scope.employeesCareersList = data;
@@ -141,10 +170,8 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         window.location = "#/Employees/Create";
     }
 
-    $scope.employee_editRedirect = function (index) {
-        debugger
-        var id = $scope.employeesList[index].EmployeeId;
-        window.location = "#/Employees/Edit/" + id;
+    $scope.employee_editRedirect = function (employee) {
+        window.location = "#/Employees/Edit/" + employee.EmployeeId;
     }
 
     $scope.employee_viewRedirect = function (index) {
@@ -205,7 +232,6 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
             employeesRepo.insertEmployee(function () {
             }, employee);
 
-            $scope.employeesList.push(employee);
         }
         else {
             employee = {
@@ -232,34 +258,33 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
 
         $scope.clearData();
         //$scope.employee_refresh();
+
+        $scope.setEmployeeData();
+
         $scope.employee_cancelRedirect();
         
     };
 
-    $scope.setEmployeeToDelete = function (index) {
-        var id = $scope.employeesList[index].EmployeeId;
-        $scope.employeeToDeleteId = id;
-        $scope.employeeToDeleteIndex = index;
+    $scope.setEmployeeToDelete = function (employee) {
+        $scope.employeeToDeleteId = employee.EmployeeId;
     };
 
     $scope.cancelEmployeeDelete = function () {
         $scope.employeeToDeleteId = "";
-        $scope.employeeToDeleteIndex = "";
-    };
-
-    $scope.removeEmployee = function (index) {
-        $scope.employeesList.splice(index, 1);
     };
 
     $scope.deleteEmployee = function () {
-        debugger
-        var id = $scope.employeeToDeleteId;
-        $scope.removeEmployee($scope.employeeToDeleteIndex);
+        $scope.load = true;
         employeesRepo.deleteEmployee(function () {
-            alert('Employee deleted');
-            //removeEmployee(index);
-        }, id);
-        $scope.cancelEmployeeDelete();
+        }, $scope.employeeToDeleteId).success(function () {
+            $scope.cancelEmployeeDelete();
+            $scope.setEmployeeData();
+            $scope.load = false;
+        }).error(function (error) {
+            $scope.load = false;
+        });
+        
     }
+    
     
 }]);

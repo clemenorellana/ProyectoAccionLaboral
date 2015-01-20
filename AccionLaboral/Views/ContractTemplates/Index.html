@@ -20,26 +20,42 @@
                     <th style ="width: 78px;">Activo</th>
                     <th style="width: 218px;">Opción</th>
                 </tr>
-                <tr ng-repeat="contract in contractTemplateList">
+                <tr ng-repeat="contract in contractTemplateList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{contract.Name}}</td>
                     <td>{{contract.Description}}</td>
                     <td align="center">
                         <input type="checkbox" ng-checked="contract.Active" ng-click="contract_changeActiveContract($index)">
                     </td>
                     <td align="center">
-                        <button class="btn btn-info" ng-click="contract_viewRedirect($index)" title="Ver">
+                        <button class="btn btn-info" ng-click="contract_viewRedirect(contract)" title="Ver">
                             <i class="fa fa-file-text"></i>
                         </button>
-                        <button class="btn btn-info" ng-click="contract_editRedirect($index)" title="Editar">
+                        <button class="btn btn-info" ng-click="contract_editRedirect(contract)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContractInfo" ng-click="setContractToDelete($index)" title="Eliminar">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContractInfo" ng-click="setContractToDelete(contract)" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
                 </tr>
             </table>
-
+            <br />
+            <div class="row" ng-show="!load">
+                <div class="col-md-4">
+                    <label>Mostrando {{itemsInPage}} de {{contractTemplateList.length}} elementos</label>
+                </div>
+                <div class="col-md-4">
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="contractTemplateList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-xs-4">
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setContractData()"></select>
+                    </div>
+                    <div class="col-xs-8">
+                        <label>Registros por Página</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

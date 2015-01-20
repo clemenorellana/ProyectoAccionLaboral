@@ -6,7 +6,7 @@
                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#usersInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionUser('add')">
                         <i class="fa  fa-plus"></i>
                     </button>
-                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="user_refresh()">
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="setUserData()">
                     <i class="fa  fa-refresh"></i>
                 </button>
             </div>
@@ -19,19 +19,36 @@
                     <th>Nombre de Usuario</th>
                     <th>Opción</th>
                 </tr>
-                <tr ng-repeat="user in usersList">
+                <tr ng-repeat="user in usersList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{user.UserId}}</td>
                     <td>{{user.UserName}}</td>
                     <td align="center">
-                        <button class="btn btn-info" data-toggle="modal" data-target="#usersInfo" ng-click="setActionUser('edit',$index)" title="Editar">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#usersInfo" ng-click="setActionUser('edit',user)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteUserInfo" ng-click="setUserToDelete($index)" title="Eliminar">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteUserInfo" ng-click="setUserToDelete(user)" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
                 </tr>
             </table>
+            <br />
+            <div class="row" ng-show="!load">
+                <div class="col-md-4">
+                    <label>Mostrando {{itemsInPage}} de {{usersList.length}} elementos</label>
+                </div>
+                <div class="col-md-4">
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="usersList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-xs-4">
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setUserData()"></select>
+                    </div>
+                    <div class="col-xs-8">
+                        <label>Registros por Página</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -41,7 +58,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="userClearData()">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>{{user_modalTitle}}</h4>
             </div>
             <form action="#" method="post">
@@ -56,7 +73,7 @@
                     </div>
                 </div>
                 <div class="modal-footer clearfix">
-                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="clearUserData()">Cancelar</button>
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="userClearData()">Cancelar</button>
                     <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="saveUser(user)">{{user_buttonName}}</button>
                 </div>
             </form>

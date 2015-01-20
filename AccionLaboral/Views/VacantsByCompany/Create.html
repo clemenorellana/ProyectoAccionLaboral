@@ -9,13 +9,13 @@
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Empresa</label>
-                        <select class="form-control" ng-options="vacant_company.Name for vacant_company in vacant_companyList" ng-model="vacant_companyList">
+                        <select class="form-control" ng-options="vacant_company.CompanyId as vacant_company.Name  for vacant_company in vacant_companyList" ng-model="vacant_company.CompanyId">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Nivel de la Vacante</label>
-                        <select class="form-control" ng-options="vacant_vacantLevel.Name for vacant_vacantLevel in vacant_vacantLevelList" ng-model="vacant_vacantLevelList">
+                        <select class="form-control" ng-options="vacant_vacantLevel.VacantLevelId as vacant_vacantLevel.Name for vacant_vacantLevel in vacant_vacantLevelList" ng-model="vacant_vacantLevel.VacantLevelId">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -41,48 +41,52 @@
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Nivel Académico</label>
-                        <select class="form-control" ng-options="vacant_academicLevel.Name for vacant_academicLevel in vacant_academicLevelList" ng-model="vacant_academicLevelList">
+                        <select class="form-control" ng-options="vacant_academicLevel.AcademicLevelId as vacant_academicLevel.Name for vacant_academicLevel in vacant_academicLevelList" ng-model="vacant_academicLevel" ng-change="getCareersByAcademicLevel()">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Carrera / Título</label>
-                        <select class="form-control" ng-options="vacant_career.Name for vacant_career in vacant_careerList" ng-model="vacant_careerList">
+                        <label>Carrera</label>
+                        <select class="form-control" ng-options="vacant_career.CareerId as vacant_career.Name for vacant_career in vacant_careerList" ng-model="vacant_career.CareerId">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
+
                 </div>
+                
                 <div class="col-md-12">
                     <div class="form-group col-md-3">
                         <label>Genero</label>
                         <div class="form-group">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="vacant_Gender" required>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Indiferente" ng-model="vacant_Gender"  >
+                                    Indiferente
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="Femenino" checked ng-model="vacant_Gender" >
                                     Femenino
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="vacant_Gender" required>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Masculino" ng-model="vacant_Gender" >
                                     Masculino
                                 </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="NA" ng-model="vacant_Gender" required>
-                                    Indiferente
-                                </label>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
                     <div class="form-group col-md-5">
                         <label>Rango de Edad</label>
                         <div class="row">
                             <div class="form-group col-md-5">
-                                <input type="text" class="form-control" placeholder="Desde ..." ng-model="vacant_StartAge">
+                                <label>Desde:</label>
+                                <input type="text"  class="form-control" placeholder="Desde ..." ng-model="vacant_StartAge">
                             </div>
                             <div class="form-group col-md-5">
+                                <label>Hasta:</label>
                                 <input type="text" class="form-control" placeholder="Hasta ..." ng-model="vacant_EndAge">
                             </div>
                         </div>
@@ -95,7 +99,7 @@
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Ciudad</label>
-                        <select class="form-control" ng-options="vacant_city.Name for vacant_city in vacant_cityList" ng-model="vacant_cityList">
+                        <select class="form-control" ng-options="vacant_city.CityId as vacant_city.Name for vacant_city in vacant_cityList" ng-model="vacant_city.CityId">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -106,6 +110,26 @@
                                 <i class="fa fa-calendar"></i>
                             </div>
                             <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_RequestDate" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="showVacantCoverdDate">
+                    <div class="form-group col-md-6">
+                        <label>Fecha de Cobertura de la Vacante</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_CoveredDate" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Estado</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input type="checkbox" ng-checked="vacant_Active" ng-model="vacant_Active">
+                            </span>
+                            <input type="text" class="form-control" value="Activo" disabled>                            
                         </div>
                     </div>
                 </div>

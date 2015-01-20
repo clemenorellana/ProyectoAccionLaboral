@@ -9,8 +9,8 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
         });
 }]
 )
-.controller('countriesCtrl', ['$scope', 'countriesRepo', function ($scope, countriesRepo) {
-    debugger
+.controller('countriesCtrl', ['$scope', 'countriesRepo', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, countriesRepo, $rootScope, $location, $filter, filterFilter, alertService) {
+     
     $scope.countriesList = [];
     $scope.actionCountry = "";
     $scope.load = true;
@@ -26,7 +26,36 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
             $scope.load = false;
         });
 
-    $scope.setActionCountry = function (action, index) {
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+
+    $scope.setCountryData = function () {
+        countriesRepo.getCountriesList().success(function (data) {
+            $scope.countriesList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+
+            $scope.noOfPages = ($scope.countriesList) ? Math.ceil($scope.countriesList.length / $scope.entryLimit) : 1;
+
+            $scope.itemsInPage = ($scope.countriesList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.countriesList.length) ?
+                                        $scope.countriesList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+
+            //$scope.load = false;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            //$scope.load = false;
+        });
+
+    };
+
+    $scope.setActionCountry = function (action, country) {
         $scope.actionCountry = action;
         if (action == "add") {
             $scope.country_modalTitle = "Agregar País";
@@ -35,12 +64,11 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
         else {
             $scope.country_modalTitle = "Editar País";
             $scope.country_buttonName = "Editar";
-            $scope.editCountry(index);
+            $scope.editCountry(country);
         }
     }
 
-    $scope.editCountry = function (index) {
-        var countryToEdit = $scope.countriesList[index];
+    $scope.editCountry = function (countryToEdit) {
         $scope.Country_CountryId = countryToEdit.CountryId
         $scope.Country_Name = countryToEdit.Name;
 
@@ -49,7 +77,7 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
     $scope.country_refresh = function () {
 
         countriesRepo.getCountriesList().success(function (data) {
-            debugger
+             
             $scope.countriesList = [];
             $scope.countriesList = data;
             $scope.totalServerItems = data.totalItems;
@@ -70,7 +98,7 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
 
 
     $scope.saveCountry = function () {
-        debugger
+        $scope.load = true;
         var country;
 
         if ($scope.actionCountry == "add") {
@@ -81,7 +109,6 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
             countriesRepo.insertCountry(function () {
             }, country);
 
-            $scope.countriesList.push(country);
         }
         else {
             country = {
@@ -96,35 +123,34 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
 
         $scope.countryClearData();
 
-        $scope.country_refresh();
+        //$scope.country_refresh();
 
+        $scope.setCountryData();
+        $scope.load = true;
     };
 
-    $scope.setCountryToDelete = function (index) {
-        var id = $scope.countriesList[index].CountryId;
-        $scope.countryToDeleteId = id;
-        $scope.countryToDeleteIndex = index;
+    $scope.setCountryToDelete = function (country) {
+        $scope.countryToDeleteId = country.CountryId;
     };
 
     $scope.cancelCountrytDelete = function () {
         $scope.countryToDeleteId = "";
-        $scope.countryToDeleteIndex = "";
-    };
-
-    $scope.removeCountry = function (index) {
-        $scope.countriesList.splice(index, 1);
     };
 
     $scope.deleteCountry = function () {
-        var id = $scope.countryToDeleteId;
-        $scope.removeCountry($scope.countryToDeleteIndex);
+        $scope.load = true;
         countriesRepo.deleteCountry(function () {
-            alert('Country deleted');
-            //removeCountry(index);
-        }, id);
-        $scope.cancelCountrytDelete();
+        }, $scope.countryToDeleteId).success(function () {
+            $scope.cancelCountrytDelete();
+            $scope.setCountryData();
+            $scope.load = false;
+        }).error(function (error) {
+            $scope.load = false;
+        });
+
+        
     }
 
-
+    $scope.setCountryData();
 
 }]);

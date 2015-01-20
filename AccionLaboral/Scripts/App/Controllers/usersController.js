@@ -13,7 +13,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
         });
 }]
 )
-.controller('usersCtrl', ['$scope', 'usersRepo', function ($scope, usersRepo) {
+.controller('usersCtrl', ['$scope', 'usersRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, usersRepo, $rootScope, $location, $filter, filterFilter, alertService) {
 
     $scope.usersList = [];
     $scope.actionUser = "";
@@ -29,7 +29,34 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
             $scope.load = false;
         });
 
-    $scope.setActionUser = function (action, index) {
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+
+    $scope.setUserData = function () {
+        usersRepo.getUsersList().success(function (data) {
+            $scope.usersList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+
+            $scope.noOfPages = ($scope.usersList) ? Math.ceil($scope.usersList.length / $scope.entryLimit) : 1;
+
+            $scope.itemsInPage = ($scope.usersList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.usersList.length) ?
+                                        $scope.usersList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+
+    $scope.setActionUser = function (action, user) {
         $scope.actionUser = action;
         if (action == "add") {
             $scope.user_modalTitle = "Agregar Usuario";
@@ -38,12 +65,11 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
         else {
             $scope.user_modalTitle = "Editar Usuario";
             $scope.user_buttonName = "Editar";
-            $scope.editUser(index);
+            $scope.editUser(user);
         }
     }
 
-    $scope.editUser = function (index) {
-        var userToEdit = $scope.usersList[index];
+    $scope.editUser = function (userToEdit) {
         $scope.User_UserId = userToEdit.UserId;
         $scope.User_UserName = userToEdit.UserName;
         $scope.User_Password = userToEdit.Password;
@@ -74,8 +100,9 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
 
 
     $scope.saveUser = function () {
+        $scope.load = true;
         var user;
-
+        debugger
         if ($scope.actionUser == "add") {
             user = {
                 UserName: $scope.User_UserName,
@@ -83,9 +110,28 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
             };
 
             usersRepo.insertUser(function () {
-            }, user);
+            }, user).success(function () {
+                //alertService.add('success', 'Enhorabuena', 'Registro se ha agregado correctamente.');
+                //$scope.alertsTags = $rootScope.alerts;
+                $scope.userClearData();
+                $scope.setUserData();
+                $scope.load = false;
+            }).error(function () {
+                //alertService.add('danger', 'Error', 'No se ha podido agregado el registro.');
+                //$scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
+                //.
+                //success(function () {
+                //    $scope.userClearData();
+                //    $scope.setUserData();
+                //    $scope.load = false;
+                //}).
+                //error(function (error) {
+                //    $scope.error = "Ha ocurrido un error al cargar los datos." + error.ExceptionMessage;
+                //    $scope.load = false;
+                //});
 
-            //$scope.usersList.push(user);
         }
         else {
             user = {
@@ -95,39 +141,56 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
             };
 
             usersRepo.updateUser(function () {
-            }, user);
+            }, user).success(function () {
+                //alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                //$scope.alertsTags = $rootScope.alerts;
+                $scope.userClearData();
+                $scope.setUserData();
+                $scope.load = false;
+            }).error(function () {
+                //alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.');
+                //$scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
+                //.
+                //success(function () {
+                //    $scope.userClearData();
+                //    $scope.setUserData();
+                //    $scope.load = false;
+                //}).
+                //error(function (error) {
+                //    $scope.error = "Ha ocurrido un error al cargar los datos." + error.ExceptionMessage;
+                //    $scope.load = false;
+                //});
 
         }
-
-        $scope.userClearData();
-
-        $scope.user_refresh();
-
+        
+        //$scope.userClearData();
+        //$scope.user_refresh();
+        //$scope.setUserData();
+        //$scope.load = false;
     };
 
-    $scope.setUserToDelete = function (index) {
-        var id = $scope.usersList[index].UserId;
-        $scope.userToDeleteId = id;
-        $scope.userToDeleteIndex = index;
+    $scope.setUserToDelete = function (user) {
+        $scope.userToDeleteId = user.UserId;
     };
 
     $scope.cancelUsertDelete = function () {
         $scope.userToDeleteId = "";
-        $scope.userToDeleteIndex = "";
-    };
-
-    $scope.removeUser = function (index) {
-        $scope.usersList.splice(index, 1);
     };
 
     $scope.deleteUser = function () {
-        var id = $scope.userToDeleteId;
-        $scope.removeUser($scope.userToDeleteIndex);
+        $scope.load = true;
         usersRepo.deleteUser(function () {
-            alert('User deleted');
-            //removeUser(index);
-        }, id);
-        $scope.cancelUsertDelete();
+        }, $scope.userToDeleteId)
+        .success(function () {
+            $scope.cancelUsertDelete();
+            $scope.setUserData();
+            $scope.load = true;
+        }).error(function (error) {
+            $scope.load = true;
+        });
+        
     }
 
     $scope.login = function () {
@@ -145,5 +208,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository'])
 
         window.location = "#/";
     }
+
+    //$scope.setUserData();
 
 }]);

@@ -26,24 +26,24 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     ;
 }]
 )
-.controller('contractTemplatesCtrl', ['$scope', 'contractTemplatesRepo', '$routeParams', function ($scope, contractTemplatesRepo, $routeParams) {
+.controller('contractTemplatesCtrl', ['$scope', 'contractTemplatesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, contractTemplatesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
     var actionContractTemplate = "";
     $scope.contractTemplateList = [];
     $scope.contractId = $routeParams.id;
     $scope.load = true;
 
-    $scope.$watch('$routeChangeSuccess', function () {
-        contractTemplatesRepo.getContractTemplateList().success(function (data) {
-            $scope.contractTemplateList = data;
-            $scope.totalServerItems = data.totalItems;
-            $scope.items = data.items;
-            $scope.load = false;
-        })
-        .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        });
-    });
+    //$scope.$watch('$routeChangeSuccess', function () {
+    //    contractTemplatesRepo.getContractTemplateList().success(function (data) {
+    //        $scope.contractTemplateList = data;
+    //        $scope.totalServerItems = data.totalItems;
+    //        $scope.items = data.items;
+    //        $scope.load = false;
+    //    })
+    //    .error(function (data) {
+    //        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+    //        $scope.load = false;
+    //    });
+    //});
 
    if ($scope.contractId == null) {
         actionContractTemplate = "add";
@@ -75,18 +75,44 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
             $scope.load = false;
         });
 
+
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+
+    $scope.setContractData = function () {
+        contractTemplatesRepo.getContractTemplateList().success(function (data) {
+            $scope.contractTemplateList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+
+            $scope.noOfPages = ($scope.contractTemplateList) ? Math.ceil($scope.contractTemplateList.length / $scope.entryLimit) : 1;
+
+            $scope.itemsInPage = ($scope.contractTemplateList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.contractTemplateList.length) ?
+                                        $scope.contractTemplateList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+
     $scope.contract_addNewRedirect = function () {
         window.location = "#/Contracts/Create";
     }
 
-    $scope.contract_editRedirect = function (index) {
-        var id = $scope.contractTemplateList[index].ContractTemplateId;
-        window.location = "#/Contracts/Edit/" + id;
+    $scope.contract_editRedirect = function (contract) {
+        window.location = "#/Contracts/Edit/" + contract.ContractTemplateId;
     }
 
-    $scope.contract_viewRedirect = function (index) {
-        var id = $scope.contractTemplateList[index].ContractTemplateId;
-        window.location = "#/Contracts/Preview/" + id;
+    $scope.contract_viewRedirect = function (contract) {
+        window.location = "#/Contracts/Preview/" + contract.ContractTemplateId;
     }
 
     $scope.contract_cancelRedirect = function () {
@@ -113,7 +139,6 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
             contractTemplatesRepo.insertContractTemplate(function () {
             }, contract);
 
-            $scope.contractTemplateList.push(contract);
         }
         else {
             contract = {
@@ -135,31 +160,30 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
 
         $scope.contract_cancelRedirect();
         $scope.contract_refresh();
+
+        $scope.setContractData();
     };
 
-    $scope.setContractToDelete = function (index) {
-        var id = $scope.contractTemplateList[index].ContractTemplateId;
-        $scope.contractToDeleteId = id;
-        $scope.contractToDeleteIndex = index;
+    $scope.setContractToDelete = function (contract) {
+        $scope.contractToDeleteId = contract.ContractTemplateId;
     };
 
     $scope.cancelContractDelete = function () {
         $scope.contractToDeleteId = "";
-        $scope.contractToDeleteIndex = "";
-    };
-
-    $scope.removeContractTemplate = function (index) {
-        $scope.contractTemplateList.splice(index, 1);
     };
 
     $scope.deleteContractTemplate = function () {
-        var id = $scope.contractToDeleteId;
-        $scope.removeContractTemplate($scope.contractToDeleteIndex);
+        $scope.load = true;
         contractTemplatesRepo.deleteContractTemplate(function () {
             alert('Contract Template deleted');
-            //removeContract(index);
-        }, id);
-        $scope.cancelContractDelete();
+        }, $scope.contractToDeleteId).success(function () {
+            $scope.cancelContractDelete();
+            $scope.setContractData();
+            $scope.load = false;
+        }).error(function (error) {
+            $scope.load = false;
+        });
+        
     }
 
 
@@ -183,4 +207,5 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         }, newActiveContract);
     }
 
+    $scope.setContractData();
 }]);
