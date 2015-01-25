@@ -28,7 +28,7 @@
                 <button class="btn btn-info btn-sm" ng-click="company_addNewRedirect()" title="">
                     <i class="fa  fa-plus"></i>
                 </button>
-                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="refreshCompanies()">
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="setCompanyData()">
                     <i class="fa  fa-refresh"></i>
                 </button>
             </div>
@@ -37,24 +37,32 @@
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Area / Rubro</th>
+                    <th href="#" ng-click="sort='Name' ; reverse=!reverse" title="Clic para ordenar">Nombre</th>
+                    <th ng-click="sort='Area' ; reverse=!reverse" title="Clic para ordenar">Area / Rubro</th>
                     <th>Opciones</th>
                 </tr>
-                <!--<thead>
-                    <tr>
-                        <th href="#" ng-click="sort='Name' ; reverse=!reverse">Nombre</th>
-                        <th ng-click="sort='Area' ; reverse=!reverse">Area / Rubro</th>
-                        <th>Opciones</th>
-                    </tr>
-                    <tr>
-                        <th colspan="1"><input ng-model="Name" ng-class="reverse" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.Area" class="form-control" type="text" /></th>
-                        <th colspan="1"></th>
-                    </tr>
-                </thead>-->
+                <tr>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Area" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Area='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th colspan="1"></th>
+                </tr>
                 <tr ng-repeat="company in companyList  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
-                <!--<tr ng-repeat="company in companyList">-->
                     <td>{{company.Name}}</td>
                     <td>{{company.Area}}</td>
                     <td>
@@ -73,7 +81,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="col-xs-4">
-                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setData()"></select>
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setCompanyData()"></select>
                     </div>
                     <div class="col-xs-8">
                         <label>Registros por Página</label>

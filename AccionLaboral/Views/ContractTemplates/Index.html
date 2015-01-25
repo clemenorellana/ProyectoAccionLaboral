@@ -15,14 +15,49 @@
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
                 <tr>
-                    <th align="center" style="width: 268px;">Nombre</th>
-                    <th>Descripción</th>
-                    <th style ="width: 78px;">Activo</th>
-                    <th style="width: 218px;">Opción</th>
+                    <th href="#" ng-click="sort='Name' ; reverse=!reverse" title="Clic para ordenar">Nombre</th>
+                    <th ng-click="sort='Description' ; reverse=!reverse" title="Clic para ordenar">Descripción</th>
+                    <th  ng-click="sort='Active' ; reverse=!reverse" title="Clic para ordenar">Activo</th>
+                    <th >Opciones</th>
+                </tr>
+                <tr>
+                    <th style="width: 200px;" colspan="1" >
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Description" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Description='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th style="width: 200px;" colspan="1" >
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <select class="form-control" ng-model="search.Active" ng-class="reverse">
+                                <option value="">Buscar...</option>
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Active='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <!--<th colspan="1"></th>-->
+                    <th style="width: 150px;" colspan="1"></th>
                 </tr>
                 <tr ng-repeat="contract in contractTemplateList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{contract.Name}}</td>
-                    <td>{{contract.Description}}</td>
+                    <td>{{contract.Description | limitTo: 100 }}{{contract.Description.length > limitTo ? '...' : ''}}</td>
                     <td align="center">
                         <input type="checkbox" ng-checked="contract.Active" ng-click="contract_changeActiveContract($index)">
                     </td>

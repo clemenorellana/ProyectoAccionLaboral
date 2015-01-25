@@ -36,7 +36,7 @@
         <div class="box-body">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
-                <!--<thead>
+                <thead>
                     <tr>
                         <th href="#" ng-click="sort='Company.Name' ; reverse=!reverse">Nombre de la Empresa</th>
                         <th ng-click="sort='VacantName' ; reverse=!reverse">Nombre de la Vacante</th>
@@ -44,20 +44,82 @@
                         <th ng-click="sort='Career.Name' ; reverse=!reverse">Carrera</th>
                         <th ng-click="sort='Gender' ; reverse=!reverse">Genero</th>
                         <th ng-click="sort='VacantLevel.Name' ; reverse=!reverse">Tipo de Vacante</th>
+                        <th ng-click="sort='Active' ; reverse=!reverse">Estado</th>
                         <th>Opciones</th>
                     </tr>
-                    <tr>
-                        <th colspan="1"><input ng-model="Company.Name" ng-class="reverse" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.VacantName" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.ChargeDescription" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.Career.Name" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.Gender" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.VacantLevel.Name" class="form-control" type="text" /></th>
+                    <tr>                        
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.Company.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                                <span class="input-group-btn">
+                                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Company.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                                </span>
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.VacantName" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                                <span class="input-group-btn">
+                                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.VacantName='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                                </span>
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.ChargeDescription" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                                <span class="input-group-btn">
+                                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.ChargeDescription='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                                </span>
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.Career.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                                <span class="input-group-btn">
+                                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Career.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                                </span>
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.Gender" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                                <span class="input-group-btn">
+                                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Gender='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                                </span>
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.VacantLevel.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                                <span class="input-group-btn">
+                                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.VacantLevel.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                                </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <select class="form-control" ng-model="search.Active" ng-class="reverse">
+                                    <option value="">Buscar...</option>
+                                    <option value="true">Activo</option>
+                                    <option value="false">Inactivo</option>
+                                </select>
+                                <span class="input-group-btn">
+                                    <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Active='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                                </span>
+                            </div>
+                        </th>
                         <th colspan="1"></th>
+
                     </tr>
-                    
-                </thead>-->
-                <tr>
+                </thead>
+                <!--<tr>
                     <th>Nombre de la Empresa</th>
                     <th>Nombre de la Vacante</th>
                     <th>Descripción de la Vacante</th>
@@ -66,7 +128,7 @@
                     <th>Tipo de Vacante</th>
                     <th>Estado</th>
                     <th>Opciones</th>
-                </tr>
+                </tr>-->
                 <tr ng-repeat="vacant in vacantList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{vacant.Company.Name}}</td>
                     <td>{{vacant.VacantName}}</td>

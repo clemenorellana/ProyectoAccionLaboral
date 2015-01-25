@@ -15,12 +15,33 @@
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
                 <tr>
-                    <th>ID</th>
-                    <th>Nombre de Usuario</th>
-                    <th>Opción</th>
+                    <!--<th href="#" ng-click="sort='UserId' ; reverse=!reverse" title="Clic para ordenar">ID</th>-->
+                    <th ng-click="sort='UserName' ; reverse=!reverse" title="Clic para ordenar">Nombre de Usuario</th>
+                    <th>Opciones</th>
+                </tr>
+                <tr>
+                    <!--<th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.UserId" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.UserId='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>-->
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.UserName" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.UserName='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th style="width: 100px;" colspan="1"></th>
                 </tr>
                 <tr ng-repeat="user in usersList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
-                    <td>{{user.UserId}}</td>
+                    <!--<td>{{user.UserId}}</td>-->
                     <td>{{user.UserName}}</td>
                     <td align="center">
                         <button class="btn btn-info" data-toggle="modal" data-target="#usersInfo" ng-click="setActionUser('edit',user)" title="Editar">

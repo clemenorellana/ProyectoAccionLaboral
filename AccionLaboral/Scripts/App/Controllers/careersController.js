@@ -30,10 +30,23 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
             $scope.load = false;
         });
 
+    //Sorting
+    $scope.sort = "Name";
+    $scope.reverse = false;
+
+    $scope.changeSort = function (value) {
+        if ($scope.sort == value) {
+            $scope.reverse = !$scope.reverse;
+            return;
+        }
+
+        $scope.sort = value;
+        $scope.reverse = false;
+    }
     //End Sorting//
     $scope.$watch('search', function (term) {
         // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
-        $scope.filtered = filterFilter($scope.vacantList, term);
+        $scope.filtered = filterFilter($scope.careerList, term);
         $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
     });
 

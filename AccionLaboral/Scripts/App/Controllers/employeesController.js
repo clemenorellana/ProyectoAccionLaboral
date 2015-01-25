@@ -67,6 +67,28 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         $scope.load = false;
     });
 
+    //Sorting
+    $scope.sort = "EmployeeAlias";
+    $scope.reverse = false;
+
+    $scope.changeSort = function (value) {
+        if ($scope.sort == value) {
+            $scope.reverse = !$scope.reverse;
+            return;
+        }
+
+        $scope.sort = value;
+        $scope.reverse = false;
+    }
+    //End Sorting//
+
+    $scope.$watch('search', function (term) {
+        // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+        debugger
+       
+        $scope.filtered = filterFilter($scope.employeesList, term);
+        $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+    });
 
     $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
     $scope.entryLimit = $scope.itemsPerPageList[0];
