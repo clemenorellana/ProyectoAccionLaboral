@@ -1,4 +1,15 @@
-﻿<div class="col-md-12">
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+<!-- Delete confirmation modal -->
+
+<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Listado de Plantillas de Contratos</h3>

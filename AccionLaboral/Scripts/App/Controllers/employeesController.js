@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("employeesController", ['ngRoute', 'employeesRepository'])
+angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/Employees', {
@@ -44,6 +44,11 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
     $scope.employeesRolesList = [];
     $scope.employeeId = $routeParams.id;
 
+
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
+
     $scope.$watch('$routeChangeSuccess', function () {
         employeesRepo.getEmployeesList().success(function (data) {
             $scope.employeesList = data;
@@ -66,6 +71,58 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
     });
+
+    //---------------------------------
+    $scope.handleFileSelectAdd = function (evt) {
+
+        var f = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (function (theFile) {
+            return function (e) {
+                var filePayload = e.target.result;
+                $scope.episodeImgData = filePayload.replace('data:' + f.type + ';base64,', '');
+                document.getElementById('imagenEmployee').src = filePayload;
+            };
+        })(f);
+        reader.readAsDataURL(f);
+    };
+
+    var imageElement = document.getElementById('imageInputFile');
+    if (imageElement)
+        imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
+
+
+    $scope.handleFileSelectAdd = function (evt) {
+        var f = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (function (theFile) {
+            return function (e) {
+                var filePayload = e.target.result;
+                $scope.employee_Photo = filePayload.replace('data:' + f.type + ';base64,', '');
+                $scope.$apply(function () {
+
+                });
+            };
+        })(f);
+        reader.readAsDataURL(f);
+    };
+
+
+
+
+
+
+
+
+
+    //---------------------------------
+
+
+
+
+
+
+
 
     //Sorting
     $scope.sort = "EmployeeAlias";
@@ -252,7 +309,16 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
             };
 
             employeesRepo.insertEmployee(function () {
-            }, employee);
+            }, employee).success(function () {
+                alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
+
 
         }
         else {
@@ -275,7 +341,15 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
             };
 
             employeesRepo.updateEmployee(function () {
-            }, employee);
+            }, employee).success(function () {
+                alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
         }
 
         $scope.clearData();
@@ -299,12 +373,25 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         $scope.load = true;
         employeesRepo.deleteEmployee(function () {
         }, $scope.employeeToDeleteId).success(function () {
+            alertService.add('success', 'Mensaje', 'El Empleado se ha eliminado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
             $scope.cancelEmployeeDelete();
             $scope.setEmployeeData();
             $scope.load = false;
-        }).error(function (error) {
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
             $scope.load = false;
         });
+
+
+        //    .success(function () {
+        //    $scope.cancelEmployeeDelete();
+        //    $scope.setEmployeeData();
+        //    $scope.load = false;
+        //}).error(function (error) {
+        //    $scope.load = false;
+        //});
         
     }
     

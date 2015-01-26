@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("companiesController", ['ngRoute', 'companiesRepository'])
+angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
     debugger
     $routeProvider.
@@ -28,6 +28,9 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
     $scope.actionContact = 'Agregar'
     $scope.contactIndex;
     var actionCompany;
+
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
 
 
     $scope.companyId = $routeParams.id;
@@ -226,10 +229,28 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         }
         //TODO: sacar los datos de las vacantes agregadas
         if (actionCompany == "add") {
-            companiesRepo.insertCompany(function () { }, newCompany);
+            companiesRepo.insertCompany(function () { }, newCompany).success(function () {
+                alertService.add('success', 'Mensaje', 'La Empresa se ha insertado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $location.path("/Companies");
+                //$scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
         }
         else {
-            companiesRepo.updateCompany(function () { }, newCompany);
+            companiesRepo.updateCompany(function () { }, newCompany).success(function () {
+                alertService.add('success', 'Mensaje', 'La Empresa se ha editado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $location.path("/Companies");
+                //$scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
         }
         $scope.setCompanyData();
         window.location = "#/Companies";
@@ -254,13 +275,19 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository'])
         $scope.load = true;
         companiesRepo.deleteCompany(function () {
         }, id).success(function () {
-                $scope.companyToDelete = 0;
-                $scope.companyIndex = -1;
-                $scope.refreshCompanies();
-                $scope.load = false;
-            }).error(function (error) {
+            alertService.add('success', 'Mensaje', 'La Empresa se ha eliminado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.companyToDelete = 0;
+            $scope.companyIndex = -1;
+            $scope.setCompanyData();
+            $scope.load = false;
             
-            });
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        });
+
     }
 
     $scope.company_editRedirect = function (id) {

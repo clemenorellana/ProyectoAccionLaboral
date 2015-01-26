@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module("countriesController", ['ngRoute', 'countriesRepository'])
+angular.module("countriesController", ['ngRoute', 'countriesRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/Countries', {
@@ -14,6 +14,10 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
     $scope.countriesList = [];
     $scope.actionCountry = "";
     $scope.load = true;
+
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
     
     countriesRepo.getCountriesList().success(function (data) {
         $scope.countriesList = data;
@@ -127,7 +131,15 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
             };
 
             countriesRepo.insertCountry(function () {
-            }, country);
+            }, country).success(function () {
+                alertService.add('success', 'Mensaje', 'El País se ha insertado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
 
         }
         else {
@@ -137,7 +149,15 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
             };
 
             countriesRepo.updateCountry(function () {
-            }, country);
+            }, country).success(function () {
+                alertService.add('success', 'Mensaje', 'El País se ha editado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
 
         }
 
@@ -161,12 +181,17 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository'])
         $scope.load = true;
         countriesRepo.deleteCountry(function () {
         }, $scope.countryToDeleteId).success(function () {
+            alertService.add('success', 'Mensaje', 'El País se ha eliminado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
             $scope.cancelCountrytDelete();
             $scope.setCountryData();
             $scope.load = false;
-        }).error(function (error) {
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
             $scope.load = false;
         });
+
 
         
     }

@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepository'])
+angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
      
     $routeProvider.
@@ -34,6 +34,8 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     var actionVacant;
 
 
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
 
     //Sorting
     $scope.sort = "Company.Name";
@@ -232,18 +234,36 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             CityId: $scope.vacant_city.CityId,
             VacantLevelId: $scope.vacant_vacantLevel.VacantLevelId
         }
-        debugger
+        
         
         //TODO: sacar los datos de las vacantes agregadas
         if (actionVacant == "add") {
-            vacantByCompanyRepo.insertVacant(function () { }, newVacant);
+            vacantByCompanyRepo.insertVacant(function () { }, newVacant).success(function () {
+                alertService.add('success', 'Mensaje', 'La Vacante se ha insertado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $location.path("/Vacants");
+                //$scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
         }
         else {
             newVacant.VacantByCompanyId = $scope.vacant_VacantByCompanyId;
             newVacant.CoverdDate = new Date($scope.vacant_CoveredDate);
             newVacant.Active = $scope.vacant_Active;
 
-            vacantByCompanyRepo.updateVacant(function () { }, newVacant);
+            vacantByCompanyRepo.updateVacant(function () { }, newVacant).success(function () {
+                alertService.add('success', 'Mensaje', 'La Vacante se ha editado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $location.path("/Vacants");
+                //$scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
         }
 
         window.location = "#/Vacants";
@@ -270,16 +290,18 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.load = true;
         vacantByCompanyRepo.deleteVacant(function () {
         }, id).success(function () {
-                    $scope.vacantToDelete = 0;
-                    $scope.vacantIndex = -1;
-                    $scope.setVacantData();
+            alertService.add('success', 'Mensaje', 'La Vacante se ha eliminado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.vacantToDelete = 0;
+            $scope.vacantIndex = -1;
+            $scope.setVacantData();
+            $scope.load = false;
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        });
 
-                    $scope.load = false;
-            }).error(function (error) {
-
-            });
-
-        window.location = "#/Vacants";
     }
 
     $scope.setVacantData();

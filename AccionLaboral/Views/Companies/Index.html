@@ -1,4 +1,15 @@
-﻿<!-- Delete confirmation modal -->
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+<!-- Delete confirmation modal -->
+
+<!-- Delete confirmation modal -->
 <div class="modal fade" id="deleteInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -39,7 +50,7 @@
                 <tr>
                     <th href="#" ng-click="sort='Name' ; reverse=!reverse" title="Clic para ordenar">Nombre</th>
                     <th ng-click="sort='Area' ; reverse=!reverse" title="Clic para ordenar">Area / Rubro</th>
-                    <th>Opciones</th>
+                    <th >Opciones</th>
                 </tr>
                 <tr>
                     <th colspan="1">
@@ -65,7 +76,7 @@
                 <tr ng-repeat="company in companyList  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                     <td>{{company.Name}}</td>
                     <td>{{company.Area}}</td>
-                    <td>
+                    <td style="width: 10%;" align="center">
                         <button type="button" class="btn btn-info" id="editCustomer" ng-click="company_editRedirect(company.CompanyId)" title="Editar"><i class="fa fa-edit"></i></button>
                         <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteInfoModal" ng-click="setCompanyToDelete(company.CompanyId,$index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                     </td>
