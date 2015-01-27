@@ -85,7 +85,7 @@ namespace AccionLaboral.Controllers
             db.Countries.Add(country);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = country.CountryId }, country);
+            return CreatedAtRoute("DefaultApi", new { controller = "countries", id = country.CountryId }, country);
         }
 
         // DELETE api/Countries/5

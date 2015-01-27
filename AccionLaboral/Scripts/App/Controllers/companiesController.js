@@ -2,7 +2,7 @@
 
 angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
-    debugger
+     
     $routeProvider.
         when('/Companies', {
             templateUrl: '/Companies/Index',
@@ -34,7 +34,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
 
     $scope.companyId = $routeParams.id;
-    debugger
+     
     if ($scope.companyId == null) {
         actionCompany = "add";
         $scope.tittleCompanyForm = "Agregar datos de una Empresa";
@@ -53,21 +53,8 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
             $scope.company_Area = companyToEdit.Area;
             $scope.company_DateCreated = companyToEdit.DateCreated;
             $scope.contactsByCompanyList = companyToEdit.ContactsByCompany;
-            //$scope.company_VacantsByCompany = companyToEdit.VacantsByCompany;
         });
     }
-
-    companiesRepo.getCompanyList().success(function (data) {
-        debugger
-        $scope.companyList = data;
-        $scope.totalServerItems = data.totalItems;
-        $scope.items = data.items;
-        $scope.load = false;
-    })
-    .error(function (data) {
-        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-        $scope.load = false;
-    });
 
     //Sorting
     $scope.sort = "Name";
@@ -121,7 +108,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
 
     $scope.setActionContact = function (index, action) {
-        debugger
+         
         if (action == 'edit') {
             $scope.actionContact = 'Editar'
             var contact = $scope.contactsByCompanyList[index];
@@ -142,7 +129,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
     }
 
     $scope.saveContactByCompany = function () {
-        debugger
+         
         var contact = {
             ContactByCompanyId: $scope.contact_ContactByCompanyId,
             ContactName: $scope.contact_Name,
@@ -186,23 +173,10 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         $scope.contactsByCompanyList.splice(index, 1);
     }
 
-    $scope.refreshCompanies = function () {
-        $scope.load = true;
-        companiesRepo.getCompanyList().success(function (data) {
-            debugger
-            $scope.companyList = data;
-            $scope.totalServerItems = data.totalItems;
-            $scope.items = data.items;
-            $scope.load = false;
-        })
-        .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        });
-    }
+
 
     $scope.saveCompany = function () {
-        debugger
+         
         var newCompany = {
             CompanyId: $scope.company_CompanyId,
             CompanyName: $scope.company_Name,
@@ -227,7 +201,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
                 newCompany.ContactsByCompany.push(contact);
             }
         }
-        //TODO: sacar los datos de las vacantes agregadas
+        
         if (actionCompany == "add") {
             companiesRepo.insertCompany(function () { }, newCompany).success(function () {
                 alertService.add('success', 'Mensaje', 'La Empresa se ha insertado correctamente.');
@@ -271,7 +245,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
     $scope.deleteCompany = function (id) {
         $scope.companyDeleted = 'delete';
-        debugger
+         
         $scope.load = true;
         companiesRepo.deleteCompany(function () {
         }, id).success(function () {

@@ -17,7 +17,7 @@
                 <button class="btn btn-info btn-sm" ng-click="contract_addNewRedirect()" title="Agregar">
                     <i class="fa  fa-plus"></i>
                 </button>
-                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="contract_refresh()">
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="setContractData()">
                     <i class="fa  fa-refresh"></i>
                 </button>
             </div>
@@ -70,7 +70,7 @@
                     <td>{{contract.Name}}</td>
                     <td>{{contract.Description | limitTo: 100 }}{{contract.Description.length > limitTo ? '...' : ''}}</td>
                     <td align="center">
-                        <input type="checkbox" ng-checked="contract.Active" ng-click="contract_changeActiveContract($index)">
+                        <input type="checkbox" ng-checked="contract.Active" ng-click="contract_changeActiveContract(contract)">
                     </td>
                     <td align="center">
                         <button class="btn btn-info" ng-click="contract_viewRedirect(contract)" title="Ver">

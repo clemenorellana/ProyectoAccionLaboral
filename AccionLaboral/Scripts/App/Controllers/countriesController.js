@@ -18,17 +18,7 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository', 'alertR
     if (!$rootScope.alerts)
         $rootScope.alerts = [];
 
-    
-    countriesRepo.getCountriesList().success(function (data) {
-        $scope.countriesList = data;
-        $scope.totalServerItems = data.totalItems;
-        $scope.items = data.items;
-        $scope.load = false;
-    })
-        .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        });
+ 
 
     //Sorting
     $scope.sort = "Name";
@@ -98,21 +88,7 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository', 'alertR
 
     };
 
-    $scope.country_refresh = function () {
 
-        countriesRepo.getCountriesList().success(function (data) {
-             
-            $scope.countriesList = [];
-            $scope.countriesList = data;
-            $scope.totalServerItems = data.totalItems;
-            $scope.items = data.items;
-            $scope.load = false;
-        })
-        .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        })
-    };
 
     $scope.countryClearData = function () {
         $scope.actionCountry = "";
@@ -134,6 +110,7 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository', 'alertR
             }, country).success(function () {
                 alertService.add('success', 'Mensaje', 'El País se ha insertado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
+                $scope.setCountryData();
                 $scope.load = false;
             }).error(function () {
                 alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
@@ -152,6 +129,7 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository', 'alertR
             }, country).success(function () {
                 alertService.add('success', 'Mensaje', 'El País se ha editado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
+                $scope.setCountryData();
                 $scope.load = false;
             }).error(function () {
                 alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
@@ -162,10 +140,6 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository', 'alertR
         }
 
         $scope.countryClearData();
-
-        //$scope.country_refresh();
-
-        $scope.setCountryData();
         $scope.load = true;
     };
 

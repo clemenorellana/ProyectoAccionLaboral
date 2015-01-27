@@ -1,4 +1,15 @@
-﻿<div class="col-md-12">
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+<!-- Delete confirmation modal -->
+
+<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Listado de Ciudades</h3>
@@ -6,7 +17,7 @@
                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#citiesInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionCity('add')">
                     <i class="fa  fa-plus"></i>
                 </button>
-                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="city_refresh()">
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="setCityata()">
                     <i class="fa  fa-refresh"></i>
                 </button>
             </div>
@@ -48,7 +59,7 @@
                 <tr ng-repeat="city in citiesList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{city.Name}}</td>
                     <td>{{city.Country.Name}}</td>
-                    <td align="center" style="width: 168px;">
+                    <td style="width: 10%;" align="center">
                         <button class="btn btn-info" data-toggle="modal" data-target="#citiesInfo" ng-click="setActionCity('edit',city)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>

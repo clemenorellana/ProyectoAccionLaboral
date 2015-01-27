@@ -35,19 +35,7 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     if (!$rootScope.alerts)
         $rootScope.alerts = [];
 
-    //$scope.$watch('$routeChangeSuccess', function () {
-    //    contractTemplatesRepo.getContractTemplateList().success(function (data) {
-    //        $scope.contractTemplateList = data;
-    //        $scope.totalServerItems = data.totalItems;
-    //        $scope.items = data.items;
-    //        $scope.load = false;
-    //    })
-    //    .error(function (data) {
-    //        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-    //        $scope.load = false;
-    //    });
-    //});
-
+  
    if ($scope.contractId == null) {
         actionContractTemplate = "add";
         $scope.contract_modalTitle = "Agregar Plantilla de Contrato";
@@ -67,16 +55,6 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
             $scope.Contract_Active = contractToEdit.Active;
         });
     }    
-
-    contractTemplatesRepo.getContractTemplateList().success(function (data) {
-        $scope.contractTemplateList = data;
-        $scope.totalServerItems = data.totalItems;
-        $scope.items = data.items;
-        $scope.load = false;
-    }).error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        });
 
     //Sorting
     $scope.sort = "Name";
@@ -142,13 +120,6 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         window.location = "#/Contracts";
     }
 
-    $scope.contract_refresh = function () {
-        contractTemplatesRepo.getContractTemplateList().success(function (data) {
-            $scope.contractTemplateList = data;
-            $scope.load = false;
-        });
-    };
-        
     $scope.saveContract = function () {
         var contract;
 
@@ -182,12 +153,12 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
 
             contractTemplatesRepo.updateContractTemplate(function () {
             }, contract).success(function () {
-                alertService.add('success', 'Mensaje', 'La Plantilla de Contrato se ha modificado correctamente.');
+                alertService.add('success', 'Mensaje', 'La Plantilla de Contrato se ha editado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
                 $location.path("/Contracts");
                 //$scope.load = false;
             }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido modificar el registro.');
+                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.load = false;
             });
@@ -231,24 +202,51 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     }
 
 
-    $scope.contract_changeActiveContract = function (index) {
-        var currentActiveContract;
-        for (var i = 0; i < $scope.contractTemplateList.length; i++) {
-            var contract = $scope.contractTemplateList[i];
-            if (contract.Active)
-                currentActiveContract = contract;
-        }
+    $scope.contract_changeActiveContract = function (contract) {
+        //This code works when Accion Laboral used only a contract template
+        //var currentActiveContract;
+        //for (var i = 0; i < $scope.contractTemplateList.length; i++) {
+        //    var contract = $scope.contractTemplateList[i];
+        //    if (contract.Active)
+        //        currentActiveContract = contract;
+        //}
         
-        if (currentActiveContract != null) {
-            currentActiveContract.Active = false;
-            contractTemplatesRepo.updateContractTemplate(function () {
-            }, currentActiveContract);
+        //if (currentActiveContract != null) {
+        //    currentActiveContract.Active = false;
+        //    contractTemplatesRepo.updateContractTemplate(function () {
+        //    }, currentActiveContract);
+        //}
+
+        //var newActiveContract = $scope.contractTemplateList[index];
+        //newActiveContract.Active = true;
+        //contractTemplatesRepo.updateContractTemplate(function () {
+        //}, newActiveContract);
+
+
+        //Now Accion Laboral can use any active contract template
+        var succMsj, erroMsj;
+        if (contract.Active == true) {
+            contract.Active = false;
+            succMsj = 'La Plantilla de Contrato se ha desactivado correctamente.'
+            erroMsj = 'No se ha podido desactivar el contrato.'
+        }
+        else {
+            contract.Active = true;
+            succMsj = 'La Plantilla de Contrato se ha activado correctamente.'
+            erroMsj = 'No se ha podido activar el contrato.'
         }
 
-        var newActiveContract = $scope.contractTemplateList[index];
-        newActiveContract.Active = true;
         contractTemplatesRepo.updateContractTemplate(function () {
-        }, newActiveContract);
+        }, contract).success(function () {
+            alertService.add('success', 'Mensaje', succMsj);
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        }).error(function () {
+            alertService.add('danger', 'Error', erroMsj);
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        });
+        
     }
 
     $scope.setContractData();

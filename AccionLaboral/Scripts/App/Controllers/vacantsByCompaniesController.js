@@ -72,7 +72,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.tittleVacantForm = "Editar una Vacante";
         $scope.buttonNameVacantForm = "Editar";
         $scope.showVacantCoverdDate = true;
-        debugger
+         
 
         vacantByCompanyRepo.getVacant(vacantByCompanyId).success(function (data) {
             var vacantToEdit = data;
@@ -122,17 +122,6 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
 
     };
 
-    vacantByCompanyRepo.getVacantList().success(function (data) {
-         
-        $scope.vacantList = data;
-        $scope.totalServerItems = data.totalItems;
-        $scope.items = data.items;
-        $scope.load = false;
-    })
-    .error(function (data) {
-        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-        $scope.load = false;
-    });
 
     vacantByCompanyRepo.getCompanyList().success(function (data) {
          
@@ -183,7 +172,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     });
 
     $scope.getCareersByAcademicLevel = function () {
-        debugger
+         
         if ($scope.vacant_academicLevel)
             $scope.vacant_careerList = $filter('filter')($scope.vacant_academicLevelList, { AcademicLevelId: $scope.vacant_academicLevel })[0].Careers;
     }
@@ -200,21 +189,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.load = false;
     });
 
-    $scope.refreshVacants = function () {
-        $scope.load = true;
-        vacantByCompanyRepo.getVacantList().success(function (data) {
-             
-            $scope.vacantList = data;
-            $scope.totalServerItems = data.totalItems;
-            $scope.items = data.items;
-            $scope.load = false;
-        })
-        .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        });
-    }
-
+  
     $scope.saveVacant = function () {
         
         var newVacant = {

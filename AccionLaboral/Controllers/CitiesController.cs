@@ -85,7 +85,7 @@ namespace AccionLaboral.Controllers
             db.Cities.Add(city);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = city.CityId }, city);
+            return CreatedAtRoute("DefaultApi", new { controller = "cities", id = city.CityId }, city);
         }
 
         // DELETE api/Cities/5

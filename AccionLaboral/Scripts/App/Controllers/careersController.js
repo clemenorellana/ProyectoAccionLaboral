@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module("careersController", ['ngRoute', 'careersRepository'])
+angular.module("careersController", ['ngRoute', 'careersRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/Careers', {
@@ -14,21 +14,14 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     $scope.careerList = [];
     $scope.actionCareer = "";
     $scope.load = true;
+
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
     
     careersRepo.getAcademicLevels().success(function (data) {
         $scope.Career_AcademicLevels = data;
     });
-
-    careersRepo.getCarrerList().success(function (data) {
-        $scope.careerList = data;
-        $scope.totalServerItems = data.totalItems;
-        $scope.items = data.items;
-        $scope.load = false;
-    })
-        .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        });
 
     //Sorting
     $scope.sort = "Name";
@@ -45,7 +38,6 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
     }
     //End Sorting//
     $scope.$watch('search', function (term) {
-        // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
         $scope.filtered = filterFilter($scope.careerList, term);
         $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
     });
@@ -98,30 +90,15 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         $scope.Career_AcademicLevel = careerToEdit.AcademicLevelId;
     };
 
-    $scope.career_refresh = function () {
-        $scope.load = true;
-        careersRepo.getCarrerList().success(function (data) {
-            $scope.careerList = [];
-            $scope.careerList = data;
-            $scope.totalServerItems = data.totalItems;
-            $scope.items = data.items;
-            $scope.load = false;
-        })
-        .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-        })
-    };
-
     $scope.careerClearData = function () {
         $scope.actionCareer = "";
         $scope.Career_CareerId = "";
         $scope.Career_Name = "";
         $scope.Career_AcademicLevel = "";
     }
-
-        
+            
     $scope.saveCareer = function () {
+         
         var career;
         $scope.load = true;
         if ($scope.actionCareer == "add") {
@@ -129,15 +106,17 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
                 Name: $scope.Career_Name,
                 AcademicLevelId: $scope.Career_AcademicLevel,
             };
-
             careersRepo.insertCareer(function () {
             }, career).success(function () {
-                //alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
-                //$scope.alertsTags = $rootScope.alerts;
+                 
+                alertService.add('success', 'Mensaje', 'La carrera se ha insertado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.setCareerData();
                 $scope.load = false;
-            }).error(function () {
-                //alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
-                //$scope.alertsTags = $rootScope.alerts;
+            }).error(function (error) {
+                var x = error.ExceptionMessage;
+                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
                 $scope.load = false;
             });
 
@@ -152,21 +131,19 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
 
             careersRepo.updateCareer(function () {
             }, career).success(function () {
-                //alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
-                //$scope.alertsTags = $rootScope.alerts;
+                alertService.add('success', 'Mensaje', 'La carrera se ha editado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.setCareerData();
                 $scope.load = false;
             }).error(function () {
-                //alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.');
-                //$scope.alertsTags = $rootScope.alerts;
+                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
                 $scope.load = false;
             });
               
         }
 
-        $scope.careerClearData();
-
-        //$scope.career_refresh();
-        $scope.setCareerData();
+        $scope.careerClearData();        
         $scope.load = false;
     };
         
@@ -184,14 +161,17 @@ angular.module("careersController", ['ngRoute', 'careersRepository'])
         careersRepo.deleteCareer(function () {            
             alert('Career deleted');
         }, $scope.careerToDeleteId).success(function () {
+            alertService.add('success', 'Mensaje', 'La carrera se ha eliminado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
             $scope.cancelCareertDelete();
             $scope.setCareerData();
             $scope.load = false;
-        }).error(function (error) {
-            //alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
-            //$scope.alertsTags = $rootScope.alerts;
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
             $scope.load = false;
-        });;
+        });
+
         $scope.cancelCareertDelete();
         $scope.load = false;
     }

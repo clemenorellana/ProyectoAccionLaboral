@@ -48,6 +48,11 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
     if (!$rootScope.alerts)
         $rootScope.alerts = [];
 
+    $scope.calculateEmployeeAge = function () {
+        var birthday = +new Date($scope.employee_Birthday);
+        var age = ~~((Date.now() - birthday) / (31557600000));
+        $scope.employee_Age = age;
+    }
 
     $scope.$watch('$routeChangeSuccess', function () {
         employeesRepo.getEmployeesList().success(function (data) {
@@ -62,17 +67,8 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         })
     });
 
-    employeesRepo.getEmployeesList().success(function (data) {
-        $scope.employeesList = data;
-        $scope.totalServerItems = data.totalItems;
-        $scope.items = data.items;
-        $scope.load = false;
-    }).error(function (data) {
-        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-        $scope.load = false;
-    });
-
-    //---------------------------------
+   
+    //----------PROFILE PITCTURE-----------------------
     $scope.handleFileSelectAdd = function (evt) {
 
         var f = evt.target.files[0];
@@ -109,18 +105,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
 
 
 
-
-
-
-
-
-
     //---------------------------------
-
-
-
-
-
 
 
 
@@ -141,7 +126,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
 
     $scope.$watch('search', function (term) {
         // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
-        debugger
+         
        
         $scope.filtered = filterFilter($scope.employeesList, term);
         $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
@@ -199,7 +184,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         var id = $scope.employeeId;
 
         employeesRepo.getEmployee(id).success(function (data) {
-            debugger
+             
             var employeeToEdit = data;
 
             var c = 0;
@@ -262,12 +247,6 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         window.location = "#/Employees";
     }
 
-    $scope.employee_refresh = function () {
-        employeesRepo.getEmployeesList().success(function (data) {
-            $scope.employeesList = data;
-            $scope.load = false;
-        });
-    }
 
     $scope.clearData = function () {
         $scope.employee_EmployeeId = "";
@@ -289,7 +268,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
 
     $scope.saveEmployee = function () {
         var employee;
-        debugger
+         
         if (actionEmployee == "add") {
             employee = {
                 FirstName: $scope.employee_FirstName,
@@ -312,6 +291,8 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             }, employee).success(function () {
                 alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
+                //$scope.setEmployeeData();
+                $location.path("/Employees");
                 $scope.load = false;
             }).error(function () {
                 alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
@@ -344,6 +325,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             }, employee).success(function () {
                 alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
+                $scope.setEmployeeData();
                 $scope.load = false;
             }).error(function () {
                 alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
@@ -353,10 +335,6 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         }
 
         $scope.clearData();
-        //$scope.employee_refresh();
-
-        $scope.setEmployeeData();
-
         $scope.employee_cancelRedirect();
         
     };
@@ -383,16 +361,6 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             $scope.alertsTags = $rootScope.alerts;
             $scope.load = false;
         });
-
-
-        //    .success(function () {
-        //    $scope.cancelEmployeeDelete();
-        //    $scope.setEmployeeData();
-        //    $scope.load = false;
-        //}).error(function (error) {
-        //    $scope.load = false;
-        //});
-        
     }
     
     
