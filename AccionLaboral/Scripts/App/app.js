@@ -14,7 +14,8 @@ angular.module('AccionLaboralApp', [
         'countriesController',
         'citiesController',
         'companiesController',
-        'vacantsByCompaniesController'
+        'vacantsByCompaniesController',
+        'interviewTypesController'
     ])
     .config([
         '$routeProvider',

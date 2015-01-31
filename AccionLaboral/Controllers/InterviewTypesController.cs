@@ -1,97 +1,117 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Description;
+using AccionLaboral.Models;
 
 namespace AccionLaboral.Controllers
 {
-    public class InterviewTypesController : Controller
+    public class InterviewTypesController : ApiController
     {
-        //
-        // GET: /InterviewTypes/
-        public ActionResult Index()
+        private AccionLaboralContext db = new AccionLaboralContext();
+
+        // GET api/InterviewTypes
+        public IQueryable<InterviewType> GetInterviewTypes()
         {
-            return View();
+            return db.InterviewTypes;
         }
 
-        //
-        // GET: /InterviewTypes/Details/5
-        public ActionResult Details(int id)
+        // GET api/InterviewTypes/5
+        [ResponseType(typeof(InterviewType))]
+        public IHttpActionResult GetInterviewType(int id)
         {
-            return View();
+            InterviewType interviewtype = db.InterviewTypes.Find(id);
+            if (interviewtype == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(interviewtype);
         }
 
-        //
-        // GET: /InterviewTypes/Create
-        public ActionResult Create()
+        // PUT api/InterviewTypes/5
+        public IHttpActionResult PutInterviewType(int id, InterviewType interviewtype)
         {
-            return View();
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //
-        // POST: /InterviewTypes/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
+            if (id != interviewtype.InterviewTypeId)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(interviewtype).State = EntityState.Modified;
+
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                db.SaveChanges();
             }
-            catch
+            catch (DbUpdateConcurrencyException)
             {
-                return View();
+                if (!InterviewTypeExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        //
-        // GET: /InterviewTypes/Edit/5
-        public ActionResult Edit(int id)
+        // POST api/InterviewTypes
+        [ResponseType(typeof(InterviewType))]
+        public IHttpActionResult PostInterviewType(InterviewType interviewtype)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.InterviewTypes.Add(interviewtype);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = interviewtype.InterviewTypeId }, interviewtype);
         }
 
-        //
-        // POST: /InterviewTypes/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        // DELETE api/InterviewTypes/5
+        [ResponseType(typeof(InterviewType))]
+        public IHttpActionResult DeleteInterviewType(int id)
         {
-            try
+            InterviewType interviewtype = db.InterviewTypes.Find(id);
+            if (interviewtype == null)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            db.InterviewTypes.Remove(interviewtype);
+            db.SaveChanges();
+
+            return Ok(interviewtype);
         }
 
-        //
-        // GET: /InterviewTypes/Delete/5
-        public ActionResult Delete(int id)
+        protected override void Dispose(bool disposing)
         {
-            return View();
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        //
-        // POST: /InterviewTypes/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        private bool InterviewTypeExists(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return db.InterviewTypes.Count(e => e.InterviewTypeId == id) > 0;
         }
     }
 }
