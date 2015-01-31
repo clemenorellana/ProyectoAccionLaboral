@@ -23,7 +23,8 @@ namespace AccionLaboral.Controllers
                                         .Include(r => r.Career)
                                         .Include(r => r.City)
                                         .Include(r => r.Company)
-                                        .Include(r => r.VacantLevel);
+                                        .Include(r => r.VacantLevel)
+                                        .Include(r => r.InterviewType);
         }
 
         // GET api/VacantsByCompany/5
@@ -35,6 +36,7 @@ namespace AccionLaboral.Controllers
                                         .Include(r => r.City)
                                         .Include(r => r.Company)
                                         .Include(r => r.VacantLevel)
+                                        .Include(r => r.InterviewType)
                                         .First(r => r.VacantByCompanyId == id);
                                         
             if (vacantbycompany == null)

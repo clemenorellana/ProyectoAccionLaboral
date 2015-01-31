@@ -9,13 +9,13 @@
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Empresa</label>
-                        <select class="form-control" ng-options="vacant_company.CompanyId as vacant_company.Name  for vacant_company in vacant_companyList" ng-model="vacant_company.CompanyId">
+                        <select class="form-control" ng-options="vacant_company.CompanyId as vacant_company.Name  for vacant_company in vacant_companyList" ng-model="vacant_company.CompanyId" disabled>
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Nivel de la Vacante</label>
-                        <select class="form-control" ng-options="vacant_vacantLevel.VacantLevelId as vacant_vacantLevel.Name for vacant_vacantLevel in vacant_vacantLevelList" ng-model="vacant_vacantLevel.VacantLevelId">
+                        <select class="form-control" ng-options="vacant_vacantLevel.VacantLevelId as vacant_vacantLevel.Name for vacant_vacantLevel in vacant_vacantLevelList" ng-model="vacant_vacantLevel.VacantLevelId" disabled>
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -23,31 +23,31 @@
                 <div class="col-md-12">
                     <div class="form-group col-md-12">
                         <label>Nombre de la Vacante</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="vacant_VacantName">
+                        <input type="text" class="form-control" disabled ng-model="vacant_VacantName" >
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group col-md-12">
                         <label>Descripción del Cargo</label>
-                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="vacant_ChargeDescription" />
+                        <textarea class="form-control" disabled ng-model="vacant_ChargeDescription" />
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group col-md-12">
                         <label>Requisitos</label>
-                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="vacant_Requirements" />
+                        <textarea class="form-control" disabled ng-model="vacant_Requirements" />
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group col-md-6">
                         <label>Nivel Académico</label>
-                        <select class="form-control" ng-options="vacant_academicLevel.AcademicLevelId as vacant_academicLevel.Name for vacant_academicLevel in vacant_academicLevelList" ng-model="vacant_academicLevel" ng-change="getCareersByAcademicLevel()">
+                        <select class="form-control" ng-options="vacant_academicLevel.AcademicLevelId as vacant_academicLevel.Name for vacant_academicLevel in vacant_academicLevelList" ng-model="vacant_academicLevel" disabled>
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Carrera</label>
-                        <select class="form-control" ng-options="vacant_career.CareerId as vacant_career.Name for vacant_career in vacant_careerList" ng-model="vacant_career.CareerId">
+                        <select class="form-control" ng-options="vacant_career.CareerId as vacant_career.Name for vacant_career in vacant_careerList" ng-model="vacant_career.CareerId" disabled>
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -60,19 +60,19 @@
                         <div class="form-group">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Indiferente" ng-model="vacant_Gender">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Indiferente" ng-model="vacant_Gender" disabled>
                                     Indiferente
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="Femenino" checked ng-model="vacant_Gender">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="Femenino" checked ng-model="vacant_Gender" disabled>
                                     Femenino
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Masculino" ng-model="vacant_Gender">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Masculino" ng-model="vacant_Gender" disabled>
                                     Masculino
                                 </label>
                             </div>
@@ -83,33 +83,39 @@
                         <div class="row">
                             <div class="form-group col-md-5">
                                 <label>Desde:</label>
-                                <input type="text" class="form-control" placeholder="Desde ..." ng-model="vacant_StartAge">
+                                <input type="text" class="form-control" placeholder="Desde ..." ng-model="vacant_StartAge" disabled>
                             </div>
                             <div class="form-group col-md-5">
                                 <label>Hasta:</label>
-                                <input type="text" class="form-control" placeholder="Hasta ..." ng-model="vacant_EndAge">
+                                <input type="text" class="form-control" placeholder="Hasta ..." ng-model="vacant_EndAge" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="form-group col-md-4">
                         <label>Cantidad de Vacantes Disponibles</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="vacant_Quantity">
+                        <input type="text" class="form-control" disabled ng-model="vacant_Quantity">
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label>Ciudad</label>
-                        <select class="form-control" ng-options="vacant_city.CityId as vacant_city.Name for vacant_city in vacant_cityList" ng-model="vacant_city.CityId">
+                        <select class="form-control" ng-options="vacant_city.CityId as vacant_city.Name for vacant_city in vacant_cityList" ng-model="vacant_city.CityId" disabled>
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
+                        <label>Tipo de Entrevista</label>
+                        <select class="form-control" ng-options="vacant_interviewType.InterviewTypeId as vacant_interviewType.Name for vacant_interviewType in vacant_interviewTypeList" ng-model="vacant_interviewType.InterviewTypeId" disabled>
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
                         <label>Fecha de Solicitud</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_RequestDate" required>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_RequestDate" disabled>
                         </div>
                     </div>
                 </div>
@@ -120,7 +126,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_CoveredDate" required>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_CoveredDate" disabled>
                         </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -138,10 +144,7 @@
         </div>
         <div class="box-footer">
             <div class="row">
-                <div class="col-md-6 text-right">
-                    <button type="submit" class="btn btn-primary" ng-click="saveVacant()">{{buttonNameVacantForm}}</button>
-                </div>
-                <div class="col-md-6 text-left">
+                <div class="col-md-6">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="vacant_cancelRedirect()">Cancelar</button>
                 </div>
             </div>
