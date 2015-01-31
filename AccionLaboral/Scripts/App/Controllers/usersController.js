@@ -41,7 +41,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
     //End Sorting//
 
     $scope.$watch('search', function (term) {
-        //$scope.filtered = filterFilter($scope.usersList, term);
+        $scope.filtered = filterFilter($scope.usersList, term);
         $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
     });
 

@@ -106,21 +106,28 @@ angular.module("careersController", ['ngRoute', 'careersRepository', 'alertRepos
                 Name: $scope.Career_Name,
                 AcademicLevelId: $scope.Career_AcademicLevel,
             };
-            careersRepo.insertCareer(function () {
-            }, career).success(function () {
-                 
-                alertService.add('success', 'Mensaje', 'La carrera se ha insertado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.setCareerData();
-                $scope.load = false;
-            }).error(function (error) {
-                var x = error.ExceptionMessage;
-                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
 
+            var levelFilter = $filter('filter')($scope.careerList, { AcademicLevelId: $scope.Career_AcademicLevel });
+            var careerFilter = (levelFilter.length > 0) ? $filter('filter')(levelFilter, { Name: $scope.Career_Name }) : 0;
+            
+            if (careerFilter == 0 ) {
+                    careersRepo.insertCareer(function () {
+                    }, career).success(function () {
 
+                        alertService.add('success', 'Mensaje', 'La carrera se ha insertado correctamente.');
+                        $scope.alertsTags = $rootScope.alerts;
+                        $scope.setCareerData();
+                        $scope.load = false;
+                    }).error(function (error) {
+                        var x = error.ExceptionMessage;
+                        alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                        $scope.alertsTags = $rootScope.alerts;
+                        $scope.load = false;
+                    });
+            }
+            else {
+                alertService.add('danger', 'Error', 'Ya existe una Carrera con ese nombre');
+            }
         }
         else {
             career = {
@@ -128,20 +135,28 @@ angular.module("careersController", ['ngRoute', 'careersRepository', 'alertRepos
                 Name: $scope.Career_Name,
                 AcademicLevelId: $scope.Career_AcademicLevel,
             };
+            
+            var levelFilter = $filter('filter')($scope.careerList, { AcademicLevelId: $scope.Career_AcademicLevel });
+            var careerFilter = (levelFilter.length > 0) ? $filter('filter')(levelFilter, { Name: $scope.Career_Name }) : 0;
 
-            careersRepo.updateCareer(function () {
-            }, career).success(function () {
-                alertService.add('success', 'Mensaje', 'La carrera se ha editado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.setCareerData();
-                $scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
-              
+            if (careerFilter == 0) {
+                    careersRepo.updateCareer(function () {
+                    }, career).success(function () {
+                        alertService.add('success', 'Mensaje', 'La carrera se ha editado correctamente.');
+                        $scope.alertsTags = $rootScope.alerts;
+                        $scope.setCareerData();
+                        $scope.load = false;
+                    }).error(function () {
+                        alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                        $scope.alertsTags = $rootScope.alerts;
+                        $scope.load = false;
+                    });
+            }
+            else {
+                alertService.add('danger', 'Error', 'Ya existe una Carrera con ese nombre');
+            }
         }
+
 
         $scope.careerClearData();        
         $scope.load = false;

@@ -101,46 +101,53 @@ angular.module("countriesController", ['ngRoute', 'countriesRepository', 'alertR
         $scope.load = true;
         var country;
 
-        if ($scope.actionCountry == "add") {
-            country = {
-                Name: $scope.Country_Name
-            };
+        if ($filter('filter')($scope.countriesList, { Name: $scope.Country_Name }).length == 0) {
+            if ($scope.actionCountry == "add") {
+                country = {
+                    Name: $scope.Country_Name
+                };
 
-            countriesRepo.insertCountry(function () {
-            }, country).success(function () {
-                alertService.add('success', 'Mensaje', 'El País se ha insertado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.setCountryData();
-                $scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
+                countriesRepo.insertCountry(function () {
+                }, country).success(function () {
+                    alertService.add('success', 'Mensaje', 'El País se ha insertado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.setCountryData();
+                    $scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
 
+            }
+            else {
+                country = {
+                    CountryId: $scope.Country_CountryId,
+                    Name: $scope.Country_Name
+                };
+
+                countriesRepo.updateCountry(function () {
+                }, country).success(function () {
+                    alertService.add('success', 'Mensaje', 'El País se ha editado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.setCountryData();
+                    $scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+
+            }
+            
+            
         }
         else {
-            country = {
-                CountryId: $scope.Country_CountryId,
-                Name: $scope.Country_Name
-            };
-
-            countriesRepo.updateCountry(function () {
-            }, country).success(function () {
-                alertService.add('success', 'Mensaje', 'El País se ha editado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.setCountryData();
-                $scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
-
+            alertService.add('danger', 'Error', 'Ya existe un registro con ese nombre');
         }
-
         $scope.countryClearData();
-        $scope.load = true;
+        $scope.load = false;
+       
     };
 
     $scope.setCountryToDelete = function (country) {

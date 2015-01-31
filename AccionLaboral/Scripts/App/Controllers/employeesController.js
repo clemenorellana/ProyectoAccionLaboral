@@ -83,7 +83,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         reader.readAsDataURL(f);
     };
 
-    var imageElement = document.getElementById('imageInputFile');
+    var imageElement = document.getElementById('exampleInputFile');
     if (imageElement)
         imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
 
@@ -95,6 +95,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             return function (e) {
                 var filePayload = e.target.result;
                 $scope.employee_Photo = filePayload.replace('data:' + f.type + ';base64,', '');
+                imageElement.src = filePayload;
                 $scope.$apply(function () {
 
                 });
@@ -225,6 +226,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             $scope.employee_Career = $scope.employeesCareersList[c];//employeeToEdit.Career;
             $scope.employee_Role = $scope.employeesRolesList[r];//employeeToEdit.Role;
             $scope.employee_User = $scope.employeesUsersList[u];//employeeToEdit.User;
+            $scope.employee_Photo = employeeToEdit.Photo;
         });
     }
 
@@ -267,75 +269,91 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
     }
 
     $scope.saveEmployee = function () {
-        var employee;
-         
-        if (actionEmployee == "add") {
-            employee = {
-                FirstName: $scope.employee_FirstName,
-                LastName: $scope.employee_LastName,
-                Email: $scope.employee_Email,
-                Birthday: $scope.employee_Birthday,
-                Age: $scope.employee_Age,
-                Cellphone: $scope.employee_Cellphone,
-                HomePhone: $scope.employee_HomePhone,
-                Address: $scope.employee_Address,
-                Gender: $scope.employee_Gender,
-                EmployeeAlias: $scope.employee_EmployeeAlias,      
-                AdmissionDate: new Date(),   
-                CareerId: $scope.employee_Career.CareerId,
-                RoleId: $scope.employee_Role.RoleId,
-                UserId: $scope.employee_User.UserId
-            };
+        var exists = false;
+        var employeefirstNameFilter = $filter('filter')($scope.employeesList, { FirstName: $scope.employee_FirstName });
+        if (employeefirstNameFilter.length > 0) {
+            //los nombres coinciden con uno existente
+            var lastNameFilter = $filter('filter')(employeefirstNameFilter, { LastName: $scope.employee_LastName });
+            exists = (lastNameFilter.length == 0) ? false : true;
+        }
 
-            employeesRepo.insertEmployee(function () {
-            }, employee).success(function () {
-                alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                //$scope.setEmployeeData();
-                $location.path("/Employees");
-                $scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
 
+        if (!exists) {
+
+            var employee;
+
+            if (actionEmployee == "add") {
+                employee = {
+                    FirstName: $scope.employee_FirstName,
+                    LastName: $scope.employee_LastName,
+                    Email: $scope.employee_Email,
+                    Birthday: $scope.employee_Birthday,
+                    Age: $scope.employee_Age,
+                    Cellphone: $scope.employee_Cellphone,
+                    HomePhone: $scope.employee_HomePhone,
+                    Address: $scope.employee_Address,
+                    Gender: $scope.employee_Gender,
+                    EmployeeAlias: $scope.employee_EmployeeAlias,
+                    AdmissionDate: new Date(),
+                    CareerId: $scope.employee_Career.CareerId,
+                    RoleId: $scope.employee_Role.RoleId,
+                    UserId: $scope.employee_User.UserId,
+                    Photo: $scope.episodeImgData
+                };
+
+                employeesRepo.insertEmployee(function () {
+                }, employee).success(function () {
+                    alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.setEmployeeData();
+                    $scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+
+            }
+            else {
+                employee = {
+                    EmployeeId: $scope.employee_EmployeeId,
+                    FirstName: $scope.employee_FirstName,
+                    LastName: $scope.employee_LastName,
+                    Email: $scope.employee_Email,
+                    Birthday: $scope.employee_Birthday,
+                    Age: $scope.employee_Age,
+                    Cellphone: $scope.employee_Cellphone,
+                    HomePhone: $scope.employee_HomePhone,
+                    Address: $scope.employee_Address,
+                    Gender: $scope.employee_Gender,
+                    EmployeeAlias: $scope.employee_EmployeeAlias,
+                    AdmissionDate: $scope.employee_AdmissionDate,
+                    CareerId: $scope.employee_Career.CareerId,
+                    RoleId: $scope.employee_Role.RoleId,
+                    UserId: $scope.employee_User.UserId,
+                    Photo: $scope.episodeImgData
+                };
+
+                employeesRepo.updateEmployee(function () {
+                }, employee).success(function () {
+                    alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.setEmployeeData();
+                    $scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+
+            }
+            $scope.clearData();
+            $scope.employee_cancelRedirect();
 
         }
         else {
-            employee = {
-                EmployeeId: $scope.employee_EmployeeId,
-                FirstName: $scope.employee_FirstName,
-                LastName: $scope.employee_LastName,
-                Email: $scope.employee_Email,
-                Birthday: $scope.employee_Birthday,
-                Age: $scope.employee_Age,
-                Cellphone: $scope.employee_Cellphone,
-                HomePhone: $scope.employee_HomePhone,
-                Address: $scope.employee_Address,
-                Gender: $scope.employee_Gender,
-                EmployeeAlias: $scope.employee_EmployeeAlias,
-                AdmissionDate: $scope.employee_AdmissionDate,
-                CareerId: $scope.employee_Career.CareerId,
-                RoleId: $scope.employee_Role.RoleId,
-                UserId: $scope.employee_User.UserId
-            };
-
-            employeesRepo.updateEmployee(function () {
-            }, employee).success(function () {
-                alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.setEmployeeData();
-                $scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
+            alertService.add('danger', 'Error', 'Ya existe un empleado con ese nombre.');
         }
-
-        $scope.clearData();
-        $scope.employee_cancelRedirect();
         
     };
 

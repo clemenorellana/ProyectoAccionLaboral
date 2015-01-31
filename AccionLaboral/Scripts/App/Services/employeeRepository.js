@@ -21,43 +21,44 @@ accionLabControllers.factory('employeesRepo', ['$http', function ($http) {
         },
         //method for insert
         insertEmployee: function (callback, employee) {
-            var employee = {
-                "FirstName": employee.FirstName,
-                "LastName": employee.LastName,
-                "Email": employee.Email,
-                "Birthday": employee.Birthday,
-                "Age": employee.Age,
-                "Cellphone": employee.Cellphone,
-                "HomePhone": employee.HomePhone,
-                "Address": employee.Address,
-                "Gender": employee.Gender,
-                "EmployeeAlias": employee.EmployeeAlias,
-                "AdmissionDate": new Date(),
-                "CareerId": employee.CareerId,
-                "RoleId": employee.RoleId,
-                "UserId": employee.UserId
-            };
+            //var employee = {
+            //    "FirstName": employee.FirstName,
+            //    "LastName": employee.LastName,
+            //    "Email": employee.Email,
+            //    "Birthday": employee.Birthday,
+            //    "Age": employee.Age,
+            //    "Cellphone": employee.Cellphone,
+            //    "HomePhone": employee.HomePhone,
+            //    "Address": employee.Address,
+            //    "Gender": employee.Gender,
+            //    "EmployeeAlias": employee.EmployeeAlias,
+            //    "AdmissionDate": new Date(),
+            //    "CareerId": employee.CareerId,
+            //    "RoleId": employee.RoleId,
+            //    "UserId": employee.UserId,
+
+            //};
             return $http.post(url, employee);
         },
         //method for update
         updateEmployee: function (callback, employee) {
-            var employee = {
-                "EmployeeId": employee.EmployeeId,
-                "FirstName": employee.FirstName,
-                "LastName": employee.LastName,
-                "Email": employee.Email,
-                "Birthday": employee.Birthday,
-                "Age": employee.Age,
-                "Cellphone": employee.Cellphone,
-                "HomePhone": employee.HomePhone,
-                "Address": employee.Address,
-                "Gender": employee.Gender,
-                "EmployeeAlias": employee.EmployeeAlias,
-                "AdmissionDate": employee.AdmissionDate,
-                "CareerId": employee.CareerId,
-                "RoleId": employee.RoleId,
-                "UserId": employee.UserId
-            };
+            //var employee = {
+            //    "EmployeeId": employee.EmployeeId,
+            //    "FirstName": employee.FirstName,
+            //    "LastName": employee.LastName,
+            //    "Email": employee.Email,
+            //    "Birthday": employee.Birthday,
+            //    "Age": employee.Age,
+            //    "Cellphone": employee.Cellphone,
+            //    "HomePhone": employee.HomePhone,
+            //    "Address": employee.Address,
+            //    "Gender": employee.Gender,
+            //    "EmployeeAlias": employee.EmployeeAlias,
+            //    "AdmissionDate": employee.AdmissionDate,
+            //    "CareerId": employee.CareerId,
+            //    "RoleId": employee.RoleId,
+            //    "UserId": employee.UserId
+            //};
             return $http.put(url + '/' + employee.EmployeeId, employee);
         },
         //method for delete
