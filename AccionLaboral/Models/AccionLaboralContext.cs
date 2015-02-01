@@ -81,6 +81,7 @@ namespace AccionLaboral.Models
         public DbSet<AcademicEducation> AcademicEducations { get; set; }
 
         public DbSet<InterviewType> InterviewTypes { get; set; }
+
     
     }
 }

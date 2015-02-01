@@ -72,11 +72,11 @@ angular.module("interviewTypesController", ['ngRoute', 'interviewTypesRepository
     $scope.setActionInterview = function (action, interview) {
         $scope.actionInterview = action;
         if (action == "add") {
-            $scope.interview_modalTitle = "Agregar País";
+            $scope.interview_modalTitle = "Agregar Tipo de Entrevista";
             $scope.interview_buttonName = "Agregar";
         }
         else {
-            $scope.interview_modalTitle = "Editar País";
+            $scope.interview_modalTitle = "Editar Tipo de Entrevista";
             $scope.interview_buttonName = "Editar";
             $scope.editInterview(interview);
         }
@@ -109,7 +109,7 @@ angular.module("interviewTypesController", ['ngRoute', 'interviewTypesRepository
 
                 interviewTypesRepo.insertInterview(function () {
                 }, interview).success(function () {
-                    alertService.add('success', 'Mensaje', 'El País se ha insertado correctamente.');
+                    alertService.add('success', 'Mensaje', 'El Tipo de Entrevista se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.setInterviewData();
                     $scope.load = false;
@@ -128,7 +128,7 @@ angular.module("interviewTypesController", ['ngRoute', 'interviewTypesRepository
 
                 interviewTypesRepo.updateInterview(function () {
                 }, interview).success(function () {
-                    alertService.add('success', 'Mensaje', 'El País se ha editado correctamente.');
+                    alertService.add('success', 'Mensaje', 'El Tipo de Entrevista se ha editado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.setInterviewData();
                     $scope.load = false;
@@ -162,7 +162,7 @@ angular.module("interviewTypesController", ['ngRoute', 'interviewTypesRepository
         $scope.load = true;
         interviewTypesRepo.deleteInterview(function () {
         }, $scope.interviewToDeleteId).success(function () {
-            alertService.add('success', 'Mensaje', 'El País se ha eliminado correctamente.');
+            alertService.add('success', 'Mensaje', 'El Tipo de Entrevista se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
             $scope.cancelInterviewtDelete();
             $scope.setInterviewData();
