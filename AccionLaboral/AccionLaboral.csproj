@@ -198,9 +198,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201411250545490_InitialCreate.cs" />
-    <Compile Include="Migrations\201411250545490_InitialCreate.Designer.cs">
-      <DependentUpon>201411250545490_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201502070714315_InitialCreate.cs" />
+    <Compile Include="Migrations\201502070714315_InitialCreate.Designer.cs">
+      <DependentUpon>201502070714315_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicEducation.cs" />
@@ -236,6 +236,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\bootstrap-combined.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -484,16 +485,34 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Views\Careers\Index.html" />
+    <Content Include="Views\Cities\Index.html" />
+    <Content Include="Views\Clients\ClientTracking.html" />
     <Content Include="Views\Clients\EditClient.html" />
+    <Content Include="Views\Clients\EnrollClient.html" />
     <Content Include="Views\Clients\Index.html" />
     <Content Include="Views\Clients\NewClient.html" />
+    <Content Include="Views\Clients\TrackingDetail.html" />
+    <Content Include="Views\Companies\Create.html" />
+    <Content Include="Views\Companies\Index.html" />
     <Content Include="Views\ContractTemplates\Create.html" />
+    <Content Include="Views\ContractTemplates\Detail.html" />
     <Content Include="Views\ContractTemplates\Index.html" />
+    <Content Include="Views\Countries\Index.html" />
+    <Content Include="Views\Employees\Create.html" />
+    <Content Include="Views\Employees\Index.html" />
     <Content Include="Views\Home\Index.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\Clientes\RegisterClient.html" />
+    <Content Include="Views\Login\Login.html" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\Home.html" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout.html" />
+    <Content Include="Views\Users\Index.html" />
+    <Content Include="Views\VacantsByCompany\Create.html" />
+    <Content Include="Views\VacantsByCompany\Index.html" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -506,18 +525,8 @@
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Scripts\version.json" />
-    <Content Include="Views\Clientes\CrearCliente.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201411250545490_InitialCreate.resx">
-      <DependentUpon>201411250545490_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -526,6 +535,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201502070714315_InitialCreate.resx">
+      <DependentUpon>201502070714315_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

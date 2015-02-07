@@ -1,4 +1,15 @@
-﻿<div class="col-md-12">
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+<!-- Delete confirmation modal -->
+
+<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Listado de Paises</h3>
@@ -6,7 +17,7 @@
                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#countriesInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionCountry('add')">
                     <i class="fa  fa-plus"></i>
                 </button>
-                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="country_refresh()">
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="setCountryData()">
                     <i class="fa  fa-refresh"></i>
                 </button>
             </div>
@@ -14,24 +25,57 @@
         <div class="box-body">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
-                <tr>
+                <!--<tr>
                     <th>ID</th>
                     <th>Nombre País</th>
                     <th>Opción</th>
+                </tr>-->
+                <tr>
+                    <th href="#" ng-click="sort='Name' ; reverse=!reverse" title="Clic para ordenar">Nombre</th>
+                    <th>Opciones</th>
                 </tr>
-                <tr ng-repeat="country in countriesList">
-                    <td>{{country.CountryId}}</td>
+                <tr>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th style="width: 100px;" colspan="1"></th>
+                </tr>
+                <tr ng-repeat="country in countriesList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
+                    <!--<td>{{country.CountryId}}</td>-->
                     <td>{{country.Name}}</td>
                     <td align="center">
-                        <button class="btn btn-info" data-toggle="modal" data-target="#countriesInfo" ng-click="setActionCountry('edit',$index)" title="Editar">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#countriesInfo" ng-click="setActionCountry('edit',country)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCountryInfo" ng-click="setCountryToDelete($index)" title="Eliminar">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCountryInfo" ng-click="setCountryToDelete(country)" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
                 </tr>
             </table>
+            <br />
+            <div class="row" ng-show="!load">
+                <div class="col-md-4">
+                    <label>Mostrando {{itemsInPage}} de {{countriesList.length}} elementos</label>
+                </div>
+                <div class="col-md-4">
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="countriesList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-xs-4">
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setCountryData()"></select>
+                    </div>
+                    <div class="col-xs-8">
+                        <label>Registros por Página</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

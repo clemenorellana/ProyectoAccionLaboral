@@ -1,0 +1,151 @@
+﻿<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h4 class="box-title">{{tittleVacantForm}}</h4>
+        </div>
+        <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+        <div class="box-body" ng-show="!load">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>Empresa</label>
+                        <select class="form-control" ng-options="vacant_company.CompanyId as vacant_company.Name  for vacant_company in vacant_companyList" ng-model="vacant_company.CompanyId">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Nivel de la Vacante</label>
+                        <select class="form-control" ng-options="vacant_vacantLevel.VacantLevelId as vacant_vacantLevel.Name for vacant_vacantLevel in vacant_vacantLevelList" ng-model="vacant_vacantLevel.VacantLevelId">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-12">
+                        <label>Nombre de la Vacante</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="vacant_VacantName">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-12">
+                        <label>Descripción del Cargo</label>
+                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="vacant_ChargeDescription" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-12">
+                        <label>Requisitos</label>
+                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="vacant_Requirements" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>Nivel Académico</label>
+                        <select class="form-control" ng-options="vacant_academicLevel.AcademicLevelId as vacant_academicLevel.Name for vacant_academicLevel in vacant_academicLevelList" ng-model="vacant_academicLevel" ng-change="getCareersByAcademicLevel()">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Carrera</label>
+                        <select class="form-control" ng-options="vacant_career.CareerId as vacant_career.Name for vacant_career in vacant_careerList" ng-model="vacant_career.CareerId">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
+                    </div>
+
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="form-group col-md-3">
+                        <label>Genero</label>
+                        <div class="form-group">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Indiferente" ng-model="vacant_Gender"  >
+                                    Indiferente
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="Femenino" checked ng-model="vacant_Gender" >
+                                    Femenino
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="Masculino" ng-model="vacant_Gender" >
+                                    Masculino
+                                </label>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>Rango de Edad</label>
+                        <div class="row">
+                            <div class="form-group col-md-5">
+                                <label>Desde:</label>
+                                <input type="text"  class="form-control" placeholder="Desde ..." ng-model="vacant_StartAge">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label>Hasta:</label>
+                                <input type="text" class="form-control" placeholder="Hasta ..." ng-model="vacant_EndAge">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Cantidad de Vacantes Disponibles</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="vacant_Quantity">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>Ciudad</label>
+                        <select class="form-control" ng-options="vacant_city.CityId as vacant_city.Name for vacant_city in vacant_cityList" ng-model="vacant_city.CityId">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Fecha de Solicitud</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_RequestDate" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="showVacantCoverdDate">
+                    <div class="form-group col-md-6">
+                        <label>Fecha de Cobertura de la Vacante</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_CoveredDate" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Estado</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input type="checkbox" ng-checked="vacant_Active" ng-model="vacant_Active">
+                            </span>
+                            <input type="text" class="form-control" value="Activo" disabled>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-6 text-right">
+                    <button type="submit" class="btn btn-primary" ng-click="saveVacant()">{{buttonNameVacantForm}}</button>
+                </div>
+                <div class="col-md-6 text-left">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="vacant_cancelRedirect()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

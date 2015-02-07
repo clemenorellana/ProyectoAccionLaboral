@@ -1,4 +1,15 @@
-﻿<div class="col-md-12">
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+<!-- Delete confirmation modal -->
+
+<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Listado de Ciudades</h3>
@@ -6,7 +17,7 @@
                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#citiesInfo" title="Agregar" data-original-title="Collapse" ng-click="setActionCity('add')">
                     <i class="fa  fa-plus"></i>
                 </button>
-                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="city_refresh()">
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="setCityata()">
                     <i class="fa  fa-refresh"></i>
                 </button>
             </div>
@@ -14,24 +25,67 @@
         <div class="box-body">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
-                <tr>
+                <!--<tr>
                     <th>Ciudad</th>
                     <th>País</th>
                     <th>Opción</th>
+                </tr>-->
+                <tr>
+                    <th href="#" ng-click="sort='Name' ; reverse=!reverse" title="Clic para ordenar">Ciudad</th>
+                    <th ng-click="sort='AcademicLevel.Name' ; reverse=!reverse" title="Clic para ordenar">País</th>
+                    <th>Opciones</th>
                 </tr>
-                <tr ng-repeat="city in citiesList">
+                <tr>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Country.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Country.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th colspan="1"></th>
+                </tr>
+                <tr ng-repeat="city in citiesList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{city.Name}}</td>
                     <td>{{city.Country.Name}}</td>
-                    <td align="center" style="width: 168px;">
-                        <button class="btn btn-info" data-toggle="modal" data-target="#citiesInfo" ng-click="setActionCity('edit',$index)" title="Editar">
+                    <td style="width: 10%;" align="center">
+                        <button class="btn btn-info" data-toggle="modal" data-target="#citiesInfo" ng-click="setActionCity('edit',city)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCitiesInfo" ng-click="setCityToDelete($index)" title="Eliminar">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCitiesInfo" ng-click="setCityToDelete(city)" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
                 </tr>
             </table>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Mostrando {{itemsInPage}} de {{citiesList.length}} elementos</label>
+                </div>
+                <div class="col-md-4">
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="citiesList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>                    
+                </div>
+                <div class="col-md-4">
+                    <div class="col-xs-4">
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setCityData()"></select>
+                    </div>
+                    <div class="col-xs-8">
+                        <label>Registros por página</label>
+                    </div>
+                </div>
+            </div>
         </div><!-- /.box-body -->
     </div>
 
@@ -50,7 +104,9 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.Name for country in City_Countries" ng-model="City_Country"></select>
+                            <select class="form-control" ng-options="country.CountryId as country.Name for country in City_Countries" ng-model="City_Country">
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">

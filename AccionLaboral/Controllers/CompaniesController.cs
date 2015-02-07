@@ -26,7 +26,7 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(Company))]
         public IHttpActionResult GetCompany(int id)
         {
-            Company company = db.Companies.Find(id);
+            Company company = db.Companies.Include(r => r.ContactsByCompany).First(r => r.CompanyId == id);
             if (company == null)
             {
                 return NotFound();
@@ -48,7 +48,34 @@ namespace AccionLaboral.Controllers
                 return BadRequest();
             }
 
-            db.Entry(company).State = EntityState.Modified;
+            var dbCompany = db.Companies
+                                .Include(r => r.ContactsByCompany)
+                                .Single(r => r.CompanyId == id);
+
+            db.Entry(dbCompany).CurrentValues.SetValues(company);
+
+            foreach (var dbContact in dbCompany.ContactsByCompany.ToList())
+            {
+                if (!company.ContactsByCompany.Any(x => x.ContactByCompanyId == dbContact.ContactByCompanyId))
+                    db.ContactByCompanies.Remove(dbContact);
+            }
+
+            foreach (var contact in company.ContactsByCompany)
+            {
+                contact.CompanyId = company.CompanyId;
+                if (contact.ContactByCompanyId != 0)
+                {
+                    var dbContact = dbCompany.ContactsByCompany.SingleOrDefault(x => x.ContactByCompanyId == contact.ContactByCompanyId);
+                    db.Entry(dbContact).CurrentValues.SetValues(contact);
+                }
+                else 
+                {
+                    dbCompany.ContactsByCompany.Add(contact);
+                }
+            }
+
+
+            //db.Entry(company).State = EntityState.Modified;
 
             try
             {
@@ -77,7 +104,7 @@ namespace AccionLaboral.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            company.DateCreated = DateTime.Now;
             db.Companies.Add(company);
             db.SaveChanges();
 

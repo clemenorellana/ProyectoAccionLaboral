@@ -1,4 +1,14 @@
-﻿<div class="col-md-12">
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+
+<div class="col-md-12">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Listado de Empleados</h3>
@@ -6,7 +16,7 @@
                 <button class="btn btn-info btn-sm" ng-click="employee_addNewRedirect()" title="Agregar">
                     <i class="fa  fa-plus"></i>
                 </button>
-                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="employee_refresh()">
+                <button class="btn btn-info btn-sm" title="Refrescar" data-original-title="Collapse" ng-click="setEmployeeData()">
                     <i class="fa  fa-refresh"></i>
                 </button>
             </div>
@@ -15,35 +25,99 @@
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
                 <tr>
-                    <th>Alias</th>
-                    <th>Nombre</th>
-                    <th>Correo Electrónico</th>
-                    <th>Celular</th>
-                    <th>Fecha de Ingreso</th>
-                    <!--<th>Rol</th>-->
-                    <th>Opción</th>
+                    <th href="#" ng-click="sort='EmployeeAlias' ; reverse=!reverse" title="Clic para ordenar">Alias</th>
+                    <th ng-click="sort='FirstName' ; reverse=!reverse" title="Clic para ordenar">Nombre</th>
+                    <th ng-click="sort='Email' ; reverse=!reverse" title="Clic para ordenar">Correo Electrónico</th>
+                    <th ng-click="sort='Cellphone' ; reverse=!reverse" title="Clic para ordenar">Celular</th>
+                    <!--<th ng-click="sort='AdmissionDate' ; reverse=!reverse" title="Clic para ordenar">Fecha de Ingreso</th>-->
+                    <th>Opciones</th>
                 </tr>
-                <tr ng-repeat="employee in employeesList">
+                <tr>
+                    <th style="width: 198px;" colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.EmployeeAlias" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.EmployeeAlias='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.FirstName" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.FirstName='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Email" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Email='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th style="width: 200px;" colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input ng-model="search.Cellphone" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Cellphone='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <!--<th style="width: 150px;" colspan="1">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'"  ng-model="search.AdmissionDate" >
+                            </div>
+                        </div>
+                    </th>-->
+                    <th style="width: 150px;" colspan="1"></th>
+                </tr>
+                <tr ng-repeat="employee in employeesList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{employee.EmployeeAlias}}</td>
                     <td>{{employee.FirstName }} {{employee.LastName}}</td>
                     <td>{{employee.Email}}</td>
                     <td>{{employee.Cellphone }}</td>
-                    <td>{{employee.AdmissionDate | dateFormat }} </td>
+                    <!--<td>{{employee.AdmissionDate | dateFormat }} </td>-->
                     <!--<td>{{employee.RoleId}}</td>-->
-                    <td align="center">
+                    <td style="width: 10px;" align="center">
                         <!--<button class="btn btn-info" ng-click="" title="Ver">
-                            <i class="fa fa-file-text"></i>
-                        </button>-->
-                        <button class="btn btn-info" ng-click="employee_editRedirect($index)" title="Editar">
+                        <i class="fa fa-file-text"></i>
+                    </button>-->
+                        <button class="btn btn-info" ng-click="employee_editRedirect(employee)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEmployeeInfo" ng-click="setEmployeeToDelete($index)" title="Eliminar">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEmployeeInfo" ng-click="setEmployeeToDelete(employee)" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
                 </tr>
             </table>
-
+            <br />
+            <div class="row" ng-show="!load">
+                <div class="col-md-4">
+                    <label>Mostrando {{itemsInPage}} de {{employeesList.length}} elementos</label>
+                </div>
+                <div class="col-md-4">
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="employeesList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-xs-4">
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setEmployeeData()"></select>
+                    </div>
+                    <div class="col-xs-8">
+                        <label>Registros por Página</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

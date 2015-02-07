@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("employeesController", ['ngRoute', 'employeesRepository'])
+angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/Employees', {
@@ -35,7 +35,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         return _date;
     };
 })
-.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', function ($scope, employeesRepo, $routeParams) {
+.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, employeesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
     $scope.load = true;
     var actionEmployee = "";
     $scope.employeesList = [];
@@ -43,6 +43,16 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
     $scope.employeesUsersList = [];
     $scope.employeesRolesList = [];
     $scope.employeeId = $routeParams.id;
+
+
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
+    $scope.calculateEmployeeAge = function () {
+        var birthday = +new Date($scope.employee_Birthday);
+        var age = ~~((Date.now() - birthday) / (31557600000));
+        $scope.employee_Age = age;
+    }
 
     $scope.$watch('$routeChangeSuccess', function () {
         employeesRepo.getEmployeesList().success(function (data) {
@@ -57,15 +67,98 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         })
     });
 
-    employeesRepo.getEmployeesList().success(function (data) {
-        $scope.employeesList = data;
-        $scope.totalServerItems = data.totalItems;
-        $scope.items = data.items;
-        $scope.load = false;
-    }).error(function (data) {
-        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-        $scope.load = false;
+   
+    //----------PROFILE PITCTURE-----------------------
+    $scope.handleFileSelectAdd = function (evt) {
+
+        var f = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (function (theFile) {
+            return function (e) {
+                var filePayload = e.target.result;
+                $scope.episodeImgData = filePayload.replace('data:' + f.type + ';base64,', '');
+                document.getElementById('imagenEmployee').src = filePayload;
+            };
+        })(f);
+        reader.readAsDataURL(f);
+    };
+
+    var imageElement = document.getElementById('imageInputFile');
+    if (imageElement)
+        imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
+
+
+    $scope.handleFileSelectAdd = function (evt) {
+        var f = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (function (theFile) {
+            return function (e) {
+                var filePayload = e.target.result;
+                $scope.employee_Photo = filePayload.replace('data:' + f.type + ';base64,', '');
+                $scope.$apply(function () {
+
+                });
+            };
+        })(f);
+        reader.readAsDataURL(f);
+    };
+
+
+
+    //---------------------------------
+
+
+
+    //Sorting
+    $scope.sort = "EmployeeAlias";
+    $scope.reverse = false;
+
+    $scope.changeSort = function (value) {
+        if ($scope.sort == value) {
+            $scope.reverse = !$scope.reverse;
+            return;
+        }
+
+        $scope.sort = value;
+        $scope.reverse = false;
+    }
+    //End Sorting//
+
+    $scope.$watch('search', function (term) {
+        // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+         
+       
+        $scope.filtered = filterFilter($scope.employeesList, term);
+        $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
     });
+
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+    $scope.setEmployeeData = function () {
+        employeesRepo.getEmployeesList().success(function (data) {
+            $scope.employeesList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+
+            $scope.noOfPages = ($scope.employeesList) ? Math.ceil($scope.employeesList.length / $scope.entryLimit) : 1;
+
+            $scope.itemsInPage = ($scope.employeesList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.employeesList.length) ?
+                                        $scope.employeesList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+
+    $scope.setEmployeeData();
 
     employeesRepo.getEmployeesCareers().success(function (data) {
         $scope.employeesCareersList = data;
@@ -91,7 +184,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         var id = $scope.employeeId;
 
         employeesRepo.getEmployee(id).success(function (data) {
-            debugger
+             
             var employeeToEdit = data;
 
             var c = 0;
@@ -141,10 +234,8 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         window.location = "#/Employees/Create";
     }
 
-    $scope.employee_editRedirect = function (index) {
-        debugger
-        var id = $scope.employeesList[index].EmployeeId;
-        window.location = "#/Employees/Edit/" + id;
+    $scope.employee_editRedirect = function (employee) {
+        window.location = "#/Employees/Edit/" + employee.EmployeeId;
     }
 
     $scope.employee_viewRedirect = function (index) {
@@ -156,12 +247,6 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
         window.location = "#/Employees";
     }
 
-    $scope.employee_refresh = function () {
-        employeesRepo.getEmployeesList().success(function (data) {
-            $scope.employeesList = data;
-            $scope.load = false;
-        });
-    }
 
     $scope.clearData = function () {
         $scope.employee_EmployeeId = "";
@@ -183,7 +268,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
 
     $scope.saveEmployee = function () {
         var employee;
-        debugger
+         
         if (actionEmployee == "add") {
             employee = {
                 FirstName: $scope.employee_FirstName,
@@ -203,9 +288,19 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
             };
 
             employeesRepo.insertEmployee(function () {
-            }, employee);
+            }, employee).success(function () {
+                alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                //$scope.setEmployeeData();
+                $location.path("/Employees");
+                $scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
 
-            $scope.employeesList.push(employee);
+
         }
         else {
             employee = {
@@ -227,39 +322,46 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository'])
             };
 
             employeesRepo.updateEmployee(function () {
-            }, employee);
+            }, employee).success(function () {
+                alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.setEmployeeData();
+                $scope.load = false;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            });
         }
 
         $scope.clearData();
-        //$scope.employee_refresh();
         $scope.employee_cancelRedirect();
         
     };
 
-    $scope.setEmployeeToDelete = function (index) {
-        var id = $scope.employeesList[index].EmployeeId;
-        $scope.employeeToDeleteId = id;
-        $scope.employeeToDeleteIndex = index;
+    $scope.setEmployeeToDelete = function (employee) {
+        $scope.employeeToDeleteId = employee.EmployeeId;
     };
 
     $scope.cancelEmployeeDelete = function () {
         $scope.employeeToDeleteId = "";
-        $scope.employeeToDeleteIndex = "";
-    };
-
-    $scope.removeEmployee = function (index) {
-        $scope.employeesList.splice(index, 1);
     };
 
     $scope.deleteEmployee = function () {
-        debugger
-        var id = $scope.employeeToDeleteId;
-        $scope.removeEmployee($scope.employeeToDeleteIndex);
+        $scope.load = true;
         employeesRepo.deleteEmployee(function () {
-            alert('Employee deleted');
-            //removeEmployee(index);
-        }, id);
-        $scope.cancelEmployeeDelete();
+        }, $scope.employeeToDeleteId).success(function () {
+            alertService.add('success', 'Mensaje', 'El Empleado se ha eliminado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.cancelEmployeeDelete();
+            $scope.setEmployeeData();
+            $scope.load = false;
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        });
     }
+    
     
 }]);

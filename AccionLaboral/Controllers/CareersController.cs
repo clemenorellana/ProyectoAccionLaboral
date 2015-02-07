@@ -95,7 +95,7 @@ namespace AccionLaboral.Controllers
             db.Careers.Add(career);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = career.CareerId }, career);
+            return CreatedAtRoute("DefaultApi", new { controller = "careers", id = career.CareerId }, career);
         }
 
         // DELETE api/Careers/5

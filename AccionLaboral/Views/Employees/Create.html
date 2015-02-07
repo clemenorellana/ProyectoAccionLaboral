@@ -1,36 +1,24 @@
-﻿<!--<div class="col-md-3">
+﻿<div class="col-md-3">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Foto de Perfil</h3>
-        </div>
+        </div><!-- /.box-header -->
         <div class="box-body">
             <div class="text-center">
-                <img src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="">
+                <img ng-show="employee_Photo" />
+                <img ng-show="!employee_Photo" src="../../Images/userprofilepic.jpg" id="imagenEmployee" class="img-circle" alt="User Image" ng-model="employee_Photo">
             </div>
             <br />
             <div class="form-group">
-                <label for="employeePhotoFile">Cambiar foto de Perfil</label>
-                <input type="file" id="employeePhotoFile" base-sixty-four-input>
+                <label for="imageInputFile">Cambiar foto de Perfil</label>
+                <input type="file" id="exampleInputFile" base-sixty-four-input>
                 <p class="help-block">Seleccione una foto</p>
             </div>
         </div>
-        <div class="box-footer">
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <div class="col-md-6 text-right">
-                        <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">{{employee_buttonName}}</button>
-                    </div>
-                </div>
-                <div class="col-md-6 text-left">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
-                </div>
-            </div>
-        </div>
     </div>
+</div>
 
-</div>-->
-
-<div class="col-md-12">
+<div class="col-md-9">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">{{employee_modalTitle}}</h3>
@@ -59,7 +47,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday">
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday" ng-change="calculateEmployeeAge()">
                         </div>
                     </div>
                 </div>
@@ -135,7 +123,9 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Carrera</label>
-                        <select class="form-control" ng-options="career.Name for career in employeesCareersList" ng-model="employee_Career"></select>
+                        <select class="form-control" ng-options="career.Name for career in employeesCareersList" ng-model="employee_Career">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -144,7 +134,9 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Tipo de Empleado</label>
-                        <select class="form-control" ng-options="rol.Name for rol in employeesRolesList" ng-model="employee_Role"></select>
+                        <select class="form-control" ng-options="rol.Name for rol in employeesRolesList" ng-model="employee_Role">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -156,7 +148,9 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Usuario</label>
-                        <select class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User"></select>
+                        <select class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
+                            <option value="">-- Seleccione una opción --</option>
+                        </select>
                     </div>
                 </div>
             </div>
