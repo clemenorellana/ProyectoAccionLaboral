@@ -1,0 +1,223 @@
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteTrackingInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Borrar Carrera</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro que desea borrar el seguimiento?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="deleteTracking(selectedTrackingDetail)">Si</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="col-md-9" ng-init="setTracking()">
+    <div class="nav-tabs-custom">
+        <div class="tab-content">
+            <!--Tab Datos Personales-->
+            <div class="tab-pane active" id="personalInfo">
+                <section>
+                    <h4 class="page-header">Datos Personales</h4>
+                    <div class="box-body">
+                        <form role="form" name="ClientTrackingForm" ng-submit="saveTracking(client)">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.FirstName" ng-class="{'loadinggif': load}" ng-disabled="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Apellido</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.LastName" ng-class="{'loadinggif': load}" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Celular</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-mobile-phone"></i>
+                                            </div>
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="Client.Cellphone" ng-class="{'loadinggif': load}" ng-disabled="true" required>
+                                        </div><!-- /.input group -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="Client.CurrentStateId==1">
+                                <label>Dirección Completa</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.CompleteAddress" ng-class="{'loadinggif': load}" ng-disabled="true" required>
+                            </div>
+
+                            <div class="row" ng-show="Client.CurrentStateId==2">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Empresa</label>
+                                        <select class="form-control" ng-options="Company.CompanyId as Company.Name for Company in Companies" ng-model="Client.CompanyId" ng-class="{'loadinggif': load}" ng-disabled="true" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Plaza</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.Occupation" ng-disabled="true" ng-class="{'loadinggif': load}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="Client.CurrentStateId==2">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Enviado</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.Shipped" ng-disabled="true" ng-class="{'loadinggif': load}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Asesor</label>
+                                        <select class="form-control" ng-options="employee.EmployeeId as (employee.FirstName + ' ' + employee.LastName) for employee in Employees" ng-model="Client.AdvisorId" ng-class="{'loadinggif': load}" ng-disabled="true" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" ng-show="Client.CurrentStateId==1">
+                                    <div class="form-group">
+                                        <label>Medio de Información</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.InformationMedia" ng-class="{'loadinggif': load}" ng-disabled="true">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Estado</label>
+                                        <select class="form-control" ng-options="state.StateId as state.Name for state in States" ng-model="Client.StateId" ng-class="{'loadinggif': load}" ng-disabled="true"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="box box-info">
+                                    <h4 class="page-header">Seguimiento de cliente</h4>
+                                    <div class="box-header">
+                                        <div class="pull-right box-tools">
+                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#trackingInfo" ng-click="clearTracking()" title="" data-original-title="Collapse">
+                                                <i class="fa  fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+                                    <table class="table table-bordered" ng-show="!load">
+                                        <thead>
+                                            <tr>
+                                                <th ng-click="sort='Date' ; reverse=!reverse">Fecha</th>
+                                                <th ng-click="sort='Description' ; reverse=!reverse">Descripción</th>
+                                                <th ng-click="sort='Comment' ; reverse=!reverse" ng-show="Client.CurrentStateId==2">Observación</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="1"><input ng-model="searchTracking.Date" ng-change="setTracking(searchTracking)" class="form-control" type="text" /></th>
+                                                <th colspan="1"><input ng-model="searchTracking.Description" ng-change="setTracking(searchTracking)" class="form-control" type="text" /></th>
+                                                <th colspan="1"><input ng-model="searchTracking.Comment" ng-change="setTracking(searchTracking)" class="form-control" type="text" /></th>
+                                                <th ng-show="Client.CurrentStateId==2" colspan="1"></th>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="tracking in Client.Trackings[0].TrackingDetails | filter:searchTracking:strict  | startFrom:(currentPage-1)*entryTrackingLimit | limitTo:entryTrackingLimit | orderBy:sort:reverse">
+                                            <td>{{tracking.Date | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{tracking.Description}}</td>
+                                            <td ng-show="Client.CurrentStateId==2">{{tracking.Comment}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-info" id="editCustomer" title="Editar" data-toggle="modal" ng-click="getTracking($index)" data-target="#trackingInfo"><i class="fa fa-edit"></i></button>
+                                                <button type="button" class="btn btn-danger" id="deleteTracking" data-toggle="modal" data-target="#deleteTrackingInfo" ng-click="selectedTracking($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Mostrando {{itemsInPage}} de {{Client.Trackings[0].TrackingDetails.length}} elementos</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <pagination boundary-links="true" items-per-page="entryTrackingLimit" total-items="Client.Trackings[0].TrackingDetails.length" num-pages="noOfPages" max-size="2" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                            <!--<pagination boundary-links="true" num-pages="noOfPages" ng-model="currentPage" max-size="maxSize" class="pagination-sm" previous-text="&laquo;" next-text="&raquo;"></pagination>-->
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="col-xs-5">
+                                                <select class="form-control" ng-options="item as item for item in itemsPerTrackingPageList" ng-model="entryTrackingLimit" ng-change="setTracking()"></select>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <label>Registros por página</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                                <!--</div>--><!-- /.box -->
+                            </div>
+                            <div class="box-footer">
+                                <div class="row">
+                                    <div class="col-md-1 text-center">
+                                        <button type="submit" class="btn btn-primary"> Guardar </button>
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <button type="button" class="btn btn-danger" ng-click="back()">Cancelar</button>
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" ng-show="!ClientTrackingForm.$valid">Complete todos los campos requeridos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- /.box-body -->
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+                <!-- ADD TRACKING INFO MODAL -->
+                <div class="modal fade" id="trackingInfo" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title"><i class="fa "></i>Nuevo seguimiento</h4>
+                            </div>
+                            <form action="#" method="post" name="trackingFormEdit">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Descripción</label>
+                                        <textarea  class="form-control" placeholder="Ingresar ..." ng-model="tracking.Description" required />
+                                    </div>
+                                    <div class="form-group" ng-show="Client.CurrentStateId==2">
+                                        <label>Observación</label>
+                                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Comment" required />
+                                    </div>
+                                    <div class="modal-footer clearfix">
+                                        <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" data-dismiss="modal" class="btn btn-primary text-center" ng-click="fillTracking()">Aceptar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
