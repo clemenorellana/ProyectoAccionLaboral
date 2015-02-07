@@ -36,19 +36,47 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Trackings/5
-        public IHttpActionResult PutClientTracking(int id, Tracking clienttracking)
+        public IHttpActionResult PutClientTracking(int id, Client clienttracking)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != clienttracking.TrackingId)
+            if (id != clienttracking.Trackings.ToList()[0].TrackingId)
             {
                 return BadRequest();
             }
 
-            db.Entry(clienttracking).State = EntityState.Modified;
+            var dbClients = db.Clients.Include(x => x.Trackings)
+                      .Single(c => c.ClientId == clienttracking.ClientId);
+            db.Entry(dbClients).CurrentValues.SetValues(clienttracking);
+
+
+            var dbTrackings = db.Trackings
+                .Include(x => x.TrackingDetails)
+                       .Single(c => c.ClientId == clienttracking.ClientId);
+            db.Entry(dbTrackings).CurrentValues.SetValues(clienttracking.Trackings);
+            //TrackingDetails
+            foreach (var dbTrackingDetail in dbTrackings.TrackingDetails.ToList())
+                if (!clienttracking.Trackings.ToList()[0].TrackingDetails.Any(s => s.TrackingDetailId == dbTrackingDetail.TrackingDetailId))
+                    db.TrackingDetails.Remove(dbTrackingDetail);
+
+            foreach (var newTrackingDetail in clienttracking.Trackings.ToList()[0].TrackingDetails)
+            {
+                //newTrackingDetail.TrackingDetailId = clienttracking.Trackings.ToList()[0].TrackingId;
+                if (newTrackingDetail.TrackingDetailId != 0)
+                {
+                    var dbTrackingDetail = dbTrackings.TrackingDetails.SingleOrDefault(s => s.TrackingDetailId == newTrackingDetail.TrackingDetailId);
+                    db.Entry(dbTrackingDetail).CurrentValues.SetValues(newTrackingDetail);
+                }
+                else
+                {
+                    newTrackingDetail.Date = DateTime.Now;
+                    dbTrackings.TrackingDetails.Add(newTrackingDetail);
+                }
+
+            }
 
             try
             {

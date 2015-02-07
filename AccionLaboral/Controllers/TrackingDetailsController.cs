@@ -73,6 +73,7 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(TrackingDetail))]
         public IHttpActionResult PostTrackingDetail(TrackingDetail trackingdetail)
         {
+            trackingdetail.Date = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

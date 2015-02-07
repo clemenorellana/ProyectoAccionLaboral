@@ -8,62 +8,72 @@
     {{ item.msg }}
 </div><!-- End Alert -->
 
-<div class="col-md-12">
+<div class="col-md-12" ng-init="setEnrollClients()">
     <div class="box box-info " ng-show="!enrollClientExist">
         <div class="box-header">
             <h3 class="box-title">Inscribir Cliente</h3>
+            <div class="box-header">
+                <div class="pull-right box-tools">
+                    <button class="btn btn-info btn-sm" ng-click="setEnrollClients()" title="" data-original-title="Collapse">
+                        <i class="fa  fa-refresh"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="box-body">
-            
-                <table class="table table-bordered" ng-show="!load">
-                    <tr>
-                        <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
-                        <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
-                        <th>Opciones</th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="firstName" ng-model="search.FirstName">
-                            </div>
-                        </th>
-                        <th>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="lastName" ng-model="search.LastName">
-                            </div>
-                        </th>
-                        <th></th>
-                    </tr>
-                    <tr ng-repeat="customer in customerData | filter:search:strict | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
-                        <td>{{customer.FirstName}}</td>
-                        <td>{{customer.LastName}}</td>
-                        <td>
-                            <button class="btn btn-info" ng-click="searchClient(customer)">Ver</button>
-                        </td>
-                    </tr>
-                </table>
+        <div class="box-body" ng-init="setEnrollClients()">
+            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+            <table class="table table-bordered" ng-show="!load">
+                <tr>
+                    <th ng-click="sort='IdentityNumber' ; reverse=!reverse">Identidad</th>
+                    <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
+                    <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
+                    <th>Opciones</th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="identityNumber" ng-change="setEnrollClients(searchEnrollCustomer)" ng-model="searchEnrollCustomer.IdentityNumber">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="firstName" ng-change="setEnrollClients(searchEnrollCustomer)" ng-model="searchEnrollCustomer.FirstName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="lastName" ng-change="setEnrollClients(searchEnrollCustomer)" ng-model="searchEnrollCustomer.LastName">
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="customer in filtered | filter:searchEnrollCustomer:strict | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
+                    <td>{{customer.IdentityNumber}}</td>
+                    <td>{{customer.FirstName}}</td>
+                    <td>{{customer.LastName}}</td>
+                    <td>
+                        <button class="btn btn-info" ng-click="searchClient(customer)">Ver</button>
+                    </td>
+                </tr>
+            </table>
             <br />
             <div class="row">
                 <div class="col-md-4">
-                    <label>Mostrando {{itemsInPage}} de {{customerData.length}} elementos</label>
+                    <label>Mostrando {{itemsInPage}} de {{filtered.length}} elementos</label>
                 </div>
                 <div class="col-md-4">
-                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="customerData.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="filtered.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" ng-change="setEnrollClients()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                     <!--<pagination boundary-links="true" num-pages="noOfPages" ng-model="currentPage" max-size="maxSize" class="pagination-sm" previous-text="&laquo;" next-text="&raquo;"></pagination>-->
                 </div>
                 <div class="col-md-4">
                     <div class="col-xs-4">
-                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setData()"></select>
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setEnrollClients()"></select>
                     </div>
                     <div class="col-xs-8">
                         <label>Registros por página</label>
                     </div>
                 </div>
             </div>
-                <!--<div class="text-center">
-                    <button class="btn btn-info" ng-click="searchClient()">Buscar</button>
-                </div>-->
-            
         </div>
     </div>
 </div>
@@ -116,16 +126,6 @@
                 </div>
 
                 <div class="row">
-                    <!--<div class="form-group col-md-6">
-                <label>Fecha de Inscripción</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                    <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="enrollClient.EnrollDate">
-                </div>
-            </div>-->
-
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Correo Electrónico de Facebook</label>
@@ -286,6 +286,40 @@
 
                 </div>
 
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            
+                            <label>Referencias Personales Vigentes: (PREFERIBLEMENTE FAMILIARES CERCANOS)</label>
+                            <div class="pull-right box-tools">
+                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#personalRefInfo" ng-click="clearPersonalReferenceEnrollClient()" title="" data-original-title="Collapse">
+                                    <i class="fa  fa-plus"></i>
+                                </button>
+                            </div>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Nombre Completo</th>
+                                        <th>Teléfono</th>
+                                        <th>Parentesco</th>
+                                        <th>Lugar de trabajo</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                    <tr ng-repeat="reference in personalReferencesEnroll">
+                                        <td>{{reference.FirstName}} {{reference.LastName}}</td>
+                                        <td>{{reference.Cellphone}}</td>
+                                        <td>{{reference.Relationship}}</td>
+                                        <td>{{reference.CompanyName}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-info" id="editReference" data-toggle="modal" data-target="#personalRefInfo" ng-click="setReference(reference,'edit')" title="Editar"><i class="fa fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger" id="deleteReference" data-toggle="modal" data-target="#deleteReferenceInfo" ng-click="deletePReference($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -312,9 +346,116 @@
                     <button type="submit" class="btn btn-primary" ng-click="saveEnrollClient()">Incribir Cliente</button>
                 </div>
                 <div class="col-md-6 text-left">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="enrollClient_cancel()">Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" ng-click="enrollClient.RejectionDescription=''" data-target="#rejectionInfo">Rechazar</button>
                 </div>
             </div>
         </div>
-        
     </div>
+
+<!-- ADD PERSONAL REFERENCES MODAL -->
+<div class="modal fade" id="personalRefInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>{{textButton}} Referencia Personal</h4>
+            </div>
+            <form action="#" method="post" name="formPersonalRef">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Reference.FirstName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Apellido</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Reference.LastName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="Reference.Cellphone" required>
+                                </div><!-- /.input group -->
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-show="action!='editar'">
+                            <div class="form-group">
+                                <label>Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="Reference.Email" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="action!='editar'">
+                        <div class="form-group col-md-6">
+                            <label>País</label>
+                            <select class="form-control" ng-options="country.CountryId as country.Name for country in Countries" ng-model="Reference.CountryId" required></select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Ciudad</label>
+                            <select class="form-control" ng-options="city.CityId as city.Name for city in getCitiesByCountry(Reference.CountryId)" ng-model="Reference.CityId" required></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6" ng-show="action!='editar'">
+                            <label>Ocupación</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Reference.Charge" required>
+                        </div>
+                    <div class="form-group col-md-6">
+                        <label>Lugar de trabajo</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Reference.CompanyName" required>
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <label>Parentesco</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Reference.Relationship" required>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="insertPersonalReference()">{{textButton}}</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- ADD REJECT-->
+<div class="modal fade" id="rejectionInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Rechazar Cliente</h4>
+            </div>
+            <form action="#" method="post" name="formReject">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Causa de Rechazo</label>
+                                <textarea class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.RejectionDescription" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="enrollClient_cancel()">Aceptar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

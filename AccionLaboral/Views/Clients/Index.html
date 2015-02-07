@@ -13,11 +13,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><i class="fa "></i>Borrar Carrera</h4>
+                <h4 class="modal-title"><i class="fa "></i>Eliminar Cliente</h4>
             </div>
             <form action="#" method="post">
                 <div class="modal-body">
-                    <label>¿Está seguro que desea borrar la Carrera?</label>
+                    <label>¿Está seguro de que desea eliminar el cliente seleccionado?</label>
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
@@ -29,59 +29,130 @@
 </div>
 <!-- /.modal -->
 
-<div class="col-md-12">
+<!-- Enable confirmation modal -->
+<div class="modal fade" id="disableClientInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Deshabilitar Cliente</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro de que desea deshabilitar el cliente seleccionado?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="disableCustomer(Customer)">Si</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- ADD REJECT-->
+<div class="modal fade" id="rejectionInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Causa</h4>
+            </div>
+            <form action="#" method="post" name="formReject">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <textarea class="form-control" ng-disabled="true" placeholder="Ingresar ..." ng-model="RejectionDescription" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Salir</button>
+                    <!--<button type="submit" class="btn btn-primary text-center" data-dismiss="modal">Aceptar</button>-->
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="col-md-12" ng-init="setData()">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Mantenimiento de Clientes</h3>
-            <!--<div class="pull-right box-tools">
-                <button class="btn btn-info btn-sm" ng-click="contract_addNewRedirect()" title="">
-                    <i class="fa  fa-plus"></i>
-                </button>
-            </div>-->
+            <div class="box-header">
+                <div class="pull-right box-tools">
+                    <button class="btn btn-info btn-sm" ng-click="setData()" title="" data-original-title="Collapse">
+                        <i class="fa  fa-refresh"></i>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="box-body">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <table class="table table-bordered" ng-show="!load">
                 <thead>
                     <tr>
-                        <th href="#" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
-                        <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
-                        <th ng-click="sort='Age' ; reverse=!reverse">Edad</th>
-                        <th ng-click="sort='Email' ; reverse=!reverse">Correo</th>
-                        <th ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
-                        <th ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
-                        <th>Opciones</th>
+                        <th class="col-lg-1" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
+                        <th class="col-lg-1" ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
+                        <th class="col-lg-1" ng-click="sort='Age' ; reverse=!reverse">Edad</th>
+                        <th class="col-lg-2" ng-click="sort='Email' ; reverse=!reverse">Correo</th>
+                        <th class="col-lg-2" ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
+                        <th class="col-lg-1" ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
+                        <th class="col-lg-1" ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
+                        <th class="col-lg-3">Opciones</th>
                     </tr>
                     <tr>
-                        <th colspan="1"><input ng-model="FirstName" ng-class="reverse" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.LastName" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.Age" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.Email" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.CompleteAddress" class="form-control" type="text" /></th>
-                        <th colspan="1"><input ng-model="search.Cellphone" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.LastName" ng-change="setData(search)" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Age" ng-change="setData(search)" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Email" ng-change="setData(search)" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.CompleteAddress" ng-change="setData(search)" class="form-control" type="text" /></th>
+                        <th colspan="1"><input ng-model="search.Cellphone" ng-change="setData(search)" class="form-control" type="text" /></th>
+                        <th colspan="1">
+                            <select ng-model="search.StateId" ng-init="getStates()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="state.StateId as state.Name for state in States">
+                                <option value="" selected>Todos</option>
+                            </select>
+                        </th>
                         <th colspan="1"></th>
                     </tr>
                 </thead>
-                <tr ng-repeat="customer in customerData | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
+                <tr ng-repeat="customer in filtered | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{customer.FirstName}}</td>
                     <td>{{customer.LastName}}</td>
                     <td>{{customer.Age}}</td>
                     <td>{{customer.Email}}</td>
                     <td>{{customer.CompleteAddress}}</td>
                     <td>{{customer.Cellphone}}</td>
+                    <td>{{customer.State.Name}}</td>
                     <td>
-                        <button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                        <!--<button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button>
+        <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+        <button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=5 && customer.StateId!=6" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button>
+        <button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==5 || customer.StateId==6" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button>-->
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Acciones<span class="fa fa-caret-down"></span></button>
+                            <ul class="dropdown-menu">
+                                <li class="btn"><button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button></li>
+                                <li class="btn"><button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button></li>
+                                <li class="btn" ng-show="customer.StateId!=5 && customer.StateId!=6"><button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=5 && customer.StateId!=6" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button></li>
+                                <li class="btn" ng-show="customer.StateId==5 || customer.StateId==6"><button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==5 || customer.StateId==6" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-info" id="rejectedCustomer" data-toggle="modal" data-target="#rejectionInfo" title="Causa de rechazo" ng-show="customer.StateId==3" ng-click="setRejectionDescription(customer.RejectionDescription)"><i class="fa fa-search">Causa de rechazo</i></button>
                     </td>
                 </tr>
             </table>
             <br />
             <div class="row">
                 <div class="col-md-4">
-                    <label>Mostrando {{itemsInPage}} de {{customerData.length}} elementos</label>
+                    <label>Mostrando {{itemsInPage}} de {{filtered.length}} elementos</label>
                 </div>
                 <div class="col-md-4">
-                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="customerData.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="filtered.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" ng-change="setData()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                     <!--<pagination boundary-links="true" num-pages="noOfPages" ng-model="currentPage" max-size="maxSize" class="pagination-sm" previous-text="&laquo;" next-text="&raquo;"></pagination>-->
                 </div>
                 <div class="col-md-4">

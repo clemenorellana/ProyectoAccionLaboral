@@ -93,13 +93,23 @@ namespace AccionLaboral.Controllers.Home
                 return View();
             }
         }
-
-
-        //
+        
         // GET: /Clients/Enroll/
         public ActionResult Enroll()
         {
             return new FilePathResult("~/Views/Clients/EnrollClient.html", "text/html");
+        }
+
+        // GET: /Clients/Tracking/
+        public ActionResult Tracking()
+        {
+            return new FilePathResult("~/Views/Clients/ClientTracking.html", "text/html");
+        }
+
+        // GET: /Clients/ClientTracking/
+        public ActionResult ClientTracking()
+        {
+            return new FilePathResult("~/Views/Clients/TrackingDetail.html", "text/html");
         }
     }
 }

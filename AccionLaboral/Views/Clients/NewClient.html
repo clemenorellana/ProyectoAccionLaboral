@@ -47,7 +47,19 @@
                         <div class="box-body">
 
                             <form name="clientForm">
-                                <div class="row" show-errors>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Identidad</label>
+                                            <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" required>
+                                            <!--<span style="color:red" ng-show="!New.FirstName">
+            <span ng-show="!New.FirstName">Nombre es requerido.</span>
+        </span>-->
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Nombre</label>
@@ -390,7 +402,7 @@
                                                 <!--<th style="width: 10px">#</th>-->
                                                 <th>Nombre</th>
                                                 <th>Ocupación</th>
-                                                <th>Parentezco</th>
+                                                <th>Parentesco</th>
                                                 <th>Teléfono</th>
                                                 <th>Correo Electrónico</th>
                                                 <th>Ciudad</th>
@@ -828,7 +840,7 @@
                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargePRef">
                     </div>
                     <div class="form-group">
-                        <label>Parentezco</label>
+                        <label>Parentesco</label>
                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="RelationshipPRef">
                     </div>
                 </div>
