@@ -10,6 +10,10 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
         when('/Login', {
             templateUrl: '/Users/Login',
             controller: 'usersCtrl'
+        }).
+        when('/ForgotPassword', {
+            templateUrl: '/Users/ForgotPassword',
+            controller: 'usersCtrl'
         });
 }]
 )
