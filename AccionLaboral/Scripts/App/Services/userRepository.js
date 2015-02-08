@@ -10,17 +10,22 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
         insertUser: function (callback, user) {
             var user = {
                 "UserName": user.UserName,
-                "Password": user.Password
+                //"Password": user.Password,
+                "Active": true,
+                "Busy": false,
             };
             return $http.post(url, user);
         },
         //method for update
+        //updateUser: function (callback, user) {
+        //    var user = {
+        //        "UserId": user.UserId,
+        //        "UserName": user.UserName,
+        //        "Password": user.Password
+        //    };
+        //    return $http.put(url + '/' + user.UserId, user);
+        //},
         updateUser: function (callback, user) {
-            var user = {
-                "UserId": user.UserId,
-                "UserName": user.UserName,
-                "Password": user.Password
-            };
             return $http.put(url + '/' + user.UserId, user);
         },
         //method for delete
@@ -36,9 +41,9 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
             };
             return $http.post(url + '/Login', user);
         }
-        //,
-        //userExists: function (userName) {
-        //    return $http.post(url + '/UserExists', userName);
-        //},
+        ,
+        requestChangePassword: function (userName) {
+            return $http.post(url + '/RequestChangePassword', userName);
+        }
     }
 }]);

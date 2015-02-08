@@ -158,7 +158,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Usuario</label>
-                        <select class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
+                        <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>

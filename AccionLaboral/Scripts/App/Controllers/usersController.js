@@ -77,6 +77,22 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
 
     };
 
+    $scope.setUserState = function (user, state) {
+        user.Active = state;
+
+        usersRepo.updateUser(function () {
+        }, user).success(function () {
+            alertService.add('success', 'Mensaje', 'El Usuario se ha editado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.setUserData();
+            $scope.load = false;
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        });
+    }
+
     $scope.setActionUser = function (action, user) {
         $scope.actionUser = action;
         if (action == "add") {
@@ -200,6 +216,15 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
     $scope.requestChangePassword = function () {
         $rootScope.forgotPass = false;
         var user = $scope.UserName
+
+        usersRepo.requestChangePassword($scope.userName).success(function (data) {
+            var user = data;
+            $scope.console = "request send email";
+        }).error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+            $scope.console = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+        });
 
     }
 

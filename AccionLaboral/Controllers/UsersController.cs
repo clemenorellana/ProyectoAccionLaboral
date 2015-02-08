@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
 using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace AccionLaboral.Controllers
 {
@@ -25,6 +26,14 @@ namespace AccionLaboral.Controllers
             return db.Users;
         }
 
+        // GET api/UsersFree
+        [Route("api/UsersFree")]
+        [HttpGet]
+        public IQueryable<User> GetUsersFree()
+        {
+            return db.Users.Where(r => r.Busy == false);
+        }
+
         [Route("api/Users/Login")]
         [HttpPost]
         public bool Login(User user)
@@ -34,12 +43,43 @@ namespace AccionLaboral.Controllers
         }
 
 
-        [Route("api/Users/UserExists")]
+        [Route("api/Users/RequestChangePassword")]
         [HttpPost]
-        public bool UserExists(string userName)
+        public bool RequestChangePassword(string userName)
         {
-            var users = db.Users.Where(r => r.UserName == userName).ToList();
-            return users.Count > 0;
+            //IQueryable<User> users = db.Users.Where(r => r.UserName == userName);
+
+            //User users = db.Users.Find(userName);
+            //Employee employee = db.Employees.Include(r => r.User).Where(r => r.User.UserName = userName);
+            IQueryable<Employee> employees = db.Employees.Include(r => r.User).Where(r => r.User.UserName == userName);
+            var x = employees.ToList();
+            
+            foreach (var employee in employees)
+            {
+                MailMessage m = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
+                                             new MailAddress(employee.Email)
+                                           );
+                m.Subject = "Cambiar Contraseña";
+                m.Body = string.Format(@"Estimado(a) {0}
+                                    <BR/>
+                                    Se ha solicitado un cambio de contraseña.
+                                    <BR/>
+                                    Su usuario es: {1}
+                                    <BR/>
+                                    Favor de clic al siguiente link para cambiar su contraseña"
+                                      , employee.FirstName
+                                      , employee.User.UserName
+                                      );
+                //<BR/>
+                //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
+                m.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+                smtp.Credentials = new NetworkCredential("accionlaboralhnsps@gmail.com", "4ccionl4bor4l");
+                smtp.EnableSsl = true;
+                smtp.Send(m);
+            }
+            
+            return employees.ToList().Count > 0;
         }
 
         /*

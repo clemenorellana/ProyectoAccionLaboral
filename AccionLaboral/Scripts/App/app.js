@@ -99,24 +99,27 @@ angular.module('AccionLaboralApp', [
             $scope.validateUser = function (userName, password, isValidForm) {
                 $scope.launch('wait');
                 if(isValidForm){
-                usersRepo.login(userName, password).success(function (data) {
-                        $scope.userValid = data;
-                        if($scope.userValid == true){
-                            $scope.template = 'Home/Home';
-                            $scope.skinClass = "skin-blue";
-                            $cookies.userName = userName;
-                            $rootScope.user = { UserName: $cookies.userName };
-                            $rootScope.forgotPass =false;
-                        } else {
-                            $scope.skinClass = "bg-black";
-                            $scope.template = "Users/Login";
-                            $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
-                        };
-                    })
-                    .error(function (message) {
-                        $scope.addAlert("danger","Ha ocurrido un error en el servidor.");
-                    });
-                } else {
+                    usersRepo.login(userName, password).success(function (data) {
+                            $scope.userValid = data;
+                            if($scope.userValid == true){
+                                $scope.template = 'Home/Home';
+                                $scope.skinClass = "skin-blue";
+                                $cookies.userName = userName;
+                                $rootScope.user = { UserName: $cookies.userName };
+                                $rootScope.forgotPass =false;
+                            } else {
+                                $scope.skinClass = "bg-black";
+                                $scope.template = "Users/Login";
+                                $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
+                            };
+                        })
+                        .error(function (message) {
+                            $scope.addAlert("danger","Ha ocurrido un error en el servidor.");
+                        });
+
+                    
+                }
+                else {
                     $scope.addAlert("danger", "Hay campos invalidos");
                 }
             }
