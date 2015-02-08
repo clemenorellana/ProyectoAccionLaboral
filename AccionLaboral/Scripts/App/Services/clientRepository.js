@@ -9,6 +9,9 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         getCustomers: function () {
             return $http.get(urlCustomer);
         },
+        getEmployees: function () {
+            return $http.get('api/Employees');
+        },
         getCities: function (callback) {
             return $http.get('api/Cities');
         },
@@ -27,15 +30,25 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         getEducationTypes: function (callback) {
             return $http.get('api/EducationTypes');
         },
+        getCompanies: function (callback) {
+            return $http.get('api/Companies');
+        },
         getLanguages: function (callback) {
             return $http.get('api/Languages');
         },
         getLanguageLevels: function (callback) {
             return $http.get('api/LanguageLevels');
         },
+        getTrackingTypes: function () {
+            return $http.get('api/trackingtypes');
+        },
+        getStates: function(){
+            return $http.get('api/States');
+        },
+
         //method for insert
-        InsertCustomer: function (callback, client) {
-            
+        InsertCustomer: function (callback, client, Tracking) {
+            //$scope.Tracking = [{ TrackingTypeId: 1, StateId: 1 }];
             var newClient = {
                  "Correlative": client.Correlative, "FirstName": client.FirstName,
                 "LastName": client.LastName, "Birthday": client.Birthday, "Age": client.Age,
@@ -44,40 +57,41 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "Hobby": client.Hobby, "Photo": client.Photo, "CurrentStudies": client.CurrentStudies,
                 "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
-                "CityId": client.CityId.CityId, "AdvisorId": client.AdvisorId, "CareerId": client.CareerId,
+                "CityId": client.CityId.CityId, "EmployeeId": client.AdvisorId, "CareerId": client.CareerId, "StateId": 1,
                 "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
-                "WorkExperiences": client.workExperiences, "References": client.workReferences
+                "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": Tracking
             };
             return $http.post(urlCustomer, newClient);
-        }
-            ,
+        },
+        InsertTracking: function (tracking) {
+            return $http.post('api/TrackingDetails', tracking)
+        },
         //method for update
         UpdateCustomer: function (client) {
-            var newClient = {
-                "ClientId": client.ClientId, "Correlative": client.Correlative, "FirstName": client.FirstName,
-                "LastName": client.LastName, "Birthday": client.Birthday, "Age": client.Age,
-                "Gender": client.Gender, "Email": client.Email, "Neighborhood": client.Neighborhood,
-                "CompleteAddress": client.CompleteAddress, "Cellphone": client.Cellphone, "HomePhone": client.HomePhone,
-                "Hobby": client.Hobby, "Photo": client.Photo, "CurrentStudies": client.CurrentStudies,
-                "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
-                "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
-                "CityId": client.CityId, "AdvisorId": client.AdvisorId,
-                "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
-                "WorkExperiences": client.WorkExperiences, "References": client.References
-            };
-            return $http.put(urlCustomer + newClient.ClientId, newClient);
-        }
-        ,
+            
+            return $http.put(urlCustomer + client.ClientId, client);
+        },
+        //updateTracking: function (Tracking) {
+          //  return $http.put(urlCustomer + Client.ClientId, Client);
+        //},
+        UpdateTracking: function (client) {
+            return $http.put('api/Trackings/' + client.Trackings[0].TrackingId, client);
+        },
         inscribeCustomer: function (client) {
             var newClient = angular.copy(client);
-            newClient.CurrentStateId = 2;
+            newClient.StateId = 2;
+            newClient.Trackings[0].StateId = 2;
+            newClient.Trackings[0].TrackingTypeId = 2;
             newClient.IsStudying = (client.IsStudying == "1");
             return $http.put(urlCustomer + newClient.ClientId, newClient);
-        }
-        ,
+        },
         //method for delete
         DeleteCustomer: function (callback, id) {
             return $http.delete(urlCustomer + '/' + id);
+        },
+        //method for delete
+        DeleteTracking: function (id) {
+            return $http.delete('api/TrackingDetails' + '/' + id);
         }
 
 

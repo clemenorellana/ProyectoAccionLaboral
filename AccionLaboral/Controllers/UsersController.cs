@@ -32,6 +32,16 @@ namespace AccionLaboral.Controllers
             var users = db.Users.Where(r => r.UserName == user.UserName && r.Password == user.Password).ToList();
             return users.Count > 0;
         }
+
+
+        [Route("api/Users/UserExists")]
+        [HttpPost]
+        public bool UserExists(string userName)
+        {
+            var users = db.Users.Where(r => r.UserName == userName).ToList();
+            return users.Count > 0;
+        }
+
         /*
         // GET api/Users/Login
         [Route("api/Users/Login")]

@@ -39,6 +39,7 @@ angular.module('AccionLaboralApp', [
         '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo) {
 
             $scope.alerts = [];
+            $rootScope.forgotPass = false;
             $scope.addAlert = function (type, msg) {
                 $scope.alerts[0] = {type: type, msg: msg};
             };
@@ -105,6 +106,7 @@ angular.module('AccionLaboralApp', [
                             $scope.skinClass = "skin-blue";
                             $cookies.userName = userName;
                             $rootScope.user = { UserName: $cookies.userName };
+                            $rootScope.forgotPass =false;
                         } else {
                             $scope.skinClass = "bg-black";
                             $scope.template = "Users/Login";
@@ -118,6 +120,31 @@ angular.module('AccionLaboralApp', [
                     $scope.addAlert("danger", "Hay campos invalidos");
                 }
             }
+
+            //$scope.validateUserName = function (userName,  isValidForm) {
+            //    $scope.launch('wait');
+            //    if (isValidForm) {
+            //        usersRepo.userExists(userName).success(function (data) {
+            //            $scope.userValid = data;
+            //            if ($scope.userValid == true) {
+            //                $scope.template = 'Home/Home';
+            //                $scope.skinClass = "skin-blue";
+            //                $cookies.userName = userName;
+            //                $rootScope.user = { UserName: $cookies.userName };
+            //                $rootScope.forgotPass = false;
+            //            } else {
+            //                $scope.skinClass = "bg-black";
+            //                $scope.template = "Users/Login";
+            //                $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
+            //            };
+            //        })
+            //            .error(function (message) {
+            //                $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+            //            });
+            //    } else {
+            //        $scope.addAlert("danger", "Hay campos invalidos");
+            //    }
+            //}
 
         }
     ]);

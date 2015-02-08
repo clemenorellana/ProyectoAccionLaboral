@@ -21,6 +21,8 @@ namespace AccionLaboral.Controllers
         public IQueryable<Client> GetClients()
         {
             return db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                .Include(r => r.Employee)
+                .Include(r => r.State)
                 .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
                 .Include(r => r.AcademicEducations.Select(c => c.Career))
                 .Include(r => r.AcademicEducations.Select(t => t.EducationType))
@@ -30,7 +32,8 @@ namespace AccionLaboral.Controllers
                 .Include(r => r.References.Select(c => c.City.Country))
                 .Include(r => r.References.Select(t => t.ReferenceType))
                 .Include(r => r.WorkExperiences)
-                .Include(r => r.WorkExperiences.Select(c => c.City.Country));
+                .Include(r => r.WorkExperiences.Select(c => c.City.Country))
+                .Include(r=>r.Trackings.Select(c=>c.TrackingType));
         }
 
         // GET api/Clients/5
@@ -48,6 +51,29 @@ namespace AccionLaboral.Controllers
                 .Include(r => r.References.Select(t => t.ReferenceType))
                 .Include(r => r.WorkExperiences)
                 .Include(r => r.WorkExperiences.Select(c => c.City))
+                .Include(r=>r.State)
+                .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
+                .Include(r => r.Trackings.Select(c => c.State))
+                .Include(r => r.Trackings.Select(c => c.TrackingType))
+                .First(r => r.ClientId == id);
+
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(client);
+        }
+
+        // GET api/Clients/5
+        //[System.Web.Mvc.HttpGet("api/Clients/{id}/Tracking")]
+        //[ResponseType(typeof(Client))]
+        //[System.Web.Mvc.Route("api/Clients/{id}/Tracking")]
+        //[System.Web.Mvc.HttpGet]
+        [ResponseType(typeof(Client))]
+        public IHttpActionResult Tracking(int id)
+        {
+            Client client = db.Clients.Include(r => r.Trackings.Select(c => c.TrackingDetails))
                 .First(r => r.ClientId == id);
 
             if (client == null)
@@ -77,7 +103,7 @@ namespace AccionLaboral.Controllers
                        .Include(x => x.KnownPrograms)
                        .Include(x => x.WorkExperiences)
                        .Include(x => x.References)
-                       //.Include(x => x.Trackings)
+                       .Include(x => x.Trackings)
                        .Single(c => c.ClientId == client.ClientId);
             client.EnrollDate = DateTime.Now;
             db.Entry(dbClients).CurrentValues.SetValues(client);
@@ -187,7 +213,7 @@ namespace AccionLaboral.Controllers
                 }
                     
             }
-            /*
+            
             //Trackings
             foreach (var dbSubFoo in dbClients.Trackings.ToList())
                 if (!client.Trackings.Any(s => s.TrackingId == dbSubFoo.TrackingId))
@@ -200,7 +226,7 @@ namespace AccionLaboral.Controllers
                     db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
                 else
                     dbClients.Trackings.Add(newSubFoo);
-            }*/
+            }
             try
             {
                 db.SaveChanges();

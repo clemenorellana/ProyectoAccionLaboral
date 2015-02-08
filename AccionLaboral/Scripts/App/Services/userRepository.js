@@ -36,5 +36,9 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
             };
             return $http.post(url + '/Login', user);
         }
+        //,
+        //userExists: function (userName) {
+        //    return $http.post(url + '/UserExists', userName);
+        //},
     }
 }]);

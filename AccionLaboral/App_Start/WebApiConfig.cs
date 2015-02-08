@@ -20,6 +20,12 @@ namespace AccionLaboral
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "TrackingApi",
+                routeTemplate: "api/{controller}/{id}/Tracking",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml"));
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling =
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore;

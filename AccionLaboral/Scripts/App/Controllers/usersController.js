@@ -196,4 +196,18 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
 
     $scope.setUserData();
 
+
+    $scope.requestChangePassword = function () {
+        $rootScope.forgotPass = false;
+        var user = $scope.UserName
+
+    }
+
+    $scope.sendEmail = function (email) {
+
+        $auth.submitRegistration({
+            email: email
+        });
+    }
+
 }]);

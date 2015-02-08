@@ -12,11 +12,11 @@ namespace AccionLaboral.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int TrackingId { get; set; }  
-        public int TrackingTypeId { get; set; }
-        public int ClientId { get; set; }
-        public int CompanyId { get; set; }
+        public int? TrackingTypeId { get; set; }
+        public int? ClientId { get; set; }
+        public int? CompanyId { get; set; }
         public int StateId { get; set; }
-        public int VacantByCompanyId { get; set; }
+        public int? VacantByCompanyId { get; set; }
 
 
         public VacantByCompany VacantByCompany { get; set; }

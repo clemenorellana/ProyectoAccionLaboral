@@ -25,6 +25,7 @@ namespace AccionLaboral.Models
         //[Index("IX_ClientFirstNameLastName", 2, IsUnique = true)]
         [StringLength(50)]
         public string LastName { get; set; }
+        public string IdentityNumber { get; set; }
         public DateTime Birthday { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
@@ -44,12 +45,16 @@ namespace AccionLaboral.Models
         public string DesiredEmployment { get; set; }
         public string CompaniesWithPreviouslyRequested { get; set; }   
         public bool Approved { get; set; }
-        public string  RejectionDesciption { get; set; }
-        public int CurrentStateId { get; set; }
+        public string RejectionDescription { get; set; }
+        public int StateId { get; set; }
         public int CityId { get; set; }
-        public int AdvisorId { get; set; }
+        
+        public int? EmployeeId { get; set; }
+        public int? CompanyId { get; set; }
         public DateTime? EnrollDate { get; set; }
         public string Occupation { get; set; }
+        public string Shipped { get; set; }
+        public string InformationMedia { get; set; }
         public int? EnglishPercentage { get; set; }
         public bool? IsStudying { get; set; }
         public int? QtyClasses { get; set; }
@@ -58,10 +63,11 @@ namespace AccionLaboral.Models
         public bool? HaveLicense { get; set; }
         public string LicenseType { get; set; }
         public string Comment { get; set; }
-        public State CurrentState { get; set; }
+        public State State { get; set; }
         public City City { get; set; }
-        public Employee Advisor { get; set; }
-        
+        public Employee Employee { get; set; }
+        public Company Company { get; set; }
+
         public ICollection <AcademicEducation> AcademicEducations { get; set; }
         public ICollection<KnownLanguage> Languages { get; set; }
         public ICollection<KnownProgram> KnownPrograms { get; set; }

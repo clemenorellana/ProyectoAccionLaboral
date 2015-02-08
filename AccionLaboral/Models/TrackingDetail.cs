@@ -12,11 +12,11 @@ namespace AccionLaboral.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int TrackingDetailId { get; set; }
-        [Required]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         [Required]
         public string Description { get; set; }
-        public int ShipmentTypeId { get; set; }
+        public string Comment { get; set; }
+        public int? ShipmentTypeId { get; set; }
         public int TrackingId { get; set; }
 
 
