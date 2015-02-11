@@ -14,9 +14,22 @@
             <h3 class="box-title">Inscribir Cliente</h3>
             <div class="box-header">
                 <div class="pull-right box-tools">
-                    <button class="btn btn-info btn-sm" ng-click="setEnrollClients()" title="" data-original-title="Collapse">
+                    <button class="btn btn-info btn-sm" ng-click="setData()" title="" data-original-title="Collapse">
                         <i class="fa  fa-refresh"></i>
                     </button>
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="glyphicon glyphicon-download-alt">Exportar</i><span class="fa fa-caret-down"></span></button>
+                    <ul class="dropdown-menu">
+                        <li class="btn" id="btnExcelExport" ng-click="exportData()">
+                            <a href="">
+                                <img src="../../Images/MS/xls-icon24.png" />XLS
+                            </a>
+                        </li>
+                        <!--<li class="btn" id="btnPDFExport" ng-click="exportPDFData()">
+                            <a href="">
+                                <img src="../../Images/MS/PDFImage24.png" />PDF
+                            </a>
+                        </li>-->
+                    </ul>
                 </div>
             </div>
         </div>

@@ -48,18 +48,18 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
 
         //method for insert
         InsertCustomer: function (callback, client) {
-            $scope.Tracking = [{ TrackingTypeId: 1, StateId: 1 }];
+            var Tracking = [{ TrackingTypeId: 1, StateId: 1 }];
             var newClient = {
-                 "Correlative": client.Correlative, "FirstName": client.FirstName,
+                "IdentityNumber": client.IdentityNumber, "Correlative": client.Correlative, "FirstName": client.FirstName,
                 "LastName": client.LastName, "Birthday": client.Birthday, "Age": client.Age,
                 "Gender": client.Gender, "Email": client.Email, "Neighborhood": client.Neighborhood,
                 "CompleteAddress": client.CompleteAddress, "Cellphone": client.Cellphone, "HomePhone": client.HomePhone,
                 "Hobby": client.Hobby, "Photo": client.Photo, "CurrentStudies": client.CurrentStudies,
                 "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
-                "CityId": client.CityId.CityId, "AdvisorId": client.AdvisorId, "CareerId": client.CareerId, "CurrentStateId": 1,
+                "CityId": client.CityId.CityId, "EmployeeId": client.AdvisorId, "CareerId": client.CareerId, "StateId": 1,
                 "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
-                "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": $scope.Tracking
+                "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": Tracking
             };
             return $http.post(urlCustomer, newClient);
         },
