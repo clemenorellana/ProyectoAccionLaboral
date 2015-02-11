@@ -32,6 +32,13 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
+        // GET: /RessetPassword/
+        public ActionResult ResetPassword()
+        {
+            return new FilePathResult("~/Views/Login/ResetPassword.html", "text/html");
+        }
+
+        //
         // GET: /Users/Details/5
         public ActionResult Details(int id)
         {

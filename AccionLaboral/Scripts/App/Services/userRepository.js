@@ -43,7 +43,10 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
         }
         ,
         requestChangePassword: function (userName) {
-            return $http.post(url + '/RequestChangePassword', userName);
+            var user = {
+                "UserName": userName
+            };
+            return $http.post(url + '/RequestChangePassword', user);
         }
     }
 }]);

@@ -1,5 +1,5 @@
 ﻿
-<div class="form-box" id="login-box" ng-show="!forgotPass">
+<div class="form-box" id="login-box" ng-show="!forgotPass && !resetPass">
     <div class="header bg-blue-gradient">Iniciar Sesión</div>
 
     <form ng-submit="validateUser(UserName, Password, loginForm.$valid)" name="loginForm" method="POST">
@@ -21,12 +21,13 @@
             <button type="submit" id="btnLogin" class="btn bg-blue-gradient btn-block">Ingresar</button>
 
             <p><a href="" ng-click="forgotPass=true">Olvidé mi contraseña</a></p>
-
+            <p><a href="" ng-click="resetPass=true">Cambiar mi contraseña</a></p>
         </div>
     </form>
 </div>
 
 <div ng-include="'Users/ForgotPassword'" ng-show="forgotPass"></div>
+<div ng-include="'Users/ResetPassword'" ng-show="resetPass"></div>
 
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
 <!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>-->

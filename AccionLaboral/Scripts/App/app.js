@@ -36,10 +36,11 @@ angular.module('AccionLaboralApp', [
             return [];
         }
     }).controller('mainController', [
-        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo) {
-
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo) {
+            $rootScope.validPass = true;
             $scope.alerts = [];
             $rootScope.forgotPass = false;
+            $rootScope.resetPass = false;
             $scope.addAlert = function (type, msg) {
                 $scope.alerts[0] = {type: type, msg: msg};
             };
@@ -74,6 +75,7 @@ angular.module('AccionLaboralApp', [
             };
 
             var userStored = $cookies.userName;
+            //var userStored = $cookies.userLoggedIn;
             if (userStored == "null" || (!userStored)) {
                 $scope.skinClass = "bg-black";
                 $scope.template = 'Users/Login';
@@ -89,10 +91,46 @@ angular.module('AccionLaboralApp', [
 
             $scope.logout = function () {
                 $cookies.userName = null;
+                //$cookies.userLoggedIn = null;
                 $scope.skinClass = "bg-black";
                 $scope.template = "Users/Login";
                 $scope.userValid = false;
             }
+
+            $scope.changePassword = function (UserName, Password1, Password2){
+                if (Password1 === Password2) {
+                    $rootScope.validPass = true;
+                }
+                else {
+                    $rootScope.validPass = false;
+                }
+            }
+
+            $scope.sendRequestChangePassword = function (userName) {
+                $scope.launch('wait');
+                debugger
+                $rootScope.forgotPass = false;
+                
+                usersRepo.requestChangePassword(userName).success(function (data) {
+                    $scope.userValid = data;
+                    if ($scope.userValid == true) {
+                        $scope.addAlert("success", "La solicitud se ha enviado a su correo.");
+                        //$scope.skinClass = "bg-black";
+                        //$scope.template = "Users/Login";
+                        window.location = "#/Login";
+                        $rootScope.forgotPass = false;
+                    } else {
+                        $scope.skinClass = "bg-black";
+                        $scope.template = "Users/Login";
+                        $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
+                    };
+                })
+                .error(function (message) {
+                    $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                });
+
+            }
+            
 
             //$scope.skinClass = "bg-black";
             //$scope.template = "Users/Login";
@@ -100,12 +138,15 @@ angular.module('AccionLaboralApp', [
                 $scope.launch('wait');
                 if(isValidForm){
                     usersRepo.login(userName, password).success(function (data) {
-                            $scope.userValid = data;
+                        //var employee = data;
+                        $scope.userValid = data; //(employee.EmployeeId != null) ? true : false;
                             if($scope.userValid == true){
                                 $scope.template = 'Home/Home';
                                 $scope.skinClass = "skin-blue";
                                 $cookies.userName = userName;
+                                //$cookies.userLoggedIn = employee;
                                 $rootScope.user = { UserName: $cookies.userName };
+                                //$rootScope.user = $cookies.userLoggedIn;
                                 $rootScope.forgotPass =false;
                             } else {
                                 $scope.skinClass = "bg-black";
@@ -116,38 +157,11 @@ angular.module('AccionLaboralApp', [
                         .error(function (message) {
                             $scope.addAlert("danger","Ha ocurrido un error en el servidor.");
                         });
-
-                    
                 }
                 else {
                     $scope.addAlert("danger", "Hay campos invalidos");
                 }
             }
-
-            //$scope.validateUserName = function (userName,  isValidForm) {
-            //    $scope.launch('wait');
-            //    if (isValidForm) {
-            //        usersRepo.userExists(userName).success(function (data) {
-            //            $scope.userValid = data;
-            //            if ($scope.userValid == true) {
-            //                $scope.template = 'Home/Home';
-            //                $scope.skinClass = "skin-blue";
-            //                $cookies.userName = userName;
-            //                $rootScope.user = { UserName: $cookies.userName };
-            //                $rootScope.forgotPass = false;
-            //            } else {
-            //                $scope.skinClass = "bg-black";
-            //                $scope.template = "Users/Login";
-            //                $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
-            //            };
-            //        })
-            //            .error(function (message) {
-            //                $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
-            //            });
-            //    } else {
-            //        $scope.addAlert("danger", "Hay campos invalidos");
-            //    }
-            //}
 
         }
     ]);

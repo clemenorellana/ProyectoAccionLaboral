@@ -235,6 +235,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             $scope.employee_Career = $scope.employeesCareersList[c];//employeeToEdit.Career;
             $scope.employee_Role = $scope.employeesRolesList[r];//employeeToEdit.Role;
             $scope.employee_User = $scope.employeesUsersList[u];//employeeToEdit.User;
+            $scope.employee_UserAsigned = $scope.employeesUsersList[u];//employeeToEdit.User;
             $scope.employee_Photo = employeeToEdit.Photo;
         });
     }
@@ -356,7 +357,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
                     AdmissionDate: $scope.employee_AdmissionDate,
                     CareerId: $scope.employee_Career.CareerId,
                     RoleId: $scope.employee_Role.RoleId,
-                    UserId: $scope.employee_User.UserId,
+                    UserId: $scope.employee_UserAsigned.UserId,
                     Photo: $scope.episodeImgData
                 };
 

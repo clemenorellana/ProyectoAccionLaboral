@@ -14,7 +14,12 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
         when('/ForgotPassword', {
             templateUrl: '/Users/ForgotPassword',
             controller: 'usersCtrl'
+        }).
+        when('/ResetPassword', {
+            templateUrl: '/Users/ResetPassword',
+            controller: 'usersCtrl'
         });
+
 }]
 )
 .controller('usersCtrl', ['$scope', 'usersRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, usersRepo, $rootScope, $location, $filter, filterFilter, alertService) {
@@ -213,20 +218,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
     $scope.setUserData();
 
 
-    $scope.requestChangePassword = function () {
-        $rootScope.forgotPass = false;
-        var user = $scope.UserName
-
-        usersRepo.requestChangePassword($scope.userName).success(function (data) {
-            var user = data;
-            $scope.console = "request send email";
-        }).error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-            $scope.load = false;
-            $scope.console = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-        });
-
-    }
+    
 
     $scope.sendEmail = function (email) {
 

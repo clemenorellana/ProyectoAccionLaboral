@@ -39,80 +39,68 @@ namespace AccionLaboral.Controllers
         public bool Login(User user)
         {
             var users = db.Users.Where(r => r.UserName == user.UserName && r.Password == user.Password).ToList();
+//            Employee employee = new Employee();
+//            if (users.Count == 0)
+//                return employee;
+//;
+
+//            var userId = users[0].UserId;
+
+//            employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
+
+            //return employee;
+
             return users.Count > 0;
         }
 
 
         [Route("api/Users/RequestChangePassword")]
         [HttpPost]
-        public bool RequestChangePassword(string userName)
+        public bool RequestChangePassword(User user)
         {
-            //IQueryable<User> users = db.Users.Where(r => r.UserName == userName);
+            var users = db.Users.Where(r => r.UserName == user.UserName).ToList();
 
-            //User users = db.Users.Find(userName);
-            //Employee employee = db.Employees.Include(r => r.User).Where(r => r.User.UserName = userName);
-            IQueryable<Employee> employees = db.Employees.Include(r => r.User).Where(r => r.User.UserName == userName);
-            var x = employees.ToList();
-            
-            foreach (var employee in employees)
-            {
-                MailMessage m = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
+            if (users.Count == 0)
+                return false;
+
+            var userId = users[0].UserId;
+
+            Employee employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
+
+
+            MailMessage m = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
                                              new MailAddress(employee.Email)
                                            );
-                m.Subject = "Cambiar Contraseña";
-                m.Body = string.Format(@"Estimado(a) {0}
+            m.Subject = "Cambiar Contraseña";
+            m.Body = string.Format(@"Estimado(a) {0}
                                     <BR/>
                                     Se ha solicitado un cambio de contraseña.
                                     <BR/>
                                     Su usuario es: {1}
                                     <BR/>
                                     Favor de clic al siguiente link para cambiar su contraseña"
-                                      , employee.FirstName
-                                      , employee.User.UserName
-                                      );
-                //<BR/>
-                //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
-                m.IsBodyHtml = true;
-                SmtpClient smtp = new SmtpClient("smtp.gmail.com");
-                smtp.Credentials = new NetworkCredential("accionlaboralhnsps@gmail.com", "4ccionl4bor4l");
-                smtp.EnableSsl = true;
-                smtp.Send(m);
-            }
-            
-            return employees.ToList().Count > 0;
+                                  , employee.FirstName
+                                  , employee.User.UserName
+                                  );
+
+//            m.Body = string.Format(@"Dear {0}
+//<BR/>
+//Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>"
+//            , user.UserName
+//            , Url.Action("ConfirmEmail", "Account", new { Token = user.UserId, Email = employee.Email }, Request.Url.Scheme));
+
+
+            //<BR/>
+            //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
+            m.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            smtp.Credentials = new NetworkCredential("accionlaboralhnsps@gmail.com", "4ccionl4bor4l");
+            smtp.EnableSsl = true;
+            smtp.Send(m);
+
+            return users.Count > 0;
         }
 
-        /*
-        // GET api/Users/Login
-        [Route("api/Users/Login")]
-        [HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        public async Task<System.Web.Mvc.ActionResult> Login(User model)
-        {
-            var user = model;
-            if (ModelState.IsValid)
-            {
-                user = db.Users.First(r=> r.UserName == model.UserName);
-                user = await db.Users.SingleOrDefaultAsync(r=> r.UserName == model.UserName && r.Password == model.Password);
-                if (user != null)
-                {
-                    //await SignInAsync(user, model.RememberMe);
-                    //return RedirectToLocal(returnUrl);
-                }
-
-                ModelState.AddModelError("", "Invalid username or password.");
-            }
-
-            // If we got this far, something failed, redisplay form
-            return new System.Web.Mvc.FilePathResult("/Views/Home/Index.html", "text/html");
-
-            //var result = await db.Users.FindAsync(user.UserName, user.Password);
-            //if (result.UserId > 0)
-            //    return true;
-            //else
-            //    return false;
-        }*/
 
         // GET api/Users/5
         [Route("api/Users")]
