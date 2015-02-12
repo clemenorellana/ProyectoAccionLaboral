@@ -142,28 +142,28 @@
                                                 <th ng-show="Client.CurrentStateId==2" colspan="1"></th>
                                             </tr>
                                         </thead>
-                                        <tr ng-repeat="tracking in Client.Trackings[0].TrackingDetails | filter:searchTracking:strict  | startFrom:(currentPage-1)*entryTrackingLimit | limitTo:entryTrackingLimit | orderBy:sort:reverse">
-                                            <td>{{tracking.Date | date:'dd/MM/yyyy'}}</td>
-                                            <td>{{tracking.Description}}</td>
-                                            <td ng-show="Client.CurrentStateId==2">{{tracking.Comment}}</td>
+                                        <tr ng-repeat="thisTracking in filteredTracking | filter:searchTracking:strict  | startFrom:(currentPage-1)*entryTrackingLimit | limitTo:entryTrackingLimit | orderBy:sort:reverse">
+                                            <td>{{thisTracking.Date | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{thisTracking.Description}}</td>
+                                            <td ng-show="Client.CurrentStateId==2">{{thisTracking.Comment}}</td>
                                             <td>
-                                                <button type="button" class="btn btn-info" id="editCustomer" title="Editar" data-toggle="modal" ng-click="getTracking($index)" data-target="#trackingInfo"><i class="fa fa-edit"></i></button>
-                                                <button type="button" class="btn btn-danger" id="deleteTracking" data-toggle="modal" data-target="#deleteTrackingInfo" ng-click="selectedTracking($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                                                <button type="button" class="btn btn-info" id="editCustomer" title="Editar" data-toggle="modal" ng-click="getTracking(thisTracking)" data-target="#trackingInfo"><i class="fa fa-edit"></i></button>
+                                                <button type="button" class="btn btn-danger" id="deleteTracking" data-toggle="modal" data-target="#deleteTrackingInfo" ng-click="selectedTracking(thisTracking)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                                             </td>
                                         </tr>
                                     </table>
                                     <br />
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Mostrando {{itemsInPage}} de {{Client.Trackings[0].TrackingDetails.length}} elementos</label>
+                                            <label>Mostrando {{itemsInTrackingPage}} de {{filteredTracking.length}} elementos</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <pagination boundary-links="true" items-per-page="entryTrackingLimit" total-items="Client.Trackings[0].TrackingDetails.length" num-pages="noOfPages" max-size="2" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                                            <pagination boundary-links="true" items-per-page="entryTrackingLimit" total-items="filteredTracking.length" num-pages="noOfTrackingPages" max-size="2" ng-model="currentPage" ng-change="setTrackingFiltered()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                                             <!--<pagination boundary-links="true" num-pages="noOfPages" ng-model="currentPage" max-size="maxSize" class="pagination-sm" previous-text="&laquo;" next-text="&raquo;"></pagination>-->
                                         </div>
                                         <div class="col-md-5">
                                             <div class="col-xs-5">
-                                                <select class="form-control" ng-options="item as item for item in itemsPerTrackingPageList" ng-model="entryTrackingLimit" ng-change="setTracking()"></select>
+                                                <select class="form-control" ng-options="item as item for item in itemsPerTrackingPageList" ng-model="entryTrackingLimit" ng-change="setTrackingFiltered()"></select>
                                             </div>
                                             <div class="col-xs-7">
                                                 <label>Registros por página</label>
@@ -181,9 +181,9 @@
                                     <div class="col-md-3 text-center">
                                         <button type="button" class="btn btn-danger" ng-click="back()">Cancelar</button>
                                     </div>
-                                    <div class="has-error">
+                                    <!--<div class="has-error">
                                         <p class="help-block" ng-show="!ClientTrackingForm.$valid">Complete todos los campos requeridos.</p>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </form>
@@ -205,11 +205,11 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label>Descripción</label>
-                                        <textarea  class="form-control" placeholder="Ingresar ..." ng-model="tracking.Description" required />
+                                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Description" />
                                     </div>
                                     <div class="form-group" ng-show="Client.CurrentStateId==2">
                                         <label>Observación</label>
-                                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Comment" required />
+                                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Comment" />
                                     </div>
                                     <div class="modal-footer clearfix">
                                         <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>

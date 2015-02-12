@@ -43,6 +43,76 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $location.path("/AllClients");
     };
 
+    $scope.exportData = function () {
+        if (!$scope.filtered || $scope.filtered.length == 0) {
+            alertService.add('danger', 'Error', 'No hay datos.');
+            $scope.alertsTags = $rootScope.alerts;
+        } else {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+          , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+          , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+          , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+
+            var newTable = $scope.createTable();
+            var ctx = { worksheet: name || 'Worksheet', table: newTable.innerHTML }
+            window.location.href = uri + base64(format(template, ctx));
+        }
+    }
+
+    $scope.createTable = function () {
+            var table = document.createElement('table');
+            var tbody = document.createElement('tbody');
+            var thead = document.createElement('thead');
+
+            table.appendChild(thead);
+            $scope.headers = ["ID", "Nombre", "Apellido", "Edad", "Correo", "Direccion", "Celular", "Estado"];
+            for (var i = 0; i < $scope.headers.length; i++) {
+                thead.appendChild(document.createElement("th")).
+                appendChild(document.createTextNode($scope.headers[i]));
+            }
+
+            for (i = 0; i < $scope.filtered.length; i++) {
+                var vals = $scope.filtered[i];
+                var row = document.createElement('tr');
+
+                    var cellID = document.createElement('td');
+                    cellID.textContent = vals.ClientId;
+                    row.appendChild(cellID);
+
+                    var cellFirstName = document.createElement('td');
+                    cellFirstName.textContent = vals.FirstName;
+                    row.appendChild(cellFirstName);
+
+                    var cellLastName = document.createElement('td');
+                    cellLastName.textContent = vals.LastName;
+                    row.appendChild(cellLastName);
+
+                    var cellAge = document.createElement('td');
+                    cellAge.textContent = vals.Age;
+                    row.appendChild(cellAge);
+
+                    var cellEmail = document.createElement('td');
+                    cellEmail.textContent = vals.Email;
+                    row.appendChild(cellEmail);
+
+                    var cellCompleteAddress = document.createElement('td');
+                    cellCompleteAddress.textContent = vals.CompleteAddress;
+                    row.appendChild(cellCompleteAddress);
+
+                    var cellCellphone = document.createElement('td');
+                    cellCellphone.textContent = vals.Cellphone;
+                    row.appendChild(cellCellphone);
+
+                    var cellStateName = document.createElement('td');
+                    cellStateName.textContent = vals.State.Name;
+                    row.appendChild(cellStateName);
+
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+        return table;
+    }
+
         $scope.calculateAge = function() {
             var birthday = +new Date($scope.New.Birthday);
             var age = ~~((Date.now() - birthday) / (31557600000));
@@ -743,10 +813,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             });
                             $scope.action = '';
                         } else {
-                            $scope.Tracking = [{ TrackingTypeId: 1, StateId: 1 }];
                             customerRepository.InsertCustomer(function() {
 
-                            }, $scope.New, $scope.Tracking).success(function () {
+                            }, $scope.New).success(function () {
                                 alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
                                 $scope.alertsTags = $rootScope.alerts;
                                 $location.path("/AllClients");
@@ -833,6 +902,56 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.back = function () {
             $location.path("/AllClients");
         };
+
+        $scope.exportData = function () {
+            if (!$scope.filtered || $scope.filtered.length == 0) {
+                alertService.add('danger', 'Error', 'No hay datos.');
+                $scope.alertsTags = $rootScope.alerts;
+            } else {
+                var uri = 'data:application/vnd.ms-excel;base64,'
+              , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+              , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+              , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+
+                var newTable = $scope.createTable();
+                var ctx = { worksheet: name || 'Worksheet', table: newTable.innerHTML }
+                window.location.href = uri + base64(format(template, ctx));
+            }
+        }
+
+        $scope.createTable = function () {
+            var table = document.createElement('table');
+            var tbody = document.createElement('tbody');
+            var thead = document.createElement('thead');
+
+            table.appendChild(thead);
+            $scope.headers = ["Identidad", "Nombre", "Apellido"];
+            for (var i = 0; i < $scope.headers.length; i++) {
+                thead.appendChild(document.createElement("th")).
+                appendChild(document.createTextNode($scope.headers[i]));
+            }
+
+            for (i = 0; i < $scope.filtered.length; i++) {
+                var vals = $scope.filtered[i];
+                var row = document.createElement('tr');
+
+                var cellID = document.createElement('td');
+                cellID.textContent = vals.IdentityNumber;
+                row.appendChild(cellID);
+
+                var cellFirstName = document.createElement('td');
+                cellFirstName.textContent = vals.FirstName;
+                row.appendChild(cellFirstName);
+
+                var cellLastName = document.createElement('td');
+                cellLastName.textContent = vals.LastName;
+                row.appendChild(cellLastName);
+
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+            return table;
+        }
 
         //End Sorting//
         $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
@@ -931,12 +1050,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 if ($scope.personalReferencesEnroll)
                     $scope.enrollClient.References = $scope.personalReferencesEnroll;
                 customerRepository.inscribeCustomer($scope.enrollClient).success(function () {
-                    alertService.add('success', 'Enhorabuena', 'Un nuevo cliente ha sido inscrito.');
+                    if(action=='reject')
+                        alertService.add('success', 'Rechazado', 'El cliente ha sido rechazado.');
+                    else
+                    alertService.add('success', 'Inscrito', 'Un nuevo cliente ha sido inscrito.');
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.enrollClientExist = false;
                     $scope.setEnrollClients();
                 }).error(function () {
-                    alertService.add('danger', 'Error', 'No se ha podido inscribir el cliente.');
+                    if (action == 'reject')
+                        alertService.add('danger', 'Error', 'No se ha podido rechazar el cliente.');
+                    else
+                        alertService.add('danger', 'Error', 'No se ha podido inscribir el cliente.');
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
                 });
@@ -963,7 +1088,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.alertsTags = $rootScope.alerts;
             }
         };
-    
 
         /*PersonalReference*/
         $scope.clearPersonalReferenceEnrollClient = function () {
@@ -1702,12 +1826,86 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 
             }
         }
-    ]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository) {
+    ]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, alertService) {
         $rootScope.alerts = [];
 
         $scope.back = function () {
             $location.path("/AllClients");
         };
+
+        $scope.exportData = function () {
+            if (!$scope.filtered || $scope.filtered.length == 0) {
+                alertService.add('danger', 'Error', 'No hay datos.');
+                $scope.alertsTags = $rootScope.alerts;
+            } else {
+                var uri = 'data:application/vnd.ms-excel;base64,'
+              , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+              , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+              , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+
+                var newTable = $scope.createTable();
+                var ctx = { worksheet: name || 'Worksheet', table: newTable.innerHTML }
+                window.location.href = uri + base64(format(template, ctx));
+            }
+        }
+
+        $scope.createTable = function () {
+            var table = document.createElement('table');
+            var tbody = document.createElement('tbody');
+            var thead = document.createElement('thead');
+
+            table.appendChild(thead);
+            $scope.headers = ["ID", "Nombre", "Apellido", "Edad", "Correo", "Direccion", "Celular", "Tipo de Seguimiento", "Estado"];
+            for (var i = 0; i < $scope.headers.length; i++) {
+                thead.appendChild(document.createElement("th")).
+                appendChild(document.createTextNode($scope.headers[i]));
+            }
+
+            for (i = 0; i < $scope.filtered.length; i++) {
+                var vals = $scope.filtered[i];
+                var row = document.createElement('tr');
+
+                var cellID = document.createElement('td');
+                cellID.textContent = vals.ClientId;
+                row.appendChild(cellID);
+
+                var cellFirstName = document.createElement('td');
+                cellFirstName.textContent = vals.FirstName;
+                row.appendChild(cellFirstName);
+
+                var cellLastName = document.createElement('td');
+                cellLastName.textContent = vals.LastName;
+                row.appendChild(cellLastName);
+
+                var cellAge = document.createElement('td');
+                cellAge.textContent = vals.Age;
+                row.appendChild(cellAge);
+
+                var cellEmail = document.createElement('td');
+                cellEmail.textContent = vals.Email;
+                row.appendChild(cellEmail);
+
+                var cellCompleteAddress = document.createElement('td');
+                cellCompleteAddress.textContent = vals.CompleteAddress;
+                row.appendChild(cellCompleteAddress);
+
+                var cellCellphone = document.createElement('td');
+                cellCellphone.textContent = vals.Cellphone;
+                row.appendChild(cellCellphone);
+
+                var cellTrackingTypeName = document.createElement('td');
+                cellTrackingTypeName.textContent = vals.Trackings[0].TrackingType.Name;
+                row.appendChild(cellTrackingTypeName);
+
+                var cellStateName = document.createElement('td');
+                cellStateName.textContent = vals.State.Name;
+                row.appendChild(cellStateName);
+
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+            return table;
+        }
 
         $scope.calculateAge = function() {
             var birthday = +new Date($scope.New.Birthday);
@@ -2408,11 +2606,125 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
                 
         }
-    }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'filterFilter', 'customerRepository', function ($scope, $rootScope, $routeParams, $location, $filter, filterFilter, customerRepository) {
+    }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, filterFilter, customerRepository, alertService) {
         //Sorting
         $scope.sort = "FirstName";
         $scope.reverse = false;
         $scope.load = true;
+        $rootScope.alerts = [];
+        $scope.exportData = function () {
+            
+            if (!$scope.filtered || $scope.filtered.length == 0) {
+                alertService.add('danger', 'Error', 'No hay datos.');
+                $scope.alertsTags = $rootScope.alerts;
+            }
+            else {
+                var uri = 'data:application/vnd.ms-excel;base64,'
+              , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+              , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+              , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+
+                var newTable = $scope.createTable();
+                var ctx = { worksheet: name || 'Worksheet', table: newTable.innerHTML }
+                window.location.href = uri + base64(format(template, ctx));
+            }
+        }
+
+        $scope.exportDataToPDF = function(){
+            var pdf = new jsPDF('p', 'pt', 'letter');
+            // source can be HTML-formatted string, or a reference
+            // to an actual DOM element from which the text will be scraped.
+
+            var source = $scope.createTable().innerHTML;
+
+            // we support special element handlers. Register them with jQuery-style 
+            // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+            // There is no support for any other type of selectors 
+            // (class, of compound) at this time.
+            var specialElementHandlers = {
+                // element with id of "bypass" - jQuery style selector
+                '#bypassme': function (element, renderer) {
+                    // true = "handled elsewhere, bypass text extraction"
+                    return true
+                }
+            };
+           var margins = {
+                top: 80,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
+            // all coords and widths are in jsPDF instance's declared units
+            // 'inches' in this case
+            pdf.fromHTML(
+            source, // HTML string or DOM elem ref.
+            margins.left, // x coord
+            margins.top, { // y coord
+                'width': margins.width, // max width of content on PDF
+                'elementHandlers': specialElementHandlers
+            },
+
+            function (dispose) {
+                // dispose: object with X, Y of the last line add to the PDF 
+                //          this allow the insertion of new lines after html
+                pdf.save('Test.pdf');
+            }, margins);
+        }
+
+
+        $scope.createTable = function () {
+            var table = document.createElement('table');
+            var tbody = document.createElement('tbody');
+            var thead = document.createElement('thead');
+
+            table.appendChild(thead);
+            $scope.headers = ["ID", "Nombre", "Apellido", "Edad", "Correo", "Direccion", "Celular", "Estado"];
+            for (var i = 0; i < $scope.headers.length; i++) {
+                thead.appendChild(document.createElement("th")).
+                appendChild(document.createTextNode($scope.headers[i]));
+            }
+
+            for (i = 0; i < $scope.filtered.length; i++) {
+                var vals = $scope.filtered[i];
+                var row = document.createElement('tr');
+
+                var cellID = document.createElement('td');
+                cellID.textContent = vals.ClientId;
+                row.appendChild(cellID);
+
+                var cellFirstName = document.createElement('td');
+                cellFirstName.textContent = vals.FirstName;
+                row.appendChild(cellFirstName);
+
+                var cellLastName = document.createElement('td');
+                cellLastName.textContent = vals.LastName;
+                row.appendChild(cellLastName);
+
+                var cellAge = document.createElement('td');
+                cellAge.textContent = vals.Age;
+                row.appendChild(cellAge);
+
+                var cellEmail = document.createElement('td');
+                cellEmail.textContent = vals.Email;
+                row.appendChild(cellEmail);
+
+                var cellCompleteAddress = document.createElement('td');
+                cellCompleteAddress.textContent = vals.CompleteAddress;
+                row.appendChild(cellCompleteAddress);
+
+                var cellCellphone = document.createElement('td');
+                cellCellphone.textContent = vals.Cellphone;
+                row.appendChild(cellCellphone);
+
+                var cellStateName = document.createElement('td');
+                cellStateName.textContent = vals.State.Name;
+                row.appendChild(cellStateName);
+
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+            return table;
+        }
 
         //Sorting
         $scope.sort = "FirstName";
@@ -2512,12 +2824,17 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
         };
 
-        $scope.setTrackingFiltered = function (term) {
-            $scope.filtered = filterFilter($scope.Client.Trackings[0].TrackingDetails, term);
+        //End Sorting//
 
-            $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                    $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+        $scope.itemsPerTrackingPageList = [1, 2, 3, 4, 5];
+        $scope.entryTrackingLimit = $scope.itemsPerTrackingPageList[0];
+        $scope.currentPage = 1; //current page
+        $scope.setTrackingFiltered = function (term) {
+            $scope.filteredTracking = filterFilter($scope.Trackings[0].TrackingDetails, term);
+
+            $scope.itemsInTrackingPage = ($scope.filteredTracking.length) ? ((($scope.currentPage * $scope.entryTrackingLimit) > $scope.filteredTracking.length) ?
+                    $scope.filteredTracking.length - (($scope.currentPage - 1) * $scope.entryTrackingLimit) : $scope.entryTrackingLimit) : 0;
+            $scope.noOfTrackingPages = ($scope.filteredTracking) ? Math.ceil($scope.filteredTracking.length / $scope.entryTrackingLimit) : 1;
         }
 
         $scope.$watch('search', function (term) {
@@ -2565,6 +2882,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
 
         $scope.saveTracking = function () {
+            $scope.Client.Trackings[0].TrackingDetails = $scope.Trackings[0].TrackingDetails;
             customerRepository.UpdateTracking($scope.Client).success(function () {
                 $location.url('ClientTracking');
             }).error(function () {
@@ -2572,8 +2890,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             });
         };
 
-        $scope.getTracking = function (index) {
-            
+        $scope.getTracking = function (tracking) {
+            var index = $scope.Trackings[0].TrackingDetails.indexOf(tracking);
             $scope.tracking = angular.copy($scope.Trackings[0].TrackingDetails[index]);
             //if ($scope.tracking.Comment)
             //$scope.tracking.Comment = $scope.Trackings[0].TrackingDetails[index].Comment;
@@ -2590,13 +2908,16 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.fillTracking = function () {
             if ($scope.trackingFormEdit.$valid) {
                 if ($scope.action == 'edit') {
-                    $scope.Client.Trackings[0].TrackingDetails[$scope.index].Description = $scope.tracking.Description;
+                    if ($scope.tracking.Description)
+                    $scope.Trackings[0].TrackingDetails[$scope.index].Description = $scope.tracking.Description;
                     if ($scope.tracking.Comment)
-                        $scope.Client.Trackings[0].TrackingDetails[$scope.index].Comment = $scope.tracking.Comment;
+                        $scope.Trackings[0].TrackingDetails[$scope.index].Comment = $scope.tracking.Comment;
                     $scope.tracking = { Description: "", Comment: "" };
+                    $scope.setTrackingFiltered();
                 } else {
                     $scope.tracking = { Description: $scope.tracking.Description, Comment: ($scope.tracking.Comment) ? $scope.tracking.Comment : "", Date: new Date() };
-                    $scope.Client.Trackings[0].TrackingDetails.push($scope.tracking);
+                    $scope.Trackings[0].TrackingDetails.push($scope.tracking);
+                    $scope.setTrackingFiltered();
                 }
             } else {
 
@@ -2608,12 +2929,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $location.url('ClientTracking');
         }
 
-        $scope.selectedTracking = function (index) {
-            $scope.selectedTrackingDetail = index;
+        $scope.selectedTracking = function (tracking) {
+            $scope.selectedTrackingDetail = $scope.Trackings[0].TrackingDetails.indexOf(tracking);
         }
 
         $scope.deleteTracking = function (index) {
-            $scope.Client.Trackings[0].TrackingDetails.splice(index, 1);
+            $scope.Trackings[0].TrackingDetails.splice(index, 1);
         };
         
 

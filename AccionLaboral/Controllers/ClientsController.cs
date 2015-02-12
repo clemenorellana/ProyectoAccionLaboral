@@ -250,14 +250,21 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(Client))]
         public IHttpActionResult PostClient(Client client)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-            client.EnrollDate = DateTime.Now;
-            db.Clients.Add(client);
-            db.SaveChanges();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                client.EnrollDate = DateTime.Now;
+                db.Clients.Add(client);
+                db.SaveChanges();
 
+                
+            }
+            catch( Exception e){
+                var x = e.Message;
+            }
             return CreatedAtRoute("DefaultApi", new { id = client.ClientId }, client);
         }
 
