@@ -17,10 +17,16 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
-        // GET api/Clients
-        public IQueryable<Client> GetClients()
+        public ClientsController()
         {
-            return db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+            db.Configuration.ProxyCreationEnabled = false;
+        }
+
+        // GET api/Clients
+        public List<Client> GetClients()
+        {
+            return db.Clients
+                .Include(r => r.AcademicEducations.Select(c => c.City.Country))
                 .Include(r => r.Employee)
                 .Include(r => r.State)
                 .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
@@ -33,7 +39,17 @@ namespace AccionLaboral.Controllers
                 .Include(r => r.References.Select(t => t.ReferenceType))
                 .Include(r => r.WorkExperiences)
                 .Include(r => r.WorkExperiences.Select(c => c.City.Country))
-                .Include(r=>r.Trackings.Select(c=>c.TrackingType));
+                .Include(r => r.Trackings.Select(c => c.TrackingType))/*.AsEnumerable().Select(x => new Client{ ClientId = x.ClientId, CorrelativeCode = x.CorrelativeCode, FirstName = x.FirstName, LastName = x.LastName,
+                                                Age = x.Age, Email = x.Email, CompleteAddress = x.CompleteAddress, Cellphone = x.Cellphone,
+                                                AcademicEducations = x.AcademicEducations,
+                                                Employee = x.Employee,
+                                                State = x.State,
+                                                KnownPrograms = x.KnownPrograms,
+                                                Languages = x.Languages,
+                                                References = x.References,
+                                                WorkExperiences = x.WorkExperiences,
+                                                Trackings = x.Trackings
+            })*/.ToList();
         }
 
         // GET api/Clients/5
@@ -275,6 +291,41 @@ namespace AccionLaboral.Controllers
             db.SaveChanges();
 
             return Ok(client);
+        }
+
+        // Get api/ExportClient
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/exportclient/{id}")]
+        public bool ExportClient(int id)
+        {
+            try
+            {
+                Client client = db.Clients.
+                    Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                .Include(r => r.Employee)
+                .Include(r => r.State)
+                .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
+                .Include(r => r.AcademicEducations.Select(c => c.Career))
+                .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                .Include(r => r.KnownPrograms)
+                .Include(r => r.Languages.Select(l => l.Language))
+                .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                .Include(r => r.References.Select(c => c.City.Country))
+                .Include(r => r.References.Select(t => t.ReferenceType))
+                .Include(r => r.WorkExperiences)
+                .Include(r => r.WorkExperiences.Select(c => c.City.Country)).First(r => r.ClientId == id);
+
+                if (client != null)
+                {
+                    AccionLaboral.Reports.Helpers.CV.CreateWordDocument(client);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false;
         }
 
         protected override void Dispose(bool disposing)

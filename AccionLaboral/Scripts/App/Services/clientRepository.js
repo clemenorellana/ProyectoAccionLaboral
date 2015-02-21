@@ -18,6 +18,9 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         getCustomer: function (id) {
             return $http.get(urlCustomer + id);
         },
+        exportCustomer: function (id) {
+            return $http.get('api/exportclient/' + id);
+        },
         getCountries: function (callback) {
             return $http.get('api/Countries');
         },
