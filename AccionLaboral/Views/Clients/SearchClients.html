@@ -1,0 +1,134 @@
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteClientInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Eliminar Cliente</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro de que desea eliminar el cliente seleccionado?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="DeleteCustomer(selectedClient)">Si</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- Enable confirmation modal -->
+<div class="modal fade" id="disableClientInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Deshabilitar Cliente</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <label>¿Está seguro de que desea deshabilitar el cliente seleccionado?</label>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="disableCustomer(Customer)">Si</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- ADD REJECT-->
+<div class="modal fade" id="rejectionInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Causa</h4>
+            </div>
+            <form action="#" method="post" name="formReject">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <textarea class="form-control" ng-disabled="true" placeholder="Ingresar ..." ng-model="RejectionDescription" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Salir</button>
+                    <!--<button type="submit" class="btn btn-primary text-center" data-dismiss="modal">Aceptar</button>-->
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="col-md-12" ng-init="setData()">
+    <!-- Chat box -->
+    <div class="box box-success">
+        <div class="box-header">
+            <i class="fa fa-search"></i>
+            <h3 class="box-title">Búsqueda de Clientes</h3>
+            <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                <div class="btn-group" data-toggle="btn-toggle">
+                    <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>
+                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="box-body chat" id="chat-box">
+            <form ng-submit="searchClients()">
+                <div class="item">
+                    <div class="input-group col-lg-6">
+                        <input class="form-control" ng-model="searchCustomer" placeholder="Buscar..." />
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- chat item -->
+            <div class="item" ng-repeat="customer in customerData | filter : searchCustomer">
+                <img ng-src="data:image/jpeg;base64,{{customer.Photo}}" class="online" />
+                <p class="message">
+                    <a href="" class="name">
+                        <small class="text-muted pull-right"><i class="fa fa-square"></i> {{customer.State.Name}}</small>
+                        {{customer.FirstName}} {{customer.LastName}}
+                    </a>
+                </p>
+                <div class="attachment">
+                    <h4>Profesión</h4>
+                    <p class="filename">
+                        {{customer.Occupation}}
+                    </p>
+                    <h4>Edad:</h4>
+                    <p class="filename">
+                        {{customer.Age}} años
+                    </p>
+                    <h4>Dirección:</h4>
+                    <p class="filename">
+                        {{customer.City.Name}}, {{customer.Neighborhood}}
+                    </p>
+                    <div class="pull-right">
+                        <button class="btn btn-primary btn-sm btn-flat" ng-click="setScope(customer)">Ver Perfil</button>
+                    </div>
+                </div><!-- /.attachment -->
+            </div><!-- /.item -->
+        </div><!-- /.chat -->
+
+    </div>
+</div>

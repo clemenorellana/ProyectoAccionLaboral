@@ -12,7 +12,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             controller: 'CustomerController'
         }).
         when("/editClient/:id", {
-            title: 'Editar usuario',
+            title: 'Editar Cliente',
             templateUrl: "/Clients/Edit",
             controller: "editCustomerController"
         }).
@@ -30,7 +30,17 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             title: 'Seguimiento de Clientes',
             templateUrl: "/Clients/ClientTracking",
             controller: "CustomerTrackingController"
-        });
+        }).
+        when("/SearchClients", {
+            title: 'Busqueda de Clientes',
+            templateUrl: "/Clients/SearchClients",
+            controller: "SearchCustomerController"
+        }).
+        when("/ClientProfile/:id", {
+            title: 'Perfil de Cliente',
+            templateUrl: "/Clients/ClientProfile",
+            controller: "editCustomerController"
+        })
 }])
 .controller('CustomerController', ['$scope', '$rootScope', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, customerRepository, filterFilter, alertService) {
     //enroll costumer
@@ -189,7 +199,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
         $scope.$watch('search', function (term) {
                 $scope.setData(term);
-
         });
 
         $scope.academicEducations = [], $scope.knownLanguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
@@ -1160,12 +1169,51 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
         };             
     }])
-    .controller("editCustomerController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository) {
+    .controller("editCustomerController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'filterFilter', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, filterFilter) {
             $rootScope.alerts = [];
+            $scope.advisor = {};
+
+            $scope.disabled = undefined;
+            $scope.searchEnabled = undefined;
 
             $scope.back = function () {
                 $location.path("/AllClients");
             }
+            $scope.backToSearch = function () {
+                $location.path("/SearchClients");
+            }
+            
+            $scope.generateCV = function () {
+                customerRepository.exportCustomer($routeParams.id).success(function (data) {
+                    if (data) {
+                        //alertService.add('success', 'Generado', 'La hoja de vida ha sido generada correctamente.');
+                        alertService.add('success', 'Generado', 'path: ' + data);
+                        $scope.alertsTags = $rootScope.alerts;
+                    } else {
+                        alertService.add('danger', 'Error', 'path: ' + data);
+                        //alertService.add('danger', 'Error', 'No se ha podido crear la hoja de vida.');
+                        $scope.alertsTags = $rootScope.alerts;
+                    }
+                });
+            }
+
+            $scope.assignAdvisor = function (employee) {
+                if (employee) {
+                    $scope.New.EmployeeId = employee.EmployeeId;
+                    customerRepository.UpdateCustomer($scope.New).success(function () {
+                        alertService.add('success', 'Asignado', 'El asesor ha sido asignado correctamente.');
+                        $scope.alertsTags = $rootScope.alerts;
+                        $scope.backToSearch();
+                    }).error(function () {
+                        alertService.add('danger', 'Error', 'No se ha podido asignar asesor.');
+                        $scope.alertsTags = $rootScope.alerts;
+                    });
+                } else {
+                    alertService.add('danger', 'Error', 'Debe seleccionar un asesor.');
+                    $scope.alertsTags = $rootScope.alerts;
+                }
+            }
+
                 $scope.calculateAge = function() {
                     var birthday = +new Date($scope.New.Birthday);
                     var age = ~~((Date.now() - birthday) / (31557600000));
@@ -1185,6 +1233,15 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 })(f);
                 reader.readAsDataURL(f);
             };
+
+            $scope.setData = function (term) {
+                $scope.filteredEmployees = filterFilter($scope.allEmployees, term);
+            }
+
+            $scope.$watch('employee', function (term) {
+                // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+                $scope.setData(term);
+            });
         
         var imageElement = document.getElementById('exampleInputFile');
             if (imageElement)
@@ -1718,6 +1775,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.LanguageLevels = data;
             });
 
+                customerRepository.getEmployees().success(function (data) {
+                    $scope.allEmployees = data;
+                });
+            
+
 
         $scope.getCareersByAcademicLevel = function(academicLevelId) {
             for (var i = 0; i < $scope.AcademicLevels.length; i++) {
@@ -1825,13 +1887,16 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     }
                 
             }
-        }
-    ]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, alertService) {
-        $rootScope.alerts = [];
+        }])
+    .controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, alertService) {
+
+        
 
         $scope.back = function () {
             $location.path("/AllClients");
         };
+
+        $rootScope.alerts = [];
 
         $scope.exportData = function () {
             if (!$scope.filtered || $scope.filtered.length == 0) {
@@ -2607,11 +2672,22 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 
         }
     }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, filterFilter, customerRepository, alertService) {
+        
         //Sorting
         $scope.sort = "FirstName";
         $scope.reverse = false;
         $scope.load = true;
         $rootScope.alerts = [];
+
+        $scope.hightlightSearch = function (text) {
+            var query = new RegExp("(\\b" + text + "\\b)", "gim");
+            var e = document.getElementById("searchtext").innerHTML;
+            var enew = e.replace(/(<span>|<\/span>)/igm, "");
+            document.getElementById("searchtext").innerHTML = enew;
+            var newe = enew.replace(query, "<span>$1</span>");
+            document.getElementById("searchtext").innerHTML = newe;
+        }
+
         $scope.exportData = function () {
             
             if (!$scope.filtered || $scope.filtered.length == 0) {
@@ -2938,4 +3014,221 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         
 
-    }]);
+    }]).
+     controller('SearchCustomerController', ['$scope', '$rootScope', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, customerRepository, filterFilter, alertService) {
+    //search costumer
+    $scope.enrollClientExist = false;
+    $scope.showMsgErrorClient = false;
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
+    $scope.back = function () {
+        $location.path("/AllClients");
+    };
+
+    $scope.exportData = function () {
+        if (!$scope.filtered || $scope.filtered.length == 0) {
+            alertService.add('danger', 'Error', 'No hay datos.');
+            $scope.alertsTags = $rootScope.alerts;
+        } else {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+          , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+          , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+          , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+
+            var newTable = $scope.createTable();
+            var ctx = { worksheet: name || 'Worksheet', table: newTable.innerHTML }
+            window.location.href = uri + base64(format(template, ctx));
+        }
+    }
+
+    $scope.createTable = function () {
+            var table = document.createElement('table');
+            var tbody = document.createElement('tbody');
+            var thead = document.createElement('thead');
+
+            table.appendChild(thead);
+            $scope.headers = ["ID", "Nombre", "Apellido", "Edad", "Correo", "Direccion", "Celular", "Estado"];
+            for (var i = 0; i < $scope.headers.length; i++) {
+                thead.appendChild(document.createElement("th")).
+                appendChild(document.createTextNode($scope.headers[i]));
+            }
+
+            for (i = 0; i < $scope.filtered.length; i++) {
+                var vals = $scope.filtered[i];
+                var row = document.createElement('tr');
+
+                    var cellID = document.createElement('td');
+                    cellID.textContent = vals.ClientId;
+                    row.appendChild(cellID);
+
+                    var cellFirstName = document.createElement('td');
+                    cellFirstName.textContent = vals.FirstName;
+                    row.appendChild(cellFirstName);
+
+                    var cellLastName = document.createElement('td');
+                    cellLastName.textContent = vals.LastName;
+                    row.appendChild(cellLastName);
+
+                    var cellAge = document.createElement('td');
+                    cellAge.textContent = vals.Age;
+                    row.appendChild(cellAge);
+
+                    var cellEmail = document.createElement('td');
+                    cellEmail.textContent = vals.Email;
+                    row.appendChild(cellEmail);
+
+                    var cellCompleteAddress = document.createElement('td');
+                    cellCompleteAddress.textContent = vals.CompleteAddress;
+                    row.appendChild(cellCompleteAddress);
+
+                    var cellCellphone = document.createElement('td');
+                    cellCellphone.textContent = vals.Cellphone;
+                    row.appendChild(cellCellphone);
+
+                    var cellStateName = document.createElement('td');
+                    cellStateName.textContent = vals.State.Name;
+                    row.appendChild(cellStateName);
+
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+        return table;
+    }
+
+    $scope.calculateAge = function() {
+        var birthday = +new Date($scope.New.Birthday);
+        var age = ~~((Date.now() - birthday) / (31557600000));
+        $scope.New.Age = age;
+    }
+
+    $scope.handleFileSelectAdd = function(evt) {
+            
+        var f = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = (function(theFile) {
+            return function (e) {
+                var filePayload = e.target.result;
+                $scope.episodeImgData = filePayload.replace('data:'+f.type +';base64,', '');
+                document.getElementById('imagen').src = filePayload;
+            };
+        })(f);
+        reader.readAsDataURL(f);
+    };
+    //Sorting
+    $scope.sort = "FirstName";
+    $scope.reverse = false;
+    $scope.searchClients = function () {        
+        customerRepository.getCustomers().success(function (data) {
+            $scope.customerData = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.maxSize = 5; //pagination max size
+            //max rows for data table
+
+
+        })
+                .error(function (data) {
+                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+    }
+    $scope.changeSort = function (value) {
+        if ($scope.sort == value) {
+            $scope.reverse = !$scope.reverse;
+            return;
+        }
+
+        $scope.sort = value;
+        $scope.reverse = false;
+    }
+        //End Sorting//
+        $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+        $scope.entryLimit = $scope.itemsPerPageList[0];
+        $scope.currentPage = 1; //current page
+        
+        
+        $scope.setFiltered = function (term) {
+            $scope.filtered = filterFilter($scope.customerData, term);
+
+            $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                    $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+        };
+
+
+        $scope.academicEducations = [], $scope.knownLanguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
+
+        var imageElement = document.getElementById('exampleInputFile');
+        if (imageElement)
+            imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
+        $scope.index = -1;
+        $scope.action = '';
+        $scope.load = true;
+        $scope.assignCareers = function() {
+            if ($scope.AcademicLevel)
+                $scope.Careers = $scope.AcademicLevel.Careers;
+        };
+        $scope.getCitiesByCountry = function(countryId) {
+            if (countryId)
+                return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
+        };             
+
+                $scope.setScope = function(customer) {
+
+                    $location.url('ClientProfile/' + customer.ClientId);
+                };
+
+                $scope.selectedCustomer = function (id, customer) {
+                    $scope.selectedClient = id;
+                    if (customer)
+                        $scope.Customer = customer;
+                }
+
+                $scope.enableCustomer = function (customer) {
+                    customer.StateId = 1;
+                    customer.Trackings[0].TrackingTypeId = 1;
+                    $scope.action = 'edit';
+                    $scope.New = customer;
+                    $scope.enableOrDisableCustomer('Habilitado', 'Se ha habilitado un cliente correctamente.');
+                };
+     }])
+.filter('propsFilter', function() {
+  return function(items, props) {
+    var out = [];
+    var theStatus = new Object();
+    
+    if (angular.isArray(items)) {
+      items.forEach(function(item) {
+        var itemMatches = false;
+
+        var keys = Object.keys(props);
+        for (var i = 0; i < keys.length; i++) {
+          var prop = keys[i];
+          var text = props[prop].toLowerCase();
+          //item = Object.keys(item);
+ var first = prop == "FirstName";
+            
+          if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+            itemMatches = true;
+            break;
+          }
+        }
+
+        if (itemMatches) {
+          out.push(item);
+        }
+      });
+    } else {
+      // Let the output be the input untouched
+      out = items;
+    }
+
+    return out;
+  }
+});

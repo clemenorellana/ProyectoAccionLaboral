@@ -15,6 +15,8 @@ namespace AccionLaboral.Models
         public int StateId { get; set; }
         [Required]
         public string Name { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(2)]
         public string Alias { get; set; }
     }
 }

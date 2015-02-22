@@ -17,7 +17,9 @@ angular.module('AccionLaboralApp', [
         'vacantsByCompaniesController',
         'interviewTypesController',
         'employeeTypesController',
-        'statesController'
+        'statesController',
+        'ngSanitize',
+        'ui.select'
     ])
     .config([
         '$routeProvider',

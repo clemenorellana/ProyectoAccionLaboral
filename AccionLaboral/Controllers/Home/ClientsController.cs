@@ -111,5 +111,17 @@ namespace AccionLaboral.Controllers.Home
         {
             return new FilePathResult("~/Views/Clients/TrackingDetail.html", "text/html");
         }
+
+        // GET: /Clients/SearchClient/
+        public ActionResult SearchClients()
+        {
+            return new FilePathResult("~/Views/Clients/SearchClients.html", "text/html");
+        }
+
+        // GET: /Clients/ClientProfile/
+        public ActionResult ClientProfile()
+        {
+            return new FilePathResult("~/Views/Clients/Profile.html", "text/html");
+        }
     }
 }

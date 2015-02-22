@@ -1,0 +1,212 @@
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+
+<div class="modal fade" id="advisorInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Asignar Asesor</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Asesor</label>
+                        <div class="col-sm-6">
+                            <ui-select ng-model="advisor.selected" theme="select2" ng-disabled="disabled" style="min-width: 300px;">
+                                <ui-select-match placeholder="Seleccione un asesor...">{{$select.selected.FirstName}} {{$select.selected.LastName}}</ui-select-match>
+                                <ui-select-choices repeat="advisor in allEmployees | propsFilter: {FirstName: $select.search, LastName: $select.search}">
+                                    <img ng-src="data:image/jpeg;base64,{{advisor.Photo}}" />
+                                    <div ng-bind-html="advisor.FirstName + ' ' + advisor.LastName | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="assignAdvisor(advisor.selected)">Asignar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <aside class="left-side sidebar-offcanvas bg-blue">
+        <section class="sidebar"></section>
+    </aside>
+    <aside class="right-side">
+        <div class="row">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="col-md-6">
+                                <h4>Nombre Completo</h4>
+                                <p class="filename">
+                                    {{New.FirstName}} {{New.LastName}}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Edad:</h4>
+                                <p class="filename">
+                                    {{New.Age}}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Dirección, Ciudad:</h4>
+                                <p class="filename">
+                                    {{New.CompleteAddress}}, {{New.City.Name}}
+                                </p>
+                            </div>
+                            <!--<h4>Apto-Casa</h4>
+                            <p class="filename">
+
+                            </p>-->
+                            <div class="col-md-6">
+                                <h4>Tel:</h4>
+                                <p class="filename">
+                                    {{New.Cellphone}}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>E-Mail</h4>
+                                <p class="filename">
+                                    {{New.Email}}
+                                </p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-3">
+                            <img ng-show="New.Photo" ng-src="data:image/jpeg;base64,{{New.Photo}}" />
+                            <img ng-show="!New.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
+                        </div>
+                    </div>
+                    <!-- Formaciones académicas -->
+                    
+                    <div class="row text-center" style="background-color: #A1D0DB; border: solid 2px white;">
+                        <h3 style="color:black">Formación Acádemica</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <tr>
+                                <th>Año</th>
+                                <th>Ciudad-País</th>
+                                <th>Título</th>
+                                <th>Universidad o institución</th>
+                            </tr>
+                            <tr ng-repeat="education in academicEducations">
+                                <td>{{education.Year}}</td>
+                                <td>{{education.City.Name}} - {{education.City.Country.Name}}</td>
+                                <td>{{education.TrainingName}}</td>
+                                <td>{{education.InstitutionName}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Experiencia Laboral -->
+
+                    <div class="row text-center" style="background-color: #A1D0DB; border: solid 2px white;">
+                        <h3 style="color:black">Experiencia Laboral</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <tr>
+                                <th>Fecha Inicio - Fecha Fin</th>
+                                <th>Ciudad-País</th>
+                                <th>Nombre de la Empresa</th>
+                                <th>Sector</th>
+                                <th>Cargo Ocupado</th>
+                                <th>Tareas o logros</th>
+                            </tr>
+                            <tr ng-repeat="experience in New.WorkExperiences">
+                                <td>{{experience.StartDate}} - {{experience.EndDate}}</td>
+                                <td>{{experience.City.Name}} - {{experience.City.Country.Name}}</td>
+                                <td>{{experience.CompanyArea}}</td>
+                                <td>{{experience.Charge}}</td>
+                                <td>{{experience.Archievements}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Referencias Laborales  -->
+                    <div class="row text-center" style="background-color: #A1D0DB; border: solid 2px white;">
+                        <h3 style="color:black">Referencias Laborales</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Ciudad-País</th>
+                                <th>Nombre Apellido</th>
+                                <th>Cargo</th>
+                                <th>Teléfono</th>
+                                <th>E-Mail</th>
+                            </tr>
+                            <tr ng-repeat="reference in workReferences">
+                                <td>{{reference.CompanyName}}</td>
+
+                                <td>{{reference.City.Name}} - {{reference.City.Country.Name}}</td>
+                                <td>{{reference.FirstName}} - {{reference.LastName}}</td>
+                                <td>{{reference.Charge}}</td>
+                                <td>{{reference.Cellphone}}</td>
+                                <td>{{reference.Email}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Referencias Personales  -->
+                    <div class="row text-center" style="background-color: #A1D0DB; border: solid 2px white;">
+                        <h3 style="color:black">Referencias Personales</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <tr>
+                                <th>Parentesco</th>
+                                <th>Ciudad-País</th>
+                                <th>Nombre Apellido</th>
+                                <th>Ocupación</th>
+                                <th>Teléfono</th>
+                                <th>E-Mail</th>
+                            </tr>
+                            <tr ng-repeat="reference in personalReferences">
+                                <td>{{reference.Relationship}}</td>
+                                <td>{{reference.City.Name}} - {{reference.City.Country.Name}}</td>
+                                <td>{{reference.FirstName}} - {{reference.LastName}}</td>
+                                <td>{{reference.Charge}}</td>
+                                <td>{{reference.Cellphone}}</td>
+                                <td>{{reference.Email}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content-header">
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-2 text-center">
+                        <button type="submit" class="btn btn-default" ng-click="generateCV()"><img src="../../Images/MS/Word-icon16.png" />Generar CV</button>
+                    </div>
+                    <div class="col-md-2 text-center" ng-show="New.State.Alias == 'PI' && !New.EmployeeId">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advisorInfo">Asignar Asesor</button>
+                    </div>
+
+                    <div class="col-md-2 text-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="backToSearch()"> Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </aside>
+</div>
