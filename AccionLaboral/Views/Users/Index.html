@@ -27,7 +27,8 @@
                 <tr>
                     <!--<th href="#" ng-click="sort='UserId' ; reverse=!reverse" title="Clic para ordenar">ID</th>-->
                     <th ng-click="sort='UserName' ; reverse=!reverse" title="Clic para ordenar">Nombre de Usuario</th>
-                    <th>Opciones</th>
+                    <th ng-click="sort='Active' ; reverse=!reverse" title="Clic para ordenar">Estado</th>
+                    <th>Activar / Desactivar</th>
                 </tr>
                 <tr>
                     <!--<th colspan="1">
@@ -48,19 +49,40 @@
                             </span>
                         </div>
                     </th>
-                    <th style="width: 100px;" colspan="1"></th>
+                    <th colspan="1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <select class="form-control" ng-model="search.Active" ng-class="reverse">
+                                <option value="">Buscar...</option>
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Active='';" title="Borrar"><i class="fa fa-eraser"></i></button>
+                            </span>
+                        </div>
+                    </th>
+                    <th style="width: 200px;" colspan="1"></th>
                 </tr>
                 <tr ng-repeat="user in usersList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <!--<td>{{user.UserId}}</td>-->
                     <td>{{user.UserName}}</td>
+                    <td>
+                        <div ng-if="user.Active">Activo</div>
+                        <div ng-if="!user.Active">Inactivo</div>
+                    </td>
                     <td align="center">
+                        <button ng-show="!user.Active" type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="setUserState(user, true)">Activar</button>
+                        <button ng-show="user.Active" type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="setUserState(user, false)">Inactivar</button>
+                    </td>
+                    <!--<td align="center">
                         <button class="btn btn-info" data-toggle="modal" data-target="#usersInfo" ng-click="setActionUser('edit',user)" title="Editar">
                             <i class="fa fa-edit"></i>
                         </button>
                         <button class="btn btn-danger" data-toggle="modal" data-target="#deleteUserInfo" ng-click="setUserToDelete(user)" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </button>
-                    </td>
+                    </td>-->
                 </tr>
             </table>
             <br />
@@ -98,10 +120,10 @@
                         <label>Nombre de usuario</label>
                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="User_UserName">
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label>Contraseña</label>
                         <input type="password" class="form-control" placeholder="Ingresar ..." ng-model="User_Password">
-                    </div>
+                    </div>-->
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="userClearData()">Cancelar</button>
@@ -114,7 +136,7 @@
 <!-- /.modal -->
 
 <!-- Delete confirmation modal -->
-<div class="modal fade" id="deleteUserInfo" tabindex="-1" role="dialog" aria-hidden="true">
+<!--<div class="modal fade" id="deleteUserInfo" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -132,5 +154,5 @@
             </form>
         </div>
     </div>
-</div>
+</div>-->
 <!-- /.modal -->

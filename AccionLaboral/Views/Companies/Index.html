@@ -73,7 +73,7 @@
                     </th>
                     <th colspan="1"></th>
                 </tr>
-                <tr ng-repeat="company in companyList  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                <tr ng-repeat="company in companyList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                     <td>{{company.Name}}</td>
                     <td>{{company.Area}}</td>
                     <td style="width: 10%;" align="center">

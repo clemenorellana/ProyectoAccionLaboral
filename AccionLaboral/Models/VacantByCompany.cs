@@ -27,8 +27,11 @@ namespace AccionLaboral.Models
         public int CareerId { get; set; }
         public int CityId { get; set; }
         public int VacantLevelId { get; set; }
+        public int InterviewTypeId { get; set; }
 
 
+
+        public InterviewType InterviewType { get; set; }
         public Company Company { get; set; }
         public AcademicLevel AcademicLevel { get; set; }
         public Career Career { get; set; }

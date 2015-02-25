@@ -17,7 +17,14 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
                 return '/VacantsByCompany/Edit/' + params.id;
             },
             controller: 'vacantsByCompaniesCtrl'
+        }).
+        when('/Vacants/Detail/:id', {
+            templateUrl: function (params) {
+                return '/VacantsByCompany/Details/' + params.id;
+            },
+            controller: 'vacantsByCompaniesCtrl'
         });
+    
 }]
 )
 .controller('vacantsByCompaniesCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
@@ -92,7 +99,12 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             $scope.vacant_vacantLevel = vacantToEdit.VacantLevel;
             $scope.vacant_career = vacantToEdit.Career;
             $scope.vacant_city = vacantToEdit.City;
+            $scope.vacant_interviewType = vacantToEdit.InterviewType;
              ;
+        }).error(function (data) {
+            alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
         });
     }
 
@@ -116,12 +128,26 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
                                         $scope.vacantList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
         })
         .error(function (data) {
+            alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
             $scope.load = false;
         });
 
     };
 
+
+    vacantByCompanyRepo.getInterviewTypeList().success(function (data) {
+
+        $scope.vacant_interviewTypeList = data;
+        $scope.totalServerItems = data.totalItems;
+        $scope.items = data.items;
+        $scope.load = false;
+    })
+    .error(function (data) {
+        alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
+        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+        $scope.load = false;
+    });
 
     vacantByCompanyRepo.getCompanyList().success(function (data) {
          
@@ -131,6 +157,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.load = false;
     })
     .error(function (data) {
+        alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
     });
@@ -143,6 +170,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.load = false;
     })
     .error(function (data) {
+        alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
     });
@@ -155,6 +183,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.load = false;
     })
     .error(function (data) {
+        alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
     });
@@ -167,6 +196,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.load = false;
     })
     .error(function (data) {
+        alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
     });
@@ -185,10 +215,10 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         $scope.load = false;
     })
     .error(function (data) {
+        alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
         $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
         $scope.load = false;
     });
-
   
     $scope.saveVacant = function () {
         
@@ -207,7 +237,8 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             AcademicLevelId: $scope.vacant_academicLevel,
             CareerId: $scope.vacant_career.CareerId,
             CityId: $scope.vacant_city.CityId,
-            VacantLevelId: $scope.vacant_vacantLevel.VacantLevelId
+            VacantLevelId: $scope.vacant_vacantLevel.VacantLevelId,
+            InterviewTypeId: $scope.vacant_interviewType.InterviewTypeId
         }
         
         
@@ -216,8 +247,9 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             vacantByCompanyRepo.insertVacant(function () { }, newVacant).success(function () {
                 alertService.add('success', 'Mensaje', 'La Vacante se ha insertado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
+                $scope.setVacantData();
                 $location.path("/Vacants");
-                //$scope.load = false;
+                $scope.load = false;
             }).error(function () {
                 alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
                 $scope.alertsTags = $rootScope.alerts;
@@ -232,8 +264,9 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             vacantByCompanyRepo.updateVacant(function () { }, newVacant).success(function () {
                 alertService.add('success', 'Mensaje', 'La Vacante se ha editado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
+                $scope.setVacantData();
                 $location.path("/Vacants");
-                //$scope.load = false;
+                $scope.load = false;
             }).error(function () {
                 alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
                 $scope.alertsTags = $rootScope.alerts;
@@ -277,6 +310,10 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             $scope.load = false;
         });
 
+    }
+
+    $scope.vacant_viewRedirect = function (vacantId) {
+        window.location = "#/Vacants/Detail/" + vacantId;
     }
 
     $scope.setVacantData();

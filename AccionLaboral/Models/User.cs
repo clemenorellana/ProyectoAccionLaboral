@@ -17,7 +17,10 @@ namespace AccionLaboral.Models
         [StringLength(25)]
         public string UserName { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+        public bool Active { get; set; }
+        public bool Busy { get; set; } // know if the user is assigned to an employee
 
         //public ICollection<Role> Rols { get; set; }
     }

@@ -1,11 +1,21 @@
-﻿<div class="col-md-3">
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+
+<div class="col-md-3">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Foto de Perfil</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="text-center">
-                <img ng-show="employee_Photo" />
+                <img ng-show="employee_Photo" ng-src="data:image/jpeg;base64,{{employee_Photo}}" />
                 <img ng-show="!employee_Photo" src="../../Images/userprofilepic.jpg" id="imagenEmployee" class="img-circle" alt="User Image" ng-model="employee_Photo">
             </div>
             <br />
@@ -148,7 +158,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Usuario</label>
-                        <select class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
+                        <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>

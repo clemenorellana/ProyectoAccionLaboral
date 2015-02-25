@@ -25,21 +25,24 @@ namespace AccionLaboral.Controllers
         // GET api/Clients
         public List<Client> GetClients()
         {
-            return db.Clients
-                .Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                .Include(r => r.Employee)
-                .Include(r => r.State)
-                .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
-                .Include(r => r.AcademicEducations.Select(c => c.Career))
-                .Include(r => r.AcademicEducations.Select(t => t.EducationType))
-                .Include(r => r.KnownPrograms)
-                .Include(r => r.Languages.Select(l => l.Language))
-                .Include(r => r.Languages.Select(l => l.LanguageLevel))
-                .Include(r => r.References.Select(c => c.City.Country))
-                .Include(r => r.References.Select(t => t.ReferenceType))
-                .Include(r => r.WorkExperiences)
-                .Include(r => r.WorkExperiences.Select(c => c.City.Country))
-                .Include(r => r.Trackings.Select(c => c.TrackingType))/*.AsEnumerable().Select(x => new Client{ ClientId = x.ClientId, CorrelativeCode = x.CorrelativeCode, FirstName = x.FirstName, LastName = x.LastName,
+            List<Client> clients = null;
+            try
+            {
+                clients = db.Clients
+                    .Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                    .Include(r => r.Employee)
+                    .Include(r => r.State)
+                    .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
+                    .Include(r => r.AcademicEducations.Select(c => c.Career))
+                    .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                    .Include(r => r.KnownPrograms)
+                    .Include(r => r.Languages.Select(l => l.Language))
+                    .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                    .Include(r => r.References.Select(c => c.City.Country))
+                    .Include(r => r.References.Select(t => t.ReferenceType))
+                    .Include(r => r.WorkExperiences)
+                    .Include(r => r.WorkExperiences.Select(c => c.City.Country))
+                    .Include(r => r.Trackings.Select(c => c.TrackingType))/*.AsEnumerable().Select(x => new Client{ ClientId = x.ClientId, CorrelativeCode = x.CorrelativeCode, FirstName = x.FirstName, LastName = x.LastName,
                                                 Age = x.Age, Email = x.Email, CompleteAddress = x.CompleteAddress, Cellphone = x.Cellphone,
                                                 AcademicEducations = x.AcademicEducations,
                                                 Employee = x.Employee,
@@ -50,12 +53,37 @@ namespace AccionLaboral.Controllers
                                                 WorkExperiences = x.WorkExperiences,
                                                 Trackings = x.Trackings
             })*/.ToList();
+            }
+            catch (Exception e)
+            {
+                var error = e.Message;
+            }
+            return clients;
         }
 
         // GET api/Clients/5
         [ResponseType(typeof(Client))]
         public IHttpActionResult GetClient(int id)
         {
+            Client client = null;
+            try
+            {
+                client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                    .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
+                    .Include(r => r.AcademicEducations.Select(c => c.Career))
+                    .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                    .Include(r => r.KnownPrograms)
+                    .Include(r => r.Languages.Select(l => l.Language))
+                    .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                    .Include(r => r.References.Select(c => c.City))
+                    .Include(r => r.References.Select(t => t.ReferenceType))
+                    .Include(r => r.WorkExperiences)
+                    .Include(r => r.WorkExperiences.Select(c => c.City))
+                    .Include(r => r.State)
+                    .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
+                    .Include(r => r.Trackings.Select(c => c.State))
+                    .Include(r => r.Trackings.Select(c => c.TrackingType))
+                    .First(r => r.ClientId == id);
             Client client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
                 .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
                 .Include(r => r.AcademicEducations.Select(c => c.Career))
@@ -74,9 +102,14 @@ namespace AccionLaboral.Controllers
                 .Include(r=> r.City.Country)
                 .First(r => r.ClientId == id);
 
-            if (client == null)
+                if (client == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception e)
             {
-                return NotFound();
+                var x = e.Message;
             }
 
             return Ok(client);
@@ -267,14 +300,21 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(Client))]
         public IHttpActionResult PostClient(Client client)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-            client.EnrollDate = DateTime.Now;
-            db.Clients.Add(client);
-            db.SaveChanges();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                client.EnrollDate = DateTime.Now;
+                db.Clients.Add(client);
+                db.SaveChanges();
 
+                
+            }
+            catch( Exception e){
+                var x = e.Message;
+            }
             return CreatedAtRoute("DefaultApi", new { id = client.ClientId }, client);
         }
 
@@ -297,10 +337,12 @@ namespace AccionLaboral.Controllers
         // Get api/ExportClient
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/exportclient/{id}")]
-        public bool ExportClient(int id)
+        public string ExportClient(int id)
         {
+            string path = "";
             try
             {
+                
                 Client client = db.Clients.
                     Include(r => r.AcademicEducations.Select(c => c.City.Country))
                 .Include(r => r.Employee)
@@ -314,19 +356,21 @@ namespace AccionLaboral.Controllers
                 .Include(r => r.References.Select(c => c.City.Country))
                 .Include(r => r.References.Select(t => t.ReferenceType))
                 .Include(r => r.WorkExperiences)
-                .Include(r => r.WorkExperiences.Select(c => c.City.Country)).First(r => r.ClientId == id);
+                .Include(r => r.WorkExperiences.Select(c => c.City.Country))
+                .Include(r => r.City.Country).First(r => r.ClientId == id);
 
                 if (client != null)
                 {
-                    AccionLaboral.Reports.Helpers.CV.CreateWordDocument(client);
-                    return true;
+                    
+                    AccionLaboral.Reports.Helpers.CV.CreateWordDocument(client,ref path);
+                    //return true;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return e.Message;
             }
-            return false;
+            return path;
         }
 
         protected override void Dispose(bool disposing)

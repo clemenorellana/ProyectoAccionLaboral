@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertRepository'])
+angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertRepository', 'usersRepository'])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/Employees', {
@@ -35,7 +35,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         return _date;
     };
 })
-.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, employeesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
+.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'usersRepo', function ($scope, employeesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, usersRepo) {
     $scope.load = true;
     var actionEmployee = "";
     $scope.employeesList = [];
@@ -83,7 +83,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         reader.readAsDataURL(f);
     };
 
-    var imageElement = document.getElementById('imageInputFile');
+    var imageElement = document.getElementById('exampleInputFile');
     if (imageElement)
         imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
 
@@ -95,6 +95,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             return function (e) {
                 var filePayload = e.target.result;
                 $scope.employee_Photo = filePayload.replace('data:' + f.type + ';base64,', '');
+                imageElement.src = filePayload;
                 $scope.$apply(function () {
 
                 });
@@ -164,9 +165,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         $scope.employeesCareersList = data;
     });
 
-    employeesRepo.getEmployeesUsers().success(function (data) {
-        $scope.employeesUsersList = data;
-    });
+    
 
     employeesRepo.getEmployeesRoles().success(function (data) {
         $scope.employeesRolesList = data;
@@ -174,18 +173,29 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
 
     if ($scope.employeeId == null) {
         actionEmployee = "add";
+        $scope.editUserName = true;
         $scope.employee_modalTitle = "Agregar Empleado";
         $scope.employee_buttonName = "Agregar";
+
+        employeesRepo.getEmployeesUsersFree().success(function (data) {
+            $scope.employeesUsersList = data;
+        });
     }
     else {
         actionEmployee = "edit";
+        $scope.editUserName = false;
         $scope.employee_modalTitle = "Editar Empleado";
         $scope.employee_buttonName = "Editar";
         var id = $scope.employeeId;
 
+        employeesRepo.getEmployeesUsers().success(function (data) {
+            $scope.employeesUsersList = data;
+        });
+
         employeesRepo.getEmployee(id).success(function (data) {
              
             var employeeToEdit = data;
+
 
             var c = 0;
             for (c = 0; c < $scope.employeesCareersList.length; c++) {
@@ -225,6 +235,8 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             $scope.employee_Career = $scope.employeesCareersList[c];//employeeToEdit.Career;
             $scope.employee_Role = $scope.employeesRolesList[r];//employeeToEdit.Role;
             $scope.employee_User = $scope.employeesUsersList[u];//employeeToEdit.User;
+            $scope.employee_UserAsigned = $scope.employeesUsersList[u];//employeeToEdit.User;
+            $scope.employee_Photo = employeeToEdit.Photo;
         });
     }
 
@@ -267,75 +279,108 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
     }
 
     $scope.saveEmployee = function () {
-        var employee;
-         
-        if (actionEmployee == "add") {
-            employee = {
-                FirstName: $scope.employee_FirstName,
-                LastName: $scope.employee_LastName,
-                Email: $scope.employee_Email,
-                Birthday: $scope.employee_Birthday,
-                Age: $scope.employee_Age,
-                Cellphone: $scope.employee_Cellphone,
-                HomePhone: $scope.employee_HomePhone,
-                Address: $scope.employee_Address,
-                Gender: $scope.employee_Gender,
-                EmployeeAlias: $scope.employee_EmployeeAlias,      
-                AdmissionDate: new Date(),   
-                CareerId: $scope.employee_Career.CareerId,
-                RoleId: $scope.employee_Role.RoleId,
-                UserId: $scope.employee_User.UserId
-            };
-
-            employeesRepo.insertEmployee(function () {
-            }, employee).success(function () {
-                alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                //$scope.setEmployeeData();
-                $location.path("/Employees");
-                $scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
+        var exists = false;
+        //var employeefirstNameFilter = $filter('filter')($scope.employeesList, { FirstName: $scope.employee_FirstName },true);
+        //if (employeefirstNameFilter.length > 0) {
+        //    //los nombres coinciden con uno existente
+        //    var lastNameFilter = $filter('filter')(employeefirstNameFilter, { LastName: $scope.employee_LastName },true);
+        //    exists = (lastNameFilter.length == 0) ? false : true;
+        //}
 
 
-        }
-        else {
-            employee = {
-                EmployeeId: $scope.employee_EmployeeId,
-                FirstName: $scope.employee_FirstName,
-                LastName: $scope.employee_LastName,
-                Email: $scope.employee_Email,
-                Birthday: $scope.employee_Birthday,
-                Age: $scope.employee_Age,
-                Cellphone: $scope.employee_Cellphone,
-                HomePhone: $scope.employee_HomePhone,
-                Address: $scope.employee_Address,
-                Gender: $scope.employee_Gender,
-                EmployeeAlias: $scope.employee_EmployeeAlias,
-                AdmissionDate: $scope.employee_AdmissionDate,
-                CareerId: $scope.employee_Career.CareerId,
-                RoleId: $scope.employee_Role.RoleId,
-                UserId: $scope.employee_User.UserId
-            };
-
-            employeesRepo.updateEmployee(function () {
-            }, employee).success(function () {
-                alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
+        if (!exists) {
+            var user = $scope.employee_User;
+            user.Busy = true;
+            usersRepo.updateUser(function () {
+            }, user).success(function () {
+                //alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.setEmployeeData();
                 $scope.load = false;
             }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                //alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.load = false;
             });
-        }
 
-        $scope.clearData();
-        $scope.employee_cancelRedirect();
+
+
+            var employee;
+            
+            if (actionEmployee == "add") {
+                employee = {
+                    FirstName: $scope.employee_FirstName,
+                    LastName: $scope.employee_LastName,
+                    Email: $scope.employee_Email,
+                    Birthday: $scope.employee_Birthday,
+                    Age: $scope.employee_Age,
+                    Cellphone: $scope.employee_Cellphone,
+                    HomePhone: $scope.employee_HomePhone,
+                    Address: $scope.employee_Address,
+                    Gender: $scope.employee_Gender,
+                    EmployeeAlias: $scope.employee_EmployeeAlias,
+                    AdmissionDate: new Date(),
+                    CareerId: $scope.employee_Career.CareerId,
+                    RoleId: $scope.employee_Role.RoleId,
+                    UserId: $scope.employee_User.UserId,
+                    Photo: $scope.episodeImgData
+                };
+
+                employeesRepo.insertEmployee(function () {
+                }, employee).success(function () {
+                    alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.setEmployeeData();
+
+                    
+                    $scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+                
+            }
+            else {
+                employee = {
+                    EmployeeId: $scope.employee_EmployeeId,
+                    FirstName: $scope.employee_FirstName,
+                    LastName: $scope.employee_LastName,
+                    Email: $scope.employee_Email,
+                    Birthday: $scope.employee_Birthday,
+                    Age: $scope.employee_Age,
+                    Cellphone: $scope.employee_Cellphone,
+                    HomePhone: $scope.employee_HomePhone,
+                    Address: $scope.employee_Address,
+                    Gender: $scope.employee_Gender,
+                    EmployeeAlias: $scope.employee_EmployeeAlias,
+                    AdmissionDate: $scope.employee_AdmissionDate,
+                    CareerId: $scope.employee_Career.CareerId,
+                    RoleId: $scope.employee_Role.RoleId,
+                    UserId: $scope.employee_UserAsigned.UserId,
+                    Photo: $scope.episodeImgData
+                };
+
+                employeesRepo.updateEmployee(function () {
+                }, employee).success(function () {
+                    alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.setEmployeeData();
+                    $scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+
+            }
+            $scope.clearData();
+            $scope.employee_cancelRedirect();
+
+        }
+        else {
+            alertService.add('danger', 'Error', 'Ya existe un empleado con ese nombre.');
+        }
         
     };
 

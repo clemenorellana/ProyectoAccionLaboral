@@ -14,15 +14,15 @@ namespace AccionLaboral.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int ClientId { get; set; }
     //[Required]
-        [Index(IsUnique=true)]
+        //[Index(IsUnique=true)]
         [StringLength(10)]
         public string CorrelativeCode { get; set; }
         [Required]
-        [Index("IX_ClientFirstNameLastName", 1, IsUnique = true)]
+        //[Index("IX_ClientFirstNameLastName", 1, IsUnique = true)]
         [StringLength(50)]
         public string FirstName { get; set; }
         [Required]
-        [Index("IX_ClientFirstNameLastName", 2, IsUnique = true)]
+        //[Index("IX_ClientFirstNameLastName", 2, IsUnique = true)]
         [StringLength(50)]
         public string LastName { get; set; }
         public string IdentityNumber { get; set; }

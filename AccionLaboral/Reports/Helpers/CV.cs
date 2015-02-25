@@ -17,16 +17,21 @@ namespace AccionLaboral.Reports.Helpers
         #region public static void CreateWordDocument(Client client)
         public static void CreateWordDocument(Client client)
         {
+            path = " Prueba: ";
             Object oMissing = System.Reflection.Missing.Value;
             var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-            string wanted_path = Path.GetDirectoryName(Path.GetDirectoryName(
+            string wanted_path = System.Web.HttpContext.Current.Server.MapPath(@"~/Reports");
+            /*string wanted_path = Path.GetDirectoryName(Path.GetDirectoryName(
 System.IO.Path.GetDirectoryName(
-      System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase))).Replace("file:\\", "");
-            Object oTemplatePath = wanted_path + "\\AccionLaboral\\Reports\\CVTemplate.dotx";
-            string te = Path.Combine(outPutDirectory, "ReportsTemplates\\Categoria.dotx");
+      System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase))).Replace("file:\\", "");*/
+            //Object oTemplatePath = wanted_path + "\\AccionLaboral\\Reports\\CVTemplate.dotx";
+            Object oTemplatePath = wanted_path +  "/CVTemplate.dotx";
+
+         
+
             Application wordApp = new Application();
             Document wordDoc = new Document();
-
+            path += oTemplatePath.ToString();
             wordDoc = wordApp.Documents.Add(ref oTemplatePath, ref oMissing, ref oMissing, ref oMissing);
 
             foreach (Microsoft.Office.Interop.Word.Shape shape in wordApp.ActiveDocument.Shapes)

@@ -1189,7 +1189,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $window.open("Clients/ExportClient/" + $routeParams.id, '_blank');
                     //$window.location.href = "Clients/ExportClient/" + $routeParams.id;
                     alertService.add('success', 'Generado', 'La hoja de vida ha sido generada correctamente.');
-                    $scope.alertsTags = $rootScope.alerts;
+                        $scope.alertsTags = $rootScope.alerts;
                 } catch (e) {
                     alertService.add('danger', 'Error', 'No se ha podido crear la hoja de vida.');
                     $scope.alertsTags = $rootScope.alerts;

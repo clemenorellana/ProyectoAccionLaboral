@@ -10,7 +10,16 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
         when('/Login', {
             templateUrl: '/Users/Login',
             controller: 'usersCtrl'
+        }).
+        when('/ForgotPassword', {
+            templateUrl: '/Users/ForgotPassword',
+            controller: 'usersCtrl'
+        }).
+        when('/ResetPassword', {
+            templateUrl: '/Users/ResetPassword',
+            controller: 'usersCtrl'
         });
+
 }]
 )
 .controller('usersCtrl', ['$scope', 'usersRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, usersRepo, $rootScope, $location, $filter, filterFilter, alertService) {
@@ -41,7 +50,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
     //End Sorting//
 
     $scope.$watch('search', function (term) {
-        //$scope.filtered = filterFilter($scope.usersList, term);
+        $scope.filtered = filterFilter($scope.usersList, term);
         $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
     });
 
@@ -72,6 +81,22 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
         });
 
     };
+
+    $scope.setUserState = function (user, state) {
+        user.Active = state;
+
+        usersRepo.updateUser(function () {
+        }, user).success(function () {
+            alertService.add('success', 'Mensaje', 'El Usuario se ha editado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.setUserData();
+            $scope.load = false;
+        }).error(function () {
+            alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        });
+    }
 
     $scope.setActionUser = function (action, user) {
         $scope.actionUser = action;
@@ -191,5 +216,15 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
     }
 
     $scope.setUserData();
+
+
+    
+
+    $scope.sendEmail = function (email) {
+
+        $auth.submitRegistration({
+            email: email
+        });
+    }
 
 }]);

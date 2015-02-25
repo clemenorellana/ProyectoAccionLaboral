@@ -130,17 +130,34 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
                 Active: 0
             };
 
-            contractTemplatesRepo.insertContractTemplate(function () {
-            }, contract).success(function () {
-                alertService.add('success', 'Mensaje', 'La Plantilla de Contrato se ha insertado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $location.path("/Contracts");
-                //$scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
+            if ($filter('filter')($scope.contractTemplateList, { Name: $scope.Contract_Name }).length == 0) {
+                contractTemplatesRepo.insertContractTemplate(function () {
+                }, contract).success(function () {
+                    alertService.add('success', 'Mensaje', 'La Plantilla de Contrato se ha insertado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $location.path("/Contracts");
+                    //$scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+
+                $scope.actionContractTemplate = "";
+                $scope.Contract_ContractTemplateId = "";
+                $scope.Contract_Name = "",
+                $scope.Contract_Description = "";
+                $scope.Contract_Active = "";
+
+                $scope.contract_cancelRedirect();
+                 
+
+                $scope.setContractData();
+            }
+            else {
+                alertService.add('danger', 'Error', 'Ya existe una Plantilla de Contrato con ese nombe.');
+            }
+                
 
         }
         else {
@@ -150,30 +167,37 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
                 Description: $scope.Contract_Description,
                 Active: $scope.Contract_Active
             };
+            if ($filter('filter')($scope.contractTemplateList, { Name: $scope.Contract_Name }).length == 0) {
+                contractTemplatesRepo.updateContractTemplate(function () {
+                }, contract).success(function () {
+                    alertService.add('success', 'Mensaje', 'La Plantilla de Contrato se ha editado correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $location.path("/Contracts");
+                    //$scope.load = false;
+                }).error(function () {
+                    alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
 
-            contractTemplatesRepo.updateContractTemplate(function () {
-            }, contract).success(function () {
-                alertService.add('success', 'Mensaje', 'La Plantilla de Contrato se ha editado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $location.path("/Contracts");
-                //$scope.load = false;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
+                $scope.actionContractTemplate = "";
+                $scope.Contract_ContractTemplateId = "";
+                $scope.Contract_Name = "",
+                $scope.Contract_Description = "";
+                $scope.Contract_Active = "";
+
+                $scope.contract_cancelRedirect();
+                 
+
+                $scope.setContractData();
+            }
+            else {
+                alertService.add('danger', 'Error', 'Ya existe una Plantilla de Contrato con ese nombe.');
+            }
+
         }
 
-        $scope.actionContractTemplate = "";
-        $scope.Contract_ContractTemplateId = "";
-        $scope.Contract_Name = "",
-        $scope.Contract_Description = "";
-        $scope.Contract_Active = "";
-
-        $scope.contract_cancelRedirect();
-        $scope.contract_refresh();
-
-        $scope.setContractData();
+        
     };
 
     $scope.setContractToDelete = function (contract) {

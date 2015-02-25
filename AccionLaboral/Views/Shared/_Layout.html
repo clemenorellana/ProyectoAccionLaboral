@@ -38,7 +38,7 @@
 <body ng-controller="mainController" ng-class="skinClass">
     <!-- header logo: style can be found in header.less -->
     <header class="header" ng-show="userValid">
-        <a href="index.html" class="logo">
+        <a href="#" class="logo">
             <img src="../../Images/logo.png" class="img-circle" alt="User Image" />
             <!-- Add the class icon to your logo image or logo icon to add the margining -->
             Acción Laboral
@@ -54,7 +54,6 @@
             </a>
             <div class="navbar-right">
                 <ul class="nav navbar-nav">
-                
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown">
@@ -64,17 +63,22 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-light-blue">
-                                <img src="../../Images/avatar3.png" class="img-circle" alt="User Image" />
+                                <!--<img src="../../Images/avatar3.png" class="img-circle" alt="User Image" />-->
+                                <img ng-show="user.Photo" ng-src="data:image/jpeg;base64,{{user.Photo}}" />
+                                <img ng-show="!user.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="user.Photo">
+                                
                                 <p>
                                     {{user.UserName}}
-                                    <small>Miembro desde Nov. 2012</small>
+                                   <!-- {{user.User.UserName}}-->
+                                    <small>Miembro desde </small>
+                                    <!--<small>Miembro desde {{user.AdmissionDate | date:"dd/MM/yyyy"}}</small>-->
                                 </p>
                             </li>
 
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                    <a href="#" ng-click="viewProfile()" class="btn btn-default btn-flat">Perfil</a>
                                 </div>
                                 <div class="pull-right">
                                     <button ng-click="logout()" class="btn btn-default btn-flat">Cerrar Sesión</button>
@@ -109,6 +113,11 @@
     <script src="../../Scripts/ckeditor.js"></script>
     <!-- Bootstrap WYSIHTML5 -->
     <script src="../../Scripts/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
+    <script src="../../Scripts/ng-token-auth.min.js"></script>
+    <script src="../../Scripts/ng-token-auth.js"></script>
+
+
 
     <!-- Export to Excel -->
     <script src="../../Scripts/Export/FileSaver.js"></script>
@@ -148,7 +157,12 @@
     <script src="../../Scripts/App/Services/companyRepository.js"></script>
     <script src="../../Scripts/App/Controllers/vacantsByCompaniesController.js"></script>
     <script src="../../Scripts/App/Services/vacantByCompanyRepository.js"></script>
-
+    <script src="../../Scripts/App/Controllers/interviewTypesController.js"></script>
+    <script src="../../Scripts/App/Services/interviewTypeRepository.js"></script>
+    <script src="../../Scripts/App/Controllers/employeeTypesController.js"></script>
+    <script src="../../Scripts/App/Services/employeeTypesRepository.js"></script>
+    <script src="../../Scripts/App/Controllers/statesController.js"></script>
+    <script src="../../Scripts/App/Services/statesRepository.js"></script>
 
 </body>
 </html>

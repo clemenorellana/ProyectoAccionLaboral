@@ -25,6 +25,20 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
+        // GET: /ForgotPassword/
+        public ActionResult ForgotPassword()
+        {
+            return new FilePathResult("~/Views/Login/ForgotPassword.html", "text/html");
+        }
+
+        //
+        // GET: /RessetPassword/
+        public ActionResult ResetPassword()
+        {
+            return new FilePathResult("~/Views/Login/ResetPassword.html", "text/html");
+        }
+
+        //
         // GET: /Users/Details/5
         public ActionResult Details(int id)
         {

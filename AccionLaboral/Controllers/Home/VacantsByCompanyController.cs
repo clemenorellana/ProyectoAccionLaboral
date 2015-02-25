@@ -19,7 +19,7 @@ namespace AccionLaboral.Controllers.Home
         // GET: /VacantsByCompany/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return new FilePathResult("~/Views/VacantsByCompany/Detail.html", "text/html");
         }
 
         //

@@ -52,6 +52,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         //method for insert
         InsertCustomer: function (callback, client) {
             var Tracking = [{ TrackingTypeId: 1, StateId: 1 }];
+
             var newClient = {
                 "IdentityNumber": client.IdentityNumber, "Correlative": client.Correlative, "FirstName": client.FirstName,
                 "LastName": client.LastName, "Birthday": client.Birthday, "Age": client.Age,
@@ -60,9 +61,14 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "Hobby": client.Hobby, "Photo": client.Photo, "CurrentStudies": client.CurrentStudies,
                 "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
-                "CityId": client.CityId.CityId, "EmployeeId": client.AdvisorId, "CareerId": client.CareerId, "StateId": 1,
+
+                "CityId": client.CityId.CityId,
+                "EmployeeId": 1,//client.AdvisorId,
+                "CareerId": client.CareerId, "StateId": 1,
+
                 "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
                 "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": Tracking
+
             };
             return $http.post(urlCustomer, newClient);
         },
@@ -82,7 +88,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         },
         inscribeCustomer: function (client) {
             var newClient = angular.copy(client);
-            newClient.CurrentStateId = 2;
+            newClient.StateId = 2;
             newClient.Trackings[0].StateId = 2;
             newClient.Trackings[0].TrackingTypeId = 2;
             newClient.IsStudying = (client.IsStudying == "1");
