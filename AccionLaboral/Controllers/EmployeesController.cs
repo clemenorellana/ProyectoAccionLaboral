@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AccionLaboral.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,11 +8,9 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Web.Http;
 using System.Web.Http.Description;
-using AccionLaboral.Models;
-using Newtonsoft.Json;
-using System.Net.Mail;
 
 namespace AccionLaboral.Controllers
 {
@@ -91,27 +91,47 @@ namespace AccionLaboral.Controllers
             
             User user = db.Users.Find(employee.UserId);
 
-            MailMessage m = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
+            MailMessage message = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
                                              new MailAddress(employee.Email)
                                            );
-            m.Subject = "Confirmación de Registro";
-            m.Body = string.Format(@"Bienvenido(a) {0}
+            message.Subject = "Confirmación de Registro";
+
+
+            string uri = this.Url.Link("Default", new { controller = "User", action = "ResetPassword" });
+            uri = uri.Replace("User", "#");
+
+            message.Body = string.Format(@"Bienvenido(a) {0}
                                     <BR/>
                                     Usted ahora forma parte de la familia Acción Laboral.
                                     <BR/>
                                     Su usuario es: {1}
                                     <BR/>
-                                    Su contraseña temporal es: {2}"
+                                    Su contraseña temporal es: {2}
+                                    <BR/>
+                                    <BR/>
+                                    <a href={3}>De clic aquí para activar su cuenta</a>"
                                   , employee.FirstName
                                   , user.UserName
-                                  , user.Password);
-                                    //<BR/>
-                                    //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
-            m.IsBodyHtml = true;
+                                  , user.Password
+                                  , uri);
+            //<BR/>
+            //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
+
+            
+            //string uri = Url.Action("Action2", "Controller2", new { }, Request.Url.Scheme);
+
+            
+
+            //message.Body = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\">Registrarse</a>",
+            //    user.UserName,
+            //    uri);
+
+           
+            message.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
             smtp.Credentials = new NetworkCredential("accionlaboralhnsps@gmail.com", "4ccionl4bor4l");
             smtp.EnableSsl = true;
-            smtp.Send(m);
+            smtp.Send(message);
             
 
             return CreatedAtRoute("DefaultApi", new { controller = "employees", id = employee.EmployeeId }, employee);

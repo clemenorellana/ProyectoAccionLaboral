@@ -36,21 +36,21 @@ namespace AccionLaboral.Controllers
 
         [Route("api/Users/Login")]
         [HttpPost]
-        public bool Login(User user)
+        public Employee Login(User user)
         {
             var users = db.Users.Where(r => r.UserName == user.UserName && r.Password == user.Password).ToList();
-//            Employee employee = new Employee();
-//            if (users.Count == 0)
-//                return employee;
-//;
+            Employee employee = new Employee();
+            if (users.Count == 0)
+                return employee;
+            
 
-//            var userId = users[0].UserId;
+            var userId = users[0].UserId;
 
-//            employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
+            employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
 
-            //return employee;
+            return employee;
 
-            return users.Count > 0;
+            //return users.Count > 0;
         }
 
 

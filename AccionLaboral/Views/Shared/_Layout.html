@@ -58,20 +58,21 @@
                     <li class="dropdown user user-menu">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="glyphicon glyphicon-user"></i>
-                            <span>{{user.UserName}}<i class="caret"></i></span>
+                            <!--<span>{{user.UserName}}<i class="caret"></i></span>-->
+                            <span>{{userLoggedIn.UserName}}<i class="caret"></i></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-light-blue">
                                 <!--<img src="../../Images/avatar3.png" class="img-circle" alt="User Image" />-->
-                                <img ng-show="user.Photo" ng-src="data:image/jpeg;base64,{{user.Photo}}" />
-                                <img ng-show="!user.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="user.Photo">
+                                <img ng-show="userLoggedIn.Photo" ng-src="data:image/jpeg;base64,{{userLoggedIn.Photo}}" />
+                                <img ng-show="!userLoggedIn.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="userLoggedIn.Photo">
                                 
                                 <p>
-                                    {{user.UserName}}
-                                   <!-- {{user.User.UserName}}-->
-                                    <small>Miembro desde </small>
-                                    <!--<small>Miembro desde {{user.AdmissionDate | date:"dd/MM/yyyy"}}</small>-->
+                                    <!--{{user.UserName}}-->
+                                    {{userLoggedIn.UserName}}
+                                    <!--<small>Miembro desde </small>-->
+                                    <small>Miembro desde {{userLoggedIn.AdmissionDate | date:"dd/MM/yyyy"}}</small>
                                 </p>
                             </li>
 

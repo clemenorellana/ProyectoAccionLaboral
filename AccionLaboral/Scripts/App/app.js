@@ -20,7 +20,7 @@ angular.module('AccionLaboralApp', [
         'statesController',
         'ngSanitize',
         'ui.select'
-    ])
+])
     .config([
         '$routeProvider',
         function($routeProvider) {
@@ -38,7 +38,7 @@ angular.module('AccionLaboralApp', [
             return [];
         }
     }).controller('mainController', [
-        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo) {
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo',  function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo) {
             $rootScope.validPass = true;
             $scope.alerts = [];
             $rootScope.forgotPass = false;
@@ -91,9 +91,36 @@ angular.module('AccionLaboralApp', [
                 $location.path('/');
             }
 
+            $scope.clearCookies = function () {
+                $cookies.userLoggedInCookie = null;
+                $cookies.userLogged = null;
+
+                $cookies.userAdmissionDate = null;
+                $cookies.userFirstName = null;
+                $cookies.userLastName = null;
+                $cookies.userPhoto = null;
+                $cookies.userRoleId = null;
+                $cookies.userUserId = null;
+                $cookies.userUserName = null;
+                $cookies.EmployeeId = null;
+
+
+            }
+
+            $scope.viewProfile = function ()
+            {
+                var employeeId = $rootScope.userLoggedIn.EmployeeId;
+                //window.location = "#/Employees/Edit/" + employeeId;
+                $scope.template = '/Employees/Edit/' + employeeId;
+                //window.location = "#/Employees";
+
+            }
+
             $scope.logout = function () {
                 $cookies.userName = null;
-                //$cookies.userLoggedIn = null;
+
+                $scope.clearCookies();
+
                 $scope.skinClass = "bg-black";
                 $scope.template = "Users/Login";
                 $scope.userValid = false;
@@ -140,22 +167,80 @@ angular.module('AccionLaboralApp', [
                 $scope.launch('wait');
                 if(isValidForm){
                     usersRepo.login(userName, password).success(function (data) {
-                        //var employee = data;
-                        $scope.userValid = data; //(employee.EmployeeId != null) ? true : false;
-                            if($scope.userValid == true){
-                                $scope.template = 'Home/Home';
-                                $scope.skinClass = "skin-blue";
-                                $cookies.userName = userName;
-                                //$cookies.userLoggedIn = employee;
-                                $rootScope.user = { UserName: $cookies.userName };
-                                //$rootScope.user = $cookies.userLoggedIn;
-                                $rootScope.forgotPass =false;
-                            } else {
-                                $scope.skinClass = "bg-black";
-                                $scope.template = "Users/Login";
-                                $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
-                            };
-                        })
+                        var employee = data;
+                        //$scope.userValid = data; 
+                        $scope.userValid = (employee.EmployeeId != 0) ? true : false;
+                        if($scope.userValid == true){
+                            $scope.template = 'Home/Home';
+                            $scope.skinClass = "skin-blue";
+                            $cookies.userName = userName;
+                            $rootScope.user = { UserName: $cookies.userName };
+
+                            //$cookies.userLoggedInCookie = employee.FirstName;
+
+                            //var employeeCookie = {
+                            //    "Address": $cookies.userLoggedInCookie.Address,
+                            //    "AdmissionDate": $cookies.userLoggedInCookie.AdmissionDate,
+                            //    "Age": $cookies.userLoggedInCookie.Age,
+                            //    "Birthday": $cookies.userLoggedInCookie.Birthday,
+                            //    "Career": $cookies.userLoggedInCookie.Career,
+                            //    "CareerId": $cookies.userLoggedInCookie.CareerId,
+                            //    "Cellphone": $cookies.userLoggedInCookie.Cellphone,
+                            //    "Email": $cookies.userLoggedInCookie.Email,
+                            //    "EmployeeAlias": $cookies.userLoggedInCookie.EmployeeAlias,
+                            //    "EmployeeId": $cookies.userLoggedInCookie.EmployeeId,
+                            //    "FirstName": $cookies.userLoggedInCookie.FirstName,
+                            //    "Gender": $cookies.userLoggedInCookie.Gender,
+                            //    "HomePhone": $cookies.userLoggedInCookie.HomePhone,
+                            //    "LastName": $cookies.userLoggedInCookie.LastName,
+                            //    "Photo": $cookies.userLoggedInCookie.Photo,
+                            //    "Role": $cookies.userLoggedInCookie.Role,
+                            //    "RoleId": $cookies.userLoggedInCookie.RoleId,
+                            //    "User": {
+                            //        "Active": $cookies.userLoggedInCookie.User.Active,
+                            //        "Busy": $cookies.userLoggedInCookie.User.Busy,
+                            //        ////"Password": $cookies.userLoggedInCookie.Password,
+                            //        "UserId": $cookies.userLoggedInCookie.User.UserId,
+                            //        "UserName": $cookies.userLoggedInCookie.User.UserName
+                            //    },
+                            //    "UserId": $cookies.userLoggedInCookie.UserId
+                            //}
+
+
+                            $cookies.userAdmissionDate = employee.AdmissionDate;
+                            $cookies.userFirstName = employee.FirstName;
+                            $cookies.userLastName = employee.LastName;
+                            $cookies.userPhoto = employee.Photo;
+                            $cookies.userRoleId = employee.RoleId;
+                            $cookies.userUserId = employee.UserId;
+                            $cookies.userUserName = employee.User.UserName;
+                            $cookies.EmployeeId = employee.EmployeeId;
+
+                            
+
+                            var employeeCookie = {
+                                "AdmissionDate": $cookies.userAdmissionDate,
+                                "FirstName": $cookies.userFirstName,
+                                "LastName": $cookies.userLastName,
+                                "Photo": $cookies.userPhoto,
+                                //"Role": $cookies.userLoggedInCookie.Role,
+                                "RoleId": $cookies.userRoleId,
+                                "UserName": $cookies.userUserName,
+                                "UserId": $cookies.userUserId,
+                                "EmployeeId": $cookies.EmployeeId
+                            }
+
+                            
+                            $rootScope.userLoggedIn = employeeCookie;
+
+                                
+                            $rootScope.forgotPass =false;
+                        } else {
+                            $scope.skinClass = "bg-black";
+                            $scope.template = "Users/Login";
+                            $scope.addAlert("danger", "Usuario o clave invalido. Intente de nuevo.");
+                        };
+                    })
                         .error(function (message) {
                             $scope.addAlert("danger","Ha ocurrido un error en el servidor.");
                         });
@@ -166,8 +251,28 @@ angular.module('AccionLaboralApp', [
             }
 
         }
-    ]);
-/*
-acLabApp.controller('registerController', function ($scope) {
-          $scope.title = "Registro de Cliente";
-  });*/
+    ])
+    .run(['$rootScope', '$location', '$cookies', '$http',
+    function ($rootScope, $location, $cookies, $http) {
+        // keep user logged in after page refresh
+
+        //$rootScope.userLoggedIn = { FirstName: $cookies.userLoggedInCookie };
+        //$cookies.userLoggedInCookie = employee.FirstName;
+
+
+        var employeeCookie = {
+            "AdmissionDate": $cookies.userAdmissionDate,
+            "FirstName": $cookies.userFirstName,
+            "LastName": $cookies.userLastName,
+            "Photo": $cookies.userPhoto,
+            //"Role": $cookies.userLoggedInCookie.Role,
+            "RoleId": $cookies.userRoleId,
+            "UserName": $cookies.userUserName,
+            "UserId": $cookies.userUserId,
+            "EmployeeId": $cookies.EmployeeId,
+        }
+
+
+        $rootScope.userLoggedIn = employeeCookie;
+
+    }]);

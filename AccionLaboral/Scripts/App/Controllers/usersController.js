@@ -203,6 +203,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
          
         
         usersRepo.login($scope.userName, $scope.password).success(function (data) {
+            debugger
             var user = data;
             $scope.console = "loged in";
         }).error(function (data) {
