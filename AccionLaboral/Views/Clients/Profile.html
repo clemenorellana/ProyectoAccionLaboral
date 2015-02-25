@@ -129,7 +129,7 @@
                                 <th>Tareas o logros</th>
                             </tr>
                             <tr ng-repeat="experience in New.WorkExperiences">
-                                <td>{{experience.StartDate}} - {{experience.EndDate}}</td>
+                                <td>{{experience.StartDate |date: 'dd/MM/yyyy'}} - {{experience.EndDate |date: 'dd/MM/yyyy'}}</td>
                                 <td>{{experience.City.Name}} - {{experience.City.Country.Name}}</td>
                                 <td>{{experience.CompanyArea}}</td>
                                 <td>{{experience.Charge}}</td>

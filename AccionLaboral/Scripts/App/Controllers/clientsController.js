@@ -1169,7 +1169,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
         };             
     }])
-    .controller("editCustomerController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'filterFilter', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, filterFilter) {
+    .controller("editCustomerController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'customerRepository', 'filterFilter', function ($scope, $rootScope, $routeParams, $location, $filter, $window, customerRepository, filterFilter) {
             $rootScope.alerts = [];
             $scope.advisor = {};
 
@@ -1184,15 +1184,24 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
             
             $scope.generateCV = function () {
-                customerRepository.exportCustomer($routeParams.id).success(function (data) {
+
+                try {
+                    $window.open("Clients/ExportClient/" + $routeParams.id, '_blank');
+                    //$window.location.href = "Clients/ExportClient/" + $routeParams.id;
+                    alertService.add('success', 'Generado', 'La hoja de vida ha sido generada correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                } catch (e) {
+                    alertService.add('danger', 'Error', 'No se ha podido crear la hoja de vida.');
+                    $scope.alertsTags = $rootScope.alerts;
+                }
+
+                /*customerRepository.exportCustomer($routeParams.id).success(function (data) {
                     if (data) {
-                        alertService.add('success', 'Generado', 'La hoja de vida ha sido generada correctamente.');
-                        $scope.alertsTags = $rootScope.alerts;
+                        
                     } else {
-                        alertService.add('error', 'Error', 'No se ha podido crear la hoja de vida.');
-                        $scope.alertsTags = $rootScope.alerts;
+                        
                     }
-                });
+                });*/
             }
 
             $scope.assignAdvisor = function (employee) {

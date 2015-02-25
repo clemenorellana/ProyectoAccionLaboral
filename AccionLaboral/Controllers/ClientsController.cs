@@ -71,6 +71,7 @@ namespace AccionLaboral.Controllers
                 .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
                 .Include(r => r.Trackings.Select(c => c.State))
                 .Include(r => r.Trackings.Select(c => c.TrackingType))
+                .Include(r=> r.City.Country)
                 .First(r => r.ClientId == id);
 
             if (client == null)
