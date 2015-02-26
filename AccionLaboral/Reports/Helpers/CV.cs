@@ -17,7 +17,7 @@ namespace AccionLaboral.Reports.Helpers
         #region public static void CreateWordDocument(Client client)
         public static void CreateWordDocument(Client client)
         {
-            path = " Prueba: ";
+            //string path = " Prueba: ";
             Object oMissing = System.Reflection.Missing.Value;
             var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
             string wanted_path = System.Web.HttpContext.Current.Server.MapPath(@"~/Reports");
@@ -31,7 +31,7 @@ System.IO.Path.GetDirectoryName(
 
             Application wordApp = new Application();
             Document wordDoc = new Document();
-            path += oTemplatePath.ToString();
+            //path += oTemplatePath.ToString();
             wordDoc = wordApp.Documents.Add(ref oTemplatePath, ref oMissing, ref oMissing, ref oMissing);
 
             foreach (Microsoft.Office.Interop.Word.Shape shape in wordApp.ActiveDocument.Shapes)
@@ -604,6 +604,10 @@ System.IO.Path.GetDirectoryName(
                     {
                         trainings = educations[i].TrainingName + ",";
                     }
+                }
+                if (trainings.Length == 0)
+                {
+                    trainings = " ";
                 }
                 document.ReplaceText("{Trainings}", trainings.Remove(trainings.Length - 1), false, System.Text.RegularExpressions.RegexOptions.None, noBold);
             }

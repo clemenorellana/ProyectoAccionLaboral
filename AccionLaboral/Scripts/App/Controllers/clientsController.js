@@ -169,8 +169,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
             customerRepository.getCustomers().success(function(data) {
                         $scope.customerData = data;
-                        $scope.totalServerItems = data.totalItems;
-                        $scope.items = data.items;
+                        //$scope.totalServerItems = data.totalItems;
+                        //$scope.items = data.items;
                         $scope.load = false;
 
                         if ($rootScope.alerts)
@@ -971,8 +971,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.load = true;
             customerRepository.getCustomers().success(function (data) {
                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: 1 }, true);
-                $scope.totalServerItems = data.totalItems;
-                $scope.items = data.items;
+                //$scope.totalServerItems = data.totalItems;
+                //$scope.items = data.items;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -1709,7 +1709,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.index = index;
             };
             $scope.addTranning = function () {
-                if ($scope.trainingFormEdit.$valid) {
+                if ($scope.trainigFormEdit.$valid) {
                     if ($scope.action == 'edit') {
                         $scope.Trannings[$scope.index].TrainingName = $scope._TrainingName;
                         $scope.Trannings[$scope.index].InstitutionName = $scope._InstitutionName;
