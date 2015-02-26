@@ -244,6 +244,7 @@
     <Compile Include="Models\VacantLevel.cs" />
     <Compile Include="Models\WorkExperience.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\Helpers\CV.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -537,6 +538,10 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="Reports\CV2Template.dotx" />
+    <Content Include="Reports\CVTemplate.docx" />
+    <Content Include="Reports\CVTemplate.dotx" />
+    <Content Include="Reports\~%24Template.dotx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

@@ -1,0 +1,4 @@
+C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto3\ProyectoAccionLaboral\AccionLaboral\obj\Debug\AccionLaboral.csproj.App.config
+C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto3\ProyectoAccionLaboral\AccionLaboral\obj\Debug\AccionLaboral.csprojResolveAssemblyReference.cache
+C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto3\ProyectoAccionLaboral\AccionLaboral\obj\Debug\AccionLaboral.Migrations.first_mig_7_feb.resources
+C:\Users\Usuario\Desktop\Proyecto-Graduacion-Fase1\Proyecto3\ProyectoAccionLaboral\AccionLaboral\obj\Debug\AccionLaboral.csproj.GenerateResource.Cache
