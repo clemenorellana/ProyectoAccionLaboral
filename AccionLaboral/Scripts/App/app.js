@@ -161,6 +161,23 @@ angular.module('AccionLaboralApp', [
             }
             
 
+            $scope.getRole = function (menu) {
+                debugger
+                var user = $rootScope.userLoggedIn;
+                if (menu === "Clientes")
+                {
+                    if (user.Role.Name === 'Asesor Corporativo')
+                        return false;
+                    return true;
+                }
+                else if (menu === 'Administrar el Sistema')
+                {
+                    if (user.Role.Name === 'Asesor Corporativo' || user.Role.Name === 'Asesor de Reclutamiento')
+                        return false;
+                    return true;
+                }
+            }
+
             //$scope.skinClass = "bg-black";
             //$scope.template = "Users/Login";
             $scope.validateUser = function (userName, password, isValidForm) {
@@ -211,7 +228,7 @@ angular.module('AccionLaboralApp', [
                             $cookies.userFirstName = employee.FirstName;
                             $cookies.userLastName = employee.LastName;
                             $cookies.userPhoto = employee.Photo;
-                            $cookies.userRoleId = employee.RoleId;
+                            $cookies.userRoleId = employee.Role;
                             $cookies.userUserId = employee.UserId;
                             $cookies.userUserName = employee.User.UserName;
                             $cookies.EmployeeId = employee.EmployeeId;
@@ -223,8 +240,7 @@ angular.module('AccionLaboralApp', [
                                 "FirstName": $cookies.userFirstName,
                                 "LastName": $cookies.userLastName,
                                 "Photo": $cookies.userPhoto,
-                                //"Role": $cookies.userLoggedInCookie.Role,
-                                "RoleId": $cookies.userRoleId,
+                                "Role": $cookies.userRoleId,
                                 "UserName": $cookies.userUserName,
                                 "UserId": $cookies.userUserId,
                                 "EmployeeId": $cookies.EmployeeId

@@ -46,7 +46,7 @@ namespace AccionLaboral.Controllers
 
             var userId = users[0].UserId;
 
-            employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
+            employee = db.Employees.Include(r => r.Role).Include(r => r.Role.Privileges).Where(r => r.UserId == userId).ToList()[0];
 
             return employee;
 

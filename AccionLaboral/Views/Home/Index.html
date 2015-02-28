@@ -23,7 +23,7 @@
                             <i class="fa fa-home"></i> <span>Página Principal</span>
                         </a>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview" ng-show="getRole('Administrar el Sistema');">
                         <a href="#">
                             <i class="fa fa-gears"></i>
                             <span>Administrar el Sistema</span>
@@ -42,7 +42,7 @@
                             <!--<li><a ng-click="title='Administrar el Sistema'" href="#/States"><i class="fa fa-angle-double-right"></i> Tipos de Estados de Cliente</a></li>-->
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview" ng-show="getRole('Clientes');">
                         <a href="#">
                             <i class="fa fa-users"></i>
                             <span>Clientes</span>
