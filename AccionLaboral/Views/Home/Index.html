@@ -12,8 +12,8 @@
                         <img ng-show="!userLoggedIn.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="userLoggedIn.Photo">
                     </div>
                     <div class="pull-left info">
-                        <!--<p>Hola, {{user.UserName}}</p>-->
                         <p>Hola {{userLoggedIn.FirstName}}</p>
+                        <small>{{userLoggedIn.Role.Name}}</small>
                     </div>
                 </div>
                 <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -23,35 +23,35 @@
                             <i class="fa fa-home"></i> <span>Página Principal</span>
                         </a>
                     </li>
-                    <li class="treeview" ng-show="getRole('Administrar el Sistema');">
+                    
+                    <li class="treeview" ng-show="getRole('ManageSystem');">
                         <a href="#">
                             <i class="fa fa-gears"></i>
                             <span>Administrar el Sistema</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/Users"><i class="fa fa-angle-double-right"></i> Usuarios</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/Employees"><i class="fa fa-angle-double-right"></i> Empleados</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/EmployeeTypes"><i class="fa fa-angle-double-right"></i> Tipos de Empleados</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#"><i class="fa fa-angle-double-right"></i> Roles y Permisos</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/Countries"><i class="fa fa-angle-double-right"></i> Paises</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/Cities"><i class="fa fa-angle-double-right"></i> Ciudades</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/Careers"><i class="fa fa-angle-double-right"></i> Tipos de Carreras</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/Contracts"><i class="fa fa-angle-double-right"></i> Plantillas de Contratos</a></li>
-                            <li><a ng-click="title='Administrar el Sistema'" href="#/Interviews"><i class="fa fa-angle-double-right"></i> Tipos de Entrevista</a></li>
-                            <!--<li><a ng-click="title='Administrar el Sistema'" href="#/States"><i class="fa fa-angle-double-right"></i> Tipos de Estados de Cliente</a></li>-->
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('Users');" href="#/Users"><i class="fa fa-angle-double-right"></i> Usuarios</a></li>
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('Employees');" href="#/Employees"><i class="fa fa-angle-double-right"></i> Empleados</a></li>
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('EmployeeTypes');" href="#/EmployeeTypes"><i class="fa fa-angle-double-right"></i> Tipos de Empleados</a></li>
+                            <li><!--<a ng-click="title='Administrar el Sistema'" ng-show="getRole('Roles');" href="#"><i class="fa fa-angle-double-right"></i> Roles y Permisos</a>--></li>
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('Countries');" href="#/Countries"><i class="fa fa-angle-double-right"></i> Paises</a></li>
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('Cities');" href="#/Cities"><i class="fa fa-angle-double-right"></i> Ciudades</a></li>
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('Careers');" href="#/Careers"><i class="fa fa-angle-double-right"></i> Tipos de Carreras</a></li>
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('Contracts');" href="#/Contracts"><i class="fa fa-angle-double-right"></i> Plantillas de Contratos</a></li>
+                            <li><a ng-click="title='Administrar el Sistema'" ng-show="getRole('Interviews');" href="#/Interviews"><i class="fa fa-angle-double-right"></i> Tipos de Entrevista</a></li>                            
                         </ul>
                     </li>
-                    <li class="treeview" ng-show="getRole('Clientes');">
+                    <li class="treeview" ng-show="getRole('Clients');">
                         <a href="#">
                             <i class="fa fa-users"></i>
                             <span>Clientes</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a ng-click="title='Clientes'" href="#/AllClients"><i class="fa fa-angle-double-right"></i> Listado de Clientes</a></li>
-                            <li><a ng-click="title='Clientes'" href="#/RegisterClient"><i class="fa fa-angle-double-right"></i> Registrar Cliente</a></li>
-                            <li><a ng-click="title='Clientes'" href="#/EnrollClient"><i class="fa fa-angle-double-right"></i> Inscribir Cliente</a></li>
+                            <li><a ng-show="getRole('AllClients');" ng-click="title='Clientes'" href="#/AllClients"><i class="fa fa-angle-double-right"></i> Listado de Clientes</a></li>
+                            <li><a ng-show="getRole('RegisterClient');" ng-click="title='Clientes'" href="#/RegisterClient"><i class="fa fa-angle-double-right"></i> Registrar Cliente</a></li>
+                            <li><a ng-show="getRole('EnrollClient');" ng-click="title='Clientes'" href="#/EnrollClient"><i class="fa fa-angle-double-right"></i> Inscribir Cliente</a></li>
                             <!--<li><a href="#"><i class="fa fa-angle-double-right"></i> Seguimiento de Clientes enviados a entrevista</a></li>-->
                             <!--<li><a href="#"><i class="fa fa-angle-double-right"></i> Seguimiento de clientes preinscritos</a></li>-->
                             <!--<li><a href="#"><i class="fa fa-angle-double-right"></i> Clientes preinscritos rechazados</a></li>-->
@@ -60,27 +60,27 @@
                             <li><a ng-click="title='Clientes'" href="#ClientTracking"><i class="fa fa-angle-double-right"></i> Seguimiento de Clientes</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview" ng-show="getRole('Corporativo');">
                         <a href="#">
                             <i class="fa fa-briefcase"></i>
                             <span>Corporativo</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a ng-click="title='Corportativo'" href="#/Companies"><i class="fa fa-angle-double-right"></i> Listado de Empresas</a></li>
-                            <li><a ng-click="title='Corportativo'" href="#/AddCompany"><i class="fa fa-angle-double-right"></i> Agregar Empresa</a></li>
-                            <li><a ng-click="title='Corportativo'" href="#/Vacants"><i class="fa fa-angle-double-right"></i> Listado de Vacantes </a></li>
-                            <li><a ng-click="title='Corportativo'" href="#/AddVacant"><i class="fa fa-angle-double-right"></i> Agregar Vacante</a></li>
+                            <li><a ng-show="getRole('Companies');" ng-click="title='Corportativo'" href="#/Companies"><i class="fa fa-angle-double-right"></i> Listado de Empresas</a></li>
+                            <li><a ng-show="getRole('AddCompany');" ng-click="title='Corportativo'" href="#/AddCompany"><i class="fa fa-angle-double-right"></i> Agregar Empresa</a></li>
+                            <li><a ng-show="getRole('Vacants');" ng-click="title='Corportativo'" href="#/Vacants"><i class="fa fa-angle-double-right"></i> Listado de Vacantes </a></li>
+                            <li><a ng-show="getRole('AddVacant');" ng-click="title='Corportativo'" href="#/AddVacant"><i class="fa fa-angle-double-right"></i> Agregar Vacante</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview" ng-show="getRole('DocumentsToApprove');">
                         <a href="#">
                             <i class="fa fa-file-text"></i>
                             <span>Documentos por Aprobar</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a ng-click="title='Documentos por Aprobar'" href="#"><i class="fa fa-angle-double-right"></i> Clientes preinscritos por aprobar</a></li>
+                            <li><a ng-show="getRole('DocumentsToApprove');" ng-click="title='Documentos por Aprobar'" href="#"><i class="fa fa-angle-double-right"></i> Clientes preinscritos por aprobar</a></li>
                         </ul>
                     </li>
                     <li >
@@ -93,18 +93,18 @@
                             <li><a ng-click="title='Reclutamiento'" href="#/SearchClients"><i class="fa fa-angle-double-right"></i> Buscar Perfiles</a></li>
                         </ul>-->
                     </li>
-                    <li class="treeview">
+                    <li class="treeview" >
                         <a href="#">
                             <i class="fa fa-bar-chart-o"></i> <span>Reportes</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Contrato de Servicios</a></li>
-                            <li><a ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Hoja de Vida</a></li>
-                            <li><a ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Clientes Nuevos</a></li>
-                            <li><a ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Candidatos Descartados</a></li>
-                            <li><a ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Nuevas</a></li>
-                            <li><a ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Existentes</a></li>
+                            <li><a ng-show="getRole('ContractReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Contrato de Servicios</a></li>
+                            <li><a ng-show="getRole('CVReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Hoja de Vida</a></li>
+                            <li><a ng-show="getRole('NewClientsReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Clientes Nuevos</a></li>
+                            <li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Candidatos Descartados</a></li>
+                            <li><a ng-show="getRole('NewCompaniesReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Nuevas</a></li>
+                            <li><a ng-show="getRole('CompaniesReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Existentes</a></li>
                         </ul>
                     </li>
 

@@ -1,4 +1,4 @@
-/// <reference path="../../Views/Clientes/_RegisterClient.html" />
+
 'use strict';
 
 angular.module('AccionLaboralApp', [
@@ -19,7 +19,9 @@ angular.module('AccionLaboralApp', [
         'employeeTypesController',
         'statesController',
         'ngSanitize',
-        'ui.select'
+        'ui.select',
+        'LocalStorageModule',
+        'authService'
 ])
     .config([
         '$routeProvider',
@@ -38,7 +40,9 @@ angular.module('AccionLaboralApp', [
             return [];
         }
     }).controller('mainController', [
-        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo',  function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo) {
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService) {
+            $rootScope.userLoggedIn = authService.authentication.employee;
+
             $rootScope.validPass = true;
             $scope.alerts = [];
             $rootScope.forgotPass = false;
@@ -76,9 +80,9 @@ angular.module('AccionLaboralApp', [
                 fakeProgress();
             };
 
-            var userStored = $cookies.userName;
-            //var userStored = $cookies.userLoggedIn;
-            if (userStored == "null" || (!userStored)) {
+            
+            var isLoggedIn = authService.authentication.isAuth;
+            if (isLoggedIn == false || isLoggedIn == null) { // si no esta conectado
                 $scope.skinClass = "bg-black";
                 $scope.template = 'Users/Login';
                 $scope.userValid = false;
@@ -87,44 +91,16 @@ angular.module('AccionLaboralApp', [
                 $scope.skinClass = "skin-blue";
                 $scope.userValid = true;
                 $scope.template = 'Home/Home';
-                $rootScope.user = { UserName: userStored };
                 $location.path('/');
             }
 
-            $scope.clearCookies = function () {
-                $cookies.userLoggedInCookie = null;
-                $cookies.userLogged = null;
-
-                $cookies.userAdmissionDate = null;
-                $cookies.userFirstName = null;
-                $cookies.userLastName = null;
-                $cookies.userPhoto = null;
-                $cookies.userRoleId = null;
-                $cookies.userUserId = null;
-                $cookies.userUserName = null;
-                $cookies.EmployeeId = null;
-
-
-            }
 
             $scope.viewProfile = function ()
             {
                 var employeeId = $rootScope.userLoggedIn.EmployeeId;
-                //window.location = "#/Employees/Edit/" + employeeId;
                 $scope.template = '/Employees/Edit/' + employeeId;
-                //window.location = "#/Employees";
-
             }
 
-            $scope.logout = function () {
-                $cookies.userName = null;
-
-                $scope.clearCookies();
-
-                $scope.skinClass = "bg-black";
-                $scope.template = "Users/Login";
-                $scope.userValid = false;
-            }
 
             $scope.changePassword = function (UserName, Password1, Password2){
                 if (Password1 === Password2) {
@@ -137,15 +113,13 @@ angular.module('AccionLaboralApp', [
 
             $scope.sendRequestChangePassword = function (userName) {
                 $scope.launch('wait');
-                debugger
+
                 $rootScope.forgotPass = false;
                 
                 usersRepo.requestChangePassword(userName).success(function (data) {
                     $scope.userValid = data;
                     if ($scope.userValid == true) {
                         $scope.addAlert("success", "La solicitud se ha enviado a su correo.");
-                        //$scope.skinClass = "bg-black";
-                        //$scope.template = "Users/Login";
                         window.location = "#/Login";
                         $rootScope.forgotPass = false;
                     } else {
@@ -162,133 +136,207 @@ angular.module('AccionLaboralApp', [
             
 
             $scope.getRole = function (menu) {
-                debugger
+                
+                /*
+                  Alias - Nombre del Rol
+                  ADMIN - Administrador del Sistema	
+                  GTEGE - Gerente General	
+                  GTEAG - Gerente de Agencia	
+                  ASIGE - Asistente de Gerencia	
+                  ASREC - Asesor de Reclutamiento	
+                  ASCOR - Asesor Corporativo	 
+                */
+
                 var user = $rootScope.userLoggedIn;
-                if (menu === "Clientes")
-                {
-                    if (user.Role.Name === 'Asesor Corporativo')
-                        return false;
-                    return true;
-                }
-                else if (menu === 'Administrar el Sistema')
-                {
-                    if (user.Role.Name === 'Asesor Corporativo' || user.Role.Name === 'Asesor de Reclutamiento')
-                        return false;
-                    return true;
-                }
+                // Opciones del menu de "Administrar el Sistema"
+                if ( menu == "ManageSystem" || menu == "Users" || menu == "Employees" || menu == "EmployeeTypes" || menu == "Roles" || 
+                     menu == "Countries" || menu == "Cities" || menu == "Careers" || menu == "Contracts" || menu == "Interviews" )
+                    return (user.Role.Alias == "ASCOR" || user.Role.Alias == "ASREC") ? false : true;
+                
+
+                // Opciones del menu de "Clientes"
+                if (menu == "Clients" || menu == "AllClients" || menu == "RegisterClient" || menu == "EnrollClient" )
+                    return (user.Role.Alias == "ASCOR") ? false : true;
+
+
+                // Opciones del menu de "Corportativo"
+                if (menu == "Corporativo" || menu == "Companies" || menu == "AddCompany" || menu == "Vacants" || menu == "AddVacant")
+                    return (user.Role.Alias == "ASREC") ? false : true;
+                
+
+                // Opciones del menu de "Documentos por aprobar"
+                if (menu == "DocumentsToApprove")
+                    return (user.Role.Alias == "ASREC") ? false : true;
+
+
+                // Opciones del menu de "Repotes"
+                if ( menu == "DiscardedCustomersReport" || menu == "NewCompaniesReport" || menu == "CompaniesReport")
+                    return (user.Role.Alias == "ASREC") ? false : true;
+
+                if (menu == "ContractReport" || menu == "CVReport" || menu == "NewClientsReport" )
+                    return (user.Role.Alias == "ASCOR") ? false : true;
+
+                
             }
 
-            //$scope.skinClass = "bg-black";
-            //$scope.template = "Users/Login";
+            $scope.logout = function () {
+                authService.logOut();
+                $location.path('/');
+
+                $scope.skinClass = "bg-black";
+                $scope.template = "Users/Login";
+                $scope.userValid = false;
+            }
+
+            
             $scope.validateUser = function (userName, password, isValidForm) {
                 $scope.launch('wait');
-                if(isValidForm){
-                    usersRepo.login(userName, password).success(function (data) {
-                        var employee = data;
-                        //$scope.userValid = data; 
+                if (isValidForm) {
+                    debugger
+                    $scope.loginData = {
+                        userName: userName,
+                        password: password
+                    };
+
+                   
+                    authService.login($scope.loginData).then(function (response) {
+                            
+                        var employee = response;
+
                         $scope.userValid = (employee.EmployeeId != 0) ? true : false;
-                        if($scope.userValid == true){
+                        if ($scope.userValid == true) {
                             $scope.template = 'Home/Home';
                             $scope.skinClass = "skin-blue";
-                            $cookies.userName = userName;
-                            $rootScope.user = { UserName: $cookies.userName };
-
-                            //$cookies.userLoggedInCookie = employee.FirstName;
-
-                            //var employeeCookie = {
-                            //    "Address": $cookies.userLoggedInCookie.Address,
-                            //    "AdmissionDate": $cookies.userLoggedInCookie.AdmissionDate,
-                            //    "Age": $cookies.userLoggedInCookie.Age,
-                            //    "Birthday": $cookies.userLoggedInCookie.Birthday,
-                            //    "Career": $cookies.userLoggedInCookie.Career,
-                            //    "CareerId": $cookies.userLoggedInCookie.CareerId,
-                            //    "Cellphone": $cookies.userLoggedInCookie.Cellphone,
-                            //    "Email": $cookies.userLoggedInCookie.Email,
-                            //    "EmployeeAlias": $cookies.userLoggedInCookie.EmployeeAlias,
-                            //    "EmployeeId": $cookies.userLoggedInCookie.EmployeeId,
-                            //    "FirstName": $cookies.userLoggedInCookie.FirstName,
-                            //    "Gender": $cookies.userLoggedInCookie.Gender,
-                            //    "HomePhone": $cookies.userLoggedInCookie.HomePhone,
-                            //    "LastName": $cookies.userLoggedInCookie.LastName,
-                            //    "Photo": $cookies.userLoggedInCookie.Photo,
-                            //    "Role": $cookies.userLoggedInCookie.Role,
-                            //    "RoleId": $cookies.userLoggedInCookie.RoleId,
-                            //    "User": {
-                            //        "Active": $cookies.userLoggedInCookie.User.Active,
-                            //        "Busy": $cookies.userLoggedInCookie.User.Busy,
-                            //        ////"Password": $cookies.userLoggedInCookie.Password,
-                            //        "UserId": $cookies.userLoggedInCookie.User.UserId,
-                            //        "UserName": $cookies.userLoggedInCookie.User.UserName
-                            //    },
-                            //    "UserId": $cookies.userLoggedInCookie.UserId
-                            //}
-
-
-                            $cookies.userAdmissionDate = employee.AdmissionDate;
-                            $cookies.userFirstName = employee.FirstName;
-                            $cookies.userLastName = employee.LastName;
-                            $cookies.userPhoto = employee.Photo;
-                            $cookies.userRoleId = employee.Role;
-                            $cookies.userUserId = employee.UserId;
-                            $cookies.userUserName = employee.User.UserName;
-                            $cookies.EmployeeId = employee.EmployeeId;
-
-                            
-
-                            var employeeCookie = {
-                                "AdmissionDate": $cookies.userAdmissionDate,
-                                "FirstName": $cookies.userFirstName,
-                                "LastName": $cookies.userLastName,
-                                "Photo": $cookies.userPhoto,
-                                "Role": $cookies.userRoleId,
-                                "UserName": $cookies.userUserName,
-                                "UserId": $cookies.userUserId,
-                                "EmployeeId": $cookies.EmployeeId
-                            }
-
-                            
-                            $rootScope.userLoggedIn = employeeCookie;
-
-                                
-                            $rootScope.forgotPass =false;
-                        } else {
+                            $rootScope.userLoggedIn = authService.authentication.employee;
+                            $rootScope.forgotPass = false;
+                        }
+                        else {
                             $scope.skinClass = "bg-black";
                             $scope.template = "Users/Login";
                             $scope.addAlert("danger", "Usuario o clave invalido. Intente de nuevo.");
                         };
-                    })
-                        .error(function (message) {
-                            $scope.addAlert("danger","Ha ocurrido un error en el servidor.");
-                        });
+                    },
+                    function (err) {
+                        $scope.message = err.error_description;
+                        $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                    });
                 }
                 else {
-                    $scope.addAlert("danger", "Hay campos invalidos");
+                    $scope.addAlert("danger", "Existen campos invalidos");
                 }
             }
 
         }
     ])
-    .run(['$rootScope', '$location', '$cookies', '$http',
-    function ($rootScope, $location, $cookies, $http) {
-        // keep user logged in after page refresh
+    .run(['authService', '$rootScope', '$location', function (authService, $rootScope,$location) {
+        debugger
+        
+        authService.fillAuthData();
+        $rootScope.userLoggedIn = authService.authentication.employee;
 
-        //$rootScope.userLoggedIn = { FirstName: $cookies.userLoggedInCookie };
-        //$cookies.userLoggedInCookie = employee.FirstName;
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+            debugger
+
+            var isLoggedIn = authService.authentication.isAuth;
+            if (isLoggedIn == false || isLoggedIn == null) { // si no esta conectado
+                
+                $scope.skinClass = "bg-black";
+                $scope.template = 'Users/Login';
+                $scope.userValid = false;
+            }
+            else {
+                debugger
+
+                /*
+                    Alias - Nombre del Rol
+                    ADMIN - Administrador del Sistema	
+                    GTEGE - Gerente General	
+                    GTEAG - Gerente de Agencia	
+                    ASIGE - Asistente de Gerencia	
+                    ASREC - Asesor de Reclutamiento	
+                    ASCOR - Asesor Corporativo	 
+                */
 
 
-        var employeeCookie = {
-            "AdmissionDate": $cookies.userAdmissionDate,
-            "FirstName": $cookies.userFirstName,
-            "LastName": $cookies.userLastName,
-            "Photo": $cookies.userPhoto,
-            //"Role": $cookies.userLoggedInCookie.Role,
-            "RoleId": $cookies.userRoleId,
-            "UserName": $cookies.userUserName,
-            "UserId": $cookies.userUserId,
-            "EmployeeId": $cookies.EmployeeId,
-        }
+                //Permisos para el Asesor de Reclutamiento
+                var role = $rootScope.userLoggedIn.Role;
+                if (role.Alias == 'ASREC') {
+                    if (next.templateUrl == '/Careers/Index' ||
+                        next.templateUrl == '/Cities/Index' ||
+                        next.templateUrl == '/Companies/Index' ||
+                        next.templateUrl == '/Companies/Create' ||
+                        next.templateUrl == '/Companies/Edit/' ||
+                        next.templateUrl == '/ContractTemplates/Index' ||
+                        next.templateUrl == '/ContractTemplates/Create' ||
+                        next.templateUrl == '/ContractTemplates/Edit/' ||
+                        next.templateUrl == '/ContractTemplates/Details/' ||
+                        next.templateUrl == '/Countries/Index' ||
+                        next.templateUrl == '/Employees/Index' ||
+                        next.templateUrl == '/Employees/Create' ||
+                        next.templateUrl == '/Employees/Edit/' ||
+                        next.templateUrl == '/Employees/Details/' ||
+                        next.templateUrl == '/Roles/Index' ||
+                        next.templateUrl == '/InterviewTypes/Index' ||
+                        next.templateUrl == '/States/Index' ||
+                        next.templateUrl == '/Users/Index' ||
+                        next.templateUrl == '/VacantsByCompany/Index' ||
+                        next.templateUrl == '/VacantsByCompany/Create' ||
+                        next.templateUrl == '/VacantsByCompany/Edit/' ||
+                        next.templateUrl == '/VacantsByCompany/Details/' ||
+                        next.templateUrl == '/Contracts/Index' ||
+                        next.templateUrl == '/Interviews/Index' ||
+                        next.templateUrl == '/Companies/Index' ||
+                        next.templateUrl == '/AddCompany/Index' ||
+                        next.templateUrl == '/AddVacant/Index' ||
+                        next.templateUrl == '/DocumentsToApprove/Index' ||
+                        next.templateUrl == '/DiscardedCustomersReport/Index' ||
+                        next.templateUrl == '/NewCompaniesReport/Index' ||
+                        next.templateUrl == '/CompaniesReport/Index'
+                        ) {
+                        $location.path('/');
+                    }
+                }
+                //Permisos para el Asesor Corporativo
+                else if (role.Alias == 'ASCOR') {
+                    if (next.templateUrl == '/Users/Index' ||
+                        next.templateUrl == '/Employees/Index' ||
+                        next.templateUrl == '/EmployeeTypes/Index' |
+                        next.templateUrl == '/Careers/Index' ||
+                        next.templateUrl == '/Countries/Index' ||
+                        next.templateUrl == '/Cities/Index' ||
+                        next.templateUrl == '/Contracts/Index' ||
+                        next.templateUrl == '/Interviews/Index' ||
+                        next.templateUrl == '/Clients/Index' ||
+                        next.templateUrl == '/Clients/Create' ||
+                        next.templateUrl == '/Clients/Edit' ||
+                        next.templateUrl == '/Clients/Enroll' ||
+                        next.templateUrl == '/Clients/Tracking' ||
+                        next.templateUrl == '/Clients/ClientTracking' ||
+                        next.templateUrl == '/Clients/ClientProfile' ||
+                        next.templateUrl == '/ContractTemplates/Index' ||
+                        next.templateUrl == '/ContractTemplates/Create' ||
+                        next.templateUrl == '/ContractTemplates/Edit/' ||
+                        next.templateUrl == '/ContractTemplates/Details/' ||
+                        next.templateUrl == '/Employees/Index' ||
+                        next.templateUrl == '/Employees/Create' ||
+                        next.templateUrl == '/Employees/Edit/' ||
+                        next.templateUrl == '/Employees/Details/' ||
+                        next.templateUrl == '/Roles/Index' ||
+                        next.templateUrl == '/InterviewTypes/Index' ||
+                        next.templateUrl == '/States/Index' ||
+                        next.templateUrl == '/RegisterClient/Index' ||
+                        next.templateUrl == '/EnrollClient/Index' |
+                        next.templateUrl == '/ContractReport/Index' ||
+                        next.templateUrl == '/Countries/Index' ||
+                        next.templateUrl == '/CVReport/Index' ||
+                        next.templateUrl == '/NewClientsReport/Index'
+                        ) {
+                        $location.path('/');
+                    }
+                }
 
-
-        $rootScope.userLoggedIn = employeeCookie;
+            }
+        })
 
     }]);
+  

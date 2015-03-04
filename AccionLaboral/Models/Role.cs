@@ -13,7 +13,10 @@ namespace AccionLaboral.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int RoleId { get; set; }
         [Required]
+        public string Alias { get; set; }
+        [Required]
         public string Name { get; set; }
+
 
         public ICollection<Privilege> Privileges { get; set; }
         //public ICollection<User> Users { get; set; }

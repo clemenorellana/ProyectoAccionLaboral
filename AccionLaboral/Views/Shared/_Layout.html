@@ -59,7 +59,7 @@
                         <a href="" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="glyphicon glyphicon-user"></i>
                             <!--<span>{{user.UserName}}<i class="caret"></i></span>-->
-                            <span>{{userLoggedIn.UserName}}<i class="caret"></i></span>
+                            <span>{{userLoggedIn.User.UserName}}<i class="caret"></i></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -69,9 +69,7 @@
                                 <img ng-show="!userLoggedIn.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="userLoggedIn.Photo">
                                 
                                 <p>
-                                    <!--{{user.UserName}}-->
-                                    {{userLoggedIn.UserName}}
-                                    <!--<small>Miembro desde </small>-->
+                                    {{userLoggedIn.FirstName}} {{userLoggedIn.LastName}}                                    
                                     <small>Miembro desde {{userLoggedIn.AdmissionDate | date:"dd/MM/yyyy"}}</small>
                                 </p>
                             </li>
@@ -118,6 +116,10 @@
     <script src="../../Scripts/ng-token-auth.min.js"></script>
     <script src="../../Scripts/ng-token-auth.js"></script>
 
+    <!--role permission security-->
+    <script src="../../Scripts/App/Services/Security/authorizationService.js"></script>
+    <script src="../../Scripts/App/Services/Security/authInterceptorService.js"></script>
+    <script src="../../Scripts/angular-local-storage.min.js"></script>
 
 
     <!-- Export to Excel -->
