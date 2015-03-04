@@ -6,7 +6,7 @@
             <section class="sidebar">
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
-                    <div class="pull-left image">
+                    <div class="pull-left image" ng-click="viewProfile(userLoggedIn.EmployeeId); title='Mi Perfil';" title="Ver Perfil">
                         <!--<img src="../../Images/avatar3.png" class="img-circle" alt="User Image" />-->
                         <img ng-show="userLoggedIn.Photo" ng-src="data:image/jpeg;base64,{{userLoggedIn.Photo}}" />
                         <img ng-show="!userLoggedIn.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="userLoggedIn.Photo">
@@ -106,6 +106,13 @@
                             <li><a ng-show="getRole('NewCompaniesReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Nuevas</a></li>
                             <li><a ng-show="getRole('CompaniesReport');" ng-click="title='Reportes'" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Existentes</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="" ng-click="viewProfile(userLoggedIn.EmployeeId); title='Mi Perfil';">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span>Mi Perfil</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
                     </li>
 
                 </ul>

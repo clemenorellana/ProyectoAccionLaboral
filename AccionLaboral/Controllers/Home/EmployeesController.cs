@@ -54,6 +54,13 @@ namespace AccionLaboral.Controllers.Home
         }
 
         //
+        // GET: /Employees/Profile/5
+        public ActionResult Profile(int id)
+        {
+            return new FilePathResult("~/Views/Employees/Profile.html", "text/html");
+        }
+
+        //
         // POST: /Employees/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)

@@ -24,6 +24,12 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             },
             controller: 'employeesCtrl'
         })
+        .when('/Employees/Profile/:id', {
+            templateUrl: function (params) {
+                return '/Employees/Profile/' + params.id;
+            },
+            controller: 'employeesCtrl'
+        })
     ;
 }]
 ).filter('dateFormat', function($filter){
@@ -240,6 +246,11 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         });
     }
 
+
+    
+    $scope.viewMyProfile = function (employeeId) {
+        window.location = "#/Employees/Preview/" + employeeId;
+    }
     
 
     $scope.employee_addNewRedirect = function () {

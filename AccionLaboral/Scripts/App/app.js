@@ -95,10 +95,14 @@ angular.module('AccionLaboralApp', [
             }
 
 
-            $scope.viewProfile = function ()
+            $scope.viewProfile = function (paramEmployeeId)
             {
-                var employeeId = $rootScope.userLoggedIn.EmployeeId;
-                $scope.template = '/Employees/Edit/' + employeeId;
+                var cureentEmployeeId = $rootScope.userLoggedIn.EmployeeId;
+                if (cureentEmployeeId == paramEmployeeId)
+                    window.location = "#/Employees/Profile/" + cureentEmployeeId;
+                else
+                    $location.path('/');
+
             }
 
 
@@ -246,6 +250,13 @@ angular.module('AccionLaboralApp', [
             }
             else {
                 debugger
+
+                var paramEmployeeId = next.params.id;
+                var cureentEmployeeId = $rootScope.userLoggedIn.EmployeeId;
+                if (cureentEmployeeId != paramEmployeeId && next.originalPath == '/Employees/Profile/:id') {
+                    $location.path('/');
+                    return;
+                }
 
                 /*
                     Alias - Nombre del Rol
