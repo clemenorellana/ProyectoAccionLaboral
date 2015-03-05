@@ -167,7 +167,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     term.StateId = (!term.StateId) ? "" : term.StateId;
                 //}
 
-            customerRepository.getCustomers().success(function(data) {
+            customerRepository.getCustomers($rootScope.userLoggedIn).success(function(data) {
                         $scope.customerData = data;
                         //$scope.totalServerItems = data.totalItems;
                         //$scope.items = data.items;
@@ -969,7 +969,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.setEnrollClients = function (term) {
             if (!term)
                 $scope.load = true;
-            customerRepository.getCustomers().success(function (data) {
+            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: 1 }, true);
                 //$scope.totalServerItems = data.totalItems;
                 //$scope.items = data.items;
@@ -2875,7 +2875,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 term.Trackings[0].TrackingType.Name = (!term.Trackings[0].TrackingType.Name) ? "" : term.Trackings[0].TrackingType.Name;
                 //}
             }
-            customerRepository.getCustomers().success(function (data) {
+            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
                 $scope.customerData = data;
                 $scope.totalServerItems = data.totalItems;
                 $scope.items = data.items;
@@ -3126,7 +3126,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     $scope.sort = "FirstName";
     $scope.reverse = false;
     $scope.searchClients = function () {
-        customerRepository.getCustomers().success(function (data) {
+        customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
             $scope.customerData = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
