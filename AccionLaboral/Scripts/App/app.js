@@ -106,13 +106,37 @@ angular.module('AccionLaboralApp', [
             }
 
 
-            $scope.changePassword = function (UserName, Password1, Password2){
+            $scope.changePassword = function (UserName, Password1, Password2) {
+
+                usersRepo.validateUserName(UserName).success(function (data) {
+                    var userValid = data;
+                    if (!userValid) {
+                        $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
+                    }
+                })
+                .error(function (message) {
+                    $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                });
+
                 if (Password1 === Password2) {
                     $rootScope.validPass = true;
                 }
                 else {
                     $rootScope.validPass = false;
                 }
+    
+                usersRepo.changePassword(UserName, Password1).success(function (data) {
+                    $scope.addAlert("success", "La clave se ha cambiado exitosamente.");
+                    $scope.resetPass = false;
+                    $location.path('/');
+                    $scope.skinClass = "bg-black";
+                    $scope.template = 'Users/Login';
+                    $scope.userValid = false;
+                })
+                .error(function (message) {
+                    $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                });
+
             }
 
             $scope.sendRequestChangePassword = function (userName) {
@@ -125,6 +149,9 @@ angular.module('AccionLaboralApp', [
                     if ($scope.userValid == true) {
                         $scope.addAlert("success", "La solicitud se ha enviado a su correo.");
                         window.location = "#/Login";
+                        $scope.skinClass = "bg-black";
+                        $scope.userValid = false;
+
                         $rootScope.forgotPass = false;
                     } else {
                         $scope.skinClass = "bg-black";
@@ -142,13 +169,16 @@ angular.module('AccionLaboralApp', [
             $scope.getRole = function (menu) {
                 
                 /*
-                  Alias - Nombre del Rol
-                  ADMIN - Administrador del Sistema	
-                  GTEGE - Gerente General	
-                  GTEAG - Gerente de Agencia	
-                  ASIGE - Asistente de Gerencia	
-                  ASREC - Asesor de Reclutamiento	
-                  ASCOR - Asesor Corporativo	 
+                ---------------------------------------------------------
+                Listado de roles
+                    Alias - Nombre del Rol
+                    ADMIN - Administrador del Sistema	
+                    GTEGE - Gerente General	
+                    GTEAG - Gerente de Agencia	
+                    ASIGE - Asistente de Gerencia	
+                    ASREC - Asesor de Reclutamiento	
+                    ASCOR - Asesor Corporativo	 
+                ---------------------------------------------------------        
                 */
 
                 var user = $rootScope.userLoggedIn;
@@ -172,6 +202,9 @@ angular.module('AccionLaboralApp', [
                 if (menu == "DocumentsToApprove")
                     return (user.Role.Alias == "ASREC") ? false : true;
 
+                // Opciones del menu de "Reclutamiento"
+                if (menu == "Recruitment")
+                    return (user.Role.Alias == "ASCOR") ? false : true;
 
                 // Opciones del menu de "Repotes"
                 if ( menu == "DiscardedCustomersReport" || menu == "NewCompaniesReport" || menu == "CompaniesReport")
@@ -196,7 +229,7 @@ angular.module('AccionLaboralApp', [
             $scope.validateUser = function (userName, password, isValidForm) {
                 $scope.launch('wait');
                 if (isValidForm) {
-                    debugger
+                     
                     $scope.loginData = {
                         userName: userName,
                         password: password
@@ -233,24 +266,17 @@ angular.module('AccionLaboralApp', [
         }
     ])
     .run(['authService', '$rootScope', '$location', function (authService, $rootScope,$location) {
-        debugger
-        
         authService.fillAuthData();
         $rootScope.userLoggedIn = authService.authentication.employee;
 
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
-            debugger
-
             var isLoggedIn = authService.authentication.isAuth;
             if (isLoggedIn == false || isLoggedIn == null) { // si no esta conectado
-                
                 $scope.skinClass = "bg-black";
                 $scope.template = 'Users/Login';
                 $scope.userValid = false;
             }
             else {
-                debugger
-
                 var paramEmployeeId = next.params.id;
                 var cureentEmployeeId = $rootScope.userLoggedIn.EmployeeId;
                 if (cureentEmployeeId != paramEmployeeId && next.originalPath == '/Employees/Profile/:id') {
@@ -258,7 +284,9 @@ angular.module('AccionLaboralApp', [
                     return;
                 }
 
-                /*
+                /* 
+                ---------------------------------------------------------
+                Listado de roles
                     Alias - Nombre del Rol
                     ADMIN - Administrador del Sistema	
                     GTEGE - Gerente General	
@@ -266,8 +294,8 @@ angular.module('AccionLaboralApp', [
                     ASIGE - Asistente de Gerencia	
                     ASREC - Asesor de Reclutamiento	
                     ASCOR - Asesor Corporativo	 
+                ---------------------------------------------------------        
                 */
-
 
                 //Permisos para el Asesor de Reclutamiento
                 var role = $rootScope.userLoggedIn.Role;
@@ -340,7 +368,8 @@ angular.module('AccionLaboralApp', [
                         next.templateUrl == '/ContractReport/Index' ||
                         next.templateUrl == '/Countries/Index' ||
                         next.templateUrl == '/CVReport/Index' ||
-                        next.templateUrl == '/NewClientsReport/Index'
+                        next.templateUrl == '/NewClientsReport/Index' ||
+                        next.templateUrl == '/Clients/SearchClients'
                         ) {
                         $location.path('/');
                     }

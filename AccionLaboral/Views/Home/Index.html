@@ -83,15 +83,15 @@
                             <li><a ng-show="getRole('DocumentsToApprove');" ng-click="title='Documentos por Aprobar'" href="#"><i class="fa fa-angle-double-right"></i> Clientes preinscritos por aprobar</a></li>
                         </ul>
                     </li>
-                    <li >
+                    <li ng-show="getRole('Recruitment');">
                         <a href="#/SearchClients" ng-click="title='Reclutamiento'">
                             <i class="fa fa-search"></i>
                             <span>Reclutamiento</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <!--<ul class="treeview-menu">
-                            <li><a ng-click="title='Reclutamiento'" href="#/SearchClients"><i class="fa fa-angle-double-right"></i> Buscar Perfiles</a></li>
-                        </ul>-->
+            <li><a ng-click="title='Reclutamiento'" href="#/SearchClients"><i class="fa fa-angle-double-right"></i> Buscar Perfiles</a></li>
+        </ul>-->
                     </li>
                     <li class="treeview" >
                         <a href="#">

@@ -54,6 +54,27 @@ namespace AccionLaboral.Controllers
         }
 
 
+        [Route("api/Users/ValidateUserName")]
+        [HttpPost]
+        public bool ValidateUserName(User user)
+        {
+            //return db.Users.Count(e => e.UserName == user.UserName) > 0;
+            return UserExists(user.UserName);
+        }
+
+        [Route("api/Users/ChangePassword")]
+        [HttpPut]
+        public IHttpActionResult ChangePassword(User user)
+        {
+            var userToUpdate = db.Users.Where(r => r.UserName == user.UserName).ToList();
+            userToUpdate[0].Password = user.Password;
+
+            user = userToUpdate[0];
+
+            return PutUser(user.UserId, user);
+        }
+
+
         [Route("api/Users/RequestChangePassword")]
         [HttpPost]
         public bool RequestChangePassword(User user)
@@ -72,26 +93,31 @@ namespace AccionLaboral.Controllers
                                              new MailAddress(employee.Email)
                                            );
             m.Subject = "Cambiar Contraseña";
+
+            string uri = this.Url.Link("Default", new { controller = "User", action = "ResetPassword" });
+            uri = uri.Replace("User", "#");
+
             m.Body = string.Format(@"Estimado(a) {0}
                                     <BR/>
                                     Se ha solicitado un cambio de contraseña.
                                     <BR/>
                                     Su usuario es: {1}
                                     <BR/>
-                                    Favor de clic al siguiente link para cambiar su contraseña"
+                                    <a href={2}>De clic aquí para activar su cuenta</a>"
                                   , employee.FirstName
                                   , employee.User.UserName
+                                  , uri
                                   );
 
-//            m.Body = string.Format(@"Dear {0}
-//<BR/>
-//Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>"
-//            , user.UserName
-//            , Url.Action("ConfirmEmail", "Account", new { Token = user.UserId, Email = employee.Email }, Request.Url.Scheme));
+            //m.Body = string.Format("Dear {0} <BR/> Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>"
+            //                        , user.UserName
+            //                        , Url.Link("ConfirmEmail", "Account", new { Token = user.UserId, Email = employee.Email }, Request.Url.Scheme));
 
 
             //<BR/>
             //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
+
+
             m.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
             smtp.Credentials = new NetworkCredential("accionlaboralhnsps@gmail.com", "4ccionl4bor4l");
@@ -197,5 +223,11 @@ namespace AccionLaboral.Controllers
         {
             return db.Users.Count(e => e.UserId == id) > 0;
         }
+
+        private bool UserExists(string userName)
+        {
+            return db.Users.Count(e => e.UserName == userName) > 0;
+        }
+
     }
 }

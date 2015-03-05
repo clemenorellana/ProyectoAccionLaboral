@@ -47,6 +47,19 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
                 "UserName": userName
             };
             return $http.post(url + '/RequestChangePassword', user);
+        },
+        validateUserName: function (userName) {
+            var user = {
+                "UserName": userName
+            };
+            return $http.post(url + '/ValidateUserName', user);
+        },
+        changePassword: function (userName, password) {
+            var user = {
+                "UserName": userName,
+                "Password": password
+            };
+            return $http.put(url + '/ChangePassword', user);
         }
     }
 }]);
