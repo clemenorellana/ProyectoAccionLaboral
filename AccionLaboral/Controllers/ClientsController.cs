@@ -63,20 +63,40 @@ namespace AccionLaboral.Controllers
             return clients;
         }
 
-        public List<Client> SearchClients(string search)
+        // Get api/ClientsByEmployee
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/clientsbyemployee/{id}")]
+        public List<Client> ClientsByEmployee(int id)
         {
-            List<string> keywordsList = new List<string>(); 
-            // Turn user input to a list of keywords.
-            string[] keywords = search.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            List<Client> clients = new List<Client>();
-            if (keywords.Length <= 0)
+            List<Client> clients = null;
+            try
             {
-                return clients;
+                clients = db.Clients
+                    .Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                    .Include(r => r.Employee)
+                    .Include(r => r.State)
+                    .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
+                    .Include(r => r.AcademicEducations.Select(c => c.Career))
+                    .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                    .Include(r => r.KnownPrograms)
+                    .Include(r => r.Languages.Select(l => l.Language))
+                    .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                    .Include(r => r.References.Select(c => c.City.Country))
+                    .Include(r => r.References.Select(t => t.ReferenceType))
+                    .Include(r => r.WorkExperiences)
+                    .Include(r => r.WorkExperiences.Select(c => c.City.Country))
+                    .Include(r => r.Trackings.Select(c => c.TrackingType))
+                    .Where( r => r.EmployeeId == id)
+                    .ToList();
             }
-
-
+            catch (Exception e)
+            {
+                var error = e.Message;
+            }
             return clients;
         }
+
+
         // GET api/Clients/5
         [ResponseType(typeof(Client))]
         public IHttpActionResult GetClient(int id)
@@ -131,7 +151,7 @@ namespace AccionLaboral.Controllers
 
         // PUT api/Clients/5
         public IHttpActionResult PutClient(int id, Client client)
-        {   
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -212,7 +232,7 @@ namespace AccionLaboral.Controllers
                 else
                 {
                     dbClients.KnownPrograms.Add(newProgram);
-                }       
+                }
             }
 
             //WorkExperiences

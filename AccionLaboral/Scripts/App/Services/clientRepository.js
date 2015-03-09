@@ -6,7 +6,10 @@ var urlCustomer = 'api/clients/';
 //the factory object for the webAPI call.
 accionLabControllers.factory('customerRepository',['$http', function ($http) {
     return {
-        getCustomers: function () {
+        getCustomers: function (employee) {
+            if (employee.Role.Alias == "ASREC")
+                urlCustomer = 'api/clientsbyemployee/' + employee.EmployeeId;
+
             return $http.get(urlCustomer);
         },
         getEmployees: function () {

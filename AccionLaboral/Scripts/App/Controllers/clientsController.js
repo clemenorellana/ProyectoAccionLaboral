@@ -170,7 +170,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     term.StateId = (!term.StateId) ? "" : term.StateId;
                 //}
 
-            customerRepository.getCustomers().success(function(data) {
+            customerRepository.getCustomers($rootScope.userLoggedIn).success(function(data) {
                         $scope.customerData = data;
                         $scope.load = false;
 
@@ -192,11 +192,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         
         $scope.setFiltered = function (term) {
             if ($scope.customerData) {
-                $scope.filtered = filterFilter($scope.customerData, term);
+            $scope.filtered = filterFilter($scope.customerData, term);
 
-                $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                        $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-                $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+            $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                    $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
             }
         };
 
@@ -972,7 +972,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.setEnrollClients = function (term) {
             if (!term)
                 $scope.load = true;
-            customerRepository.getCustomers().success(function (data) {
+            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: 1 }, true);
                 $scope.load = false;
 
@@ -1161,7 +1161,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 });
             });
         };
-       
+                
         $scope.getCitiesByCountry = function(countryId) {
             if (countryId)
                 return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
@@ -1186,7 +1186,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $window.open("Clients/ExportClient/" + $routeParams.id, '_blank');
                     //$window.location.href = "Clients/ExportClient/" + $routeParams.id;
                     alertService.add('success', 'Generado', 'La hoja de vida ha sido generada correctamente.');
-                    $scope.alertsTags = $rootScope.alerts;
+                        $scope.alertsTags = $rootScope.alerts;
                 } catch (e) {
                     alertService.add('danger', 'Error', 'No se ha podido crear la hoja de vida.');
                     $scope.alertsTags = $rootScope.alerts;
@@ -2869,7 +2869,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 term.Trackings[0].TrackingType.Name = (!term.Trackings[0].TrackingType.Name) ? "" : term.Trackings[0].TrackingType.Name;
                 //}
             }
-            customerRepository.getCustomers().success(function (data) {
+            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
                 $scope.customerData = data;
                 $scope.load = false;
 
@@ -3015,7 +3015,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
     }]).
      controller('SearchCustomerController', ['$scope', '$rootScope', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, customerRepository, filterFilter, alertService) {
-         //search costumer
+    //search costumer
          $scope.localLang = {
              selectAll       : "Todos",
              selectNone      : "Limpiar",

@@ -34,6 +34,12 @@ namespace AccionLaboral
             );
 
             config.Routes.MapHttpRoute(
+                name: "ClientsByEmployee",
+                routeTemplate: "api/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "TrackingApi",
                 routeTemplate: "api/{controller}/{id}/Tracking",
                 defaults: new { id = RouteParameter.Optional }
