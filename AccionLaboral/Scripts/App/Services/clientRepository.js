@@ -21,6 +21,10 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         exportCustomer: function (id) {
             return $http.get('Clients/ExportClient/' + id);
         },
+        searchCustomers: function (searchTerm, searchField, limit) {
+            var searchUrl = 'api/SearchClients/' + searchTerm + '/' + ((searchField) ? searchField : null) + '/' + ((limit) ? limit : 0);
+            return $http.get(searchUrl);
+        },
         getCountries: function (callback) {
             return $http.get('api/Countries');
         },

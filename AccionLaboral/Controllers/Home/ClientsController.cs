@@ -137,11 +137,10 @@ namespace AccionLaboral.Controllers.Home
                                       .Include("Languages.Language")
                                       .Include("Languages.LanguageLevel")
                                       .Include("References.ReferenceType")
-                                      .Include("References.City")
-                                      .Include("WorkExperiences.City").First(r => r.ClientId == id)
-                                      ;
+                                      .Include("References.City.Country")
+                                      .Include("WorkExperiences.City.Country").First(r => r.ClientId == id);
 
-            string filename = "CV_" + client.FirstName + client.LastName + ((client.EnrollDate != null) ?  "_" + DateTime.Parse(client.EnrollDate.ToString()).ToString("dd mm yyyy") : "") + ".docx";
+            string filename = "CV_" + client.FirstName + client.LastName + ((client.EnrollDate != null) ?  "_" + DateTime.Parse(client.EnrollDate.ToString()).ToString("dd MM yyyy") : "") + ".docx";
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string documentPath = path + "Reports\\" + filename;
             string templatePath = path + "Reports" + "\\" + "CVTemplate.docx";

@@ -13,7 +13,7 @@ namespace AccionLaboral.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int CompanyId { get; set; }
         [Required]
-        //[Index(IsUnique = true)]
+        [Index(IsUnique = true)]
         [StringLength(50)]
         public string Name { get; set; }
         public string Area { get; set; }

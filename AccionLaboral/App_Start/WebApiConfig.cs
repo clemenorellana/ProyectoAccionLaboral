@@ -25,6 +25,13 @@ namespace AccionLaboral
                 routeTemplate: "api/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            //string searchTerm, string searchField, bool? searchDefault, int? limit
+            
+                config.Routes.MapHttpRoute(
+                name: "SearchApi",
+                routeTemplate: "api/{action}/{searchTerm}/{searchField}/{limit}",
+                defaults: new { limit = RouteParameter.Optional }
+            );
 
             config.Routes.MapHttpRoute(
                 name: "TrackingApi",

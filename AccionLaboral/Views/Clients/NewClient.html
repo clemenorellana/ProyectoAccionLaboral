@@ -15,13 +15,13 @@
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="text-center">
-                <img ng-show="New.Photo" />
-                <img ng-show="!New.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
+                <img ng-show="episodeImgData" ng-src="data:image/jpeg;base64,{{episodeImgData}}" />
+                <img ng-show="!episodeImgData" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
             </div>
             <br />
             <div class="form-group">
                 <label for="exampleInputFile">Cambiar foto de Perfil</label>
-                <input type="file" id="exampleInputFile" base-sixty-four-input>
+                <input type="file" id="exampleInputFile">
                 <p class="help-block">Seleccione una foto</p>
             </div>
         </div>
@@ -49,7 +49,7 @@
                             <form name="clientForm">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Identidad</label>
                                             <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" required>
                                             <!--<span style="color:red" ng-show="!New.FirstName">
@@ -61,28 +61,28 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Nombre</label>
+                                        <div class="form-group required">
+                                            <label>Nombre(s)</label>
                                             <input type="text" class="form-control" id="firstName" placeholder="Ingresar ..." ng-model="New.FirstName" required>
                                             <!--<span style="color:red" ng-show="!New.FirstName">
-                                                <span ng-show="!New.FirstName">Nombre es requerido.</span>
-                                            </span>-->
+            <span ng-show="!New.FirstName">Nombre es requerido.</span>
+        </span>-->
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Apellido</label>
+                                        <div class="form-group required">
+                                            <label>Apellidos</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" required>
                                             <!--<span style="color:red" ng-show="!New.FirstName">
-                                                <span ng-show="!New.LastName">Apellido es requerido.</span>
-                                            </span>-->
+            <span ng-show="!New.LastName">Apellido es requerido.</span>
+        </span>-->
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Fecha de Nacimiento</label>
                                             <div class="input-group">
                                                 <div class="input-group-addon">
@@ -93,7 +93,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Edad</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" required>
@@ -101,20 +101,20 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Genero</label>
                                             <div class="form-group">
                                                 <div class="radio">
-                                                    <label>
+                                                    <p>
                                                         <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="New.Gender" required>
                                                         Femenino
-                                                    </label>
+                                                    </p>
                                                 </div>
                                                 <div class="radio">
-                                                    <label>
+                                                    <p>
                                                         <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="New.Gender" required>
                                                         Masculino
-                                                    </label>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -135,13 +135,13 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Celular</label>
                                             <div class="input-group">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-mobile-phone"></i>
                                                 </div>
-                                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.Cellphone" required>
+                                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.Cellphone" required input-mask>
                                             </div><!-- /.input group -->
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-phone"></i>
                                                 </div>
-                                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="New.HomePhone" required>
+                                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.HomePhone" input-mask>
                                             </div><!-- /.input group -->
                                         </div>
                                     </div>
@@ -160,20 +160,14 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Barrio / Colonia</label>
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Neighborhood" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
+                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId" required></select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label>Dirección Completa</label>
                                     <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" required>
                                 </div>
@@ -575,9 +569,6 @@
                         <div class="form-group col-md-6">
                             <label>Idioma</label>
                             <select class="form-control" ng-options="Language.Name for Language in Languages" ng-model="Language" required>
-                                <!--<option>Básico</option>
-                                    <option>Intermedio</option>
-                                    <option>Avanzado</option>-->
                             </select>
                         </div>
                     </div>
@@ -585,9 +576,6 @@
                         <div class="form-group col-md-4">
                             <label>Nivel</label>
                             <select class="form-control" ng-options="LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevel" required>
-                                <!--<option>Básico</option>
-                                <option>Intermedio</option>
-                                <option>Avanzado</option>-->
                             </select>
                         </div>
                     </div>
@@ -732,7 +720,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphoneWRef" required>
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="CellphoneWRef" required input-mask>
                                 </div><!-- /.input group -->
                             </div>
                         </div>
@@ -809,7 +797,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="CellphonePRef">
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="CellphonePRef" input-mask>
                                 </div><!-- /.input group -->
                             </div>
                         </div>

@@ -7,126 +7,94 @@
     <h4>{{ item.title }}</h4>
     {{ item.msg }}
 </div><!-- End Alert -->
-<!-- Delete confirmation modal -->
-<div class="modal fade" id="deleteClientInfo" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><i class="fa "></i>Eliminar Cliente</h4>
-            </div>
-            <form action="#" method="post">
-                <div class="modal-body">
-                    <label>¿Está seguro de que desea eliminar el cliente seleccionado?</label>
-                </div>
-                <div class="modal-footer clearfix">
-                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="DeleteCustomer(selectedClient)">Si</button>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<!-- Enable confirmation modal -->
-<div class="modal fade" id="disableClientInfo" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><i class="fa "></i>Deshabilitar Cliente</h4>
-            </div>
-            <form action="#" method="post">
-                <div class="modal-body">
-                    <label>¿Está seguro de que desea deshabilitar el cliente seleccionado?</label>
-                </div>
-                <div class="modal-footer clearfix">
-                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-danger text-center" data-dismiss="modal" ng-click="disableCustomer(Customer)">Si</button>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<!-- ADD REJECT-->
-<div class="modal fade" id="rejectionInfo" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><i class="fa "></i>Causa</h4>
-            </div>
-            <form action="#" method="post" name="formReject">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Descripción</label>
-                                <textarea class="form-control" ng-disabled="true" placeholder="Ingresar ..." ng-model="RejectionDescription" required></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer clearfix">
-                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Salir</button>
-                    <!--<button type="submit" class="btn btn-primary text-center" data-dismiss="modal">Aceptar</button>-->
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
-<div class="col-md-12" ng-init="setData()">
+<div class="col-md-12">
     <!-- Chat box -->
     <div class="box box-success">
         <div class="box-header">
-            <i class="fa fa-search"></i>
-            <h3 class="box-title">Búsqueda de Clientes</h3>
+            
+                <i class="fa fa-search"></i>
+                <h3 class="box-title">Búsqueda de Clientes</h3>
+            <div class="row">
+                <div class="col-md-offset-8">
+                    <label>Filtros:</label>
+                    <div isteven-multi-select
+                         input-model="fields"
+                         output-model="selectedCustomers"
+                         button-label="text"
+                         item-label="text"
+                         translation="localLang"
+                         tick-property="ticked"
+                         max-height="70px"></div>
+                </div>
+            </div>
             <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
                 <div class="btn-group" data-toggle="btn-toggle">
-                    <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
+                    
                 </div>
             </div>
         </div>
         <div class="box-body chat" id="chat-box">
-            <form ng-submit="searchClients()">
-                <div class="item">
-                    <div class="input-group col-lg-6">
+            <form ng-submit="searchClients(searchCustomer)" class="form-box">
+                <div class="form-group">
+                    <div class="input-group">
                         <input class="form-control" ng-model="searchCustomer" placeholder="Buscar..." />
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
-                        </div>
+                        <div class="input-group-addon btn btn-info" ><i class="fa fa-search"></i></div>
                     </div>
                 </div>
             </form>
             <!-- chat item -->
-            <div class="item" ng-repeat="customer in customerData | filter : searchCustomer">
-                <img ng-src="data:image/jpeg;base64,{{customer.Photo}}" class="online" />
+
+            
+            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+        <div class="table-responsive">
+
+        </div>       
+        <div ng-show="true" class="item row"  ng-repeat="customer in customerData">
+                <!--<img ng-src="data:image/jpeg;base64,{{customer.Photo}}" class="online" />-->
+                <br />
+            <br />
                 <p class="message">
-                    <a href="" class="name">
+                    <a href="" class="name" ng-show="isSelectedField('FirstName') || isSelectedField('LastName')">
                         <small class="text-muted pull-right"><i class="fa fa-square"></i> {{customer.State.Name}}</small>
                         {{customer.FirstName}} {{customer.LastName}}
                     </a>
                 </p>
-                <div class="attachment">
-                    <h4>Profesión</h4>
-                    <p class="filename">
-                        {{customer.Occupation}}
-                    </p>
-                    <h4>Edad:</h4>
-                    <p class="filename">
-                        {{customer.Age}} años
-                    </p>
-                    <h4>Dirección:</h4>
-                    <p class="filename">
-                        {{customer.City.Name}}, {{customer.Neighborhood}}
-                    </p>
-                    <div class="pull-right">
-                        <button class="btn btn-primary btn-sm btn-flat" ng-click="setScope(customer)">Ver Perfil</button>
-                    </div>
-                </div><!-- /.attachment -->
+                <div class="attachment row">
+                    <table class="table">
+                        <tbody>
+                            <tr ng-show="isSelectedField('CorrelativeCode') || isSelectedField('IdentityNumber')">
+                                <th ng-show="isSelectedField('CorrelativeCode')">Correlativo:</th>
+                                <td ng-show="isSelectedField('CorrelativeCode')">{{customer.CorrelativeCode}}</td>
+                                <th ng-show="isSelectedField('IdentityNumber')">Identidad:</th>
+                                <td ng-show="isSelectedField('IdentityNumber')">{{customer.IdentityNumber}}</td>
+                            </tr>
+                            <tr ng-show="isSelectedField('Occupation') || isSelectedField('Age')">
+                                <th ng-show="isSelectedField('Occupation')">Profesión:</th>
+                                <td ng-show="isSelectedField('Occupation')">{{customer.Occupation}}</td>
+                                <th ng-show="isSelectedField('Age')">Edad:</th>
+                                <td ng-show="isSelectedField('Age')">{{customer.Age}}</td>
+                            </tr>
+                            <tr ng-show="isSelectedField('WageAspiration') || isSelectedField('Cellphone')">
+                                <th ng-show="isSelectedField('Cellphone')">Celular:</th>
+                                <td ng-show="isSelectedField('Cellphone')">{{customer.Cellphone}}</td>
+                                <th ng-show="isSelectedField('WageAspiration')">Salario sugerido:</th>
+                                <td ng-show="isSelectedField('WageAspiration')">{{customer.WageAspiration}}</td>
+                            </tr>
+                            <tr ng-show="isSelectedField('CompleteAddress')">
+                                <th>Dirección:</th>
+                                <td>{{customer.CompleteAddress}}</td>
+                            </tr>
+                            <tr ng-show="isSelectedField('Hobby')">
+                                <th>Pasatiempo:</th>
+                                <td>{{customer.Hobby}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <div class="pull-right">
+                            <button class="btn btn-primary btn-sm btn-flat" ng-click="setScope(customer)">Ver Perfil</button>
+                        </div>
+                    </div><!-- /.attachment -->
             </div><!-- /.item -->
         </div><!-- /.chat -->
 

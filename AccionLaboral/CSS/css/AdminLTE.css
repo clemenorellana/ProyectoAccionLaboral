@@ -11,7 +11,17 @@
 ----------------------------
 */
 
+.required label:after { content:" *"; color:red;}
+
 input.ng-touched.ng-invalid:not(.has-focus){
+   border:1px solid #f00;
+}
+
+select.ng-touched.ng-invalid:not(.has-focus){
+   border:1px solid #f00;
+}
+
+radio.ng-touched.ng-invalid:not(.has-focus){
    border:1px solid #f00;
 }
 

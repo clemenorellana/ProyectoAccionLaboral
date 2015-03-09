@@ -19,7 +19,8 @@ angular.module('AccionLaboralApp', [
         'employeeTypesController',
         'statesController',
         'ngSanitize',
-        'ui.select'
+        'ui.select',
+        'isteven-multi-select'
     ])
     .config([
         '$routeProvider',

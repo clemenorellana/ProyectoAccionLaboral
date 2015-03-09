@@ -135,8 +135,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             reader.onload = (function(theFile) {
                 return function (e) {
                     var filePayload = e.target.result;
-                    $scope.episodeImgData = filePayload.replace('data:'+f.type +';base64,', '');
+                    $scope.episodeImgData = filePayload.replace('data:' + f.type + ';base64,', '');
                     document.getElementById('imagen').src = filePayload;
+                    $scope.$apply(function () {
+
+                    });
                 };
             })(f);
             reader.readAsDataURL(f);
@@ -169,8 +172,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
             customerRepository.getCustomers().success(function(data) {
                         $scope.customerData = data;
-                        $scope.totalServerItems = data.totalItems;
-                        $scope.items = data.items;
                         $scope.load = false;
 
                         if ($rootScope.alerts)
@@ -190,11 +191,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         
         $scope.setFiltered = function (term) {
-            $scope.filtered = filterFilter($scope.customerData, term);
+            if ($scope.customerData) {
+                $scope.filtered = filterFilter($scope.customerData, term);
 
-            $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                    $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+                $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                        $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+            }
         };
 
         $scope.$watch('search', function (term) {
@@ -971,8 +974,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.load = true;
             customerRepository.getCustomers().success(function (data) {
                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: 1 }, true);
-                $scope.totalServerItems = data.totalItems;
-                $scope.items = data.items;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -1125,8 +1126,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
         });
 
-       
-
         customerRepository.getCareers().success(function (data) {
             $scope.AllCarees = data;
         });
@@ -1162,7 +1161,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 });
             });
         };
-                
        
         $scope.getCitiesByCountry = function(countryId) {
             if (countryId)
@@ -1184,12 +1182,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
             
             $scope.generateCV = function () {
-
                 try {
                     $window.open("Clients/ExportClient/" + $routeParams.id, '_blank');
                     //$window.location.href = "Clients/ExportClient/" + $routeParams.id;
                     alertService.add('success', 'Generado', 'La hoja de vida ha sido generada correctamente.');
-                        $scope.alertsTags = $rootScope.alerts;
+                    $scope.alertsTags = $rootScope.alerts;
                 } catch (e) {
                     alertService.add('danger', 'Error', 'No se ha podido crear la hoja de vida.');
                     $scope.alertsTags = $rootScope.alerts;
@@ -1709,7 +1706,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.index = index;
             };
             $scope.addTranning = function () {
-                if ($scope.trainingFormEdit.$valid) {
+                if ($scope.trainigFormEdit.$valid) {
                     if ($scope.action == 'edit') {
                         $scope.Trannings[$scope.index].TrainingName = $scope._TrainingName;
                         $scope.Trannings[$scope.index].InstitutionName = $scope._InstitutionName;
@@ -2843,9 +2840,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.Trackings = angular.copy(data.Trackings);
 
                 $scope.Client = data;
-
-                $scope.totalServerItems = data.totalItems;
-                $scope.items = data.items;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -2877,8 +2871,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
             customerRepository.getCustomers().success(function (data) {
                 $scope.customerData = data;
-                $scope.totalServerItems = data.totalItems;
-                $scope.items = data.items;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -3023,12 +3015,39 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
     }]).
      controller('SearchCustomerController', ['$scope', '$rootScope', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, customerRepository, filterFilter, alertService) {
-    //search costumer
+         //search costumer
+         $scope.localLang = {
+             selectAll       : "Todos",
+             selectNone      : "Limpiar",
+             reset           : "Reiniciar",
+             search          : "Buscar campo...",
+         nothingSelected : "Ninguno"         //default-label is deprecated and replaced with this.
+     };
+         $scope.fields = [
+         { "value": "FirstName", "text": "Nombre", "ticked": true },
+         { "value": "LastName", "text": "Apellido", "ticked": true },
+         { "value": "IdentityNumber", "text": "Identidad", "ticked": false },
+         { "value": "CorrelativeCode", "text": "Correlativo", "ticked": false },
+         { "value": "Ocuppation", "text": "Profesion", "ticked": false },
+         { "value": "Age", "text": "Edad", "ticked": false },
+         { "value": "CompleteAddress", "text": "Direccion", "ticked": false },
+         { "value": "Cellphone", "text": "Celular", "ticked": false },
+         { "value": "WageAspiration", "text": "Salario sugerido", "ticked": false },
+         { "value": "Hobby", "text": "Pasatiempo", "ticked": false }
+         ];
+
+         $scope.member = { fields: [] };
+         $scope.selected_items = [];
+
     $scope.enrollClientExist = false;
     $scope.showMsgErrorClient = false;
     if (!$rootScope.alerts)
         $rootScope.alerts = [];
 
+    $scope.isSelectedField = function (fieldName) {
+        $scope.filteredFields = filterFilter($scope.selectedCustomers, { value: fieldName });
+        return $scope.filteredFields.length>0;
+    }
     $scope.back = function () {
         $location.path("/AllClients");
     };
@@ -3125,11 +3144,15 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     //Sorting
     $scope.sort = "FirstName";
     $scope.reverse = false;
-    $scope.searchClients = function () {
-        customerRepository.getCustomers().success(function (data) {
+    $scope.searchClients = function (searchTerm) {
+        $scope.load = true;
+        $scope.selectedFields = "";
+        for (var i = 0; i < $scope.selectedCustomers.length; i++) {
+            $scope.selectedFields += (i == $scope.selectedCustomers.length - 1) ? $scope.selectedCustomers[i].value : $scope.selectedCustomers[i].value + ",";
+        };
+        customerRepository.searchCustomers(searchTerm, $scope.selectedFields).success(function (data) {
             $scope.customerData = data;
-            $scope.totalServerItems = data.totalItems;
-            $scope.items = data.items;
+
             $scope.load = false;
 
             if ($rootScope.alerts)
@@ -3176,7 +3199,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
         $scope.index = -1;
         $scope.action = '';
-        $scope.load = true;
         $scope.assignCareers = function() {
             if ($scope.AcademicLevel)
                 $scope.Careers = $scope.AcademicLevel.Careers;
@@ -3238,4 +3260,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
     return out;
   }
+}).directive('inputMask', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, el, attrs) {
+            $(el).inputmask(scope.$eval(attrs.inputMask));
+        }
+    };
 });

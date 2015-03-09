@@ -105,10 +105,43 @@
                                 <th>Universidad o institución</th>
                             </tr>
                             <tr ng-repeat="education in academicEducations">
-                                <td>{{education.Year}}</td>
-                                <td>{{education.City.Name}} - {{education.City.Country.Name}}</td>
-                                <td>{{education.TrainingName}}</td>
-                                <td>{{education.InstitutionName}}</td>
+                                <td class="text-center">{{education.Year}}</td>
+                                <td class="text-center">{{education.City.Name}} - {{education.City.Country.Name}}</td>
+                                <td class="text-center">{{education.TrainingName}}</td>
+                                <td class="text-center">{{education.InstitutionName}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Idiomas Manejados -->
+
+                    <div class="row text-center" style="background-color: #A1D0DB; border: solid 2px white;">
+                        <h3 style="color:black">Idiomas Manejados</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <tr>
+                                <th>Idioma</th>
+                                <th>Nivel</th>
+                                <th>Porcentaje</th>
+                            </tr>
+                            <tr ng-repeat="language in knownLanguages">
+                                <td class="text-center">{{language.Language.Name}}</td>
+                                <td class="text-center">{{language.LanguageLevel.Name}}</td>
+                                <td class="text-center">{{language.Percentage}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Programas -->
+
+                    <div class="row text-center" style="background-color: #A1D0DB; border: solid 2px white;">
+                        <h3 style="color:black">Programas Manejados</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <tr ng-repeat="program in knownPrograms">
+                                <td class="text-center">{{program.Name}}</td>
                             </tr>
                         </table>
                     </div>
@@ -129,11 +162,12 @@
                                 <th>Tareas o logros</th>
                             </tr>
                             <tr ng-repeat="experience in New.WorkExperiences">
-                                <td>{{experience.StartDate |date: 'dd/MM/yyyy'}} - {{experience.EndDate |date: 'dd/MM/yyyy'}}</td>
-                                <td>{{experience.City.Name}} - {{experience.City.Country.Name}}</td>
-                                <td>{{experience.CompanyArea}}</td>
-                                <td>{{experience.Charge}}</td>
-                                <td>{{experience.Archievements}}</td>
+                                <td class="text-center">{{experience.StartDate |date: 'dd/MM/yyyy'}} - {{experience.EndDate |date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-center">{{experience.City.Name}} - {{experience.City.Country.Name}}</td>
+                                <td class="text-center">{{experience.CompanyName}}</td>
+                                <td class="text-center">{{experience.CompanyArea}}</td>
+                                <td class="text-center">{{experience.Charge}}</td>
+                                <td class="text-center">{{experience.Achievements}}</td>
                             </tr>
                         </table>
                     </div>
@@ -153,13 +187,12 @@
                                 <th>E-Mail</th>
                             </tr>
                             <tr ng-repeat="reference in workReferences">
-                                <td>{{reference.CompanyName}}</td>
-
-                                <td>{{reference.City.Name}} - {{reference.City.Country.Name}}</td>
-                                <td>{{reference.FirstName}} - {{reference.LastName}}</td>
-                                <td>{{reference.Charge}}</td>
-                                <td>{{reference.Cellphone}}</td>
-                                <td>{{reference.Email}}</td>
+                                <td class="text-center">{{reference.CompanyName}}</td>
+                                <td class="text-center">{{reference.City.Name}} - {{reference.City.Country.Name}}</td>
+                                <td class="text-center">{{reference.FirstName}} {{reference.LastName}}</td>
+                                <td class="text-center">{{reference.Charge}}</td>
+                                <td class="text-center">{{reference.Cellphone}}</td>
+                                <td class="text-center">{{reference.Email}}</td>
                             </tr>
                         </table>
                     </div>
@@ -179,12 +212,12 @@
                                 <th>E-Mail</th>
                             </tr>
                             <tr ng-repeat="reference in personalReferences">
-                                <td>{{reference.Relationship}}</td>
-                                <td>{{reference.City.Name}} - {{reference.City.Country.Name}}</td>
-                                <td>{{reference.FirstName}} - {{reference.LastName}}</td>
-                                <td>{{reference.Charge}}</td>
-                                <td>{{reference.Cellphone}}</td>
-                                <td>{{reference.Email}}</td>
+                                <td class="text-center">{{reference.Relationship}}</td>
+                                <td class="text-center">{{reference.City.Name}} - {{reference.City.Country.Name}}</td>
+                                <td class="text-center">{{reference.FirstName}} {{reference.LastName}}</td>
+                                <td class="text-center">{{reference.Charge}}</td>
+                                <td class="text-center">{{reference.Cellphone}}</td>
+                                <td class="text-center">{{reference.Email}}</td>
                             </tr>
                         </table>
                     </div>
@@ -198,7 +231,7 @@
                     <div class="col-md-2 text-center">
                         <button type="submit" class="btn btn-default" ng-click="generateCV()"><img src="../../Images/MS/Word-icon16.png" />Generar CV</button>
                     </div>
-                    <div class="col-md-2 text-center" ng-show="New.State.Alias == 'PI' && !New.EmployeeId">
+                    <div class="col-md-2 text-center" ng-show="New.State.Alias == 'PI' && New.EmployeeId==null">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#advisorInfo">Asignar Asesor</button>
                     </div>
 

@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
 using System.Web.Mvc;
+using AccionLaboral.Helpers.Lucene;
+using System.IO;
 
 namespace AccionLaboral.Controllers
 {
@@ -61,6 +63,20 @@ namespace AccionLaboral.Controllers
             return clients;
         }
 
+        public List<Client> SearchClients(string search)
+        {
+            List<string> keywordsList = new List<string>(); 
+            // Turn user input to a list of keywords.
+            string[] keywords = search.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            List<Client> clients = new List<Client>();
+            if (keywords.Length <= 0)
+            {
+                return clients;
+            }
+
+
+            return clients;
+        }
         // GET api/Clients/5
         [ResponseType(typeof(Client))]
         public IHttpActionResult GetClient(int id)
@@ -84,23 +100,6 @@ namespace AccionLaboral.Controllers
                     .Include(r => r.Trackings.Select(c => c.State))
                     .Include(r => r.Trackings.Select(c => c.TrackingType))
                     .First(r => r.ClientId == id);
-            Client client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
-                .Include(r => r.AcademicEducations.Select(c => c.Career))
-                .Include(r => r.AcademicEducations.Select(t => t.EducationType))
-                .Include(r => r.KnownPrograms)
-                .Include(r => r.Languages.Select(l=>l.Language))
-                .Include(r => r.Languages.Select(l => l.LanguageLevel))
-                .Include(r => r.References.Select(c=>c.City))
-                .Include(r => r.References.Select(t => t.ReferenceType))
-                .Include(r => r.WorkExperiences)
-                .Include(r => r.WorkExperiences.Select(c => c.City))
-                .Include(r=>r.State)
-                .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
-                .Include(r => r.Trackings.Select(c => c.State))
-                .Include(r => r.Trackings.Select(c => c.TrackingType))
-                .Include(r=> r.City.Country)
-                .First(r => r.ClientId == id);
 
                 if (client == null)
                 {
@@ -116,10 +115,6 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients/5
-        //[System.Web.Mvc.HttpGet("api/Clients/{id}/Tracking")]
-        //[ResponseType(typeof(Client))]
-        //[System.Web.Mvc.Route("api/Clients/{id}/Tracking")]
-        //[System.Web.Mvc.HttpGet]
         [ResponseType(typeof(Client))]
         public IHttpActionResult Tracking(int id)
         {
@@ -136,8 +131,7 @@ namespace AccionLaboral.Controllers
 
         // PUT api/Clients/5
         public IHttpActionResult PutClient(int id, Client client)
-        {
-            
+        {   
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -218,8 +212,7 @@ namespace AccionLaboral.Controllers
                 else
                 {
                     dbClients.KnownPrograms.Add(newProgram);
-                }
-                    
+                }       
             }
 
             //WorkExperiences
@@ -241,7 +234,6 @@ namespace AccionLaboral.Controllers
                     dbClients.WorkExperiences.Add(newWorkExperience);
                 }
             }
-
             //References
             foreach (var dbReference in dbClients.References.ToList())
                 if (!client.References.Any(s => s.ReferenceId == dbReference.ReferenceId))
@@ -279,6 +271,7 @@ namespace AccionLaboral.Controllers
             }
             try
             {
+                GoLucene.AddUpdateLuceneIndex(client);
                 db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
@@ -308,9 +301,8 @@ namespace AccionLaboral.Controllers
                 }
                 client.EnrollDate = DateTime.Now;
                 db.Clients.Add(client);
+                GoLucene.AddUpdateLuceneIndex(client);
                 db.SaveChanges();
-
-                
             }
             catch( Exception e){
                 var x = e.Message;
@@ -327,7 +319,7 @@ namespace AccionLaboral.Controllers
             {
                 return NotFound();
             }
-
+            GoLucene.ClearLuceneIndexRecord(id);
             db.Clients.Remove(client);
             db.SaveChanges();
 
@@ -362,7 +354,7 @@ namespace AccionLaboral.Controllers
                 if (client != null)
                 {
                     
-                    AccionLaboral.Reports.Helpers.CV.CreateWordDocument(client,ref path);
+                    //AccionLaboral.Reports.Helpers.CV.CreateWordDocument(client,ref path);
                     //return true;
                 }
             }
@@ -372,6 +364,47 @@ namespace AccionLaboral.Controllers
             }
             return path;
         }
+
+        // Get api/ExportClient
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/SearchClients/{searchTerm}/{searchField}/{limit}")]
+        public List<Client> SearchClients(string searchTerm, string searchField, int? limit)
+        {
+            searchTerm = (searchTerm == "null") ? null : searchTerm;
+            searchField = (searchField == "null") ? null : searchField;
+            string[] fields = (searchField != null) ? searchField.Split(',') : null;
+            // create default Lucene search index directory
+            if (!Directory.Exists(GoLucene._luceneDir))
+            {
+                Directory.CreateDirectory(GoLucene._luceneDir);
+                GoLucene.AddUpdateLuceneIndex(db.Clients.ToList());
+            }
+
+            // perform Lucene search
+            List<Client> _searchResults;
+                _searchResults = (string.IsNullOrEmpty(searchField)
+                                   ? GoLucene.Search(searchTerm)
+                                   : GoLucene.Search(searchTerm, fields)).ToList();
+            if (string.IsNullOrEmpty(searchTerm) && !_searchResults.Any())
+                _searchResults = GoLucene.GetAllIndexRecords().ToList();
+
+            // limit display number of database records
+            var limitDb = limit == null ? 10 : Convert.ToInt32(limit);
+            List<Client> allSampleData;
+            if (limitDb > 0)
+            {
+                allSampleData = db.Clients.ToList().Take(limitDb).ToList();
+                //ViewBag.Limit = db.Clients.ToList().Count - limitDb;
+            }
+            else allSampleData = db.Clients.ToList();
+            foreach (Client client in _searchResults)
+            {
+                client.State = (client.StateId != 0) ? db.States.Find(client.StateId) : null;
+            }
+            return _searchResults.AsQueryable().ToList();
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -482,9 +515,5 @@ namespace AccionLaboral.Controllers
         {
             return db.Trackings.Count(e => e.TrackingId == id) > 0;
         }
-        //public ActionResult Test()
-        //{
-        //    return View();
-        //}
     }
 }
