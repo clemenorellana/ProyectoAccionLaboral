@@ -28,7 +28,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
 }]
 )
 .controller('vacantsByCompaniesCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
-
+    
     $scope.vacantList = [];
     $scope.vacant_companyList = [];
     $scope.vacant_vacantLevelList = [];
@@ -221,6 +221,9 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     });
   
     $scope.saveVacant = function () {
+
+        if (!$scope.vacantForm.$valid)
+            return;
         
         var newVacant = {
             VacantName : $scope.vacant_VacantName,

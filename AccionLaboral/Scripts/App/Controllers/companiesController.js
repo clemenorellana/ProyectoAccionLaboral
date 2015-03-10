@@ -176,7 +176,9 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
 
     $scope.saveCompany = function () {
-         
+        if (!$scope.companyForm.$valid)
+            return;
+
         var newCompany = {
             CompanyId: $scope.company_CompanyId,
             CompanyName: $scope.company_Name,
