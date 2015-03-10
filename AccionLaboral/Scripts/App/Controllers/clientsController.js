@@ -1269,14 +1269,16 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.Trannings = [];
                 $scope.workReferences = [],
                     $scope.personalReferences = [];
-                for (var j = 0; j < data.AcademicEducations.length; j++) {
+                var sizeAcademicEducations = (data.AcademicEducations != null) ? data.AcademicEducations.length : 0;
+                for (var j = 0; j < sizeAcademicEducations; j++) {
                     if (data.AcademicEducations[j].EducationType.Name == 'ACADEMICA') {
                         $scope.academicEducations.push(data.AcademicEducations[j]);
                     } else {
                         $scope.Trannings.push(data.AcademicEducations[j]);
                     }
                 }
-                for (var i = 0; i < data.References.length; i++) {
+                var sizeReferences = (data.References != null) ? data.References.length : 0;
+                for (var i = 0; i < sizeReferences; i++) {
                     if (data.References[i].ReferenceType.Name == 'L')
                         $scope.workReferences.push(data.References[i]);
                     else

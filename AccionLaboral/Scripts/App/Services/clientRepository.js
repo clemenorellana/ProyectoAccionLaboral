@@ -7,10 +7,13 @@ var urlCustomer = 'api/clients/';
 accionLabControllers.factory('customerRepository',['$http', function ($http) {
     return {
         getCustomers: function (employee) {
+            var urlCustomersByEmployee;
             if (employee.Role.Alias == "ASREC")
-                urlCustomer = 'api/clientsbyemployee/' + employee.EmployeeId;
+                urlCustomersByEmployee = 'api/clientsbyemployee/' + employee.EmployeeId;
+            else
+                urlCustomersByEmployee = 'api/clients/';
 
-            return $http.get(urlCustomer);
+            return $http.get(urlCustomersByEmployee);
         },
         getEmployees: function () {
             return $http.get('api/Employees');
