@@ -291,14 +291,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
 
     $scope.saveEmployee = function () {
         var exists = false;
-        //var employeefirstNameFilter = $filter('filter')($scope.employeesList, { FirstName: $scope.employee_FirstName },true);
-        //if (employeefirstNameFilter.length > 0) {
-        //    //los nombres coinciden con uno existente
-        //    var lastNameFilter = $filter('filter')(employeefirstNameFilter, { LastName: $scope.employee_LastName },true);
-        //    exists = (lastNameFilter.length == 0) ? false : true;
-        //}
-
-
+        
         if (!exists) {
             var user = $scope.employee_User;
             user.Busy = true;

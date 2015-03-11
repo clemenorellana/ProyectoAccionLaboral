@@ -23,6 +23,10 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
                 return '/VacantsByCompany/Details/' + params.id;
             },
             controller: 'vacantsByCompaniesCtrl'
+        }).
+        when('/VacantList', {
+            templateUrl: '/VacantsByCompany/VacantList',
+            controller: 'vacantsByCompaniesCtrl'
         });
     
 }]
@@ -283,6 +287,12 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     $scope.vacant_cancelRedirect = function () {
         window.location = "#/Vacants";
     }
+
+    
+    $scope.vacant_detailCancelRedirect = function () {
+        window.location = "#/VacantList";
+    }
+
 
     $scope.vacant_addNewRedirect = function () {
         window.location = "#/AddVacant";

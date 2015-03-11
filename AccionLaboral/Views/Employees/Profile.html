@@ -144,7 +144,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Tipo de Empleado</label>
-                        <select class="form-control" ng-options="rol.Name for rol in employeesRolesList" ng-model="employee_Role">
+                        <select class="form-control" disabled ng-options="rol.Name for rol in employeesRolesList" ng-model="employee_Role">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -152,13 +152,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Alias</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_EmployeeAlias">
+                        <input disabled type="text" class="form-control" ng-model="employee_EmployeeAlias">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Usuario</label>
-                        <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
+                        <select disabled class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>

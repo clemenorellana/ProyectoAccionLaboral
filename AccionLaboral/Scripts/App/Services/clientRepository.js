@@ -73,8 +73,9 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
 
                 "CityId": client.CityId.CityId,
-                "EmployeeId": 1,//client.AdvisorId,
-                "CareerId": client.CareerId, "StateId": 1,
+                "EmployeeId": client.AdvisorId,
+                "CareerId": client.CareerId,
+                "StateId": 1,
 
                 "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
                 "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": Tracking

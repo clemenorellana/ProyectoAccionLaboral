@@ -60,6 +60,13 @@
                             <li><a ng-click="title='Clientes'" href="#ClientTracking"><i class="fa fa-angle-double-right"></i> Seguimiento de Clientes</a></li>
                         </ul>
                     </li>
+                    <li ng-show="getRole('VacantsMenu');">
+                        <a href="#/VacantList" ng-click="title='Vacantes'">
+                            <i class="fa fa-briefcase"></i>
+                            <span>Listado de Vacantes</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                    </li>
                     <li class="treeview" ng-show="getRole('Corporativo');">
                         <a href="#">
                             <i class="fa fa-briefcase"></i>
@@ -89,9 +96,6 @@
                             <span>Reclutamiento</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
-                        <!--<ul class="treeview-menu">
-            <li><a ng-click="title='Reclutamiento'" href="#/SearchClients"><i class="fa fa-angle-double-right"></i> Buscar Perfiles</a></li>
-        </ul>-->
                     </li>
                     <li class="treeview" >
                         <a href="#">

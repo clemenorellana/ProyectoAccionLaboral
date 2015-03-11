@@ -195,6 +195,11 @@ angular.module('AccionLaboralApp', [
                     return (user.Role.Alias == "ASCOR") ? false : true;
 
 
+                // Opciones del menu de "Vacantes" -- esto para que los asesores de reclutamiento las puedan ver
+                if (menu == "VacantsMenu")
+                    return (user.Role.Alias != "ASREC") ? false : true;
+
+
                 // Opciones del menu de "Corportativo"
                 if (menu == "Corporativo" || menu == "Companies" || menu == "AddCompany" || menu == "Vacants" || menu == "AddVacant")
                     return (user.Role.Alias == "ASREC") ? false : true;
@@ -323,7 +328,7 @@ angular.module('AccionLaboralApp', [
                         next.templateUrl == '/VacantsByCompany/Index' ||
                         next.templateUrl == '/VacantsByCompany/Create' ||
                         next.templateUrl == '/VacantsByCompany/Edit/' ||
-                        next.templateUrl == '/VacantsByCompany/Details/' ||
+                        
                         next.templateUrl == '/Contracts/Index' ||
                         next.templateUrl == '/Interviews/Index' ||
                         next.templateUrl == '/Companies/Index' ||
@@ -371,7 +376,9 @@ angular.module('AccionLaboralApp', [
                         next.templateUrl == '/Countries/Index' ||
                         next.templateUrl == '/CVReport/Index' ||
                         next.templateUrl == '/NewClientsReport/Index' ||
-                        next.templateUrl == '/Clients/SearchClients'
+                        next.templateUrl == '/Clients/SearchClients' ||
+                        next.templateUrl == '/VacantsByCompany/Details/' ||
+                        next.templateUrl == '/VacantsByCompany/VacantList' 
                         ) {
                         $location.path('/');
                     }

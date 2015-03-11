@@ -814,6 +814,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             }
                         }
 
+                        $scope.New.AdvisorId = $rootScope.userLoggedIn.EmployeeId;
+
                         if ($scope.action == 'edit') {
                             customerRepository.UpdateCustomer($scope.New).success(function () {
                                 alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');

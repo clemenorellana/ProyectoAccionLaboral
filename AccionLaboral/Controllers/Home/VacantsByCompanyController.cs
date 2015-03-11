@@ -15,6 +15,14 @@ namespace AccionLaboral.Controllers.Home
             return new FilePathResult("~/Views/VacantsByCompany/Index.html", "text/html");
         }
 
+
+        //
+        // GET: /VacantsByCompany/
+        public ActionResult VacantList()
+        {
+            return new FilePathResult("~/Views/VacantsByCompany/VacantList.html", "text/html");
+        }
+
         //
         // GET: /VacantsByCompany/Details/5
         public ActionResult Details(int id)
