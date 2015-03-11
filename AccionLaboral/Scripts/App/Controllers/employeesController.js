@@ -41,7 +41,8 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         return _date;
     };
 })
-.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'usersRepo', function ($scope, employeesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, usersRepo) {
+.controller('employeesCtrl', ['$scope', 'employeesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'usersRepo', 'authService',
+                                function ($scope, employeesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, usersRepo, authService) {
     $scope.load = true;
     var actionEmployee = "";
     $scope.employeesList = [];
@@ -370,6 +371,22 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
                     alertService.add('success', 'Mensaje', 'El Empleado se ha editado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.setEmployeeData();
+
+                    if ($rootScope.userLoggedIn.EmployeeId == employee.EmployeeId) {
+                        $rootScope.userLoggedIn.Photo = employee.Photo;
+                        $rootScope.userLoggedIn.FirstName = employee.FirstName;
+
+                        authService.updateAuthenticationData($rootScope.userLoggedIn).then(function (response) {
+                            $rootScope.userLoggedIn = authService.authentication.employee;
+                        },
+                    function (err) {
+                        $scope.message = err.error_description;
+                        $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                    });
+
+                    }
+
+
                     $scope.load = false;
                 }).error(function () {
                     alertService.add('danger', 'Error', 'No se ha podido editar el registro.');

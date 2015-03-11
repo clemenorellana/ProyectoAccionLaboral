@@ -62,10 +62,25 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
 
     }
 
+
     authServiceFactory.login = _login;
     authServiceFactory.logOut = _logOut;
     authServiceFactory.fillAuthData = _fillAuthData;
     authServiceFactory.authentication = _authentication;
+
+    authServiceFactory.updateAuthenticationData = function (employee) {
+        debugger
+
+        _fillAuthData();
+        var userName = _authentication.userName;
+
+        localStorageService.set('authorizationData', {  userName: userName, employee: employee });
+        
+        _authentication.isAuth = true;
+        _authentication.userName = userName
+        _authentication.employee = employee;
+
+    }
 
     return authServiceFactory;
 }]);
