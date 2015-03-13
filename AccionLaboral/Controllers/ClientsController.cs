@@ -27,6 +27,7 @@ namespace AccionLaboral.Controllers
         // GET api/Clients
         public List<Client> GetClients()
         {
+            
             List<Client> clients = null;
             try
             {
@@ -55,6 +56,8 @@ namespace AccionLaboral.Controllers
                                                 WorkExperiences = x.WorkExperiences,
                                                 Trackings = x.Trackings
             })*/.ToList();
+                //GoLucene.ClearLuceneIndex();
+                //GoLucene.AddUpdateLuceneIndex(clients);
             }
             catch (Exception e)
             {
@@ -397,7 +400,21 @@ namespace AccionLaboral.Controllers
             if (!Directory.Exists(GoLucene._luceneDir))
             {
                 Directory.CreateDirectory(GoLucene._luceneDir);
-                GoLucene.AddUpdateLuceneIndex(db.Clients.ToList());
+                GoLucene.AddUpdateLuceneIndex(db.Clients
+                                                        .Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                                                        //.Include(r => r.Employee)
+                                                        .Include(r => r.State)
+                                                        .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
+                                                        .Include(r => r.AcademicEducations.Select(c => c.Career))
+                                                        .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                                                        .Include(r => r.KnownPrograms)
+                                                        .Include(r => r.Languages.Select(l => l.Language))
+                                                        .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                                                        .Include(r => r.References.Select(c => c.City.Country))
+                                                        //.Include(r => r.References.Select(t => t.ReferenceType))
+                                                        .Include(r => r.WorkExperiences)
+                                                        .Include(r => r.WorkExperiences.Select(c => c.City.Country))
+                                                        .Include(r => r.Trackings.Select(c => c.TrackingType)).ToList());
             }
 
             // perform Lucene search

@@ -19,7 +19,7 @@
                 <img ng-show="!episodeImgData" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
             </div>
             <br />
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="exampleInputFile">Cambiar foto de Perfil</label>
                 <input type="file" id="exampleInputFile">
                 <p class="help-block">Seleccione una foto</p>
@@ -51,7 +51,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group required">
                                             <label>Identidad</label>
-                                            <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" required>
+                                            <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" required data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" input-mask>
                                             <!--<span style="color:red" ng-show="!New.FirstName">
             <span ng-show="!New.FirstName">Nombre es requerido.</span>
         </span>-->
@@ -123,7 +123,7 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Correo Electrónico</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
@@ -160,9 +160,9 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group required">
+                                        <div class="form-group">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId" required></select>
+                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
                                         </div>
                                     </div>
                                 </div>

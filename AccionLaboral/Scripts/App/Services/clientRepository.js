@@ -4,7 +4,7 @@ var accionLabControllers = angular.module('clientsRepository', []);
 var urlCustomer = 'api/clients/';
 
 //the factory object for the webAPI call.
-accionLabControllers.factory('customerRepository',['$http', function ($http) {
+accionLabControllers.factory('customerRepository',['$http', '$rootScope', function ($http, $rootScope) {
     return {
         getCustomers: function (employee) {
             if (employee.Role.Alias == "ASREC")
@@ -70,7 +70,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
 
                 "CityId": client.CityId.CityId,
-                "EmployeeId": 1,//client.AdvisorId,
+                "EmployeeId": $rootScope.userLoggedIn.EmployeeId,
                 "CareerId": client.CareerId, "StateId": 1,
 
                 "AcademicEducations": client.AcademicEducations, "Languages": client.Languages, "KnownPrograms": client.KnownPrograms,
@@ -95,8 +95,8 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         },
         inscribeCustomer: function (client) {
             var newClient = angular.copy(client);
-            newClient.StateId = 2;
-            newClient.Trackings[0].StateId = 2;
+            //newClient.StateId = 2;
+            newClient.Trackings[0].StateId = newClient.StateId;
             newClient.Trackings[0].TrackingTypeId = 2;
             newClient.IsStudying = (client.IsStudying == "1");
             return $http.put(urlCustomer + newClient.ClientId, newClient);

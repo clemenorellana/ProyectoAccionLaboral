@@ -21,7 +21,7 @@ angular.module('AccionLaboralApp', [
         'ngSanitize',
         'ui.select',
         'LocalStorageModule',
-        'authService'
+        'authService',
         'ui.select',
         'isteven-multi-select'
     ])

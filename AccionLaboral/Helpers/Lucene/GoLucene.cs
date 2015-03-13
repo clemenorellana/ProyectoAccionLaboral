@@ -282,15 +282,75 @@ namespace AccionLaboral.Helpers.Lucene
             doc.Add(new Field("RejectionDescription", sampleData.RejectionDescription, Field.Store.YES, Field.Index.ANALYZED));
             if (sampleData.City!=null)
             doc.Add(new Field("City", sampleData.City.Name, Field.Store.YES, Field.Index.ANALYZED));
-            if(sampleData.StateId!=0)
-                doc.Add(new Field("StateId", sampleData.StateId.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+            if(sampleData.State!=null)
+                doc.Add(new Field("State", sampleData.State.Name.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             if (sampleData.Employee!=null)
             doc.Add(new Field("Employee", sampleData.Employee.EmployeeAlias, Field.Store.YES, Field.Index.ANALYZED));
             if (sampleData.Company!=null)
             doc.Add(new Field("Company", sampleData.Company.Name, Field.Store.YES, Field.Index.ANALYZED));
 
+            string programs = "";
+            foreach (KnownProgram program in sampleData.KnownPrograms.ToList())
+            {
+                programs += program.Name + ",";
+            }
+
+            string languages = "";
+            foreach (KnownLanguage language in sampleData.Languages.ToList())
+            {
+                languages += language.Language.Name + " , " + language.Percentage + "%";
+            }
+
+            if (!string.IsNullOrEmpty(programs))
+                doc.Add(new Field("Programs", programs, Field.Store.YES, Field.Index.ANALYZED));
+            if (!string.IsNullOrEmpty(languages))
+                doc.Add(new Field("Languages", languages, Field.Store.YES, Field.Index.ANALYZED));
+
+            string educations = "";
+
+            string careers = "";
+            if (sampleData.AcademicEducations != null)
+            {
+                foreach (AcademicEducation education in sampleData.AcademicEducations)
+                {
+                    if (education.AcademicLevel!=null)
+                    educations += education.AcademicLevel.Name + " , ";
+                    if (education.Career != null)
+                        careers += education.Career.Name + " , ";
+
+                }
+                if (!string.IsNullOrEmpty(languages))
+                    doc.Add(new Field("Educations", educations, Field.Store.YES, Field.Index.ANALYZED));
+                if (!string.IsNullOrEmpty(languages))
+                    doc.Add(new Field("Careers", careers, Field.Store.YES, Field.Index.ANALYZED));
+                int yearsExperience = GetYearsExperience(sampleData.WorkExperiences);
+                if(yearsExperience>0)
+                    doc.Add(new Field("Experience", yearsExperience.ToString() + " años", Field.Store.YES, Field.Index.ANALYZED));
+            }
+
+
+
             // add entry to index
             writer.AddDocument(doc);
+        }
+
+        public static Int32 GetYearsExperience(ICollection<WorkExperience> workExperiences)
+        {
+            int yearsExperience = 0;
+            foreach (WorkExperience experience in workExperiences)
+                yearsExperience += GetYears(experience.StartDate) - GetYears(experience.EndDate);
+
+            return yearsExperience;
+        }
+
+        public static Int32 GetYears(this DateTime dateOf)
+        {
+            var today = DateTime.Today;
+
+            var a = (today.Year * 100 + today.Month) * 100 + today.Day;
+            var b = (dateOf.Year * 100 + dateOf.Month) * 100 + dateOf.Day;
+
+            return (a - b) / 10000;
         }
 
     }

@@ -50,7 +50,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label>Identidad</label>
-                                        <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" ng-class="{'loadinggif': New.IdentityNumber==undefined}" required>
+                                        <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" ng-class="{'loadinggif': New.IdentityNumber==undefined}" required data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" input-mask>
                                         <!--<span style="color:red" ng-show="!New.FirstName">
                     <span ng-show="!New.FirstName">Nombre es requerido.</span>
                 </span>-->
