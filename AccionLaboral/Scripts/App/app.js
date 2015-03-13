@@ -307,78 +307,77 @@ angular.module('AccionLaboralApp', [
                 //Permisos para el Asesor de Reclutamiento
                 var role = $rootScope.userLoggedIn.Role;
                 if (role.Alias == 'ASREC') {
-                    if (next.templateUrl == '/Careers/Index' ||
-                        next.templateUrl == '/Cities/Index' ||
-                        next.templateUrl == '/Companies/Index' ||
-                        next.templateUrl == '/Companies/Create' ||
-                        next.templateUrl == '/Companies/Edit/' ||
-                        next.templateUrl == '/ContractTemplates/Index' ||
-                        next.templateUrl == '/ContractTemplates/Create' ||
-                        next.templateUrl == '/ContractTemplates/Edit/' ||
-                        next.templateUrl == '/ContractTemplates/Details/' ||
-                        next.templateUrl == '/Countries/Index' ||
-                        next.templateUrl == '/Employees/Index' ||
-                        next.templateUrl == '/Employees/Create' ||
-                        next.templateUrl == '/Employees/Edit/' ||
-                        next.templateUrl == '/Employees/Details/' ||
-                        next.templateUrl == '/Roles/Index' ||
-                        next.templateUrl == '/InterviewTypes/Index' ||
-                        next.templateUrl == '/States/Index' ||
-                        next.templateUrl == '/Users/Index' ||
-                        next.templateUrl == '/VacantsByCompany/Index' ||
-                        next.templateUrl == '/VacantsByCompany/Create' ||
-                        next.templateUrl == '/VacantsByCompany/Edit/' ||
-                        
-                        next.templateUrl == '/Contracts/Index' ||
-                        next.templateUrl == '/Interviews/Index' ||
-                        next.templateUrl == '/Companies/Index' ||
-                        next.templateUrl == '/AddCompany/Index' ||
-                        next.templateUrl == '/AddVacant/Index' ||
-                        next.templateUrl == '/DocumentsToApprove/Index' ||
-                        next.templateUrl == '/DiscardedCustomersReport/Index' ||
-                        next.templateUrl == '/NewCompaniesReport/Index' ||
-                        next.templateUrl == '/CompaniesReport/Index'
+                    if (next.templateUrl == '~/Careers/Index' ||
+                        next.templateUrl == '~/Cities/Index' ||
+                        next.templateUrl == '~/Companies/Index' ||
+                        next.templateUrl == '~/Companies/Create' ||
+                        next.templateUrl == '~/Companies/Edit/' ||
+                        next.templateUrl == '~/ContractTemplates/Index' ||
+                        next.templateUrl == '~/ContractTemplates/Create' ||
+                        next.templateUrl == '~/ContractTemplates/Edit/' ||
+                        next.templateUrl == '~/ContractTemplates/Details/' ||
+                        next.templateUrl == '~/Countries/Index' ||
+                        next.templateUrl == '~/Employees/Index' ||
+                        next.templateUrl == '~/Employees/Create' ||
+                        next.templateUrl == '~/Employees/Edit/' ||
+                        next.templateUrl == '~/Employees/Details/' ||
+                        next.templateUrl == '~/Roles/Index' ||
+                        next.templateUrl == '~/InterviewTypes/Index' ||
+                        next.templateUrl == '~/States/Index' ||
+                        next.templateUrl == '~/Users/Index' ||
+                        next.templateUrl == '~/VacantsByCompany/Index' ||
+                        next.templateUrl == '~/VacantsByCompany/Create' ||
+                        next.templateUrl == '~/VacantsByCompany/Edit/' ||
+                        next.templateUrl == '~/Contracts/Index' ||
+                        next.templateUrl == '~/Interviews/Index' ||
+                        next.templateUrl == '~/Companies/Index' ||
+                        next.templateUrl == '~/AddCompany/Index' ||
+                        next.templateUrl == '~/AddVacant/Index' ||
+                        next.templateUrl == '~/DocumentsToApprove/Index' ||
+                        next.templateUrl == '~/DiscardedCustomersReport/Index' ||
+                        next.templateUrl == '~/NewCompaniesReport/Index' ||
+                        next.templateUrl == '~/CompaniesReport/Index'
                         ) {
                         $location.path('/');
                     }
                 }
                 //Permisos para el Asesor Corporativo
                 else if (role.Alias == 'ASCOR') {
-                    if (next.templateUrl == '/Users/Index' ||
-                        next.templateUrl == '/Employees/Index' ||
-                        next.templateUrl == '/EmployeeTypes/Index' |
-                        next.templateUrl == '/Careers/Index' ||
-                        next.templateUrl == '/Countries/Index' ||
-                        next.templateUrl == '/Cities/Index' ||
-                        next.templateUrl == '/Contracts/Index' ||
-                        next.templateUrl == '/Interviews/Index' ||
-                        next.templateUrl == '/Clients/Index' ||
-                        next.templateUrl == '/Clients/Create' ||
-                        next.templateUrl == '/Clients/Edit' ||
-                        next.templateUrl == '/Clients/Enroll' ||
-                        next.templateUrl == '/Clients/Tracking' ||
-                        next.templateUrl == '/Clients/ClientTracking' ||
-                        next.templateUrl == '/Clients/ClientProfile' ||
-                        next.templateUrl == '/ContractTemplates/Index' ||
-                        next.templateUrl == '/ContractTemplates/Create' ||
-                        next.templateUrl == '/ContractTemplates/Edit/' ||
-                        next.templateUrl == '/ContractTemplates/Details/' ||
-                        next.templateUrl == '/Employees/Index' ||
-                        next.templateUrl == '/Employees/Create' ||
-                        next.templateUrl == '/Employees/Edit/' ||
-                        next.templateUrl == '/Employees/Details/' ||
-                        next.templateUrl == '/Roles/Index' ||
-                        next.templateUrl == '/InterviewTypes/Index' ||
-                        next.templateUrl == '/States/Index' ||
-                        next.templateUrl == '/RegisterClient/Index' ||
-                        next.templateUrl == '/EnrollClient/Index' |
-                        next.templateUrl == '/ContractReport/Index' ||
-                        next.templateUrl == '/Countries/Index' ||
-                        next.templateUrl == '/CVReport/Index' ||
-                        next.templateUrl == '/NewClientsReport/Index' ||
-                        next.templateUrl == '/Clients/SearchClients' ||
-                        next.templateUrl == '/VacantsByCompany/Details/' ||
-                        next.templateUrl == '/VacantsByCompany/VacantList' 
+                    if (next.templateUrl == '~/Users/Index' ||
+                        next.templateUrl == '~/Employees/Index' ||
+                        next.templateUrl == '~/EmployeeTypes/Index' |
+                        next.templateUrl == '~/Careers/Index' ||
+                        next.templateUrl == '~/Countries/Index' ||
+                        next.templateUrl == '~/Cities/Index' ||
+                        next.templateUrl == '~/Contracts/Index' ||
+                        next.templateUrl == '~/Interviews/Index' ||
+                        next.templateUrl == '~/Clients/Index' ||
+                        next.templateUrl == '~/Clients/Create' ||
+                        next.templateUrl == '~/Clients/Edit' ||
+                        next.templateUrl == '~/Clients/Enroll' ||
+                        next.templateUrl == '~/Clients/Tracking' ||
+                        next.templateUrl == '~/Clients/ClientTracking' ||
+                        next.templateUrl == '~/Clients/ClientProfile' ||
+                        next.templateUrl == '~/ContractTemplates/Index' ||
+                        next.templateUrl == '~/ContractTemplates/Create' ||
+                        next.templateUrl == '~/ContractTemplates/Edit/' ||
+                        next.templateUrl == '~/ContractTemplates/Details/' ||
+                        next.templateUrl == '~/Employees/Index' ||
+                        next.templateUrl == '~/Employees/Create' ||
+                        next.templateUrl == '~/Employees/Edit/' ||
+                        next.templateUrl == '~/Employees/Details/' ||
+                        next.templateUrl == '~/Roles/Index' ||
+                        next.templateUrl == '~/InterviewTypes/Index' ||
+                        next.templateUrl == '~/States/Index' ||
+                        next.templateUrl == '~/RegisterClient/Index' ||
+                        next.templateUrl == '~/EnrollClient/Index' |
+                        next.templateUrl == '~/ContractReport/Index' ||
+                        next.templateUrl == '~/Countries/Index' ||
+                        next.templateUrl == '~/CVReport/Index' ||
+                        next.templateUrl == '~/NewClientsReport/Index' ||
+                        next.templateUrl == '~/Clients/SearchClients' ||
+                        next.templateUrl == '~/VacantsByCompany/Details/' ||
+                        next.templateUrl == '~/VacantsByCompany/VacantList'
                         ) {
                         $location.path('/');
                     }
