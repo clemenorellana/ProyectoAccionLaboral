@@ -975,7 +975,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             if (!term)
                 $scope.load = true;
             customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
-                $scope.enrollCustomerData = $filter('filter')(data, { StateId: 1 }, true);
+                $scope.enrollCustomerData = $filter('filter')(data, { StateId: 1}, true);
+                
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -1058,6 +1059,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.enrollClient.StateId = (action == 'reject') ? 3 : 2;
             $scope.enrollClient.Approved = (action == 'reject') ? 0 : 1;
             $scope.enrollClient.State = null;
+            
             if ($scope.enrollClientForm.$valid || $scope.formReject.$valid && action == 'reject') {
                 if ($scope.personalReferencesEnroll)
                     $scope.enrollClient.References = $scope.personalReferencesEnroll;
@@ -1206,6 +1208,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.assignAdvisor = function (employee) {
                 if (employee) {
                     $scope.New.EmployeeId = employee.EmployeeId;
+                    $scope.New.CorrelativeCode = $scope.New.ClientId + "A" + $rootScope.userLoggedIn.EmployeeId;
                     customerRepository.UpdateCustomer($scope.New).success(function () {
                         alertService.add('success', 'Asignado', 'El asesor ha sido asignado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
@@ -3032,12 +3035,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
          { "value": "LastName", "text": "Apellido", "ticked": true },
          { "value": "IdentityNumber", "text": "Identidad", "ticked": false },
          { "value": "CorrelativeCode", "text": "Correlativo", "ticked": false },
-         { "value": "Ocuppation", "text": "Profesion", "ticked": false },
+         { "value": "Ocuppation", "text": "Profesi\u00F3n", "ticked": false },
          { "value": "Age", "text": "Edad", "ticked": false },
-         { "value": "CompleteAddress", "text": "Direccion", "ticked": false },
+         { "value": "City", "text": "Ciudad", "ticked": false },
+         { "value": "CompleteAddress", "text": "Direcci\u00F3n", "ticked": false },
          { "value": "Cellphone", "text": "Celular", "ticked": false },
          { "value": "WageAspiration", "text": "Salario sugerido", "ticked": false },
-         { "value": "Hobby", "text": "Pasatiempo", "ticked": false }
+         { "value": "Hobby", "text": "Pasatiempo", "ticked": false },
+         { "value": "Programs", "text": "Programas", "ticked": false }, 
+         { "value": "Languages", "text": "Idiomas", "ticked": false },
+         { "value": "Careers", "text": "Carrera", "ticked": false },
+         { "value": "Educations", "text": "Nivel Acad\u00E9mico", "ticked": false },
+         { "value": "Experience", "text": "A\u00F1os de Experiencia", "ticked": false }
          ];
 
          $scope.member = { fields: [] };

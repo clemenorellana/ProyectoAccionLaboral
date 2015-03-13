@@ -271,6 +271,10 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         window.location = "#/Employees";
     }
 
+    $scope.employeeProfile_cancelRedirect = function () {
+        window.location = "#/";
+    }
+
 
     $scope.clearData = function () {
         $scope.employee_EmployeeId = "";

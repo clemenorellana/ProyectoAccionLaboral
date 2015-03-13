@@ -25,6 +25,10 @@ radio.ng-touched.ng-invalid:not(.has-focus){
    border:1px solid #f00;
 }
 
+file.ng-touched.ng-invalid:not(.has-focus){
+   border:1px solid #f00;
+}
+
 .loadinggif {
     background:url('../../Images/ajax-input-loader.gif') no-repeat right center;
 }

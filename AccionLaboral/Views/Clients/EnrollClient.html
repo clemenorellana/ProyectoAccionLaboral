@@ -14,7 +14,7 @@
             <h3 class="box-title">Inscribir Cliente</h3>
             <div class="box-header">
                 <div class="pull-right box-tools">
-                    <button class="btn btn-info btn-sm" ng-click="setData()" title="" data-original-title="Collapse">
+                    <button class="btn btn-info btn-sm" ng-click="setEnrollClients()" title="" data-original-title="Collapse">
                         <i class="fa  fa-refresh"></i>
                     </button>
                     <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="glyphicon glyphicon-download-alt">Exportar</i><span class="fa fa-caret-down"></span></button>
@@ -127,12 +127,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Teléfono</label>
+                            <label>Celular</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <i class="fa fa-phone"></i>
                                 </div>
-                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" ng-model="enrollClient.Cellphone" required>
+                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" ng-model="enrollClient.Cellphone" required input-mask>
                             </div>
                         </div>
                     </div>

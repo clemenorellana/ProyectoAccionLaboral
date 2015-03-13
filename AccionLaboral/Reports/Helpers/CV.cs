@@ -12,6 +12,7 @@ namespace AccionLaboral.Reports.Helpers
 {
     public static class CV
     {
+
         #region public static void CreateWordDocument(Client client)
 //        public static void CreateWordDocument(Client client)
 //        {
@@ -295,6 +296,7 @@ namespace AccionLaboral.Reports.Helpers
         }
         #endregion*/
 
+
         #region static void ReplaceTextWithImage(this DocX document, string value, Bitmap image, int count)
         /// <summary>
         /// Replaces a text with a image
@@ -405,17 +407,17 @@ namespace AccionLaboral.Reports.Helpers
                 foreach (AcademicEducation item in educations)
                 {
                     if (item.EducationType.Name == "ACADEMICA")
-                            document.ReplaceText("{AcademicEducations}",((item.Year!=null)?"Año: " + "{Year}" + "\t": "") 
-                                                                      + (!(string.IsNullOrEmpty(item.TrainingName)) ? ("Titulo: " + "{TrainingName}") : "") + "\n" +
-                                                                        ((item.City!=null) ? "Ciundad-País: " + "{City}" + "\n":"") + 
-                                                                        (!(string.IsNullOrEmpty(item.InstitutionName))?"Universidad/Institución: " + "{InstitutionName}":"") 
-                                                                        + "\n\n{AcademicEducations}", 
-                                                  false, System.Text.RegularExpressions.RegexOptions.None, bold);
+                        document.ReplaceText("{AcademicEducations}", ((item.Year != null) ? "Año: " + "{Year}" + "\t" : "")
+                                                                  + (!(string.IsNullOrEmpty(item.TrainingName)) ? ("Titulo: " + "{TrainingName}") : "") + "\n" +
+                                                                    ((item.City != null) ? "Ciundad-País: " + "{City}" + "\n" : "") +
+                                                                    (!(string.IsNullOrEmpty(item.InstitutionName)) ? "Universidad/Institución: " + "{InstitutionName}" : "")
+                                                                    + "\n\n{AcademicEducations}",
+                                              false, System.Text.RegularExpressions.RegexOptions.None, bold);
 
-                            document.ReplaceText("{Year}", item.Year.ToString(), false, System.Text.RegularExpressions.RegexOptions.None, noBold);
-                            document.ReplaceText("{TrainingName}", item.TrainingName, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
-                            document.ReplaceText("{City}", item.City.Name + "-" + item.City.Country.Name, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
-                            document.ReplaceText("{InstitutionName}", item.InstitutionName, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
+                    document.ReplaceText("{Year}", item.Year.ToString(), false, System.Text.RegularExpressions.RegexOptions.None, noBold);
+                    document.ReplaceText("{TrainingName}", item.TrainingName, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
+                    document.ReplaceText("{City}", item.City.Name + "-" + item.City.Country.Name, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
+                    document.ReplaceText("{InstitutionName}", item.InstitutionName, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
                 }
                 document.ReplaceText("{AcademicEducations}", "");
             }
@@ -488,14 +490,14 @@ namespace AccionLaboral.Reports.Helpers
                 noBold.Bold = false;
                 foreach (WorkExperience item in experiences)
                 {
-                        document.ReplaceText("{WorkExperiences}", ((!string.IsNullOrEmpty(item.CompanyName)) ? "Empresa: " + "{CompanyName}" + "\t" : "")
-                                                                  + (!(string.IsNullOrEmpty(item.Charge)) ? ("Cargo Ocupado: " + "{Charge}") : "") + "\n" +
-                                                                    ((item.StartDate != null && item.EndDate != null) ? "Fecha Inicio-Fecha Final: " + "{Date}" + "\n" : "") + ((item.City != null) ? "Ciundad-País: " + "{City}" + "\n" : "") +
-                                                                    (!(string.IsNullOrEmpty(item.Achievements)) ? "Tareas o Logros Realizados: " + "{Achievements}" : "")
-                                                                    + "\n\n{WorkExperiences}",
-                                              false, System.Text.RegularExpressions.RegexOptions.None, bold);
+                    document.ReplaceText("{WorkExperiences}", ((!string.IsNullOrEmpty(item.CompanyName)) ? "Empresa: " + "{CompanyName}" + "\t" : "")
+                                                              + (!(string.IsNullOrEmpty(item.Charge)) ? ("Cargo Ocupado: " + "{Charge}") : "") + "\n" +
+                                                                ((item.StartDate != null && item.EndDate != null) ? "Fecha Inicio-Fecha Final: " + "{Date}" + "\n" : "") + ((item.City != null) ? "Ciundad-País: " + "{City}" + "\n" : "") +
+                                                                (!(string.IsNullOrEmpty(item.Achievements)) ? "Tareas o Logros Realizados: " + "{Achievements}" : "")
+                                                                + "\n\n{WorkExperiences}",
+                                          false, System.Text.RegularExpressions.RegexOptions.None, bold);
 
-                        document.ReplaceText("{CompanyName}", item.CompanyName, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
+                    document.ReplaceText("{CompanyName}", item.CompanyName, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
                     document.ReplaceText("{Charge}", item.Charge, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
                     document.ReplaceText("{Date}", item.StartDate.ToString("dd/MM/yyyy") + " - " + item.EndDate.ToString("dd/MM/yyyy"), false, System.Text.RegularExpressions.RegexOptions.None, noBold);
                     document.ReplaceText("{City}", item.City.Name + "-" + item.City.Country.Name, false, System.Text.RegularExpressions.RegexOptions.None, noBold);
@@ -602,10 +604,6 @@ namespace AccionLaboral.Reports.Helpers
                     {
                         trainings = educations[i].TrainingName + ",";
                     }
-                }
-                if (trainings.Length == 0)
-                {
-                    trainings = " ";
                 }
                 document.ReplaceText("{Trainings}", trainings.Remove(trainings.Length - 1), false, System.Text.RegularExpressions.RegexOptions.None, noBold);
             }
