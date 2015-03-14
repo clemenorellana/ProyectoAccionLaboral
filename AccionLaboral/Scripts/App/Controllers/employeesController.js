@@ -200,50 +200,23 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         });
 
         employeesRepo.getEmployee(id).success(function (data) {
-             
-            var employeeToEdit = data;
-
-
-            var c = 0;
-            for (c = 0; c < $scope.employeesCareersList.length; c++) {
-                var career = $scope.employeesCareersList[c];
-                if (career.CareerId == employeeToEdit.CareerId)
-                    break;
-            }
-
-            var r = 0;
-            for (r = 0; r < $scope.employeesRolesList.length; r++) {
-                var role = $scope.employeesRolesList[r];
-                if (role.RoleId == employeeToEdit.RoleId)
-                    break;
-            }
-
-            var u = 0;
-            for (u = 0; u < $scope.employeesUsersList.length; u++) {
-                var user = $scope.employeesUsersList[u];
-                if (user.UserId == employeeToEdit.UserId)
-                    break;
-            }
-
-
             
-            $scope.employee_EmployeeId = employeeToEdit.EmployeeId;
-            $scope.employee_FirstName = employeeToEdit.FirstName;
-            $scope.employee_LastName = employeeToEdit.LastName;
-            $scope.employee_Email = employeeToEdit.Email;
-            $scope.employee_Birthday = new Date(employeeToEdit.Birthday);
-            $scope.employee_Age = employeeToEdit.Age;
-            $scope.employee_Cellphone = employeeToEdit.Cellphone;
-            $scope.employee_HomePhone = employeeToEdit.HomePhone;
-            $scope.employee_Address = employeeToEdit.Address;
-            $scope.employee_Gender = employeeToEdit.Gender;
-            $scope.employee_EmployeeAlias = employeeToEdit.EmployeeAlias;
-            $scope.employee_AdmissionDate = employeeToEdit.AdmissionDate;
-            $scope.employee_Career = $scope.employeesCareersList[c];//employeeToEdit.Career;
-            $scope.employee_Role = $scope.employeesRolesList[r];//employeeToEdit.Role;
-            $scope.employee_User = $scope.employeesUsersList[u];//employeeToEdit.User;
-            $scope.employee_UserAsigned = $scope.employeesUsersList[u];//employeeToEdit.User;
-            $scope.employee_Photo = employeeToEdit.Photo;
+            $scope.employee_EmployeeId = data.EmployeeId;
+            $scope.employee_FirstName = data.FirstName;
+            $scope.employee_LastName = data.LastName;
+            $scope.employee_Email = data.Email;
+            $scope.employee_Birthday = new Date(data.Birthday);
+            $scope.employee_Age = data.Age;
+            $scope.employee_Cellphone = data.Cellphone;
+            $scope.employee_HomePhone = data.HomePhone;
+            $scope.employee_Address = data.Address;
+            $scope.employee_Gender = data.Gender;
+            $scope.employee_EmployeeAlias = data.EmployeeAlias;
+            $scope.employee_AdmissionDate = data.AdmissionDate;
+            $scope.employee_Career = data.CareerId;
+            $scope.employee_Role = data.RoleId;
+            $scope.employee_User = data.UserId;
+            $scope.employee_Photo = data.Photo;
         });
     }
 

@@ -38,13 +38,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nombre</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_FirstName">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_FirstName" ng-class="{'loadinggif': employee_FirstName==undefined}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Apellido</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_LastName">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_LastName" ng-class="{'loadinggif': employee_LastName==undefined}">
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday" ng-change="calculateEmployeeAge()">
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday" ng-change="calculateEmployeeAge()" ng-class="{'loadinggif': employee_Birthday==undefined}">
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <label>Edad</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Age">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Age" ng-class="{'loadinggif': employee_Age==undefined}">
                         </div>
                     </div>
                 </div>
@@ -75,13 +75,13 @@
                         <div class="form-group">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="employee_Gender">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="employee_Gender" >
                                     Femenino
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="employee_Gender">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="employee_Gender" >
                                     Masculino
                                 </label>
                             </div>
@@ -96,7 +96,7 @@
                         <label>Correo Electrónico</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="employee_Email">
+                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="employee_Email" ng-class="{'loadinggif': employee_Email==undefined}">
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-mobile-phone"></i>
                             </div>
-                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_Cellphone">
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_Cellphone" ng-class="{'loadinggif': employee_Cellphone==undefined}">
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_HomePhone">
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_HomePhone" ng-class="{'loadinggif': employee_HomePhone==undefined}">
                         </div><!-- /.input group -->
                     </div>
                 </div>
@@ -126,14 +126,14 @@
 
             <div class="form-group">
                 <label>Dirección</label>
-                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Address">
+                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Address" ng-class="{'loadinggif': employee_Address==undefined}">
             </div>
 
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Carrera</label>
-                        <select class="form-control" ng-options="career.Name for career in employeesCareersList" ng-model="employee_Career">
+                        <select class="form-control" ng-options="career.CareerId as career.Name for career in employeesCareersList" ng-model="employee_Career" ng-class="{'loadinggif': employee_Career==undefined}">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -144,7 +144,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Tipo de Empleado</label>
-                        <select class="form-control" disabled ng-options="rol.Name for rol in employeesRolesList" ng-model="employee_Role">
+                        <select class="form-control" disabled ng-options="role.RoleId as role.Name for role in employeesRolesList" ng-model="employee_Role" ng-class="{'loadinggif': employee_Role==undefined}">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -152,13 +152,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Alias</label>
-                        <input disabled type="text" class="form-control" ng-model="employee_EmployeeAlias">
+                        <input disabled type="text" class="form-control" ng-model="employee_EmployeeAlias" ng-class="{'loadinggif': employee_EmployeeAlias==undefined}">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Usuario</label>
-                        <select disabled class="form-control" ng-options="user.UserName for user in employeesUsersList" ng-model="employee_User">
+                        <select disabled class="form-control" ng-options="user.UserId as user.UserName for user in employeesUsersList" ng-model="employee_User" ng-class="{'loadinggif': employee_User==undefined}">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
