@@ -39,6 +39,13 @@ accionLabControllers.factory('companiesRepo', ['$http', function ($http) {
         deleteCompany: function (callback, id) {
             return $http.delete(urlCompany + '/' + id);
         }
+        ,
+        //Reports
+        //New Companies
+        getNewCompaniesReport: function (callback) {
+            return $http.get('api/NewCompaniesReport');
+        }
+        
 
     }
 }]);

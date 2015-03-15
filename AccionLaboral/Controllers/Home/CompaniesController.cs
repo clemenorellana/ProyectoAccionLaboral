@@ -15,6 +15,12 @@ namespace AccionLaboral.Controllers.Home
             return new FilePathResult("~/Views/Companies/Index.html", "text/html");
         }
 
+        
+        public ActionResult NewCompaniesReport()
+        {
+            return new FilePathResult("~/Views/Reports/NewCompaniesReport.html", "text/html");
+        }
+
         //
         // GET: /Companies/Details/5
         public ActionResult Details(int id)

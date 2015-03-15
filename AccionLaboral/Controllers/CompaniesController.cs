@@ -22,6 +22,15 @@ namespace AccionLaboral.Controllers
             return db.Companies;
         }
 
+        // GET api/NewCompaniesReport
+        [Route("api/NewCompaniesReport")]
+        [HttpGet]
+        public IQueryable<Company> NewCompaniesReport()
+        {
+            //return db.Companies.Include(r => r.VacantsByCompany).Where(r => (r.DateCreated >= starDate && r.DateCreated<=endDate));
+            return db.Companies.Include(r => r.ContactsByCompany).Include(r=>r.VacantsByCompany);
+        }
+
         // GET api/Companies/5
         [ResponseType(typeof(Company))]
         public IHttpActionResult GetCompany(int id)

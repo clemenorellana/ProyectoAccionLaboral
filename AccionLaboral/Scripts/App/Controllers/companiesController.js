@@ -2,7 +2,7 @@
 
 angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertRepository'])
 .config(['$routeProvider', function ($routeProvider) {
-     
+
     $routeProvider.
         when('/Companies', {
             templateUrl: '/Companies/Index',
@@ -17,11 +17,15 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
                 return '/Companies/Edit/' + params.id;
             },
             controller: 'companiesCtrl'
+        }).
+        when('/Reports/NewCompanies', {
+            templateUrl: '/Companies/NewCompaniesReport',
+            controller: 'newCompaniesReportCtrl'
         });
 }]
 )
-.controller('companiesCtrl', ['$scope', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'companiesRepo', '$routeParams',  function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams) {
-    
+.controller('companiesCtrl', ['$scope', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'companiesRepo', '$routeParams', function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams) {
+
     $scope.companyList = [];
     $scope.load = true;
     $scope.contactsByCompanyList = [];
@@ -34,7 +38,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
 
     $scope.companyId = $routeParams.id;
-     
+
     if ($scope.companyId == null) {
         actionCompany = "add";
         $scope.tittleCompanyForm = "Agregar datos de una Empresa";
@@ -108,7 +112,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
 
     $scope.setActionContact = function (index, action) {
-         
+
         if (action == 'edit') {
             $scope.actionContact = 'Editar'
             var contact = $scope.contactsByCompanyList[index];
@@ -122,14 +126,14 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         }
         else {
             $scope.actionContact = 'Agregar'
-            
+
         }
         $scope.contactIndex = index;
 
     }
 
     $scope.saveContactByCompany = function () {
-         
+
         var contact = {
             ContactByCompanyId: $scope.contact_ContactByCompanyId,
             ContactName: $scope.contact_Name,
@@ -187,7 +191,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
             ContactsByCompany: [],
             //aagregar vacantes
         }
-        
+
         if ($scope.contactsByCompanyList != null) {
             for (var j = 0; j < $scope.contactsByCompanyList.length; j++) {
                 var contactByCompany = $scope.contactsByCompanyList[j];
@@ -203,7 +207,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
                 newCompany.ContactsByCompany.push(contact);
             }
         }
-        
+
         if (actionCompany == "add") {
             companiesRepo.insertCompany(function () { }, newCompany).success(function () {
                 alertService.add('success', 'Mensaje', 'La Empresa se ha insertado correctamente.');
@@ -231,7 +235,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         $scope.setCompanyData();
         window.location = "#/Companies";
     };
-    
+
     $scope.company_cancelRedirect = function () {
         window.location = "#/Companies";
     }
@@ -240,14 +244,14 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         window.location = "#/AddCompany";
     }
 
-    $scope.setCompanyToDelete = function (id,index) {
+    $scope.setCompanyToDelete = function (id, index) {
         $scope.companyToDelete = id;
         $scope.companyIndex = index;
     }
 
     $scope.deleteCompany = function (id) {
         $scope.companyDeleted = 'delete';
-         
+
         $scope.load = true;
         companiesRepo.deleteCompany(function () {
         }, id).success(function () {
@@ -257,7 +261,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
             $scope.companyIndex = -1;
             $scope.setCompanyData();
             $scope.load = false;
-            
+
         }).error(function () {
             alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
             $scope.alertsTags = $rootScope.alerts;
@@ -271,4 +275,65 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
     }
 
     $scope.setCompanyData();
-}]);
+}])
+.controller('newCompaniesReportCtrl', ['$scope', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'companiesRepo', '$routeParams',
+    function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams) {
+        $scope.companyList = [];
+        $scope.load = true;
+        $scope.contactsByCompanyList = [];
+        
+        if (!$rootScope.alerts)
+            $rootScope.alerts = [];
+
+        //Sorting
+        $scope.sort = "Name";
+        $scope.reverse = false;
+
+        $scope.changeSort = function (value) {
+            if ($scope.sort == value) {
+                $scope.reverse = !$scope.reverse;
+                return;
+            }
+            $scope.sort = value;
+            $scope.reverse = false;
+        }
+        //End Sorting//
+
+        $scope.$watch('search', function (term) {
+            // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+            $scope.filtered = filterFilter($scope.companyList, term);
+            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+        });
+
+        $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+        $scope.entryLimit = $scope.itemsPerPageList[0];
+
+        $scope.setCompanyData = function () {
+            companiesRepo.getNewCompaniesReport().success(function (data) {
+                $scope.companyList = data;
+                $scope.totalServerItems = data.totalItems;
+                $scope.items = data.items;
+                $scope.load = false;
+
+                if ($rootScope.alerts)
+                    $scope.alertsTags = $rootScope.alerts;
+                $scope.currentPage = 1; //current page
+                $scope.maxSize = 5; //pagination max size
+                //max rows for data table
+
+                $scope.noOfPages = ($scope.companyList) ? Math.ceil($scope.companyList.length / $scope.entryLimit) : 1;
+
+                $scope.itemsInPage = ($scope.companyList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.companyList.length) ?
+                        $scope.companyList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+
+            })
+            .error(function (data) {
+                $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+                $scope.load = false;
+            });
+
+        };
+
+        $scope.setCompanyData();
+    }
+]);
