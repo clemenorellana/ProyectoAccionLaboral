@@ -290,12 +290,14 @@ namespace AccionLaboral.Helpers.Lucene
             doc.Add(new Field("Company", sampleData.Company.Name, Field.Store.YES, Field.Index.ANALYZED));
 
             string programs = "";
+            if (sampleData.KnownPrograms!=null)
             foreach (KnownProgram program in sampleData.KnownPrograms.ToList())
             {
                 programs += program.Name + ",";
             }
 
             string languages = "";
+            if (sampleData.Languages != null)
             foreach (KnownLanguage language in sampleData.Languages.ToList())
             {
                 languages += language.Language.Name + " , " + language.Percentage + "%";
@@ -323,12 +325,12 @@ namespace AccionLaboral.Helpers.Lucene
                     doc.Add(new Field("Educations", educations, Field.Store.YES, Field.Index.ANALYZED));
                 if (!string.IsNullOrEmpty(languages))
                     doc.Add(new Field("Careers", careers, Field.Store.YES, Field.Index.ANALYZED));
-                int yearsExperience = GetYearsExperience(sampleData.WorkExperiences);
+
+                sampleData.WorkExperiences = sampleData.WorkExperiences ?? null;
+                int yearsExperience = (sampleData.WorkExperiences == null) ? 0 : GetYearsExperience(sampleData.WorkExperiences);
                 if(yearsExperience>0)
                     doc.Add(new Field("Experience", yearsExperience.ToString() + " años", Field.Store.YES, Field.Index.ANALYZED));
             }
-
-
 
             // add entry to index
             writer.AddDocument(doc);
