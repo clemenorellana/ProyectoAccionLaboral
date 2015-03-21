@@ -55,11 +55,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
     $scope.exportClients = function () {
         
-        var filters = { "Clients": $scope.filtered, "DateFrom":null, "DateTo":null };
+        var filters = { "Clients": $scope.filtered, "DateFrom":"", "DateTo":"" };
         if($scope.dateFrom)
-        filters.DateFrom = $scope.dateFrom;
+            filters.DateFrom = getDateFromFormat($scope.dateFrom, "dd/MM/yyyy");
         if($scope.dateTo)
-        filters.DateTo = $scope.dateTo;
+        filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
         filters.Clients = angular.copy($scope.filtered);
         var clients = [];
         for (var i = 0; i < filters.Clients.length; i++) {
@@ -68,8 +68,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     dateTo = new Date($scope.dateTo),
                     enrollDate = new Date(filters.Clients[i].EnrollDate);
                 enrollDate.setHours(0, 0, 0, 0);
-                if (dateFrom <= enrollDate && dateTo >= enrollDate)
+                if (dateFrom <= enrollDate && dateTo >= enrollDate) {
                     clients.push(filters.Clients[i]);
+                }
             } else if ($scope.dateFrom) {
                 var dateFrom = new Date($scope.dateFrom),
                     enrollDate = new Date(filters.Clients[i].EnrollDate);
@@ -2737,11 +2738,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $window, filterFilter, customerRepository, alertService) {
         $scope.exportClients = function () {
 
-            var filters = { "Clients": $scope.filtered, "DateFrom": null, "DateTo": null };
+            var filters = { "Clients": $scope.filtered, "DateFrom": "", "DateTo": "" };
             if ($scope.dateFrom)
-                filters.DateFrom = $scope.dateFrom;
+                filters.DateFrom = getDateFromFormat($scope.dateFrom, "dd/MM/yyyy");
             if ($scope.dateTo)
-                filters.DateTo = $scope.dateTo;
+                filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
             filters.Clients = angular.copy($scope.filtered);
             var clients = [];
             for (var i = 0; i < filters.Clients.length; i++) {

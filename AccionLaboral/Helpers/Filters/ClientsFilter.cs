@@ -8,8 +8,8 @@ namespace AccionLaboral.Helpers.Filters
 {
     public class ClientsFilter
     {
-        public DateTime DateFrom { get; set; }
-        public DateTime DateTo { get; set; }
+        public string DateFrom { get; set; }
+        public string DateTo { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
