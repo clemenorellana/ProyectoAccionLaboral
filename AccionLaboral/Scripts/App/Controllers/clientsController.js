@@ -42,7 +42,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             controller: "editCustomerController"
         })
 }])
-.controller('CustomerController', ['$scope', '$rootScope', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, customerRepository, filterFilter, alertService) {
+.controller('CustomerController', ['$scope', '$rootScope', '$location', '$filter', '$window', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, $window, customerRepository, filterFilter, alertService) {
     //enroll costumer
     $scope.enrollClientExist = false;
     $scope.showMsgErrorClient = false;
@@ -52,6 +52,58 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     $scope.back = function () {
         $location.path("/AllClients");
     };
+
+    $scope.exportClients = function () {
+        
+        var filters = { "Clients": $scope.filtered, "DateFrom":null, "DateTo":null };
+        if($scope.dateFrom)
+        filters.DateFrom = $scope.dateFrom;
+        if($scope.dateTo)
+        filters.DateTo = $scope.dateTo;
+        filters.Clients = angular.copy($scope.filtered);
+        var clients = [];
+        for (var i = 0; i < filters.Clients.length; i++) {
+            if ($scope.dateFrom && $scope.dateTo) {
+                var dateFrom = new Date($scope.dateFrom),
+                    dateTo = new Date($scope.dateTo),
+                    enrollDate = new Date(filters.Clients[i].EnrollDate);
+                enrollDate.setHours(0, 0, 0, 0);
+                if (dateFrom <= enrollDate && dateTo >= enrollDate)
+                    clients.push(filters.Clients[i]);
+            } else if ($scope.dateFrom) {
+                var dateFrom = new Date($scope.dateFrom),
+                    enrollDate = new Date(filters.Clients[i].EnrollDate);
+                enrollDate.setHours(0, 0, 0, 0);
+                if (dateFrom <= enrollDate)
+                    clients.push(filters.Clients[i]);
+            } else if ($scope.dateTo) {
+                var dateTo = new Date($scope.dateTo),
+                    enrollDate = new Date(filters.Clients[i].EnrollDate);
+                enrollDate.setHours(0, 0, 0, 0);
+                if (dateTo >= enrollDate)
+                    clients.push(filters.Clients[i]);
+            } else
+                clients = angular.copy(filters.Clients);
+        }
+        filters.Clients = angular.copy(clients);
+        if (filters.Clients.length > 0) {
+            customerRepository.exportCustomers(filters)
+             .success(function (data) {
+                 $window.open("Clients/Download/" + 'Clientes', '_blank');
+             }).error(function (data, status, headers, config) {
+                 alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
+                 $scope.alertsTags = $rootScope.alerts;
+             });
+        } else {
+            alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
+            $scope.alertsTags = $rootScope.alerts;
+        }
+        
+        /*customerRepository.exportCustomers(filters)
+            .success(function () {
+                $scope.filtered = angular.copy($scope.filtered);
+        });*/
+    }
 
     $scope.exportData = function () {
         if (!$scope.filtered || $scope.filtered.length == 0) {
@@ -166,9 +218,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             if(!term)
                 $scope.load = true;
             else
-                //if (term.State) {
                     term.StateId = (!term.StateId) ? "" : term.StateId;
-                //}
 
             customerRepository.getCustomers($rootScope.userLoggedIn).success(function(data) {
                         $scope.customerData = data;
@@ -1925,6 +1975,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
         }
 
+        
+
         $scope.createTable = function () {
             var table = document.createElement('table');
             var tbody = document.createElement('tbody');
@@ -2682,8 +2734,53 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
                 
         }
-    }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, filterFilter, customerRepository, alertService) {
-        
+    }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $window, filterFilter, customerRepository, alertService) {
+        $scope.exportClients = function () {
+
+            var filters = { "Clients": $scope.filtered, "DateFrom": null, "DateTo": null };
+            if ($scope.dateFrom)
+                filters.DateFrom = $scope.dateFrom;
+            if ($scope.dateTo)
+                filters.DateTo = $scope.dateTo;
+            filters.Clients = angular.copy($scope.filtered);
+            var clients = [];
+            for (var i = 0; i < filters.Clients.length; i++) {
+                if ($scope.dateFrom && $scope.dateTo) {
+                    var dateFrom = new Date($scope.dateFrom),
+                        dateTo = new Date($scope.dateTo),
+                        enrollDate = new Date(filters.Clients[i].EnrollDate);
+                    enrollDate.setHours(0, 0, 0, 0);
+                    if (dateFrom <= enrollDate && dateTo >= enrollDate)
+                        clients.push(filters.Clients[i]);
+                } else if ($scope.dateFrom) {
+                    var dateFrom = new Date($scope.dateFrom),
+                        enrollDate = new Date(filters.Clients[i].EnrollDate);
+                    enrollDate.setHours(0, 0, 0, 0);
+                    if (dateFrom <= enrollDate)
+                        clients.push(filters.Clients[i]);
+                } else if ($scope.dateTo) {
+                    var dateTo = new Date($scope.dateTo),
+                        enrollDate = new Date(filters.Clients[i].EnrollDate);
+                    enrollDate.setHours(0, 0, 0, 0);
+                    if (dateTo >= enrollDate)
+                        clients.push(filters.Clients[i]);
+                } else
+                    clients = angular.copy(filters.Clients);
+            }
+            filters.Clients = angular.copy(clients);
+            if (filters.Clients.length > 0) {
+                customerRepository.exportCustomersTracking(filters)
+                 .success(function (data) {
+                     $window.open("Clients/Download/" + 'SeguimientoClientes', '_blank');
+                 }).error(function (data, status, headers, config) {
+                     alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
+                     $scope.alertsTags = $rootScope.alerts;
+                 });
+            } else {
+                alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
+                $scope.alertsTags = $rootScope.alerts;
+            }
+        }
         //Sorting
         $scope.sort = "FirstName";
         $scope.reverse = false;
@@ -3065,6 +3162,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $location.path("/AllClients");
     };
 
+
     $scope.exportData = function () {
         if (!$scope.filtered || $scope.filtered.length == 0) {
             alertService.add('danger', 'Error', 'No hay datos.');
@@ -3273,6 +3371,22 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
     return out;
   }
+}).filter("RangeFilter", function() {
+    return function (items, from, to) {
+        var result = [];
+        
+        var df = (from) ? parseDate(from) : new Date(1900, 1, 1, 1, 1, 1, 1);
+        var dt = (to) ? parseDate(to) : new Date();
+                
+        for (var i=0; i<items.length; i++){
+            var tf = new Date(items[i].EnrollDate * 1000),
+                tt = new Date(items[i].EnrollDate * 1000);
+            if (tf > df && tt < dt)  {
+                result.push(items[i]);
+            }
+        }            
+        return result;
+    };
 }).directive('inputMask', function () {
     return {
         restrict: 'A',

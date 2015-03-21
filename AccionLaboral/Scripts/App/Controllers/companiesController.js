@@ -18,7 +18,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
             },
             controller: 'companiesCtrl'
         }).
-        when('/Reports/NewCompanies', {
+        when('/NewCompaniesReport', {
             templateUrl: '/Companies/NewCompaniesReport',
             controller: 'newCompaniesReportCtrl'
         });

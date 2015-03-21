@@ -27,6 +27,14 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         exportCustomer: function (id) {
             return $http.get('Clients/ExportClient/' + id);
         },
+        exportCustomers: function (filters) {
+            return $http.post('clients/exportclients', filters);
+            //return $http.get('api/exportclients/id=' + filters);
+        },
+        exportCustomersTracking: function (filters) {
+            return $http.post('clients/ExportClientsTracking', filters);
+            //return $http.get('api/exportclients/id=' + filters);
+        },
         searchCustomers: function (searchTerm, searchField, limit) {
             var searchUrl = 'api/SearchClients/' + searchTerm + '/' + ((searchField) ? searchField : null) + '/' + ((limit) ? limit : 0);
             return $http.get(searchUrl);

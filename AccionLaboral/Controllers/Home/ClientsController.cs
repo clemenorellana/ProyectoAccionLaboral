@@ -1,4 +1,5 @@
-﻿using AccionLaboral.Models;
+﻿using AccionLaboral.Helpers.Filters;
+using AccionLaboral.Models;
 using AccionLaboral.Reports.Helpers;
 using Novacode;
 using System;
@@ -144,22 +145,56 @@ namespace AccionLaboral.Controllers.Home
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string documentPath = path + "Reports\\" + filename;
             string templatePath = path + "Reports" + "\\" + "CVTemplate.docx";
-            //Stream ms = new MemoryStream(CV.Imagenes.ToList()[0].Image);
 
             using (DocX doc = DocX.Load(templatePath))
             {
-
-                //CV.ReplaceTextWithImage(doc, "{Photo}", sigImage, 1);
-                //Paragraph title = doc.InsertParagraph();
-                //title.Append("Prueba:").Bold().Append("Mata es la petaca");
                 CV.CreateCurriculum(doc, client);
                 doc.SaveAs(documentPath);
             }
             var bytes = System.IO.File.ReadAllBytes(documentPath);
             System.IO.File.Delete(documentPath);
-            //System.IO.FileStream stream = new System.IO.FileStream(documentPath, System.IO.FileMode.Open);
-            //return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", filename);
             return File(bytes, "application/octet-stream", filename);
+        }
+
+        [HttpPost]
+        public ActionResult ExportClients(ClientsFilter filters)
+        {
+            string filename = "Clientes.xls";
+            
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string documentPath = path + "Reports\\" + filename;
+            Reports.Helpers.Clients.GenerateReport(filename, filters);
+
+            var bytes = System.IO.File.ReadAllBytes(documentPath);
+
+            return new FilePathResult("~/Views/Clients/Index.html", "text/html");
+        }
+
+        [HttpPost]
+        public ActionResult ExportClientsTracking(ClientsFilter filters)
+        {
+            string filename = "SeguimientoClientes.xls";
+
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string documentPath = path + "Reports\\" + filename;
+            Reports.Helpers.Clients.GenerateClientsTracking(filename, filters);
+
+            var bytes = System.IO.File.ReadAllBytes(documentPath);
+
+            return new FilePathResult("~/Views/Clients/Index.html", "text/html");
+        }
+
+        [HttpGet]
+        public ActionResult Download(string id)
+        {
+            string filename = id+".xls";
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string documentPath = path + "Reports\\" + filename;
+
+            var bytes = System.IO.File.ReadAllBytes(documentPath);
+
+            System.IO.File.Delete(documentPath);
+            return File(bytes, "application/vnd.ms-excel", filename);
         }
     }
 }
