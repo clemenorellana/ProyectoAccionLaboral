@@ -279,12 +279,13 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 .controller('newCompaniesReportCtrl', ['$scope', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'companiesRepo', '$routeParams',
     function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams) {
         $scope.companyList = [];
-        $scope.load = true;
+        $scope.tituloPrueba = false;
+        debugger;
         $scope.contactsByCompanyList = [];
         
         if (!$rootScope.alerts)
             $rootScope.alerts = [];
-
+        
         //Sorting
         $scope.sort = "Name";
         $scope.reverse = false;
@@ -309,7 +310,11 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         $scope.entryLimit = $scope.itemsPerPageList[0];
 
         $scope.setCompanyData = function () {
-            companiesRepo.getNewCompaniesReport().success(function (data) {
+            debugger
+            var starDate = $scope.filterStartDate;
+            var endDate = $scope.filterEndDate;
+
+            companiesRepo.getNewCompaniesReport(starDate, endDate).success(function (data) {
                 $scope.companyList = data;
                 $scope.totalServerItems = data.totalItems;
                 $scope.items = data.items;
@@ -334,6 +339,10 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
         };
 
-        $scope.setCompanyData();
+        $scope.generateReport = function () {
+            $scope.load = true;
+            $scope.setCompanyData();
+            $scope.load = false;
+        };
     }
 ]);

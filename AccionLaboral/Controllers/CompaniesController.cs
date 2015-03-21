@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
 
+
 namespace AccionLaboral.Controllers
 {
     public class CompaniesController : ApiController
@@ -27,7 +28,18 @@ namespace AccionLaboral.Controllers
         [HttpGet]
         public IQueryable<Company> NewCompaniesReport()
         {
-            //return db.Companies.Include(r => r.VacantsByCompany).Where(r => (r.DateCreated >= starDate && r.DateCreated<=endDate));
+
+            //string rutaArchivo = @"C:\Documento.xlsx";
+
+            //using (ExcelPackage package = new ExcelPackage(new FileInfo(rutaArchivo)))
+            //{
+            //    var worksheet = package.Workbook.Worksheets.Add("Contenido");
+            //    worksheet.Cells["B1"].Value = "Hello world!";
+            //    package.Save();
+            //}
+
+            
+
             return db.Companies.Include(r => r.ContactsByCompany).Include(r=>r.VacantsByCompany);
         }
 
@@ -148,6 +160,11 @@ namespace AccionLaboral.Controllers
         private bool CompanyExists(int id)
         {
             return db.Companies.Count(e => e.CompanyId == id) > 0;
+        }
+
+        public class DateFilter {
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
         }
     }
 }

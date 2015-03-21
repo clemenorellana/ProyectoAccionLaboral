@@ -42,7 +42,13 @@ accionLabControllers.factory('companiesRepo', ['$http', function ($http) {
         ,
         //Reports
         //New Companies
-        getNewCompaniesReport: function (callback) {
+        getNewCompaniesReport: function (callback, startDate, endDate) {
+            var date = {
+                StartDate: startDate,
+                EndDate: endDate
+            };
+
+            debugger;
             return $http.get('api/NewCompaniesReport');
         }
         
