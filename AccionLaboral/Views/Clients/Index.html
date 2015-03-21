@@ -89,23 +89,44 @@
                         <button class="btn btn-info btn-sm" ng-click="setData()" title="" data-original-title="Collapse">
                             <i class="fa  fa-refresh"></i>
                         </button>
-                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="glyphicon glyphicon-download-alt">Exportar</i><span class="fa fa-caret-down"></span></button>
+                        <!--<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="glyphicon glyphicon-download-alt">Exportar</i><span class="fa fa-caret-down"></span></button>
                         <ul class="dropdown-menu">
-                            <li class="btn" id="btnExcelExport" ng-click="exportData()">
+                            <li class="btn" id="btnExcelExport" ng-click="exportClients()">
                                 <a href="">
                                     <img src="../../Images/MS/xls-icon24.png" />XLS
                                 </a>
                             </li>
-                            <!--<li class="btn" id="btnPDFExport" ng-click="exportPDFData()">
-                                <a href="">
-                                    <img src="../../Images/MS/PDFImage24.png" />PDF
-                                </a>
-                            </li>-->
-                        </ul>
+                        </ul>-->
                 </div>
             </div>
         </div>
         <div class="box-body">
+            <div class="col-md-12">
+                <div class="form-group col-md-4">
+                    <label>Desde</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="date" name="fromDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateFrom">
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Hasta</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="date" name="toDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateTo">
+                    </div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label></label>
+                    <div class="input-group">
+                        <input type="submit" class="btn btn-info" title="Generar Reporte" value="Generar Reporte" ng-click="exportClients()"/>
+                    </div>
+                </div>
+            </div>
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <div id="CustomersTbl">
                 <table class="table table-bordered" id="tblCust" ng-show="!load">
@@ -118,6 +139,7 @@
                             <th class="col-lg-2" ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
                             <th class="col-lg-1" ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
                             <th class="col-lg-1" ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
+                            <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha Creación</th>
                             <th class="col-lg-3 opciones" >Opciones</th>
                         </tr>
                         <tr id="filterHeader">
@@ -132,6 +154,8 @@
                                     <option value="" selected>Todos</option>
                                 </select>
                             </th>
+                            <!--<th colspan="1"><input ng-model="search.EnrollDate" ng-change="setData(search)" class="form-control" type="datetime-local" /></th>-->
+                            <th colspan="1"></th>
                             <th colspan="1"></th>
                         </tr>
                     </thead>
@@ -143,11 +167,12 @@
                         <td>{{customer.CompleteAddress}}</td>
                         <td>{{customer.Cellphone}}</td>
                         <td>{{customer.State.Name}}</td>
+                        <td>{{customer.EnrollDate | date:'dd/MM/yyyy'}}</td>
                         <td class="opciones">
                             <!--<button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button>
-                                    <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
-                    <button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=5 && customer.StateId!=6" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button>
-                    <button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==5 || customer.StateId==6" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button>-->
+                            <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=5 && customer.StateId!=6" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button>
+            <button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==5 || customer.StateId==6" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button>-->
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Acciones<span class="fa fa-caret-down"></span></button>
                                 <ul class="dropdown-menu">

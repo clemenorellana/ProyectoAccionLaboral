@@ -18,7 +18,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
             },
             controller: 'companiesCtrl'
         }).
-        when('/Reports/NewCompanies', {
+        when('/NewCompaniesReport', {
             templateUrl: '/Companies/NewCompaniesReport',
             controller: 'newCompaniesReportCtrl'
         });
@@ -314,7 +314,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
             var starDate = $scope.filterStartDate;
             var endDate = $scope.filterEndDate;
 
-            companiesRepo.getNewCompaniesReport(starDate, endDate).success(function (data) {
+            companiesRepo.getNewCompaniesDataReport(starDate, endDate).success(function (data) {
                 $scope.companyList = data;
                 $scope.totalServerItems = data.totalItems;
                 $scope.items = data.items;
@@ -341,8 +341,71 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
         $scope.generateReport = function () {
             $scope.load = true;
-            $scope.setCompanyData();
+            
+            var startDate = $scope.filterStartDate;
+            var endDate = $scope.filterEndDate;
+            var filters = {
+                StartDate: startDate,
+                EndDate: endDate
+            };
+
+            companiesRepo.getNewCompaniesDataReport(filters).success(function (data) {
+                $scope.companyList = data;
+                $scope.totalServerItems = data.totalItems;
+                $scope.items = data.items;
+                $scope.load = false;
+
+                if ($rootScope.alerts)
+                    $scope.alertsTags = $rootScope.alerts;
+                $scope.currentPage = 1; //current page
+                $scope.maxSize = 5; //pagination max size
+                //max rows for data table
+
+                $scope.noOfPages = ($scope.companyList) ? Math.ceil($scope.companyList.length / $scope.entryLimit) : 1;
+
+                $scope.itemsInPage = ($scope.companyList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.companyList.length) ?
+                        $scope.companyList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+
+            })
+            .error(function (data) {
+                $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+                $scope.load = false;
+            });
+
             $scope.load = false;
         };
+
+        $scope.exportReport = function () {
+            var startDate = $scope.filterStartDate;
+            var endDate = $scope.filterEndDate;
+            var filters = {
+                StartDate: startDate,
+                EndDate: endDate
+            };
+
+            companiesRepo.exportCompaniesReport(filters).success(function (data) {
+                $scope.companyList = data;
+                $scope.totalServerItems = data.totalItems;
+                $scope.items = data.items;
+                $scope.load = false;
+
+                if ($rootScope.alerts)
+                    $scope.alertsTags = $rootScope.alerts;
+                $scope.currentPage = 1; //current page
+                $scope.maxSize = 5; //pagination max size
+                //max rows for data table
+
+                $scope.noOfPages = ($scope.companyList) ? Math.ceil($scope.companyList.length / $scope.entryLimit) : 1;
+
+                $scope.itemsInPage = ($scope.companyList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.companyList.length) ?
+                        $scope.companyList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+
+            })
+            .error(function (data) {
+                $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+                $scope.load = false;
+            });
+        };
+
     }
 ]);

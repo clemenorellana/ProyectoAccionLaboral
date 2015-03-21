@@ -23,26 +23,6 @@ namespace AccionLaboral.Controllers
             return db.Companies;
         }
 
-        // GET api/NewCompaniesReport
-        [Route("api/NewCompaniesReport")]
-        [HttpGet]
-        public IQueryable<Company> NewCompaniesReport()
-        {
-
-            //string rutaArchivo = @"C:\Documento.xlsx";
-
-            //using (ExcelPackage package = new ExcelPackage(new FileInfo(rutaArchivo)))
-            //{
-            //    var worksheet = package.Workbook.Worksheets.Add("Contenido");
-            //    worksheet.Cells["B1"].Value = "Hello world!";
-            //    package.Save();
-            //}
-
-            
-
-            return db.Companies.Include(r => r.ContactsByCompany).Include(r=>r.VacantsByCompany);
-        }
-
         // GET api/Companies/5
         [ResponseType(typeof(Company))]
         public IHttpActionResult GetCompany(int id)
@@ -162,9 +142,27 @@ namespace AccionLaboral.Controllers
             return db.Companies.Count(e => e.CompanyId == id) > 0;
         }
 
-        public class DateFilter {
+        //-------------------------------------------Companies Report------------------------------------------
+
+        public class CompanyFilters {
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
+        }
+
+        [System.Web.Http.HttpGet]
+        //[System.Web.Http.Route("api/newcompaniesdatareport/{id}")]
+        //public IQueryable<Company> NewCompaniesDataReport(CompanyFilters id)
+        [System.Web.Http.Route("api/newcompaniesdatareport")]
+        public IQueryable<Company> NewCompaniesDataReport()
+        {
+            return db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany);
+        }
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/exportcompaniesreport/{id}")]
+        public IQueryable<Company> ExportCompaniesReport(CompanyFilters id)
+        {
+            return db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany);
         }
     }
 }
