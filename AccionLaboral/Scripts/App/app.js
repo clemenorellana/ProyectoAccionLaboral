@@ -248,17 +248,34 @@ angular.module('AccionLaboralApp', [
                         var employee = response;
 
                         $scope.userValid = (employee.EmployeeId != 0) ? true : false;
-                        if ($scope.userValid == true) {
-                                $scope.template = 'Home/Home';
-                                $scope.skinClass = "skin-blue";
+
+                        if ($scope.userValid == true && !employee.User.Active)
+                        {
+                            $scope.skinClass = "bg-black";
+                            $scope.template = "Users/Login";
+                            $scope.addAlert("danger", "El usuario esta inactivo.");
+                            $scope.userValid = false;
+                            $rootScope.userLoggedIn = null;
+                            authService.logOut();
+                            $location.path('/');
+                        }
+                        else if ($scope.userValid == true)
+                        {
+                            $scope.template = 'Home/Home';
+                            $scope.skinClass = "skin-blue";
                             $rootScope.userLoggedIn = authService.authentication.employee;
                             $rootScope.forgotPass = false;
                         }
-                        else {
-                                $scope.skinClass = "bg-black";
-                                $scope.template = "Users/Login";
+                        else
+                        {
+                            $scope.skinClass = "bg-black";
+                            $scope.template = "Users/Login";
                             $scope.addAlert("danger", "Usuario o clave invalido. Intente de nuevo.");
-                            };
+                            $scope.userValid = false;
+                            $rootScope.userLoggedIn = null;
+                            authService.logOut();
+                            $location.path('/');
+                        }
                     },
                     function (err) {
                         $scope.message = err.error_description;
