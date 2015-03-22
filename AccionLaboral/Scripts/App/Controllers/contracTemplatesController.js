@@ -167,7 +167,7 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
                 Description: $scope.Contract_Description,
                 Active: $scope.Contract_Active
             };
-            if ($filter('filter')($scope.contractTemplateList, { Name: $scope.Contract_Name }).length == 0) {
+            //if ($filter('filter')($scope.contractTemplateList, { Name: $scope.Contract_Name }).length == 0) {
                 contractTemplatesRepo.updateContractTemplate(function () {
                 }, contract).success(function () {
                     alertService.add('success', 'Mensaje', 'La Plantilla de Contrato se ha editado correctamente.');
@@ -190,10 +190,10 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
                  
 
                 $scope.setContractData();
-            }
-            else {
-                alertService.add('danger', 'Error', 'Ya existe una Plantilla de Contrato con ese nombe.');
-            }
+            //}
+            //else {
+            //    alertService.add('danger', 'Error', 'Ya existe una Plantilla de Contrato con ese nombe.');
+            //}
 
         }
 

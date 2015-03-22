@@ -220,6 +220,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         });
     }
 
+    $scope.screenAction = actionEmployee;
 
     
     $scope.viewMyProfile = function (employeeId) {
@@ -271,21 +272,22 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         var exists = false;
         
         if (!exists) {
-            var user = $scope.employee_User;
+            
+            var user;
+            var id = $scope.employee_User;
+            //usersRepo.getUser(id).success(function (data) {
+            //    user = data;
+            //})
+            //.error(function () {
+            //    $scope.alertsTags = $rootScope.alerts;
+            //});
+            //user.Busy = true;
+
+            for(var i=0; i<$scope.employeesUsersList.length; i++){
+                if($scope.employeesUsersList[i].UserId == id)
+                    user = $scope.employeesUsersList[i];
+            }
             user.Busy = true;
-            usersRepo.updateUser(function () {
-            }, user).success(function () {
-                //alertService.add('success', 'Mensaje', 'El Empleado se ha insertado correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.setEmployeeData();
-                $scope.load = false;
-            }).error(function () {
-                //alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });
-
-
 
             var employee;
             
@@ -302,11 +304,22 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
                     Gender: $scope.employee_Gender,
                     EmployeeAlias: $scope.employee_EmployeeAlias,
                     AdmissionDate: new Date(),
-                    CareerId: $scope.employee_Career.CareerId,
-                    RoleId: $scope.employee_Role.RoleId,
-                    UserId: $scope.employee_User.UserId,
+                    CareerId: $scope.employee_Career,
+                    RoleId: $scope.employee_Role,
+                    UserId: $scope.employee_User,
                     Photo: $scope.episodeImgData
                 };
+
+                
+                
+                usersRepo.updateUser(function () {
+                }, user).success(function () {
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.setEmployeeData();
+                }).error(function () {
+                    $scope.alertsTags = $rootScope.alerts;
+                });
+
 
                 employeesRepo.insertEmployee(function () {
                 }, employee).success(function () {
@@ -337,9 +350,9 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
                     Gender: $scope.employee_Gender,
                     EmployeeAlias: $scope.employee_EmployeeAlias,
                     AdmissionDate: $scope.employee_AdmissionDate,
-                    CareerId: $scope.employee_Career.CareerId,
-                    RoleId: $scope.employee_Role.RoleId,
-                    UserId: $scope.employee_UserAsigned.UserId,
+                    CareerId: $scope.employee_Career,
+                    RoleId: $scope.employee_Role,
+                    UserId: $scope.employee_User,
                     Photo: $scope.episodeImgData
                 };
 

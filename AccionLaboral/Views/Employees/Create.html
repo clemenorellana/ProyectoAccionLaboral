@@ -38,13 +38,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nombre</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_FirstName" ng-class="{'loadinggif': employee_FirstName==undefined}">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_FirstName" ng-class="{'loadinggif': employee_FirstName==undefined} && $scope.screenAction=='edit'">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Apellido</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_LastName" ng-class="{'loadinggif': employee_LastName==undefined}">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_LastName" ng-class="{'loadinggif': employee_LastName==undefined} && $scope.screenAction=='edit'">
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday" ng-change="calculateEmployeeAge()" ng-class="{'loadinggif': employee_Birthday==undefined}">
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday" ng-change="calculateEmployeeAge()" ng-class="{'loadinggif': employee_Birthday==undefined} && $scope.screenAction=='edit'">
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <label>Edad</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Age" ng-class="{'loadinggif': employee_Age==undefined}">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Age" ng-class="{'loadinggif': employee_Age==undefined} && $scope.screenAction=='edit'">
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                         <label>Correo Electrónico</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="employee_Email" ng-class="{'loadinggif': employee_Email==undefined}">
+                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="employee_Email" ng-class="{'loadinggif': employee_Email==undefined} && $scope.screenAction=='edit'">
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-mobile-phone"></i>
                             </div>
-                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_Cellphone" ng-class="{'loadinggif': employee_Cellphone==undefined}">
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_Cellphone" ng-class="{'loadinggif': employee_Cellphone==undefined} && $scope.screenAction=='edit'">
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-phone"></i>
                             </div>
-                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_HomePhone" ng-class="{'loadinggif': employee_HomePhone==undefined}">
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_HomePhone" ng-class="{'loadinggif': employee_HomePhone==undefined} && $scope.screenAction=='edit'">
                         </div><!-- /.input group -->
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Carrera</label>
-                        <select class="form-control" ng-options="career.CareerId as career.Name for career in employeesCareersList" ng-model="employee_Career" ng-class="{'loadinggif': employee_Career==undefined}">
+                        <select class="form-control" ng-options="career.CareerId as career.Name for career in employeesCareersList" ng-model="employee_Career" ng-class="{'loadinggif': employee_Career==undefined} && $scope.screenAction=='edit'" required>
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -144,7 +144,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Tipo de Empleado</label>
-                        <select class="form-control" ng-options="role.RoleId as role.Name for role in employeesRolesList" ng-model="employee_Role" ng-class="{'loadinggif': employee_Role==undefined}">
+                        <select class="form-control" ng-options="role.RoleId as role.Name for role in employeesRolesList" ng-model="employee_Role" ng-class="{'loadinggif': employee_Role==undefined && $scope.screenAction=='edit'}" required>
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>
@@ -152,13 +152,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Alias</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_EmployeeAlias" ng-class="{'loadinggif': employee_EmployeeAlias==undefined}">
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_EmployeeAlias" ng-class="{'loadinggif': employee_EmployeeAlias==undefined} && $scope.screenAction=='edit'" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Usuario</label>
-                        <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserId as user.UserName for user in employeesUsersList" ng-model="employee_User" ng-class="{'loadinggif': employee_User==undefined}">
+                        <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserId as user.UserName for user in employeesUsersList" ng-model="employee_User" ng-class="{'loadinggif': employee_User==undefined} && $scope.screenAction=='edit'">
                             <option value="">-- Seleccione una opción --</option>
                         </select>
                     </div>

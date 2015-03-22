@@ -60,6 +60,9 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
                 "Password": password
             };
             return $http.put(url + '/ChangePassword', user);
+        },
+        getUser: function (id) {
+            return $http.get(url + "/" + id);
         }
     }
 }]);
