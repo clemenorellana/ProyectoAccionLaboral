@@ -20,6 +20,16 @@ namespace AccionLaboral.Controllers.Home
             return new FilePathResult("~/Views/Clients/Index.html", "text/html");
         }
 
+        public ActionResult ClientsReport()
+        {
+            return new FilePathResult("~/Views/Reports/ClientsReport.html", "text/html");
+        }
+
+        public ActionResult ClientsTrackingReport()
+        {
+            return new FilePathResult("~/Views/Reports/ClientsTrackingReport.html", "text/html");
+        }
+
         //
         // GET: /Clients/Details/5
         public ActionResult Details(int id)

@@ -40,7 +40,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             title: 'Perfil de Cliente',
             templateUrl: "/Clients/ClientProfile",
             controller: "editCustomerController"
+        }).
+        when("/ClientsReport", {
+            title: 'Reporte de Clientes',
+            templateUrl: "/Clients/ClientsReport",
+            controller: "CustomerController"
+        }).
+        when("/ClientsTrackingReport", {
+            title: 'Reporte de Seguimiento de Clientes',
+            templateUrl: "/Clients/ClientsTrackingReport",
+            controller: "CustomerTrackingController"
         })
+    
 }])
 .controller('CustomerController', ['$scope', '$rootScope', '$location', '$filter', '$window', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, $window, customerRepository, filterFilter, alertService) {
     //enroll costumer

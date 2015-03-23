@@ -6,7 +6,8 @@
             <section class="sidebar">
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
-                    <div class="pull-left image" ng-click="viewProfile(userLoggedIn.EmployeeId); title='Mi Perfil';" title="Ver Perfil">
+                    <!--<div class="pull-left image" ng-click="viewProfile(userLoggedIn.EmployeeId); title='Mi Perfil';" title="Ver Perfil">-->
+                    <div class="pull-left image" >
                         <!--<img src="../../Images/avatar3.png" class="img-circle" alt="User Image" />-->
                         <img ng-show="userLoggedIn.Photo" ng-src="data:image/jpeg;base64,{{userLoggedIn.Photo}}" />
                         <img ng-show="!userLoggedIn.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="userLoggedIn.Photo">
@@ -105,10 +106,11 @@
                         <ul class="treeview-menu">
                             <li><a ng-show="getRole('ContractReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Contrato de Servicios</a></li>
                             <li><a ng-show="getRole('CVReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Hoja de Vida</a></li>
-                            <li><a ng-show="getRole('NewClientsReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Clientes</a></li>
+                            <li><a ng-show="getRole('NewClientsReport');" ng-click="title=''" href="#/ClientsReport"><i class="fa fa-angle-double-right"></i> Reporte de Clientes</a></li>
                             <li><a ng-show="getRole('VacantsReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Cumplimiento de Vacantes</a></li>
                             <!--<li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Candidatos Descartados</a></li>-->
-                            <li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Seguimiento de Candidatos Enviados a Entrevista</a></li>                            
+                            <!--<li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Seguimiento de Candidatos Enviados a Entrevista</a></li>-->                            
+                            <li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href="#/ClientsTrackingReport"><i class="fa fa-angle-double-right"></i> Reporte de Seguimiento Clientes</a></li>                            
                             <li><a ng-show="getRole('NewCompaniesReport');" ng-click="title=''" href="#/NewCompaniesReport"><i class="fa fa-angle-double-right"></i> Reporte de Mercadeo</a></li>
                             <!--<li><a ng-show="getRole('CompaniesReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Existentes</a></li>-->
                         </ul>
