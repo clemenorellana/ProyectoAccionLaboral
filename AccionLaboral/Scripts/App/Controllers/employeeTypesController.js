@@ -85,7 +85,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
     $scope.editEmployeeType = function (employeeTypeToEdit) {
         $scope.EmployeeType_RoleId = employeeTypeToEdit.RoleId;
         $scope.EmployeeType_Name = employeeTypeToEdit.Name;
-
+        $scope.EmployeeType_Alias = employeeTypeToEdit.Alias;
     };
 
 
@@ -94,6 +94,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
         $scope.actionEmployeeType = "";
         $scope.EmployeeType_RoleId = "";
         $scope.EmployeeType_Name = "";
+        $scope.EmployeeType_Alias = "";
     }
 
 
@@ -104,6 +105,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
         if ($filter('filter')($scope.employeeTypesList, { Name: $scope.EmployeeType_Name }).length == 0) {
             if ($scope.actionEmployeeType == "add") {
                 employeeType = {
+                    Alias: $scope.EmployeeType_Name,
                     Name: $scope.EmployeeType_Name
                 };
 
@@ -123,6 +125,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
             else {
                 employeeType = {
                     RoleId: $scope.EmployeeType_RoleId,
+                    Alias: $scope.EmployeeType_Alias,
                     Name: $scope.EmployeeType_Name
                 };
 

@@ -15,6 +15,6 @@ namespace AccionLaboral.Models
         [Required]
         public string Name { get; set; }
 
-        public ICollection<Role> Rols { get; set; }
+        //public ICollection<Role> Rols { get; set; }
     }
 }
