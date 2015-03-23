@@ -39,7 +39,7 @@
                     <!--<div class="input-group">
                         <input type="submit" class="btn btn-info" title="Generar Reporte" value="Generar Reporte" ng-click="generateReport()" />
                     </div>-->
-                    <button type="button" class="btn btn-info" ng-click="generateReport()">
+                    <button type="button" class="btn btn-info" ng-click="generateCompaniesReport()">
                         Generar Reporte
                     </button>
                 </div>
@@ -48,7 +48,7 @@
                     <!--<div class="input-group">
                         <input type="submit" class="btn btn-info" title="Exportar Reporte" value="Exportar Reporte" ng-click="exportReport()" />
                     </div>-->
-                    <button type="button" class="btn btn-success" data-toggle="dropdown" aria-expanded="true" ng-click="exportReport()">
+                    <button type="button" class="btn btn-success" data-toggle="dropdown" aria-expanded="true" ng-click="exportCompaniesReport()" ng-disabled="companyList.length == 0">
                         <img src="../../Images/MS/xls-icon24.png" />
                         Exportar
                     </button>

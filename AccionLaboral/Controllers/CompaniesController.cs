@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using AccionLaboral.Helpers.Filters;
 
 
 namespace AccionLaboral.Controllers
@@ -144,25 +145,50 @@ namespace AccionLaboral.Controllers
 
         //-------------------------------------------Companies Report------------------------------------------
 
-        public class CompanyFilters {
-            public DateTime StartDate { get; set; }
-            public DateTime EndDate { get; set; }
-        }
 
-        [System.Web.Http.HttpGet]
-        //[System.Web.Http.Route("api/newcompaniesdatareport/{id}")]
-        //public IQueryable<Company> NewCompaniesDataReport(CompanyFilters id)
-        [System.Web.Http.Route("api/newcompaniesdatareport")]
-        public IQueryable<Company> NewCompaniesDataReport()
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/companiesdatareport/")]
+        public List<Company> CompaniesDataReport(CompaniesFilters id)
         {
-            return db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany);
+            List<Company> companies = null;
+            if (id == null)
+            //if (id.DateFrom == null && id.DateTo == null)
+            {
+                companies = db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany).ToList();
+            }
+            else if (id.DateFrom != null && id.DateTo != null)
+            {
+                companies = db.Companies.Include(r => r.ContactsByCompany)
+                                    .Include(r => r.VacantsByCompany)
+                                    .Where(r => r.DateCreated >= id.DateFrom && r.DateCreated <= id.DateTo).ToList();
+            }
+            return companies;
         }
 
         [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/exportcompaniesreport/{id}")]
-        public IQueryable<Company> ExportCompaniesReport(CompanyFilters id)
+        [System.Web.Http.Route("~/api/exportcompaniesreport")]
+        public HttpResponseMessage ExportCompaniesReport(CompaniesFilters id)
         {
-            return db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany);
+            CompaniesFilters filters = id;
+            //id.DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? "" : Convert.ToDateTime(id.DateFrom).ToString("dd/MM/yyyy");
+            //id.DateTo = (string.IsNullOrEmpty(id.DateTo)) ? "" : Convert.ToDateTime(id.DateTo).ToString("dd/MM/yyyy");
+            try
+            {
+                if (filters != null)
+                {
+                    string filename = "CompaniesReport.xls";
+                    string path = AppDomain.CurrentDomain.BaseDirectory;
+                    string documentPath = path + "Reports\\" + filename;
+                    Reports.Helpers.Companies.GenerateReport(filename, filters);
+                }
+                return Request.CreateResponse<CompaniesFilters>(HttpStatusCode.OK, id);
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");
+            }
         }
+
     }
 }

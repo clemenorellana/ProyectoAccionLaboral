@@ -99,5 +99,18 @@ namespace AccionLaboral.Controllers.Home
                 return View();
             }
         }
+
+        [HttpGet]
+        public ActionResult Download(string id)
+        {
+            string filename = id + ".xls";
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string documentPath = path + "Reports\\" + filename;
+
+            var bytes = System.IO.File.ReadAllBytes(documentPath);
+
+            System.IO.File.Delete(documentPath);
+            return File(bytes, "application/vnd.ms-excel", filename);
+        }
     }
 }
