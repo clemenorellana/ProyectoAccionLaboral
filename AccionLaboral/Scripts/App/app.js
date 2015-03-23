@@ -214,10 +214,13 @@ angular.module('AccionLaboralApp', [
                     return (user.Role.Alias == "ASCOR") ? false : true;
 
                 // Opciones del menu de "Repotes"
-                if ( menu == "DiscardedCustomersReport" || menu == "NewCompaniesReport" || menu == "CompaniesReport")
+                if (menu == "DiscardedCustomersReport")
+                    return (user.Role.Alias == "ASREC" || user.Role.Alias == "ASCOR") ? false : true;
+
+                if (menu == "NewCompaniesReport" || menu == "CompaniesReport")
                     return (user.Role.Alias == "ASREC") ? false : true;
 
-                if (menu == "ContractReport" || menu == "CVReport" || menu == "NewClientsReport" )
+                if (menu == "ContractReport" || menu == "CVReport" || menu == "NewClientsReport")
                     return (user.Role.Alias == "ASCOR") ? false : true;
 
                 
@@ -394,7 +397,8 @@ angular.module('AccionLaboralApp', [
                         next.templateUrl == '~/NewClientsReport/Index' ||
                         next.templateUrl == '~/Clients/SearchClients' ||
                         next.templateUrl == '~/VacantsByCompany/Details/' ||
-                        next.templateUrl == '~/VacantsByCompany/VacantList'
+                        next.templateUrl == '~/VacantsByCompany/VacantList' ||
+                        next.templateUrl == '~/DiscardedCustomersReport/Index'
                         ) {
                         $location.path('/');
                     }
