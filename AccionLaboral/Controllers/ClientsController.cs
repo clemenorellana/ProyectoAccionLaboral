@@ -16,6 +16,7 @@ using AccionLaboral.Helpers.Filters;
 
 namespace AccionLaboral.Controllers
 {
+    [System.Web.Http.RoutePrefix("api/clients")]
     public class ClientsController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
@@ -348,8 +349,9 @@ namespace AccionLaboral.Controllers
                 }
                 client.EnrollDate = DateTime.Now;
                 db.Clients.Add(client);
-                GoLucene.AddUpdateLuceneIndex(client);
+                
                 db.SaveChanges();
+                GoLucene.AddUpdateLuceneIndex(client);
             }
             catch( Exception e){
                 var x = e.Message;
@@ -413,10 +415,15 @@ namespace AccionLaboral.Controllers
         }
 
         [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/exportclients/{id}")]
-        public List<Client> ExportClients(ClientsFilter id)
+        [System.Web.Http.Route("~/api/exportclients")]
+        //[System.Web.Http.Route("api/exportclients/{id}")]
+        public HttpResponseMessage ExportClients(ClientsFilter id)
         {
             ClientsFilter filters = id;
+            id.DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? "" : Convert.ToDateTime(id.DateFrom).ToString("dd/MM/yyyy");
+            id.DateTo = (string.IsNullOrEmpty(id.DateTo)) ? "" : Convert.ToDateTime(id.DateTo).ToString("dd/MM/yyyy");
+            try
+            {
                 if (filters != null)
                 {
                     string filename = "Clientes.xls";
@@ -424,15 +431,26 @@ namespace AccionLaboral.Controllers
                     string documentPath = path + "Reports\\" + filename;
                     Reports.Helpers.Clients.GenerateReport(filename, filters);
                 }
-
-                return filters.Clients;
+            return Request.CreateResponse<ClientsFilter>(HttpStatusCode.OK, id);
+            }
+            catch (Exception)
+            {
+                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");  
+            }
         }
 
         [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/exportclientstracking/{id}")]
-        public List<Client> ExportClientsTracking(ClientsFilter id)
+        [System.Web.Http.Route("~/api/exportclientstracking")]
+        //[System.Web.Http.Route("api/exportclientstracking/{id}")]
+        public HttpResponseMessage ExportClientsTracking(ClientsFilter id)
         {
             ClientsFilter filters = id;
+
+            id.DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? "" : Convert.ToDateTime(id.DateFrom).ToString("dd/MM/yyyy");
+            id.DateTo = (string.IsNullOrEmpty(id.DateTo)) ? "" : Convert.ToDateTime(id.DateTo).ToString("dd/MM/yyyy");
+            try
+            {
+                
             if (filters != null)
             {
                 string filename = "SeguimientoClientes.xls";
@@ -441,7 +459,12 @@ namespace AccionLaboral.Controllers
                 Reports.Helpers.Clients.GenerateClientsTracking(filename, filters);
             }
 
-            return filters.Clients;
+            return Request.CreateResponse<ClientsFilter>(HttpStatusCode.OK, id);
+            }
+            catch (Exception)
+            {
+                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");  
+            }
         }
 
         // Get api/ExportClient

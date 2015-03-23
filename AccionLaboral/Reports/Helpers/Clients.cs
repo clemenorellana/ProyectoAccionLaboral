@@ -21,8 +21,8 @@ namespace AccionLaboral.Reports.Helpers
 
             ISheet sheet1 = hssfworkbook.GetSheet("Clientes");
             //create cell on rows, since rows do already exist,it's not necessary to create rows again.
-            sheet1.GetRow(2).GetCell(2).SetCellValue(filters.DateFrom.ToString("dd/MM/yyyy"));
-            sheet1.GetRow(2).GetCell(4).SetCellValue(filters.DateTo.ToString("dd/MM/yyyy"));
+            sheet1.GetRow(2).GetCell(2).SetCellValue(filters.DateFrom);
+            sheet1.GetRow(2).GetCell(4).SetCellValue(filters.DateTo);
             for (int i = 0; i < filters.Clients.Count; i++)
             {
                 DateTime enrollDate = filters.Clients[i].EnrollDate ?? DateTime.Now;
@@ -50,8 +50,9 @@ namespace AccionLaboral.Reports.Helpers
 
             ISheet sheet1 = hssfworkbook.GetSheet("Clientes");
             //create cell on rows, since rows do already exist,it's not necessary to create rows again.
-            sheet1.GetRow(2).GetCell(2).SetCellValue(filters.DateFrom.ToString("dd/MM/yyyy"));
-            sheet1.GetRow(2).GetCell(4).SetCellValue(filters.DateTo.ToString("dd/MM/yyyy"));
+            if ((filters.DateFrom != null))
+            sheet1.GetRow(2).GetCell(2).SetCellValue(filters.DateFrom);
+            sheet1.GetRow(2).GetCell(5).SetCellValue(filters.DateTo);
             for (int i = 0; i < filters.Clients.Count; i++)
             {
                 DateTime enrollDate = filters.Clients[i].EnrollDate ?? DateTime.Now;
