@@ -26,7 +26,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         }).
         when('/VacantList', {
             templateUrl: '/VacantsByCompany/VacantList',
-            controller: 'vacantsByCompaniesCtrl'
+            controller: 'vacantsCtrl'
         });
     
 }]
@@ -324,6 +324,78 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         });
 
     }
+
+    $scope.vacant_viewRedirect = function (vacantId) {
+        window.location = "#/Vacants/Detail/" + vacantId;
+    }
+
+    $scope.setVacantData();
+}])
+.controller('vacantsCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
+    
+    $scope.vacantList = [];
+    $scope.load = true;
+    
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
+    //Sorting
+    $scope.sort = "Company.Name";
+    $scope.reverse = false;
+
+    $scope.changeSort = function (value) {
+        if ($scope.sort == value) {
+            $scope.reverse = !$scope.reverse;
+            return;
+        }
+
+        $scope.sort = value;
+        $scope.reverse = false;
+    }
+    //End Sorting//
+    $scope.$watch('search', function (term) {
+        // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+        $scope.filtered = filterFilter($scope.vacantList, term);
+        $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+    });
+
+
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+    $scope.setVacantData = function () {
+        vacantByCompanyRepo.getVacantList().success(function (data) {
+            for (var i = 0; i < data.length; i++)
+            {
+                if(data[i].Active)
+                    $scope.vacantList.push(data[i]);
+            }
+            
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+            
+            $scope.noOfPages = ($scope.vacantList) ? Math.ceil($scope.vacantList.length / $scope.entryLimit) : 1;
+
+            $scope.vacant_itemsInPage = ($scope.vacantList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.vacantList.length) ?
+                                        $scope.vacantList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        })
+        .error(function (data) {
+            alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+    
+    $scope.vacant_detailCancelRedirect = function () {
+        window.location = "#/VacantList";
+    }
+
 
     $scope.vacant_viewRedirect = function (vacantId) {
         window.location = "#/Vacants/Detail/" + vacantId;

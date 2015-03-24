@@ -136,7 +136,8 @@
                                 <span class="input-group-addon">
                                     <input type="checkbox" name="status" ng-checked="vacant_Active" ng-model="vacant_Active">
                                 </span>
-                                <input type="text" class="form-control" value="Activo" disabled>
+                                <input type="text" class="form-control" value="Activo" ng-show="vacant_Active">
+                                <input type="text" class="form-control" value="Inactivo" ng-show="!vacant_Active">
                             </div>
                         </div>
                     </div>
