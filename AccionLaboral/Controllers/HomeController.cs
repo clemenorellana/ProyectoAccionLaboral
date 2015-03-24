@@ -25,5 +25,10 @@ namespace AccionLaboral.Controllers
 
             return new FilePathResult("~/Views/Clientes/RegisterClient.html", "text/html");
         }
+
+        public ActionResult HomePage()
+        {
+            return new FilePathResult("~/Views/Home/HomePage.html", "text/html");
+        }
     }
 }

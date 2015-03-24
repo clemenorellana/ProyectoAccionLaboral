@@ -29,6 +29,10 @@ angular.module('AccionLaboralApp', [
         '$routeProvider',
         function($routeProvider) {
             $routeProvider.
+                 when('/HomePage', {
+                     templateUrl: '/Home/HomePage',
+                     controller: 'homePageController'
+                 }).
                 otherwise({
                     redirectTo: '/'
                 });
@@ -291,6 +295,12 @@ angular.module('AccionLaboralApp', [
                 }
 
             }
+    ])
+    .controller('homePageController', [
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService) {
+            
+
+        }
     ])
     .run(['authService', '$rootScope', '$location', function (authService, $rootScope,$location) {
         authService.fillAuthData();
