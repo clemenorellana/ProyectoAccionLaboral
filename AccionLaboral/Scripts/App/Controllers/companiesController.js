@@ -280,7 +280,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
     function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams, $window) {
         $scope.companyList = [];
         $scope.tituloPrueba = false;
-        debugger;
+        
         $scope.contactsByCompanyList = [];
         
         if (!$rootScope.alerts)
@@ -309,38 +309,9 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
         $scope.entryLimit = $scope.itemsPerPageList[0];
 
-        //$scope.setCompanyData = function () {
-        //    debugger
-        //    var starDate = $scope.filterStartDate;
-        //    var endDate = $scope.filterEndDate;
-
-        //    companiesRepo.getNewCompaniesDataReport(starDate, endDate).success(function (data) {
-        //        $scope.companyList = data;
-        //        $scope.totalServerItems = data.totalItems;
-        //        $scope.items = data.items;
-        //        $scope.load = false;
-
-        //        if ($rootScope.alerts)
-        //            $scope.alertsTags = $rootScope.alerts;
-        //        $scope.currentPage = 1; //current page
-        //        $scope.maxSize = 5; //pagination max size
-        //        //max rows for data table
-
-        //        $scope.noOfPages = ($scope.companyList) ? Math.ceil($scope.companyList.length / $scope.entryLimit) : 1;
-
-        //        $scope.itemsInPage = ($scope.companyList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.companyList.length) ?
-        //                $scope.companyList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-
-        //    })
-        //    .error(function (data) {
-        //        $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
-        //        $scope.load = false;
-        //    });
-
-        //};
-
+        
         $scope.generateCompaniesReport = function () {
-            debugger;
+            
             $scope.load = true;
             
             var startDate = $scope.filterStartDate;
@@ -378,11 +349,14 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         };
 
         $scope.exportCompaniesReport = function () {
-            var filters = { "Companies": $scope.filtered, "DateFrom": "", "DateTo": "" };
-            if ($scope.dateFrom)
-                filters.DateFrom = getDateFromFormat($scope.dateFrom, "dd/MM/yyyy");
-            if ($scope.dateTo)
-                filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
+            var startDate = $scope.filterStartDate;
+            var endDate = $scope.filterEndDate;
+
+            var filters = {
+                "Companies": $scope.filtered,
+                "DateFrom": startDate,
+                "DateTo": endDate
+            };
 
             filters.Companies = angular.copy($scope.companyList);           
             if (filters.Companies.length > 0) {

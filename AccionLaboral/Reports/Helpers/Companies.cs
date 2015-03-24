@@ -22,8 +22,22 @@ namespace AccionLaboral.Reports.Helpers
                 InitializeWorkbook();
 
                 ISheet sheet1 = hssfworkbook.GetSheet("Mercadeo");
-                sheet1.GetRow(2).GetCell(5).SetCellValue(filters.DateFrom);
-                sheet1.GetRow(2).GetCell(8).SetCellValue(filters.DateTo);
+
+                if (filters.DateFrom.Year > 1 && filters.DateTo.Year == 1)
+                {
+                    sheet1.GetRow(2).GetCell(5).SetCellValue(filters.DateFrom);
+                }
+                else if (filters.DateFrom.Year == 1 && filters.DateTo.Year > 1)
+                {
+                    sheet1.GetRow(2).GetCell(8).SetCellValue(filters.DateTo);
+                }
+                else if (filters.DateFrom.Year > 1 && filters.DateTo.Year > 1)
+                {
+                    sheet1.GetRow(2).GetCell(5).SetCellValue(filters.DateFrom);
+                    sheet1.GetRow(2).GetCell(8).SetCellValue(filters.DateTo);
+                }
+
+
                 int row = 9;
                 for (int i = 0; i < filters.Companies.Count; i++)
                 {
@@ -53,24 +67,20 @@ namespace AccionLaboral.Reports.Helpers
                     int totalVacants = 0;
                     foreach (VacantByCompany vacant in vacants)
                     { 
-                        //if no date to filter
                         if (filters.DateFrom.Year == 1 && filters.DateTo.Year == 1)
                         {
                             totalVacants += vacant.Quantity;
                         }
-                        //if only datefrom filter
                         else if (filters.DateFrom.Year > 1 && filters.DateTo.Year == 1)
                         { 
                             if(vacant.RequestDate >= filters.DateFrom)
                                 totalVacants += vacant.Quantity;
                         }
-                        //if only dateto filter
                         else if (filters.DateFrom.Year == 1 && filters.DateTo.Year > 1)
                         {
                             if (vacant.RequestDate <= filters.DateTo)
                                 totalVacants += vacant.Quantity;
                         }
-                        //if datefrom and dateto filter
                         else if (filters.DateFrom.Year > 1 && filters.DateTo.Year > 1)
                         {
                             if (vacant.RequestDate >= filters.DateFrom && vacant.RequestDate <= filters.DateTo)

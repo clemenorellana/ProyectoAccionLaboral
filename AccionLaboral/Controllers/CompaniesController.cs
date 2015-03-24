@@ -148,21 +148,37 @@ namespace AccionLaboral.Controllers
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/companiesdatareport/")]
-        public List<Company> CompaniesDataReport(CompaniesFilters id)
+        public IHttpActionResult CompaniesDataReport(CompaniesFilters id)
         {
             List<Company> companies = null;
-            if (id == null)
-            //if (id.DateFrom == null && id.DateTo == null)
+            
+            if (id.DateFrom.Year == 1 && id.DateTo.Year == 1)
             {
                 companies = db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany).ToList();
             }
-            else if (id.DateFrom != null && id.DateTo != null)
+            else if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
+            {
+                companies = db.Companies.Include(r => r.ContactsByCompany)
+                                        .Include(r => r.VacantsByCompany)
+                                        .Where(r => r.DateCreated.Day >= id.DateFrom.Day && r.DateCreated.Month >= id.DateFrom.Month && r.DateCreated.Year >= id.DateFrom.Year)
+                                        .ToList();
+            }
+            else if (id.DateFrom.Year == 1 && id.DateTo.Year > 1)
+            {
+                companies = db.Companies.Include(r => r.ContactsByCompany)
+                                        .Include(r => r.VacantsByCompany)
+                                        .Where(r => r.DateCreated.Day <= id.DateTo.Day && r.DateCreated.Month <= id.DateTo.Month && r.DateCreated.Year <= id.DateTo.Year)
+                                        .ToList();
+            }
+            else if (id.DateFrom.Year > 1 && id.DateTo.Year > 1)
             {
                 companies = db.Companies.Include(r => r.ContactsByCompany)
                                     .Include(r => r.VacantsByCompany)
-                                    .Where(r => r.DateCreated >= id.DateFrom && r.DateCreated <= id.DateTo).ToList();
+                                    .Where(r => r.DateCreated.Day >= id.DateFrom.Day && r.DateCreated.Month >= id.DateFrom.Month && r.DateCreated.Year >= id.DateFrom.Year && 
+                                            r.DateCreated.Day <= id.DateTo.Day && r.DateCreated.Month <= id.DateTo.Month && r.DateCreated.Year <= id.DateTo.Year)
+                                    .ToList();
             }
-            return companies;
+            return Ok(companies);
         }
 
         [System.Web.Http.HttpPost]
@@ -170,8 +186,6 @@ namespace AccionLaboral.Controllers
         public HttpResponseMessage ExportCompaniesReport(CompaniesFilters id)
         {
             CompaniesFilters filters = id;
-            //id.DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? "" : Convert.ToDateTime(id.DateFrom).ToString("dd/MM/yyyy");
-            //id.DateTo = (string.IsNullOrEmpty(id.DateTo)) ? "" : Convert.ToDateTime(id.DateTo).ToString("dd/MM/yyyy");
             try
             {
                 if (filters != null)

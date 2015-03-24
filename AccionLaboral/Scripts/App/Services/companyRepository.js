@@ -41,7 +41,7 @@ accionLabControllers.factory('companiesRepo', ['$http', function ($http) {
         }
         ,
         //Reports
-        getCompaniesDataReport: function (callback, id) {
+        getCompaniesDataReport: function (id) {
             return $http.post('api/companiesdatareport/', id);
         }
         ,
