@@ -32,6 +32,12 @@ accionLabControllers.factory('contractTemplatesRepo', ['$http', function ($http)
         //method for delete
         deleteContractTemplate: function (callback, id) {
             return $http.delete(url + '/' + id);
+        },
+        exportContractReport: function (id) {
+            return $http.post('api/ExportContractReport', id);
+        },
+        getActiveContractTemplateList: function (callback) {
+            return $http.get('api/ContractTemplatesActive');
         }
     }
 }]);

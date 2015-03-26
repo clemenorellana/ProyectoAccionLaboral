@@ -22,8 +22,12 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
                 return '/ContractTemplates/Details/' + params.id;
             },
             controller: 'contractTemplatesCtrl'
+        }).
+        when('/ContractReport', {
+            templateUrl: '/ContractTemplates/ContractReport',
+            controller: 'contractTemplateReportCtrl'
         })
-    ;
+        ;
 }]
 )
 .controller('contractTemplatesCtrl', ['$scope', 'contractTemplatesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, contractTemplatesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
@@ -274,4 +278,141 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     }
 
     $scope.setContractData();
-}]);
+}])
+.controller('contractTemplateReportCtrl', ['$scope', 'contractTemplatesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'customerRepository','$window', function ($scope, contractTemplatesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, customerRepository, $window) {
+    var actionContractTemplate = "";
+    $scope.contractTemplateList = [];
+    $scope.contractId = $routeParams.id;
+    $scope.load = true;
+    $scope.loadData = false;
+
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
+
+    $scope.setContractData = function () {
+        contractTemplatesRepo.getActiveContractTemplateList().success(function (data) {
+            $scope.contractTemplateList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos.";
+            $scope.load = false;
+        });
+
+    };
+
+   
+
+    $scope.setContractData();
+
+    $scope.generateContrat = function () {
+        $scope.loadData = true;
+        $scope.client = null;
+
+        var dateNow = new Date();
+        var day = dateNow.getDate();
+        var monthNumber = dateNow.getDay();
+        var month;
+        switch (monthNumber) {
+            case 1:
+                month = "Enero";
+                break;
+            case 2:
+                month = "Febrero";
+                break;
+            case 3:
+                month = "Marzo";
+                break;
+            case 4:
+                month = "Abril";
+                break;
+            case 5:
+                month = "Mayo";
+                break;
+            case 6:
+                month = "Junio";
+                break;
+            case 7:
+                month = "Julio";
+                break;
+            case 8:
+                month = "Agosto";
+                break;
+            case 9:
+                month = "Septiembre";
+                break;
+            case 10:
+                month = "Octubre";
+                break;
+            case 11:
+                month = "Noviembre";
+                break;
+            default:
+                month = "Diciembre";
+        }
+        var year = dateNow.getFullYear();
+
+
+        customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
+            for (var i = 0; i < data.length; i++)
+            {
+                if (data[i].IdentityNumber == $scope.identityNumber) {
+                    $scope.client = data[i];
+                    break;
+                }
+            }
+            if ($scope.client == null)
+                alertService.add('danger', 'Error', 'No existe ningun cliente con esa de identidad.');
+            else {
+                
+                var contractContent = $scope.contractTemplate.Description;
+                var finalContractContent = contractContent.replace("{NombreCompleto}", $scope.client.FirstName + " " + $scope.client.LastName);
+                finalContractContent = finalContractContent.replace("{Identidad}", $scope.client.IdentityNumber);
+                finalContractContent = finalContractContent.replace("{Inciso}", "Inciso A");
+                finalContractContent = finalContractContent.replace("{FechaDia}", day);
+                finalContractContent = finalContractContent.replace("{FechaMes}", month);
+                finalContractContent = finalContractContent.replace("{FechaAnio}", year);
+                $scope.contractContent = finalContractContent;
+            }
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.loadData = false;
+        })
+        .error(function () {
+            alertService.add('danger', 'Error', 'No se han podido obtener el listado de contratos.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.loadData = false;
+        });
+        
+    };
+
+    
+
+    $scope.exportContratReport = function () {
+        var id = $scope.contractContent;
+
+        var contract = {
+            ClientData: $scope.client,
+            ContractTemplateData: $scope.contractTemplate,
+            ContractContent: $scope.contractContent
+        };
+        
+        contractTemplatesRepo.exportContractReport(contract)
+                 .success(function (data) {
+                     var id = data.FileName;
+                     $window.open("ContractTemplates/Download/" + id, '_blank');
+                 }).error(function (data, status, headers, config) {
+                     alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
+                     $scope.alertsTags = $rootScope.alerts;
+                 });
+    };
+
+
+}])
+;

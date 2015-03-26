@@ -1,0 +1,57 @@
+﻿<!-- Alert -->
+<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+    <i class="fa fa-check" ng-show="item.type=='success'"></i>
+    <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+    <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+    <h4>{{ item.title }}</h4>
+    {{ item.msg }}
+</div><!-- End Alert -->
+
+
+<div class="col-md-12">
+    <div class="box box-info">
+        <div class="box-header">
+            <h3 class="box-title">Generear Contrato de Servicios</h3>
+        </div>
+        <div class="box-body">
+            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+            <div ng-show="!load">
+                <div class="row" ng-show="!load">
+                    <div class="col-md-12">
+                        <div class="form-group col-md-4">
+                            <label># de Identidad</label>
+                            <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="identityNumber" required data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" input-mask>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Contrato de Servicios</label>
+                            <select class="form-control" ng-options="contract.Name for contract in contractTemplateList" ng-model="contractTemplate" required ng-class="{'loadinggif': contractTemplateList==undefined}">
+                                <option value="">-- Seleccione un Contrato --</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label></label>
+                            <div class="input-group">
+                                <input type="submit" class="btn btn-info" title="Generar Reporte" value="Generar Contrato" ng-click="generateContrat()" />
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <br />
+                            <button type="button" class="btn btn-success" aria-expanded="true" ng-click="exportContratReport()" ng-disabled="contractContent == null">
+                                <img src="../../Images/MS/Word-icon16.png" />
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class='box-body pad'>
+                    <div ng-show="loadData" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+                    <form>
+                        <textarea class="textarea" ng-model="contractContent" style="width: 100%; height: 400px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

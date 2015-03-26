@@ -1,8 +1,12 @@
-﻿using System;
+﻿using AccionLaboral.Models;
+using Novacode;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AccionLaboral.Reports.Helpers;
+using AccionLaboral.Helpers.Filters;
 
 namespace AccionLaboral.Controllers.Home
 {
@@ -97,6 +101,24 @@ namespace AccionLaboral.Controllers.Home
             {
                 return View();
             }
+        }
+
+        public ActionResult ContractReport()
+        {
+            return new FilePathResult("~/Views/Reports/ContractReport.html", "text/html");
+        }
+
+        [HttpGet]
+        public ActionResult Download(string id)
+        {
+            string filename = id + ".docx";
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string documentPath = path + "Reports\\" + filename;
+
+            var bytes = System.IO.File.ReadAllBytes(documentPath);
+
+            System.IO.File.Delete(documentPath);
+            return File(bytes, "application/octet-stream", filename);
         }
     }
 }

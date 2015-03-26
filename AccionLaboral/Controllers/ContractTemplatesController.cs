@@ -9,6 +9,9 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using AccionLaboral.Helpers.Filters;
+using AccionLaboral.Reports.Helpers;
+using Novacode;
 
 namespace AccionLaboral.Controllers
 {
@@ -20,6 +23,13 @@ namespace AccionLaboral.Controllers
         public IQueryable<ContractTemplate> GetContractTemplates()
         {
             return db.ContractTemplates;
+        }
+
+        [HttpGet]
+        [Route("api/ContractTemplatesActive")]
+        public IQueryable<ContractTemplate> ContractTemplatesActive()
+        {
+            return db.ContractTemplates.Where(r => r.Active);
         }
 
         // GET api/ContractTemplates/5
@@ -112,6 +122,38 @@ namespace AccionLaboral.Controllers
         private bool ContractTemplateExists(int id)
         {
             return db.ContractTemplates.Count(e => e.ContractTemplateId == id) > 0;
+        }
+
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("~/api/ExportContractReport")]
+        public HttpResponseMessage ExportContractReport(ContractFilter id)
+        {
+            ContractFilter filters = id;
+            try
+            {
+                if (filters != null)
+                {
+                    string filename = "Contrato_" + filters.ClientData.FirstName + "_" + filters.ClientData.LastName + ".docx";
+                    id.FileName = "Contrato_" + filters.ClientData.FirstName + "_" + filters.ClientData.LastName;
+                    string path = AppDomain.CurrentDomain.BaseDirectory;
+                    string documentPath = path + "Reports\\" + filename;
+                    string templatePath = path + "Reports" + "\\" + "ContractTemplate.docx";
+                    using (DocX doc = DocX.Load(templatePath))
+                    {
+                        ContractTemplate contract = filters.ContractTemplateData;
+                        contract.Description = filters.ContractContent;
+                        Contracts.CreateContract(doc, contract);
+                        doc.SaveAs(documentPath);
+                    }
+                }
+                return Request.CreateResponse<ContractFilter>(HttpStatusCode.OK, id);
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");
+            }
         }
     }
 }

@@ -62,7 +62,8 @@ namespace AccionLaboral.Controllers
                         //AcademicEducations = x.AcademicEducations,
                         Employee = new Employee { Age = x.Age },
                         State = x.State,
-                        Trackings = x.Trackings
+                        Trackings = x.Trackings,
+                        IdentityNumber = x.IdentityNumber,
 
                     }).
                 ToList();
@@ -631,5 +632,42 @@ namespace AccionLaboral.Controllers
         {
             return db.Trackings.Count(e => e.TrackingId == id) > 0;
         }
+
+        //[System.Web.Http.HttpGet]
+        //[System.Web.Http.Route("api/FindClientByIdentityNumber/{id}")]
+        //public Client FindClientByIdentityNumber(string id)
+        //{
+        //    Client client = null;
+        //    try
+        //    {
+        //        client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+        //            .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
+        //            .Include(r => r.AcademicEducations.Select(c => c.Career))
+        //            .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+        //            .Include(r => r.KnownPrograms)
+        //            .Include(r => r.Languages.Select(l => l.Language))
+        //            .Include(r => r.Languages.Select(l => l.LanguageLevel))
+        //            .Include(r => r.References.Select(c => c.City))
+        //            .Include(r => r.References.Select(t => t.ReferenceType))
+        //            .Include(r => r.WorkExperiences)
+        //            .Include(r => r.WorkExperiences.Select(c => c.City))
+        //            .Include(r => r.State)
+        //            .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
+        //            .Include(r => r.Trackings.Select(c => c.State))
+        //            .Include(r => r.Trackings.Select(c => c.TrackingType))
+        //            .First(r => r.IdentityNumber == id);
+
+        //        if (client == null)
+        //        {
+        //            return client;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        var x = e.Message;
+        //    }
+
+        //    return client;
+        //}
     }
 }

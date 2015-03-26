@@ -121,7 +121,10 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         DeleteTracking: function (id) {
             return $http.delete('api/TrackingDetails' + '/' + id);
         }
-
+        ,
+        findClientByIdentityNumber: function (id) {
+            return $http.get('api/FindClientByIdentityNumber' + '/' + id);
+        }
 
     }
 }]);
