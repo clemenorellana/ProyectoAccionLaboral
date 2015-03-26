@@ -11,5 +11,6 @@ namespace AccionLaboral.Helpers.Filters
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public List<Company> Companies { get; set; }
+        public string ReportName { get; set; }
     }
 }

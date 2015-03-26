@@ -349,20 +349,25 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         };
 
         $scope.exportCompaniesReport = function () {
-            var startDate = $scope.filterStartDate;
-            var endDate = $scope.filterEndDate;
-
+            if ($scope.reportName == "" || $scope.reportName == null) {
+                alertService.add('danger', 'Error', 'Aisgnar un nombre al archivo a exportar.');
+                $scope.alertsTags = $rootScope.alerts;
+                return
+            }
             var filters = {
                 "Companies": $scope.filtered,
-                "DateFrom": startDate,
-                "DateTo": endDate
+                "DateFrom": $scope.filterStartDate,
+                "DateTo": $scope.filterEndDate,
+                "ReportName": $scope.reportName
             };
 
             filters.Companies = angular.copy($scope.companyList);           
             if (filters.Companies.length > 0) {
                 companiesRepo.exportCompaniesReport(filters)
                  .success(function (data) {
-                     $window.open("Companies/Download/" + 'CompaniesReport', '_blank');
+                     var fileName = data.ReportName;
+                     $window.open("Companies/Download/" + fileName, '_blank');
+                     $scope.reportName = "";
                  }).error(function (data, status, headers, config) {
                      alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
                      $scope.alertsTags = $rootScope.alerts;

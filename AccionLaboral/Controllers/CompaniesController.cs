@@ -190,7 +190,7 @@ namespace AccionLaboral.Controllers
             {
                 if (filters != null)
                 {
-                    string filename = "CompaniesReport.xls";
+                    string filename = id.ReportName + ".xls";
                     string path = AppDomain.CurrentDomain.BaseDirectory;
                     string documentPath = path + "Reports\\" + filename;
                     Reports.Helpers.Companies.GenerateReport(filename, filters);
