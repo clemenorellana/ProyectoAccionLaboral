@@ -10,6 +10,7 @@ namespace AccionLaboral.Helpers.Filters
     {
         public string DateFrom { get; set; }
         public string DateTo { get; set; }
+        public string Title { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

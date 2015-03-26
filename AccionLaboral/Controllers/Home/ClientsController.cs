@@ -169,7 +169,7 @@ namespace AccionLaboral.Controllers.Home
         [HttpPost]
         public ActionResult ExportClients(ClientsFilter filters)
         {
-            string filename = "Clientes.xls";
+            string filename = filters.Title.Replace("."," ") + ".xls";
             
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string documentPath = path + "Reports\\" + filename;
@@ -183,7 +183,8 @@ namespace AccionLaboral.Controllers.Home
         [HttpPost]
         public ActionResult ExportClientsTracking(ClientsFilter filters)
         {
-            string filename = "SeguimientoClientes.xls";
+            //string filename = "SeguimientoClientes.xls";
+            string filename = filters.Title.Replace(".", " ") + ".xls";
 
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string documentPath = path + "Reports\\" + filename;
@@ -204,7 +205,7 @@ namespace AccionLaboral.Controllers.Home
             var bytes = System.IO.File.ReadAllBytes(documentPath);
 
             System.IO.File.Delete(documentPath);
-            return File(bytes, "application/vnd.ms-excel", filename);
+            return File(bytes, "application/vnd.ms-excel", string.IsNullOrEmpty(id) ? "Clientes.xls" : filename);
         }
     }
 }

@@ -426,7 +426,7 @@ namespace AccionLaboral.Controllers
             {
                 if (filters != null)
                 {
-                    string filename = "Clientes.xls";
+                    string filename = filters.Title.Replace(".", " ") + ".xls";
                     string path = AppDomain.CurrentDomain.BaseDirectory;
                     string documentPath = path + "Reports\\" + filename;
                     Reports.Helpers.Clients.GenerateReport(filename, filters);
@@ -453,7 +453,7 @@ namespace AccionLaboral.Controllers
                 
             if (filters != null)
             {
-                string filename = "SeguimientoClientes.xls";
+                string filename = filters.Title.Replace(".", " ") + ".xls";
                 string path = AppDomain.CurrentDomain.BaseDirectory;
                 string documentPath = path + "Reports\\" + filename;
                 Reports.Helpers.Clients.GenerateClientsTracking(filename, filters);
