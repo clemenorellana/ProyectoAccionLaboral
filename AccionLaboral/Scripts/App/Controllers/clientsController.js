@@ -63,45 +63,73 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     $scope.back = function () {
         $location.path("/AllClients");
     };
+    $scope.itemsInReportPage = 0;
+    $scope.getFormatDate = function (date) {
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
 
-    $scope.exportClients = function () {
-        
-        var filters = { "Clients": $scope.filtered, "DateFrom":"", "DateTo":"" };
-        if($scope.dateFrom)
-            filters.DateFrom = getDateFromFormat($scope.dateFrom, "dd/MM/yyyy");
-        if($scope.dateTo)
-        filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
-        filters.Clients = angular.copy($scope.filtered);
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        return (dd + '/' + mm +'/'+yyyy);
+    }
+    $scope.filters = { "Clients": [], "DateFrom": "", "DateTo": "", "Title":"" };
+    $scope.generateReport = function () {
+        //$scope.setData();
+        $scope.filters = { "Clients": [], "DateFrom": "", "DateTo": "", "Title": "" };
+        if ($scope.dateFrom) {
+
+            $scope.filters.DateFrom = $scope.getFormatDate($scope.dateFrom);
+        }
+        if ($scope.dateTo) {
+            $scope.filters.DateTo = $scope.getFormatDate($scope.dateTo);
+            //filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
+        }
+
+        $scope.filters.Clients = angular.copy($scope.filtered);
         var clients = [];
-        for (var i = 0; i < filters.Clients.length; i++) {
+        for (var i = 0; i < $scope.filters.Clients.length; i++) {
             if ($scope.dateFrom && $scope.dateTo) {
                 var dateFrom = new Date($scope.dateFrom),
                     dateTo = new Date($scope.dateTo),
-                    enrollDate = new Date(filters.Clients[i].EnrollDate);
+                    enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
                 enrollDate.setHours(0, 0, 0, 0);
                 if (dateFrom <= enrollDate && dateTo >= enrollDate) {
-                    clients.push(filters.Clients[i]);
+                    clients.push($scope.filters.Clients[i]);
                 }
             } else if ($scope.dateFrom) {
                 var dateFrom = new Date($scope.dateFrom),
-                    enrollDate = new Date(filters.Clients[i].EnrollDate);
+                    enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
                 enrollDate.setHours(0, 0, 0, 0);
                 if (dateFrom <= enrollDate)
-                    clients.push(filters.Clients[i]);
+                    clients.push($scope.filters.Clients[i]);
             } else if ($scope.dateTo) {
                 var dateTo = new Date($scope.dateTo),
-                    enrollDate = new Date(filters.Clients[i].EnrollDate);
+                    enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
                 enrollDate.setHours(0, 0, 0, 0);
                 if (dateTo >= enrollDate)
-                    clients.push(filters.Clients[i]);
+                    clients.push($scope.filters.Clients[i]);
             } else
-                clients = angular.copy(filters.Clients);
+                clients = angular.copy($scope.filters.Clients);
         }
-        filters.Clients = angular.copy(clients);
-        if (filters.Clients.length > 0) {
-            customerRepository.exportCustomers(filters)
+        $scope.filters.Clients = angular.copy(clients);
+        //$scope.filtered = angular.copy(clients);
+        $scope.setFilteredReport();
+    }
+
+    $scope.exportClients = function () {
+        $scope.filters.Title = ($scope.title) ? $scope.title : "";
+        
+        if($scope.filters)
+            if ($scope.filters.Clients.length > 0) {
+                customerRepository.exportCustomers($scope.filters)
              .success(function (data) {
-                 $window.open("Clients/Download/" + 'Clientes', '_blank');
+                 $window.open("Clients/Download/" + $scope.filters.Title, '_blank');
              }).error(function (data, status, headers, config) {
                  alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
                  $scope.alertsTags = $rootScope.alerts;
@@ -110,13 +138,19 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
             $scope.alertsTags = $rootScope.alerts;
         }
-        
+        $scope.title = "";
         /*customerRepository.exportCustomers(filters)
             .success(function () {
                 $scope.filtered = angular.copy($scope.filtered);
         });*/
     }
 
+    $scope.setFilteredReport = function () {
+
+        $scope.itemsInReportPage = ($scope.filters.Clients.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filters.Clients.length) ?
+                    $scope.filters.Clients.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        $scope.noOfPages = ($scope.filters.Clients) ? Math.ceil($scope.filters.Clients.length / $scope.entryLimit) : 1;
+    };
     $scope.exportData = function () {
         if (!$scope.filtered || $scope.filtered.length == 0) {
             alertService.add('danger', 'Error', 'No hay datos.');
@@ -2747,52 +2781,94 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 
         }
     }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $window, filterFilter, customerRepository, alertService) {
-        $scope.exportClients = function () {
+        $scope.itemsInReportPage = 0;
+        $scope.getFormatDate = function (date) {
+            var dd = date.getDate();
+            var mm = date.getMonth() + 1; //January is 0!
 
-            var filters = { "Clients": $scope.filtered, "DateFrom": "", "DateTo": "" };
-            if ($scope.dateFrom)
-                filters.DateFrom = getDateFromFormat($scope.dateFrom, "dd/MM/yyyy");
-            if ($scope.dateTo)
-                filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
-            filters.Clients = angular.copy($scope.filtered);
+            var yyyy = date.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+
+            return (dd + '/' + mm + '/' + yyyy);
+        }
+        $scope.filters = { "Clients": [], "DateFrom": "", "DateTo": "", "Title": "" };
+        $scope.generateReport = function () {
+            //$scope.setData();
+            $scope.filters = { "Clients": [], "DateFrom": "", "DateTo": "", "Title": "" };
+            if ($scope.dateFrom) {
+
+                $scope.filters.DateFrom = $scope.getFormatDate($scope.dateFrom);
+            }
+            if ($scope.dateTo) {
+                $scope.filters.DateTo = $scope.getFormatDate($scope.dateTo);
+                //filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
+            }
+
+            $scope.filters.Clients = angular.copy($scope.filtered);
             var clients = [];
-            for (var i = 0; i < filters.Clients.length; i++) {
+            for (var i = 0; i < $scope.filters.Clients.length; i++) {
                 if ($scope.dateFrom && $scope.dateTo) {
                     var dateFrom = new Date($scope.dateFrom),
                         dateTo = new Date($scope.dateTo),
-                        enrollDate = new Date(filters.Clients[i].EnrollDate);
+                        enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
                     enrollDate.setHours(0, 0, 0, 0);
-                    if (dateFrom <= enrollDate && dateTo >= enrollDate)
-                        clients.push(filters.Clients[i]);
+                    if (dateFrom <= enrollDate && dateTo >= enrollDate) {
+                        clients.push($scope.filters.Clients[i]);
+                    }
                 } else if ($scope.dateFrom) {
                     var dateFrom = new Date($scope.dateFrom),
-                        enrollDate = new Date(filters.Clients[i].EnrollDate);
+                        enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
                     enrollDate.setHours(0, 0, 0, 0);
                     if (dateFrom <= enrollDate)
-                        clients.push(filters.Clients[i]);
+                        clients.push($scope.filters.Clients[i]);
                 } else if ($scope.dateTo) {
                     var dateTo = new Date($scope.dateTo),
-                        enrollDate = new Date(filters.Clients[i].EnrollDate);
+                        enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
                     enrollDate.setHours(0, 0, 0, 0);
                     if (dateTo >= enrollDate)
-                        clients.push(filters.Clients[i]);
+                        clients.push($scope.filters.Clients[i]);
                 } else
-                    clients = angular.copy(filters.Clients);
+                    clients = angular.copy($scope.filters.Clients);
             }
-            filters.Clients = angular.copy(clients);
-            if (filters.Clients.length > 0) {
-                customerRepository.exportCustomersTracking(filters)
+            $scope.filters.Clients = angular.copy(clients);
+            //$scope.filtered = angular.copy(clients);
+            $scope.setFilteredReport();
+        }
+        $scope.exportClients = function () {
+            $scope.filters.Title = ($scope.title) ? $scope.title : "";
+            
+            if ($scope.filters)
+                if ($scope.filters.Clients.length > 0) {
+                    customerRepository.exportCustomersTracking($scope.filters)
                  .success(function (data) {
-                     $window.open("Clients/Download/" + 'SeguimientoClientes', '_blank');
+                     $window.open("Clients/Download/" + $scope.filters.Title, '_blank');
                  }).error(function (data, status, headers, config) {
                      alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
                      $scope.alertsTags = $rootScope.alerts;
                  });
-            } else {
-                alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
-                $scope.alertsTags = $rootScope.alerts;
-            }
+                } else {
+                    alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
+                    $scope.alertsTags = $rootScope.alerts;
+                }
+            $scope.title = "";
+            /*customerRepository.exportCustomers(filters)
+                .success(function () {
+                    $scope.filtered = angular.copy($scope.filtered);
+            });*/
         }
+
+        $scope.setFilteredReport = function () {
+
+            $scope.itemsInReportPage = ($scope.filters.Clients.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filters.Clients.length) ?
+                        $scope.filters.Clients.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+            $scope.noOfPages = ($scope.filters.Clients) ? Math.ceil($scope.filters.Clients.length / $scope.entryLimit) : 1;
+        };
+
         //Sorting
         $scope.sort = "FirstName";
         $scope.reverse = false;

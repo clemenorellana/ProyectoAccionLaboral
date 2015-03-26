@@ -21,6 +21,7 @@ namespace AccionLaboral.Reports.Helpers
 
             ISheet sheet1 = hssfworkbook.GetSheet("Clientes");
             //create cell on rows, since rows do already exist,it's not necessary to create rows again.
+            sheet1.GetRow(1).GetCell(0).SetCellValue(filters.Title);
             sheet1.GetRow(2).GetCell(2).SetCellValue(filters.DateFrom);
             sheet1.GetRow(2).GetCell(4).SetCellValue(filters.DateTo);
             for (int i = 0; i < filters.Clients.Count; i++)
@@ -50,6 +51,7 @@ namespace AccionLaboral.Reports.Helpers
 
             ISheet sheet1 = hssfworkbook.GetSheet("Clientes");
             //create cell on rows, since rows do already exist,it's not necessary to create rows again.
+            sheet1.GetRow(1).GetCell(0).SetCellValue(filters.Title);
             if ((filters.DateFrom != null))
             sheet1.GetRow(2).GetCell(2).SetCellValue(filters.DateFrom);
             sheet1.GetRow(2).GetCell(5).SetCellValue(filters.DateTo);
