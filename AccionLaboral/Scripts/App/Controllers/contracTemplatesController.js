@@ -371,15 +371,40 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
             if ($scope.client == null)
                 alertService.add('danger', 'Error', 'No existe ningun cliente con esa de identidad.');
             else {
-                
+                //replace(/abc/g, '');
                 var contractContent = $scope.contractTemplate.Description;
-                var finalContractContent = contractContent.replace("{NombreCompleto}", $scope.client.FirstName + " " + $scope.client.LastName);
-                finalContractContent = finalContractContent.replace("{Identidad}", $scope.client.IdentityNumber);
-                finalContractContent = finalContractContent.replace("{Inciso}", "Inciso A");
-                finalContractContent = finalContractContent.replace("{FechaDia}", day);
-                finalContractContent = finalContractContent.replace("{FechaMes}", month);
-                finalContractContent = finalContractContent.replace("{FechaAnio}", year);
+                var finalContractContent = contractContent.replace(/{NombreCompleto}/g, $scope.client.FirstName + " " + $scope.client.LastName);
+                finalContractContent = finalContractContent.replace(/{Identidad}/g, $scope.client.IdentityNumber);
+                //finalContractContent = finalContractContent.replace(/{Inciso}/g, "Inciso A");
+                //finalContractContent = finalContractContent.replace(/{EmpresaColocado}/g, "Inciso A");
+                finalContractContent = finalContractContent.replace(/{FechaDia}/g, day);
+                finalContractContent = finalContractContent.replace(/{FechaMes}/g, month);
+                finalContractContent = finalContractContent.replace(/{FechaAnio}/g, year);
                 $scope.contractContent = finalContractContent;
+
+                $scope.placeHolders = [];
+                //obtener los placeholders vacios
+                var cadena1 = finalContractContent.split("{");
+                for (var i = 0; i < cadena1.length; i++)
+                {
+                    var cadena2 = cadena1[i].split("}");
+                    if (cadena2.length > 1) {
+                        var item = {
+                            Field: "{"+cadena2[0]+"}",
+                            Value: ""                            
+                        }
+                        var existe = false;
+                        for (var x = 0; x < $scope.placeHolders.length; x++)
+                        {
+                            if ($scope.placeHolders[x].Field == item.Field) {
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if (!existe)
+                            $scope.placeHolders.push(item);
+                    }
+                }
             }
             $scope.alertsTags = $rootScope.alerts;
             $scope.loadData = false;
@@ -392,6 +417,16 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         
     };
 
+    
+
+    $scope.replacePlaceHolders = function () {
+        var contractContent = $scope.contractContent;
+        for (var i = 0; i < $scope.placeHolders.length; i++) {
+            var item = $scope.placeHolders[i];
+            contractContent = contractContent.replace(item.Field, item.Value);
+        }
+        $scope.contractContent = contractContent;
+    };
     
 
     $scope.exportContratReport = function () {
