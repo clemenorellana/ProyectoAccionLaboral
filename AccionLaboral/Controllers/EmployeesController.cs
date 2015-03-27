@@ -23,9 +23,16 @@ namespace AccionLaboral.Controllers
         [HttpGet]
         public IQueryable<Employee> GetEmployees()
         {
-            return db.Employees.Include("Career").Include("User");//.Include("Role");
+            return db.Employees.Include("Career").Include("User").Include("Role");
         }
 
+
+        [Route("api/RecruitmentEmployees")]
+        [HttpGet]
+        public IQueryable<Employee> RecruitmentEmployees()
+        {
+            return db.Employees.Include("Role").Where(r => r.Role.Alias == "ASREC");
+        }
 
         // GET api/Employees/5
         [ResponseType(typeof(Employee))]

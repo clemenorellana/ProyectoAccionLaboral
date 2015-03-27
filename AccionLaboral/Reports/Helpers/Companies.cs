@@ -38,10 +38,10 @@ namespace AccionLaboral.Reports.Helpers
                 }
 
 
-                int row = 9;
+                int rowSart = 9;
                 for (int i = 0; i < filters.Companies.Count; i++)
                 {
-                    row += i;
+                    int row = rowSart + i;
                     sheet1.GetRow(row).GetCell(0).SetCellValue(i + 1);
                     sheet1.GetRow(row).GetCell(1).SetCellValue(filters.Companies[i].DateCreated);
                     sheet1.GetRow(row).GetCell(2).SetCellValue(filters.Companies[i].Name);

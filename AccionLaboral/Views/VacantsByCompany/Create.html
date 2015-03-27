@@ -120,28 +120,56 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12" ng-show="showVacantCoverdDate">
-                        <div class="form-group col-md-6">
-                            <label>Fecha de Cobertura de la Vacante</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="date" name="coveredDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_CoveredDate" >
-                            </div>
-                        </div>
+                    <div class="col-md-12" ng-show="showVacantCoveredDate">
                         <div class="form-group col-md-6">
                             <label>Estado</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <input type="checkbox" name="status" ng-checked="vacant_Active" ng-model="vacant_Active">
                                 </span>
-                                <input type="text" class="form-control" value="Activo" ng-show="vacant_Active">
-                                <input type="text" class="form-control" value="Inactivo" ng-show="!vacant_Active">
+                                <input type="text" class="form-control" value="Abierta" ng-show="vacant_Active">
+                                <input type="text" class="form-control" value="Cerrada" ng-show="!vacant_Active">
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-12" ng-show="showVacantCoveredDate">
+                        <div ng-show="!vacant_Active">
+                            <div class="form-group col-md-6">
+                                <label>Fecha de Cobertura de la Vacante</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="date" name="coveredDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="vacant_CoveredDate">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Tiempo de Cobertura de la Vacante</label>
+                                <div class="input-group">
+                                    <input type="text" name="endAge" class="form-control" placeholder="Ingresar ..." ng-model="vacant_CoveredTime" required>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre del Asesor</th>
+                                        <th>Alias del Asesor</th>
+                                        <th>Número de Perfiles</th>
+                                    </tr>
+                                    <tr ng-repeat="employee in employeesList">
+                                        <td align="center"> {{$index + 1}}</td>
+                                        <td> {{employee.Employee.FirstName}} {{employee.Employee.LastName}}</td>
+                                        <td> {{employee.Employee.EmployeeAlias}}</td>
+                                        <td>
+                                            <input type="text" ng-model="employee.NumberOfProfiles" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
             </form>
         </div>
         <div class="box-footer">

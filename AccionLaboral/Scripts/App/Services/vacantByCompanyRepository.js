@@ -41,6 +41,21 @@ accionLabControllers.factory('vacantByCompanyRepo', ['$http', function ($http) {
         //method for delete
         deleteVacant: function (callback, id) {
             return $http.delete(urlVacants + '/' + id);
+        },
+        //datos de la vacante cubierta
+        insertVacantCovered: function (callback, vacant) {
+            return $http.post('api/VacantCovered', vacant);
+        },
+        getVacantsCovered: function (id) {
+            return $http.get('api/VacantsCovered/' + id);
+        },
+        //Reports
+        getVacantsDataReport: function (id) {
+            return $http.post('api/VacantDataReport/', id);
+        }
+        ,
+        exportVacantReport: function (filters) {
+            return $http.post('api/ExportVacantReport/', filters);
         }
     }
 }]);

@@ -21,7 +21,8 @@ namespace AccionLaboral.Models
         public string Requirements { get; set; }
         public string ChargeDescription { get; set; }
         public DateTime RequestDate { get; set; }
-        public DateTime CoverdDate { get; set; }
+        public DateTime CoveredDate { get; set; }
+        public string CoveredTime { get; set; }
         public int CompanyId { get; set; }
         public int AcademicLevelId { get; set; }
         public int CareerId { get; set; }

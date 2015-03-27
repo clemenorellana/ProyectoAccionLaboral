@@ -27,12 +27,16 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         when('/VacantList', {
             templateUrl: '/VacantsByCompany/VacantList',
             controller: 'vacantsCtrl'
+        }).
+        when('/VacantReport', {
+            templateUrl: '/VacantsByCompany/VacantReport',
+            controller: 'vacantsReportCtrl'
         });
     
 }]
 )
-.controller('vacantsByCompaniesCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
-    
+.controller('vacantsByCompaniesCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'employeesRepo', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, employeesRepo) {
+    $scope.employeesList = [];
     $scope.vacantList = [];
     $scope.vacant_companyList = [];
     $scope.vacant_vacantLevelList = [];
@@ -43,6 +47,82 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     $scope.actionContact = 'Agregar'
     $scope.contactIndex;
     var actionVacant;
+
+
+    $scope.setEmployeeData = function () {
+        employeesRepo.getRecruitmentEmployees().success(function (data) {
+            $scope.employeesList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+            debugger
+            if ($scope.employeesList == null)
+                return;
+
+            var employees = [];
+            for (var i = 0; i < $scope.employeesList.length; i++) {
+
+                var vacantCovered = {
+                    VacantByCompanyId: 0,
+                    Employee: $scope.employeesList[i],
+                    EmployeeId: $scope.employeesList[i].EmployeeId,
+                    NumberOfProfiles: 0,
+                }
+                employees.push(vacantCovered);
+            }
+            $scope.employeesList = employees;
+
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            //$scope.currentPage = 1; //current page
+            //$scope.maxSize = 5; //pagination max size
+
+            //$scope.noOfPages = ($scope.employeesList) ? Math.ceil($scope.employeesList.length / $scope.entryLimit) : 1;
+
+            //$scope.itemsInPage = ($scope.employeesList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.employeesList.length) ?
+            //                            $scope.employeesList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+
+    $scope.setEmployeeVacantCoveredData = function (id) {
+        vacantByCompanyRepo.getVacantsCovered(id).success(function (data) {
+            $scope.employeesList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($scope.employeesList == null)
+                return;
+
+            var employees = [];
+            for (var i = 0; i < $scope.employeesList.length; i++) {
+
+                var vacantCovered = {
+                    VacantByCompanyId: 0,
+                    Employee: $scope.employeesList[i].Employee,
+                    EmployeeId: $scope.employeesList[i].EmployeeId,
+                    NumberOfProfiles: $scope.employeesList[i].NumberOfProfiles,
+                }
+                employees.push(vacantCovered);
+            }
+            $scope.employeesList = employees;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+
 
 
     if (!$rootScope.alerts)
@@ -73,7 +153,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     var vacantByCompanyId = $routeParams.id;
      
     if (vacantByCompanyId == null) {
-        $scope.showVacantCoverdDate = false;
+        $scope.showVacantCoveredDate = false;
         actionVacant = "add";
         $scope.tittleVacantForm = "Agregar una Vacante";
         $scope.buttonNameVacantForm = "Agregar";
@@ -82,7 +162,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         actionVacant = "edit";
         $scope.tittleVacantForm = "Editar una Vacante";
         $scope.buttonNameVacantForm = "Editar";
-        $scope.showVacantCoverdDate = true;
+        $scope.showVacantCoveredDate = true;
          
 
         vacantByCompanyRepo.getVacant(vacantByCompanyId).success(function (data) {
@@ -92,7 +172,7 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             $scope.vacant_Active = vacantToEdit.Active;
             $scope.vacant_ChargeDescription = vacantToEdit.ChargeDescription;
             $scope.vacant_company = vacantToEdit.Company;
-            $scope.vacant_CoveredDate = new Date(vacantToEdit.CoverdDate);
+            $scope.vacant_CoveredDate = new Date(vacantToEdit.CoveredDate);
             $scope.vacant_StartAge = vacantToEdit.StartAge;
             $scope.vacant_EndAge = vacantToEdit.EndAge;
             $scope.vacant_Gender = vacantToEdit.Gender;
@@ -104,12 +184,22 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             $scope.vacant_career = vacantToEdit.Career;
             $scope.vacant_city = vacantToEdit.City;
             $scope.vacant_interviewType = vacantToEdit.InterviewType;
-             ;
+            ;
+
+            if ($scope.vacant_Active) {
+                $scope.setEmployeeData();
+            }
+            else {
+                $scope.setEmployeeVacantCoveredData(vacantByCompanyId);
+            }
+
         }).error(function (data) {
             alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
             $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
             $scope.load = false;
         });
+        
+        
     }
 
     $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
@@ -239,7 +329,8 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             Requirements : $scope.vacant_Requirements,
             ChargeDescription : $scope.vacant_ChargeDescription,
             RequestDate : new Date($scope.vacant_RequestDate),
-            CoverdDate: new Date($scope.vacant_RequestDate),
+            CoveredDate: new Date($scope.vacant_RequestDate),
+            CoveredTime: $scope.vacant_CoveredTime,
             CompanyId: $scope.vacant_company.CompanyId,
             AcademicLevelId: $scope.vacant_academicLevel,
             CareerId: $scope.vacant_career.CareerId,
@@ -265,12 +356,35 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
         }
         else {
             newVacant.VacantByCompanyId = $scope.vacant_VacantByCompanyId;
-            newVacant.CoverdDate = new Date($scope.vacant_CoveredDate);
+            newVacant.CoveredDate = new Date($scope.vacant_CoveredDate);
             newVacant.Active = $scope.vacant_Active;
+
 
             vacantByCompanyRepo.updateVacant(function () { }, newVacant).success(function () {
                 alertService.add('success', 'Mensaje', 'La Vacante se ha editado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
+
+                //insertar los datos de la vacante cubierta
+                if (!$scope.vacant_Active) {
+                    for (var i = 0; i < $scope.employeesList.length; i++) {
+                        var vacantCovered = $scope.employeesList[i];
+                        vacantCovered.EmployeeId = $scope.employeesList[i].EmployeeId;
+                        vacantCovered.Employee = null;//$scope.employeesList[i];
+                        vacantCovered.VacantByCompanyId = newVacant.VacantByCompanyId;
+
+                        vacantByCompanyRepo.insertVacantCovered(function () { }, vacantCovered).success(function () {
+
+                            //$scope.load = false;
+                        }).error(function () {
+                            //alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
+                            $scope.alertsTags = $rootScope.alerts;
+                            $scope.load = false;
+                            //return;
+                        });
+                    }
+                }
+
+
                 $scope.setVacantData();
                 $location.path("/Vacants");
                 $scope.load = false;
@@ -330,6 +444,11 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     }
 
     $scope.setVacantData();
+
+    
+
+    
+
 }])
 .controller('vacantsCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService) {
     
@@ -402,4 +521,137 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     }
 
     $scope.setVacantData();
+}])
+.controller('vacantsReportCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'employeesRepo', '$window', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, employeesRepo, $window) {
+    debugger
+    $scope.employeeList = [];
+
+    
+    
+    if (!$rootScope.alerts)
+        $rootScope.alerts = [];
+
+    //Sorting
+    $scope.sort = "Company.Name";
+    $scope.reverse = false;
+
+    $scope.changeSort = function (value) {
+        if ($scope.sort == value) {
+            $scope.reverse = !$scope.reverse;
+            return;
+        }
+
+        $scope.sort = value;
+        $scope.reverse = false;
+    }
+    //End Sorting//
+    $scope.$watch('search', function (term) {
+        // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+        $scope.filtered = filterFilter($scope.vacantList, term);
+        $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+    });
+
+
+    $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+    $scope.entryLimit = $scope.itemsPerPageList[0];
+
+    $scope.setEmployeeListData = function (id) {
+        debugger
+        vacantByCompanyRepo.getVacantsCovered(id).success(function (data) {
+            debugger
+            $scope.employeesList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($scope.employeesList == null)
+                return;
+
+            var employees = [];
+            for (var i = 0; i < $scope.employeesList.length; i++) {
+
+                var vacantCovered = {
+                    VacantByCompanyId: 0,
+                    Employee: $scope.employeesList[i].Employee,
+                    EmployeeId: $scope.employeesList[i].EmployeeId,
+                    NumberOfProfiles: $scope.employeesList[i].NumberOfProfiles,
+                }
+                employees.push(vacantCovered);
+            }
+            $scope.employeesList = employees;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+        })
+        .error(function (data) {
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+
+    $scope.generateVacantReport = function () {
+        $scope.load = true;
+
+        var vacant = {
+            "DateFrom": $scope.filterStartDate,
+            "DateTo": $scope.filterEndDate
+        };
+
+
+        vacantByCompanyRepo.getVacantsDataReport(vacant).success(function (data) {
+            $scope.vacantList = data;
+            $scope.totalServerItems = data.totalItems;
+            $scope.items = data.items;
+            $scope.load = false;
+
+            if ($rootScope.alerts)
+                $scope.alertsTags = $rootScope.alerts;
+            $scope.currentPage = 1; //current page
+            $scope.maxSize = 5; //pagination max size
+
+            $scope.noOfPages = ($scope.vacantList) ? Math.ceil($scope.vacantList.length / $scope.entryLimit) : 1;
+
+            $scope.vacant_itemsInPage = ($scope.vacantList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.vacantList.length) ?
+                                        $scope.vacantList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+        })
+        .error(function (data) {
+            alertService.add('danger', 'Ha ocurrido un error al cargar los datos.' + data.ExceptionMessage);
+            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.load = false;
+        });
+
+    };
+    
+
+    $scope.exportVacantReport = function () {
+        if ($scope.reportName == "" || $scope.reportName == null) {
+            alertService.add('danger', 'Error', 'Aisgnar un nombre al archivo a exportar.');
+            $scope.alertsTags = $rootScope.alerts;
+            return
+        }
+
+        var filters = {
+            "Vacants": $scope.vacantList,
+            "DateFrom": $scope.filterStartDate,
+            "DateTo": $scope.filterEndDate,
+            "ReportName": $scope.reportName
+        };
+        debugger
+        //filters.Companies = angular.copy($scope.companyList);
+        if (filters.Vacants.length > 0) {
+            vacantByCompanyRepo.exportVacantReport(filters)
+             .success(function (data) {
+                 var fileName = data.ReportName;
+                 $window.open("VacantsByCompany/Download/" + fileName, '_blank');
+                 $scope.reportName = "";
+             }).error(function (data, status, headers, config) {
+                 alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
+                 $scope.alertsTags = $rootScope.alerts;
+             });
+        } else {
+            alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
+            $scope.alertsTags = $rootScope.alerts;
+        }
+    };
 }]);

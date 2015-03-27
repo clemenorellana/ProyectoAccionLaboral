@@ -7,6 +7,9 @@ accionLabControllers.factory('employeesRepo', ['$http', function ($http) {
         getEmployeesList: function (callback) {
             return $http.get(url);
         },
+        getRecruitmentEmployees: function (callback) {
+            return $http.get('api/RecruitmentEmployees');
+        },
         getEmployeesRoles: function (callback) {
             return $http.get('api/Roles');
         },

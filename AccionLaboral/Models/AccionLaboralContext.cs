@@ -82,6 +82,8 @@ namespace AccionLaboral.Models
 
         public DbSet<InterviewType> InterviewTypes { get; set; }
 
+        public DbSet<VacantCovered> VacantCovers { get; set; }
+
     
     }
 }

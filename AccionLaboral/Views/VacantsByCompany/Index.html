@@ -117,8 +117,8 @@
                                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
                                 <select class="form-control" ng-model="search.Active" ng-class="reverse">
                                     <option value="">Buscar...</option>
-                                    <option value="true">Activo</option>
-                                    <option value="false">Inactivo</option>
+                                    <option value="true">Abierta</option>
+                                    <option value="false">Cerrada</option>
                                 </select>
                                 <span class="input-group-btn">
                                     <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Active='';" title="Borrar"><i class="fa fa-eraser"></i></button>
@@ -137,8 +137,8 @@
                     <td>{{vacant.Gender}}</td>
                     <td>{{vacant.VacantLevel.Name}}</td>
                     <td>
-                        <div ng-if="vacant.Active">Activo</div>
-                        <div ng-if="!vacant.Active">Inactivo</div>
+                        <div ng-if="vacant.Active">Abierta</div>
+                        <div ng-if="!vacant.Active">Cerrada</div>
                     </td>
                     <td style="width: 10%;" align="center">
                         <!--button class="btn btn-info" ng-click="vacant_viewRedirect(vacant.VacantByCompanyId)" title="Ver">

@@ -52,7 +52,7 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
     };
 
     var _fillAuthData = function () {
-        debugger
+        
         var authData = localStorageService.get('authorizationData');
         if (authData) {
             _authentication.isAuth = true;
@@ -69,8 +69,7 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
     authServiceFactory.authentication = _authentication;
 
     authServiceFactory.updateAuthenticationData = function (employee) {
-        debugger
-
+        
         _fillAuthData();
         var userName = _authentication.userName;
 

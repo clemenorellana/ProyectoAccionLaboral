@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using AccionLaboral.Helpers.Filters;
 
 namespace AccionLaboral.Controllers
 {
@@ -124,6 +125,82 @@ namespace AccionLaboral.Controllers
         private bool VacantByCompanyExists(int id)
         {
             return db.VacantByCompanies.Count(e => e.VacantByCompanyId == id) > 0;
+        }
+
+
+        //-------------------------------------------Vacant Report------------------------------------------
+
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/VacantDataReport/")]
+        public IHttpActionResult VacantDataReport(VacantFilter id)
+        {
+            List<VacantByCompany> vacantsByCompanies = null;
+            
+            if (id.DateFrom.Year == 1 && id.DateTo.Year == 1)
+            {
+                vacantsByCompanies = db.VacantByCompanies.Include(r => r.Company).Include(r => r.VacantLevel).ToList();
+            }
+            else if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
+            {
+                vacantsByCompanies = db.VacantByCompanies
+                                        .Include(r => r.Company)
+                                        .Include(r => r.VacantLevel)
+                                        .Where(r => r.RequestDate.Day >= id.DateFrom.Day && r.RequestDate.Month >= id.DateFrom.Month && r.RequestDate.Year >= id.DateFrom.Year)
+                                        .ToList();
+            }
+            else if (id.DateFrom.Year == 1 && id.DateTo.Year > 1)
+            {
+                vacantsByCompanies = db.VacantByCompanies
+                                        .Include(r => r.Company)
+                                        .Include(r => r.VacantLevel)
+                                        .Where(r => r.RequestDate.Day <= id.DateTo.Day && r.RequestDate.Month <= id.DateTo.Month && r.RequestDate.Year <= id.DateTo.Year)
+                                        .ToList();
+            }
+            else if (id.DateFrom.Year > 1 && id.DateTo.Year > 1)
+            {
+                vacantsByCompanies = db.VacantByCompanies
+                                        .Include(r => r.Company)
+                                        .Include(r => r.VacantLevel)
+                                        .Where(r => r.RequestDate.Day >= id.DateFrom.Day && r.RequestDate.Month >= id.DateFrom.Month && r.RequestDate.Year >= id.DateFrom.Year &&
+                                               r.RequestDate.Day <= id.DateTo.Day && r.RequestDate.Month <= id.DateTo.Month && r.RequestDate.Year <= id.DateTo.Year)
+                                        .ToList();
+            }
+
+            List<VacantFilter> vacantList = new List<VacantFilter>();
+            foreach (var vacant in vacantsByCompanies) 
+            {
+                VacantFilter coverd = new VacantFilter();
+                coverd.VacantByCompany = vacant;
+                coverd.VacantCovered = db.VacantCovers.Include(r => r.Employee).Where(r => r.VacantByCompanyId == vacant.VacantByCompanyId).ToList();
+                vacantList.Add(coverd);
+            }
+
+
+            return Ok(vacantList);
+        }
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("~/api/ExportVacantReport")]
+        public HttpResponseMessage ExportVacantReport(VacantReportFilter id)
+        {
+            VacantReportFilter filters = id;
+            try
+            {
+                if (filters != null)
+                {
+                    string filename = id.ReportName + ".xls";
+                    string path = AppDomain.CurrentDomain.BaseDirectory;
+                    string documentPath = path + "Reports\\" + filename;
+                    Reports.Helpers.Vacants.GenerateReport(filename, filters);
+                }
+                return Request.CreateResponse<VacantReportFilter>(HttpStatusCode.OK, id);
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");
+            }
         }
     }
 }
