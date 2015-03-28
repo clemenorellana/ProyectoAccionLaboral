@@ -523,10 +523,11 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     $scope.setVacantData();
 }])
 .controller('vacantsReportCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'employeesRepo', '$window', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, employeesRepo, $window) {
-    debugger
-    $scope.employeeList = [];
-
     
+    $scope.employeeList = [];
+    $scope.columnsList = [];
+    
+    $scope.vacantList = [];
     
     if (!$rootScope.alerts)
         $rootScope.alerts = [];
@@ -554,11 +555,10 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
 
     $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
     $scope.entryLimit = $scope.itemsPerPageList[0];
+    $scope.vacant_itemsInPage = 0;
 
     $scope.setEmployeeListData = function (id) {
-        debugger
         vacantByCompanyRepo.getVacantsCovered(id).success(function (data) {
-            debugger
             $scope.employeesList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
@@ -590,6 +590,14 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
 
     };
 
+    var existe = function (id) {
+        for (var y = 0; y < $scope.columnsList.length; y++) {
+            if ($scope.columnsList[y].EmployeeId == id)
+                return true;
+        }
+        return false;
+    };
+
     $scope.generateVacantReport = function () {
         $scope.load = true;
 
@@ -603,6 +611,31 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             $scope.vacantList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
+
+            for (var i = 0; i < data.length; i++) {
+                for (var x = 0; x < data[i].VacantCovered.length; x++) {                    
+                    if (!existe(data[i].VacantCovered[x].Employee.EmployeeId))
+                        $scope.columnsList.push(data[i].VacantCovered[x]);
+                }
+            }
+
+            var index = 0;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].VacantCovered.length > 0)
+                    index = i;
+                else
+                    break;
+            }
+
+            for (var i = index + 1; i < data.length; i++) {
+                
+                for (var x = 0; x < $scope.columnsList.length; x++) {
+                    var emptyVacantCovered = { "NumberOfProfiles": "", "EmployeeId": -(i+x) };
+                    $scope.vacantList[i].VacantCovered.push(emptyVacantCovered);
+                }
+            }
+
+
             $scope.load = false;
 
             if ($rootScope.alerts)

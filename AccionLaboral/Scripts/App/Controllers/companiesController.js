@@ -308,7 +308,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
         $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
         $scope.entryLimit = $scope.itemsPerPageList[0];
-
+        $scope.itemsInPage = 0;
         
         $scope.generateCompaniesReport = function () {
             

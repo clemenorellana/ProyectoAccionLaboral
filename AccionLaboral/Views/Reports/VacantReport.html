@@ -65,7 +65,6 @@
                 </div>
                 <div class="form-group col-md-2">
                     <br />
-                    <!--<button type="button" class="btn btn-success" data-toggle="model" aria-expanded="true" data-target="#titleInfo" ng-disabled="companyList.length == 0">-->
                     <button type="button" class="btn btn-success" aria-expanded="true" data-toggle="modal" data-target="#titleInfo" ng-disabled="vacantList.length == 0">
                         <img src="../../Images/MS/xls-icon24.png" />
                         Exportar
@@ -76,21 +75,15 @@
             <div class="col-md-12" ng-show="!load">
                 <table class="table table-bordered col-md-12" ng-show="!load">
                     <tr>
-                        <th href="#" ng-click="sort='search.Name' ; reverse=!reverse" title="Clic para ordenar">#</th>
-                        <th ng-click="sort='search.Name' ; reverse=!reverse" title="Clic para ordenar">Fecha</th>
-                        <th href="#" ng-click="sort='search.Name' ; reverse=!reverse" title="Clic para ordenar">Empresa</th>
-                        <th href="#" ng-click="sort='search.Name' ; reverse=!reverse" title="Clic para ordenar">Vacante</th>
-                        <th href="#" ng-click="sort='search.Name' ; reverse=!reverse" title="Clic para ordenar">Nivel</th>
-                        <th href="#" ng-click="sort='search.Name' ; reverse=!reverse" title="Clic para ordenar">Fecha de Respuesta AL</th>
-                        <th ng-repeat="c in vacantList">
-                            {{ c.Employee.FirstName }} {{ c.Employee.LastName }}
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Empresa</th>
+                        <th>Vacante</th>
+                        <th>Nivel</th>
+                        <th>Fecha de Respuesta AL</th>
+                        <th ng-repeat="employee in columnsList">
+                            {{ employee.Employee.FirstName }} {{ employee.Employee.LastName }}
                         </th>
-                        <!--<th ng-click="sort='ContactsByCompany[0].ContactName' ; reverse=!reverse" title="Clic para ordenar">Contacto</th>
-                        <th ng-click="sort='ContactsByCompany[0].ContactEmail' ; reverse=!reverse" title="Clic para ordenar">Correo Eléctronico</th>
-                        <th ng-click="sort='ContactsByCompany[0].Telephone' ; reverse=!reverse" title="Clic para ordenar">Teléfono</th>
-                        <th ng-click="sort='ContactsByCompany[0].Extension' ; reverse=!reverse" title="Clic para ordenar">Ext.</th>
-                        <th ng-click="sort='VacantsByCompany.length' ; reverse=!reverse" title="Clic para ordenar">Plazas</th>-->
-
                     </tr>
                     <tr ng-repeat="vacant in vacantList | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                         <td align="center"> {{$index + 1}}</td>
@@ -98,17 +91,11 @@
                         <td>{{vacant.VacantByCompany.Company.Name}}</td>
                         <td>{{vacant.VacantByCompany.VacantName}}</td>
                         <td>{{vacant.VacantByCompany.VacantLevel.Name}}</td>
-                        <td>{{vacant.VacantByCompany.CoveredDate | date:'dd-MM-yyyy'}} - {{vacant.VacantByCompany.CoveredTime}}</td>
-
-                        <th ng-repeat="C in vacant.VacantCovered">
-                            {{ c.Employee.FirstName }} - {{ c.LastName }}
-                        </th>
-
-                        <!--<td>{{vacant.ContactsByCompany[0].ContactName}}</td>
-                        <td>{{vacant.ContactsByCompany[0].ContactEmail}}</td>
-                        <td>{{vacant.ContactsByCompany[0].Telephone}}</td>
-                        <td>{{vacant.ContactsByCompany[0].Extension}}</td>
-                        <td>{{vacant.VacantsByCompany.length}}</td>-->
+                        <td ng-show="vacant.VacantByCompany.Active"></td>
+                        <td ng-show="!vacant.VacantByCompany.Active">{{vacant.VacantByCompany.CoveredDate | date:'dd-MM-yyyy'}} - {{vacant.VacantByCompany.CoveredTime}}</td>
+                        <td ng-repeat="C in vacant.VacantCovered">
+                            {{ C.NumberOfProfiles }}
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -116,14 +103,14 @@
             <br />
             <div class="row" ng-show="!load">
                 <div class="col-md-4">
-                    <label>Mostrando {{itemsInPage}} de {{companyList.length}} elementos</label>
+                    <label>Mostrando {{vacant_itemsInPage}} de {{vacantList.length}} elementos</label>
                 </div>
                 <div class="col-md-4">
-                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="companyList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                    <pagination boundary-links="true" items-per-page="entryLimit" total-items="vacantList.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                 </div>
                 <div class="col-md-4">
                     <div class="col-xs-4">
-                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="setCompanyData()"></select>
+                        <select class="form-control" ng-options="item as item for item in itemsPerPageList" ng-model="entryLimit" ng-change="generateVacantReport()"></select>
                     </div>
                     <div class="col-xs-8">
                         <label>Registros por Página</label>
