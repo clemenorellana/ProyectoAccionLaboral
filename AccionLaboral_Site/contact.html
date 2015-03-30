@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acción Laboral | Contáctanos</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel='stylesheet' type='text/css'/>
+<!-- Font Awesome  -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+<!-- Web Font  -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+<!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" href="index.html"><i class="fa fa-sun-o"></i> Colibri</a> </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li class="active"><a href="contact.html">Contact us</a></li>
+        <li><a href="register.html">Registrarse</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div id="section_header">
+  <div class="container">
+    <h2><span>Contact</span> us</h2>
+  </div>
+</div>
+<div class="contact">
+  <div class="container">
+    <div class="col-md-6">
+      <h3>Contact info</h3>
+      <p><span>Address:</span> 321 Awesome Street, New York, NY 17022</p>
+      <p><span>Email:</span> info@companyname.com</p>
+      <p><span>Phone:</span> +1 800 123 1234</p>
+    </div>
+    <div class="col-md-6">
+      <h3>Get in touch</h3>
+        <form name="clientForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        <label>Identidad</label>
+                        <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" required data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" input-mask>
+                        <!--<span style="color:red" ng-show="!New.FirstName">
+                        <span ng-show="!New.FirstName">Nombre es requerido.</span>
+                    </span>-->
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        <label>Nombre(s)</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Ingresar ..." ng-model="New.FirstName" required>
+                        <!--<span style="color:red" ng-show="!New.FirstName">
+                        <span ng-show="!New.FirstName">Nombre es requerido.</span>
+                    </span>-->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        <label>Apellidos</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" required>
+                        <!--<span style="color:red" ng-show="!New.FirstName">
+                        <span ng-show="!New.LastName">Apellido es requerido.</span>
+                    </span>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label>Fecha de Nacimiento</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" ng-change="calculateAge()" data-mask="" ng-model="New.Birthday" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label>Edad</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label>Genero</label>
+                        <div class="form-group">
+                            <div class="radio">
+                                <p>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="New.Gender" required>
+                                    Femenino
+                                </p>
+                            </div>
+                            <div class="radio">
+                                <p>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="New.Gender" required>
+                                    Masculino
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        <label>Correo Electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        <label>Celular</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-mobile-phone"></i>
+                            </div>
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.Cellphone" required input-mask>
+                        </div><!-- /.input group -->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Teléfono Fijo</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.HomePhone" input-mask>
+                        </div><!-- /.input group -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Ciudad</label>
+                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group required">
+                <label>Dirección Completa</label>
+                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" required>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<div id="footerwrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8"> <span class="copyright">Copyright &copy; 2015 Your Website Name. Design by <a href="http://www.templategarden.com" rel="nofollow">TemplateGarden</a></span> </div>
+      <div class="col-md-4">
+        <ul class="list-inline social-buttons">
+          <li><a href="#"><i class="fa fa-twitter"></i></a> </li>
+          <li><a href="#"><i class="fa fa-facebook"></i></a> </li>
+          <li><a href="#"><i class="fa fa-google-plus"></i></a> </li>
+          <li><a href="#"><i class="fa fa-linkedin"></i></a> </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bootstrap core JavaScript --> 
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+</body>
+</html>
