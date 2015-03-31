@@ -833,5 +833,49 @@ angular.module('AccionLaboralApp', [
                 $(el).inputmask(scope.$eval(attrs.inputMask));
             }
         };
-    });
+    })
+    .factory('contactUsRepository', ['$http', function ($http) {
+        return {
+            sendMail: function (callback, message) {
+                return $http.post('api/Contactus', message);
+            }
+        }
+    }])
+    .controller('contactUsController', ['$scope', 'contactUsRepository', 'alertService', '$rootScope', function ($scope, contactUsRepository, alertService, $rootScope) {
+
+        if (!$rootScope.alerts)
+            $rootScope.alerts = [];
+
+        //$scope.fullName = "Nombre";
+        //$scope.email = "Correo Electrónico";
+        //$scope.subject = "Asunto";
+        //$scope.message = "Mensaje";
+
+        $scope.sendMail = function () {
+            var message = {
+                FullName: $scope.fullName,
+                Email: $scope.email,
+                Subject: $scope.subject,
+                Message: $scope.message
+            };
+
+
+            contactUsRepository.sendMail(function () {
+            }, message).success(function () {
+                alertService.add('success', 'Mensaje', 'El mensaje se ha enviado correctamente.');
+                $scope.alertsTags = $rootScope.alerts;
+
+                $scope.fullName = "";
+                $scope.email = null;
+                $scope.subject = null;
+                $scope.message = null;
+
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se ha podido enviar el mensaje.');
+                $scope.alertsTags = $rootScope.alerts;
+            });
+        };
+
+    }]);
+;
   
