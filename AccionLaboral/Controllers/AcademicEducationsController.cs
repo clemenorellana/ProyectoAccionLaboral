@@ -10,9 +10,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
 using Microsoft.Ajax.Utilities;
+using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AcademicEducationsController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
