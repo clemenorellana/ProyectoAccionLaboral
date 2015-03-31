@@ -13,6 +13,9 @@
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
     <script src="js/jquery.min.js"></script>
+    <script src="js/Plugins/jquery.inputmask.js"></script>
+    <script src="js/Plugins/jquery.inputmask.extensions.js"></script>
+    <script src="js/Plugins/jquery.inputmask.date.extensions.js"></script>
 </head>
 <body ng-controller="CustomerController">
     <nav class="navbar navbar-default">
@@ -41,7 +44,6 @@
         <div class="container">
 
             <div class="col-md-12">
-                <h3>Get in touch</h3>
                 <!-- Alert -->
                 <div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
 

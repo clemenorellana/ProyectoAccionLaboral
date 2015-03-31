@@ -826,5 +826,12 @@ angular.module('AccionLaboralApp', [
             }
             return [];
         }
+    }).directive('inputMask', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, el, attrs) {
+                $(el).inputmask(scope.$eval(attrs.inputMask));
+            }
+        };
     });
   
