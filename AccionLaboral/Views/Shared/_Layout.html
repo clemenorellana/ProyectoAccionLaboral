@@ -40,6 +40,17 @@
 <body ng-controller="mainController" ng-class="skinClass">
     <!-- header logo: style can be found in header.less -->
     <header class="header" ng-show="userValid">
+
+        <!-- Alert -->
+        <!--<div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
+
+            <i class="fa fa-check" ng-show="item.type=='success'"></i>
+            <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
+            <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
+            <h4>{{ item.title }}</h4>
+            {{ item.msg }}
+        </div>--><!-- End Alert -->
+
         <a href="#/HomePage" class="logo">
             <img src="../../Images/logo.png" class="img-circle" alt="User Image" />
             <!-- Add the class icon to your logo image or logo icon to add the margining -->
@@ -94,6 +105,27 @@
 
     <div ng-include="template" ng-cloak></div>
 
+
+    <script type="text/ng-template" id="warning-dialog.html">
+        <div class="modal-header">
+            <h3>You're Idle. Do Something!</h3>
+        </div>
+        <div idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+            <progressbar max="5" value="5" animate="false" class="progress-striped active">You'll be logged out in {{countdown}} second(s).</progressbar>
+        </div>
+
+    </script>
+    <!--<script type="text/ng-template" id="timedout-dialog.html">
+        <div class="modal-header">
+            <h3>You've Timed Out!</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                You were idle too long. Normally you'd be logged out, but in this demo just do anything and you'll be reset.
+            </p>
+        </div>
+    </script>-->
+
     <script src="../../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../../Scripts/js/date.js"></script>
     <!-- Bootstrap -->
@@ -122,6 +154,8 @@
     <!--role permission security-->
     <script src="../../Scripts/App/Services/Security/authorizationService.js"></script>    
     <script src="../../Scripts/angular-local-storage.min.js"></script>
+
+    <script src="../../Scripts/angular-idle.min.js"></script>
 
 
     <!-- Export to Excel -->

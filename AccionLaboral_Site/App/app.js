@@ -1,6 +1,9 @@
 
 'use strict';
 
+//var path = "http://localhost:49174";
+var pathServer = "http://sdhwinserver.cloudapp.net";
+
 angular.module('AccionLaboralApp', [
  //       'ngRoute',
    //     'ngCookies',
@@ -43,7 +46,7 @@ angular.module('AccionLaboralApp', [
             
             getCities: function (callback) {
                 return $http({
-                    method: 'GET', url: 'http://localhost:49174/api/Cities',
+                    method: 'GET', url: pathServer + '/api/Cities',
                     headers: {
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Methods': 'GET, POST',
@@ -53,35 +56,35 @@ angular.module('AccionLaboralApp', [
                 
             },
             exportCustomersTracking: function (filters) {
-                return $http.post('http://localhost:49174/api/exportclientstracking', filters);
+                return $http.post(pathServer + '/api/exportclientstracking', filters);
                 //return $http.post('clients/ExportClientsTracking', filters);
             },
             getCountries: function (callback) {
-                return $http.get('http://localhost:49174/api/Countries');
+                return $http.get(pathServer + '/api/Countries');
             },
             getAcademicLevels: function (callback) {
-                return $http.get('http://localhost:49174/api/AcademicLevels');
+                return $http.get(pathServer + '/api/AcademicLevels');
             },
             getCareers: function () {
-                return $http.get('http://localhost:49174/api/Careers');
+                return $http.get(pathServer + '/api/Careers');
             },
             getEducationTypes: function (callback) {
-                return $http.get('http://localhost:49174/api/EducationTypes');
+                return $http.get(pathServer + '/api/EducationTypes');
             },
             getCompanies: function (callback) {
-                return $http.get('http://localhost:49174/api/Companies');
+                return $http.get(pathServer + '/api/Companies');
             },
             getLanguages: function (callback) {
-                return $http.get('http://localhost:49174/api/Languages');
+                return $http.get(pathServer + '/api/Languages');
             },
             getLanguageLevels: function (callback) {
-                return $http.get('http://localhost:49174/api/LanguageLevels');
+                return $http.get(pathServer + '/api/LanguageLevels');
             },
             getTrackingTypes: function () {
-                return $http.get('http://localhost:49174/api/trackingtypes');
+                return $http.get(pathServer + '/api/trackingtypes');
             },
             getStates: function(){
-                return $http.get('http://localhost:49174/api/States');
+                return $http.get(pathServer + '/api/States');
             },
 
             //method for insert
@@ -106,7 +109,7 @@ angular.module('AccionLaboralApp', [
                     "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": Tracking
 
                 };
-                return $http.post(urlCustomer, newClient);
+                return $http.post(pathServer + '/api/clients/', newClient);
             }
         }
     }])
@@ -797,17 +800,18 @@ angular.module('AccionLaboralApp', [
                     }
                 }
 
-                $scope.New.AdvisorId = $rootScope.userLoggedIn.EmployeeId;
+                //$scope.New.AdvisorId = $rootScope.userLoggedIn.EmployeeId;
+                $scope.New.AdvisorId = 1;
 
                 if ($scope.action != 'edit') {
                     customerRepository.InsertCustomer(function () {
 
                     }, $scope.New).success(function () {
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Mensaje', 'Se ha registrado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
-                        $location.path("/AllClients");
+                        //$location.path("/AllClients");
                     }).error(function () {
-                        alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                        alertService.add('danger', 'Error', 'No se ha podido registrar.');
                         $scope.alertsTags = $rootScope.alerts;
                     });
 
