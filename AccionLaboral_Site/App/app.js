@@ -27,23 +27,10 @@ angular.module('AccionLaboralApp', [
         'authService',
         'ui.select',
         'isteven-multi-select'*/
-    ])
-    /*.config([
-        '$routeProvider',
-        function($routeProvider) {
-            $routeProvider.
-                 when('/HomePage', {
-                     templateUrl: '/Home/HomePage',
-                     controller: 'homePageController'
-                 }).
-                otherwise({
-                    redirectTo: '/'
-                });
-        }
-    ])*/
-    .factory('customerRepository',['$http', function ($http) {
+])
+    .factory('customerRepository', ['$http', function ($http) {
         return {
-            
+
             getCities: function (callback) {
                 return $http({
                     method: 'GET', url: pathServer + '/api/Cities',
@@ -53,7 +40,7 @@ angular.module('AccionLaboralApp', [
                         'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With'
                     }
                 });
-                
+
             },
             exportCustomersTracking: function (filters) {
                 return $http.post(pathServer + '/api/exportclientstracking', filters);
@@ -83,6 +70,7 @@ angular.module('AccionLaboralApp', [
             getTrackingTypes: function () {
                 return $http.get(pathServer + '/api/trackingtypes');
             },
+
             getStates: function(){
                 return $http.get(pathServer + '/api/States');
             },
@@ -109,7 +97,9 @@ angular.module('AccionLaboralApp', [
                     "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": Tracking
 
                 };
+
                 return $http.post(pathServer + '/api/clients/', newClient);
+
             }
         }
     }])
@@ -157,7 +147,9 @@ angular.module('AccionLaboralApp', [
             $rootScope.alerts = [];
 
         $scope.back = function () {
-            $location.path("/AllClients");
+            $scope.New = "";
+            $scope.episodeImgData = undefined;
+            $scope.academicEducations = [], $scope.knownLanguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
         };
         $scope.itemsInReportPage = 0;
         $scope.getFormatDate = function (date) {
@@ -174,7 +166,7 @@ angular.module('AccionLaboralApp', [
 
             return (dd + '/' + mm + '/' + yyyy);
         }
-        
+
 
         $scope.calculateAge = function () {
             var birthday = +new Date($scope.New.Birthday);
@@ -222,7 +214,7 @@ angular.module('AccionLaboralApp', [
                         $scope.academicEducations[$scope.index].City = $scope.City,
                         $scope.academicEducations[$scope.index].Year = $scope.Year,
                         $scope.academicEducations[$scope.index].Country = $scope.Country;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var education = {
@@ -236,7 +228,7 @@ angular.module('AccionLaboralApp', [
                         Country: $scope.Country
                     };
                     $scope.academicEducations.push(education);
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Insertado', 'Registro se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -272,7 +264,7 @@ angular.module('AccionLaboralApp', [
         };
         $scope.removeAcademicEducation = function (index) {
             $scope.academicEducations.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -299,7 +291,7 @@ angular.module('AccionLaboralApp', [
                     $scope.knownLanguages[$scope.index].Percentage = $scope.Percentage,
                         $scope.knownLanguages[$scope.index].Language = $scope.Language,
                         $scope.knownLanguages[$scope.index].LanguageLevel = $scope.LanguageLevel;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var lang = {
@@ -309,7 +301,7 @@ angular.module('AccionLaboralApp', [
                     };
                     $scope.knownLanguages.push(lang);
                     $scope.clearKnownLanguage();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Insertado', 'Registro se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -319,22 +311,22 @@ angular.module('AccionLaboralApp', [
         };
         $scope.removeKnownLanguage = function (index) {
             $scope.knownLanguages.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
         $scope.removeWorkExperience = function (index) {
             $scope.workExperiences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
         $scope.removeWorkReference = function (index) {
             $scope.workReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
         $scope.removePersonalReference = function (index) {
             $scope.personalReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -355,7 +347,7 @@ angular.module('AccionLaboralApp', [
             if ($scope.FormProgram.$valid) {
                 if ($scope.action == 'edit') {
                     $scope.knownPrograms[$scope.index].Name = $scope.NameProgram;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var program = {
@@ -363,7 +355,7 @@ angular.module('AccionLaboralApp', [
                     };
                     $scope.knownPrograms.push(program);
                     $scope.clearProgram();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Insertado', 'Registro se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -373,7 +365,7 @@ angular.module('AccionLaboralApp', [
         };
         $scope.removeKnownProgram = function (index) {
             $scope.knownPrograms.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -415,7 +407,7 @@ angular.module('AccionLaboralApp', [
                         $scope.workExperiences[$scope.index].Archievements = $scope.Achievements,
                         $scope.workExperiences[$scope.index].WorkCity = $scope.WorkCity,
                         $scope.workExperiences[$scope.index].WorkCountry = $scope.WorkCountry;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var experience = {
@@ -430,7 +422,7 @@ angular.module('AccionLaboralApp', [
                     };
                     $scope.workExperiences.push(experience);
                     $scope.clearWorkExperience();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Insertado', 'Registro se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -440,7 +432,7 @@ angular.module('AccionLaboralApp', [
         };
         $scope.removeWorkExperience = function (index) {
             $scope.workExperiences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
         /*WorkReference*/
@@ -484,7 +476,7 @@ angular.module('AccionLaboralApp', [
                         $scope.workReferences[$scope.index].Relationship = $scope.RelationshipWRef,
                         $scope.workReferences[$scope.index].City = $scope.CityWRef,
                         $scope.workReferences[$scope.index].Country = $scope.CountryWRef;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var wReference = {
@@ -500,7 +492,7 @@ angular.module('AccionLaboralApp', [
                     };
                     $scope.workReferences.push(wReference);
                     $scope.clearWorkReference();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Insertado', 'Registro se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -510,7 +502,7 @@ angular.module('AccionLaboralApp', [
         };
         $scope.removeWorkReference = function (index) {
             $scope.workReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -554,7 +546,7 @@ angular.module('AccionLaboralApp', [
                         $scope.personalReferences[$scope.index].Relationship = $scope.RelationshipPRef,
                         $scope.personalReferences[$scope.index].City = $scope.CityPRef,
                         $scope.personalReferences[$scope.index].Country = $scope.CountryPRef;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var pReference = {
@@ -570,7 +562,7 @@ angular.module('AccionLaboralApp', [
                     };
                     $scope.personalReferences.push(pReference);
                     $scope.clearPersonalReference();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Insertado', 'Registro se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -580,7 +572,7 @@ angular.module('AccionLaboralApp', [
         };
         $scope.removePersonalReference = function (index) {
             $scope.personalReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -618,7 +610,7 @@ angular.module('AccionLaboralApp', [
                         $scope.Trannings[$scope.index].City = $scope._City,
                         $scope.Trannings[$scope.index].Year = $scope._Year,
                         $scope.Trannings[$scope.index].Country = $scope._Country;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var tranning = {
@@ -632,7 +624,7 @@ angular.module('AccionLaboralApp', [
                     };
                     $scope.Trannings.push(tranning);
                     $scope.clearTranning();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Insertado', 'Registro se ha insertado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -642,7 +634,7 @@ angular.module('AccionLaboralApp', [
         };
         $scope.removeTranning = function (index) {
             $scope.Trannings.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -807,11 +799,13 @@ angular.module('AccionLaboralApp', [
                     customerRepository.InsertCustomer(function () {
 
                     }, $scope.New).success(function () {
-                        alertService.add('success', 'Mensaje', 'Se ha registrado correctamente.');
+                        alertService.add('success', 'Registrado', 'Usted se ha registrado correctamente.');
+
                         $scope.alertsTags = $rootScope.alerts;
                         //$location.path("/AllClients");
                     }).error(function () {
-                        alertService.add('danger', 'Error', 'No se ha podido registrar.');
+                        alertService.add('danger', 'Error', 'No se ha podido registrar. Espere un momento e intente de nuevo.');
+
                         $scope.alertsTags = $rootScope.alerts;
                     });
 
@@ -823,7 +817,7 @@ angular.module('AccionLaboralApp', [
             }
         }
     }]).filter('startFrom', function () {
-        return function(input, start) {
+        return function (input, start) {
             if (input) {
                 start = +start; //parse to int
                 return input.slice(start);
@@ -882,4 +876,3 @@ angular.module('AccionLaboralApp', [
 
     }]);
 ;
-  
