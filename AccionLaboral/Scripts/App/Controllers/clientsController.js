@@ -788,7 +788,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.getCitiesByCountry = function(countryId) {
             if (countryId)
                 return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
-        };             
+        };
+
+        $scope.getStateByAlias = function (alias) {
+            if (alias)
+                return $filter('filter')($scope.States, { Alias: alias })[0];
+        };
 
                 $scope.setScope = function(obj, action) {
 
@@ -947,13 +952,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.Customer = customer;
                 }
                 $scope.disableCustomer = function (customer) {
-                    customer.StateId = 6;
+                    customer.StateId = $scope.getStateByAlias('DE').StateId;//6
                     $scope.New = customer;
                     $scope.enableOrDisableCustomer('Deshabilitado', 'Se ha deshabilitado un cliente correctamente.');
                 };
 
                 $scope.enableCustomer = function (customer) {
-                    customer.StateId = 1;
+                    customer.StateId = $scope.getStateByAlias('PI').StateId;//1
                     customer.Trackings[0].TrackingTypeId = 1;
                     $scope.action = 'edit';
                     $scope.New = customer;
@@ -965,6 +970,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
 
                 $scope.enableOrDisableCustomer = function (title, msg) {
+                    if ($scope.New.Employee)
+                        $scope.New.Employee = undefined;
                     customerRepository.UpdateCustomer($scope.New).success(function () {
                         alertService.add('success', title, msg);
                         $scope.alertsTags = $rootScope.alerts;
@@ -3214,7 +3221,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
              reset           : "Reiniciar",
              search          : "Buscar campo...",
          nothingSelected : "Ninguno"         //default-label is deprecated and replaced with this.
-     };
+         };
+         $rootScope.searchCustomer = "";
          $scope.fields = [
          { "value": "FirstName", "text": "Nombre", "ticked": true },
          { "value": "LastName", "text": "Apellido", "ticked": true },

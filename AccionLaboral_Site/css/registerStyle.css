@@ -413,6 +413,7 @@ ul.callbacks_tabs.callbacks1_tabs {
 	left: 4px;
 }
 }
+/*
 .contact {
 	padding: 30px 0;
 }
@@ -438,7 +439,7 @@ ul.callbacks_tabs.callbacks1_tabs {
 .contact .btn:hover, .contact .btn:focus {
 	background-color: #bf3f3e;
 	outline: 0px;
-}
+}*/
 .form_details input[type="text"], .form_details textarea {
 	padding: 10px;
 	width: 65%;

@@ -13,10 +13,12 @@ using System.Web.Mvc;
 using AccionLaboral.Helpers.Lucene;
 using System.IO;
 using AccionLaboral.Helpers.Filters;
+using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
     [System.Web.Http.RoutePrefix("api/clients")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientsController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
@@ -29,7 +31,7 @@ namespace AccionLaboral.Controllers
         // GET api/Clients
         public List<Client> GetClients()
         {
-            
+
             List<Client> clients = null;
             try
             {
@@ -59,6 +61,7 @@ namespace AccionLaboral.Controllers
                         CompleteAddress = x.CompleteAddress,
                         Cellphone = x.Cellphone,
                         EnrollDate = x.EnrollDate,
+                        CityId = x.CityId,
                         //AcademicEducations = x.AcademicEducations,
                         Employee = new Employee { Age = x.Age },
                         State = x.State,
@@ -104,19 +107,22 @@ namespace AccionLaboral.Controllers
                     .Where(r => r.EmployeeId == id)
                     .ToList();
                 dbQuery = (from c in db.Clients
-                              join s in db.States
-                                on c.StateId equals s.StateId
-                             where c.EmployeeId == id
-                           select new Client { FirstName = c.FirstName,
-                                               LastName = c.LastName, 
-                                               Age = c.Age, 
-                                               Email = c.Email,
-                                               Cellphone = c.Cellphone,
-                                               CompleteAddress = c.CompleteAddress,
-                                               State = c.State
+                           join s in db.States
+                             on c.StateId equals s.StateId
+                           where c.EmployeeId == id
+                           select new Client
+                           {
+                               FirstName = c.FirstName,
+                               LastName = c.LastName,
+                               Age = c.Age,
+                               Email = c.Email,
+                               Cellphone = c.Cellphone,
+                               CompleteAddress = c.CompleteAddress,
+                               CityId = c.CityId,
+                               State = c.State
                            }).ToList();
-                
-                            
+
+
             }
             catch (Exception e)
             {
@@ -190,136 +196,158 @@ namespace AccionLaboral.Controllers
             {
                 return BadRequest();
             }
-            var dbClients = db.Clients
-                       .Include(x => x.AcademicEducations)
-                       .Include(x => x.Languages)
-                       .Include(x => x.KnownPrograms)
-                       .Include(x => x.WorkExperiences)
-                       .Include(x => x.References)
-                       .Include(x => x.Trackings)
-                       .Single(c => c.ClientId == client.ClientId);
-            client.EnrollDate = DateTime.Now;
-            db.Entry(dbClients).CurrentValues.SetValues(client);
 
-            foreach (var dbAcademicEducation in dbClients.AcademicEducations.ToList())
-                if (!client.AcademicEducations.Any(s => s.AcademicEducationId == dbAcademicEducation.AcademicEducationId))
-                    db.AcademicEducations.Remove(dbAcademicEducation);
-
-            foreach (var newAcademicEducation in client.AcademicEducations)
-            {
-                newAcademicEducation.ClientId = client.ClientId;
-                if (newAcademicEducation.AcademicEducationId != 0)
-                {
-                    var dbAcademicEducation = dbClients.AcademicEducations.SingleOrDefault(s => s.AcademicEducationId == newAcademicEducation.AcademicEducationId);
-                    db.Entry(dbAcademicEducation).CurrentValues.SetValues(newAcademicEducation);
-                }   
-                else
-                {
-                    newAcademicEducation.City = null;
-                    newAcademicEducation.Career = null;
-                    newAcademicEducation.AcademicLevel = null;
-                    newAcademicEducation.EducationType = null;
-                    dbClients.AcademicEducations.Add(newAcademicEducation);
-                }
-            }
-
-            ///Languajes
-            foreach (var dbLanguage in dbClients.Languages.ToList())
-                if (!client.Languages.Any(s => s.KnownLanguageId == dbLanguage.KnownLanguageId))
-                    db.KnownLanguages.Remove(dbLanguage);
-
-            foreach (var newLanguage in client.Languages)
-            {
-                
-                newLanguage.ClientId = client.ClientId;
-                newLanguage.LanguageLevel = null;
-                newLanguage.LanguageLevel = null;
-                if (newLanguage.KnownLanguageId != 0)
-                {
-                    var dbLanguage = dbClients.Languages.SingleOrDefault(s => s.KnownLanguageId == newLanguage.KnownLanguageId);
-                    db.Entry(dbLanguage).CurrentValues.SetValues(newLanguage);
-                }
-                else
-                {
-                    dbClients.Languages.Add(newLanguage);
-                }
-            }
-
-            //KnownPrograms
-            foreach (var dbProgram in dbClients.KnownPrograms.ToList())
-                if (!client.KnownPrograms.Any(s => s.KnownProgramId == dbProgram.KnownProgramId))
-                    db.KnownPrograms.Remove(dbProgram);
-
-            foreach (var newProgram in client.KnownPrograms)
-            {
-                newProgram.ClientId = client.ClientId;
-                if (newProgram.KnownProgramId != 0)
-                {
-                    var dbProgram = dbClients.KnownPrograms.SingleOrDefault(s => s.KnownProgramId == newProgram.KnownProgramId);
-                    db.Entry(dbProgram).CurrentValues.SetValues(newProgram);
-                }
-                else
-                {
-                    dbClients.KnownPrograms.Add(newProgram);
-                }
-            }
-
-            //WorkExperiences
-            foreach (var dbWorkExperience in dbClients.WorkExperiences.ToList())
-                if (!client.WorkExperiences.Any(s => s.WorkExperienceId == dbWorkExperience.WorkExperienceId))
-                    db.WorkExperiences.Remove(dbWorkExperience);
-
-            foreach (var newWorkExperience in client.WorkExperiences)
-            {
-                newWorkExperience.ClientId = client.ClientId;
-                if (newWorkExperience.WorkExperienceId != 0)
-                {
-                    var dbWorkExperience = dbClients.WorkExperiences.SingleOrDefault(s => s.WorkExperienceId == newWorkExperience.WorkExperienceId);
-                    db.Entry(dbWorkExperience).CurrentValues.SetValues(newWorkExperience);
-                }
-                else
-                {
-                    newWorkExperience.City = null;
-                    dbClients.WorkExperiences.Add(newWorkExperience);
-                }
-            }
-            //References
-            foreach (var dbReference in dbClients.References.ToList())
-                if (!client.References.Any(s => s.ReferenceId == dbReference.ReferenceId))
-                    db.References.Remove(dbReference);
-
-            foreach (var newReference in client.References)
-            {
-                newReference.City = null;
-                newReference.ReferenceType = null;
-                newReference.ClientId = client.ClientId;
-                if (newReference.ReferenceId != 0)
-                {
-                    var dbReference = dbClients.References.SingleOrDefault(s => s.ReferenceId == newReference.ReferenceId);
-                    db.Entry(dbReference).CurrentValues.SetValues(newReference);   
-                }
-                else
-                {
-                    dbClients.References.Add(newReference);
-                }
-                    
-            }
-            
-            //Trackings
-            foreach (var dbSubFoo in dbClients.Trackings.ToList())
-                if (!client.Trackings.Any(s => s.TrackingId == dbSubFoo.TrackingId))
-                    db.Trackings.Remove(dbSubFoo);
-
-            foreach (var newSubFoo in client.Trackings)
-            {
-                var dbSubFoo = dbClients.Trackings.SingleOrDefault(s => s.TrackingId == newSubFoo.TrackingId);
-                if (dbSubFoo != null)
-                    db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
-                else
-                    dbClients.Trackings.Add(newSubFoo);
-            }
             try
             {
+                client.State = null;
+                var dbClients = db.Clients
+                           .Include(x => x.AcademicEducations)
+                           .Include(x => x.Languages)
+                           .Include(x => x.KnownPrograms)
+                           .Include(x => x.WorkExperiences)
+                           .Include(x => x.References)
+                           .Include(x => x.Trackings)
+                           .Single(c => c.ClientId == client.ClientId);
+                client.EnrollDate = DateTime.Now;
+                db.Entry(dbClients).CurrentValues.SetValues(client);
+                if (client.AcademicEducations != null)
+                {
+                    foreach (var dbAcademicEducation in dbClients.AcademicEducations.ToList())
+                        if (!client.AcademicEducations.Any(s => s.AcademicEducationId == dbAcademicEducation.AcademicEducationId))
+                            db.AcademicEducations.Remove(dbAcademicEducation);
+
+                    foreach (var newAcademicEducation in client.AcademicEducations)
+                    {
+                        newAcademicEducation.ClientId = client.ClientId;
+                        if (newAcademicEducation.AcademicEducationId != 0)
+                        {
+                            var dbAcademicEducation = dbClients.AcademicEducations.SingleOrDefault(s => s.AcademicEducationId == newAcademicEducation.AcademicEducationId);
+                            db.Entry(dbAcademicEducation).CurrentValues.SetValues(newAcademicEducation);
+                        }
+                        else
+                        {
+                            newAcademicEducation.City = null;
+                            newAcademicEducation.Career = null;
+                            newAcademicEducation.AcademicLevel = null;
+                            newAcademicEducation.EducationType = null;
+                            dbClients.AcademicEducations.Add(newAcademicEducation);
+                        }
+                    }
+                }
+
+                ///Languajes
+                if (client.Languages != null)
+                {
+                    foreach (var dbLanguage in dbClients.Languages.ToList())
+                        if (!client.Languages.Any(s => s.KnownLanguageId == dbLanguage.KnownLanguageId))
+                            db.KnownLanguages.Remove(dbLanguage);
+
+                    foreach (var newLanguage in client.Languages)
+                    {
+
+                        newLanguage.ClientId = client.ClientId;
+                        newLanguage.LanguageLevel = null;
+                        newLanguage.LanguageLevel = null;
+                        if (newLanguage.KnownLanguageId != 0)
+                        {
+                            var dbLanguage = dbClients.Languages.SingleOrDefault(s => s.KnownLanguageId == newLanguage.KnownLanguageId);
+                            db.Entry(dbLanguage).CurrentValues.SetValues(newLanguage);
+                        }
+                        else
+                        {
+                            dbClients.Languages.Add(newLanguage);
+                        }
+                    }
+                }
+
+                //KnownPrograms
+                if (client.KnownPrograms != null)
+                {
+                    foreach (var dbProgram in dbClients.KnownPrograms.ToList())
+                        if (!client.KnownPrograms.Any(s => s.KnownProgramId == dbProgram.KnownProgramId))
+                            db.KnownPrograms.Remove(dbProgram);
+
+                    foreach (var newProgram in client.KnownPrograms)
+                    {
+                        newProgram.ClientId = client.ClientId;
+                        if (newProgram.KnownProgramId != 0)
+                        {
+                            var dbProgram = dbClients.KnownPrograms.SingleOrDefault(s => s.KnownProgramId == newProgram.KnownProgramId);
+                            db.Entry(dbProgram).CurrentValues.SetValues(newProgram);
+                        }
+                        else
+                        {
+                            dbClients.KnownPrograms.Add(newProgram);
+                        }
+                    }
+                }
+
+                //WorkExperiences
+
+                if (client.WorkExperiences != null)
+                {
+                    foreach (var dbWorkExperience in dbClients.WorkExperiences.ToList())
+                        if (!client.WorkExperiences.Any(s => s.WorkExperienceId == dbWorkExperience.WorkExperienceId))
+                            db.WorkExperiences.Remove(dbWorkExperience);
+
+                    foreach (var newWorkExperience in client.WorkExperiences)
+                    {
+                        newWorkExperience.ClientId = client.ClientId;
+                        if (newWorkExperience.WorkExperienceId != 0)
+                        {
+                            var dbWorkExperience = dbClients.WorkExperiences.SingleOrDefault(s => s.WorkExperienceId == newWorkExperience.WorkExperienceId);
+                            db.Entry(dbWorkExperience).CurrentValues.SetValues(newWorkExperience);
+                        }
+                        else
+                        {
+                            newWorkExperience.City = null;
+                            dbClients.WorkExperiences.Add(newWorkExperience);
+                        }
+                    }
+                }
+
+                //References
+                if (client.References != null)
+                {
+                    foreach (var dbReference in dbClients.References.ToList())
+                        if (!client.References.Any(s => s.ReferenceId == dbReference.ReferenceId))
+                            db.References.Remove(dbReference);
+
+                    foreach (var newReference in client.References)
+                    {
+                        newReference.City = null;
+                        newReference.ReferenceType = null;
+                        newReference.ClientId = client.ClientId;
+                        if (newReference.ReferenceId != 0)
+                        {
+                            var dbReference = dbClients.References.SingleOrDefault(s => s.ReferenceId == newReference.ReferenceId);
+                            db.Entry(dbReference).CurrentValues.SetValues(newReference);
+                        }
+                        else
+                        {
+                            dbClients.References.Add(newReference);
+                        }
+
+                    }
+                }
+
+                //Trackings
+                if (client.Trackings != null)
+                {
+                    foreach (var dbSubFoo in dbClients.Trackings.ToList())
+                        if (!client.Trackings.Any(s => s.TrackingId == dbSubFoo.TrackingId))
+                            db.Trackings.Remove(dbSubFoo);
+
+                    foreach (var newSubFoo in client.Trackings)
+                    {
+                        var dbSubFoo = dbClients.Trackings.SingleOrDefault(s => s.TrackingId == newSubFoo.TrackingId);
+                        if (dbSubFoo != null)
+                            db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                        else
+                            dbClients.Trackings.Add(newSubFoo);
+                    }
+                }
+
                 GoLucene.AddUpdateLuceneIndex(client);
                 db.SaveChanges();
             }
@@ -350,11 +378,12 @@ namespace AccionLaboral.Controllers
                 }
                 client.EnrollDate = DateTime.Now;
                 db.Clients.Add(client);
-                
+
                 db.SaveChanges();
                 GoLucene.AddUpdateLuceneIndex(client);
             }
-            catch( Exception e){
+            catch (Exception e)
+            {
                 var x = e.Message;
             }
             return CreatedAtRoute("DefaultApi", new { id = client.ClientId }, client);
@@ -384,7 +413,7 @@ namespace AccionLaboral.Controllers
             string path = "";
             try
             {
-                
+
                 Client client = db.Clients.
                     Include(r => r.AcademicEducations.Select(c => c.City.Country))
                 .Include(r => r.Employee)
@@ -403,7 +432,7 @@ namespace AccionLaboral.Controllers
 
                 if (client != null)
                 {
-                    
+
                     //AccionLaboral.Reports.Helpers.CV.CreateWordDocument(client,ref path);
                     //return true;
                 }
@@ -432,11 +461,11 @@ namespace AccionLaboral.Controllers
                     string documentPath = path + "Reports\\" + filename;
                     Reports.Helpers.Clients.GenerateReport(filename, filters);
                 }
-            return Request.CreateResponse<ClientsFilter>(HttpStatusCode.OK, id);
+                return Request.CreateResponse<ClientsFilter>(HttpStatusCode.OK, id);
             }
             catch (Exception)
             {
-                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");  
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");
             }
         }
 
@@ -451,20 +480,20 @@ namespace AccionLaboral.Controllers
             //id.DateTo = (string.IsNullOrEmpty(id.DateTo)) ? "" : Convert.ToDateTime(id.DateTo).ToString("dd/MM/yyyy");
             try
             {
-                
-            if (filters != null)
-            {
-                string filename = filters.Title.Replace(".", " ") + ".xls";
-                string path = AppDomain.CurrentDomain.BaseDirectory;
-                string documentPath = path + "Reports\\" + filename;
-                Reports.Helpers.Clients.GenerateClientsTracking(filename, filters);
-            }
 
-            return Request.CreateResponse<ClientsFilter>(HttpStatusCode.OK, id);
+                if (filters != null)
+                {
+                    string filename = filters.Title.Replace(".", " ") + ".xls";
+                    string path = AppDomain.CurrentDomain.BaseDirectory;
+                    string documentPath = path + "Reports\\" + filename;
+                    Reports.Helpers.Clients.GenerateClientsTracking(filename, filters);
+                }
+
+                return Request.CreateResponse<ClientsFilter>(HttpStatusCode.OK, id);
             }
             catch (Exception)
             {
-                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");  
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");
             }
         }
 
@@ -482,7 +511,7 @@ namespace AccionLaboral.Controllers
                 Directory.CreateDirectory(GoLucene._luceneDir);
                 GoLucene.AddUpdateLuceneIndex(db.Clients
                                                         .Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                                                        //.Include(r => r.Employee)
+                    //.Include(r => r.Employee)
                                                         .Include(r => r.State)
                                                         .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
                                                         .Include(r => r.AcademicEducations.Select(c => c.Career))
@@ -491,7 +520,7 @@ namespace AccionLaboral.Controllers
                                                         .Include(r => r.Languages.Select(l => l.Language))
                                                         .Include(r => r.Languages.Select(l => l.LanguageLevel))
                                                         .Include(r => r.References.Select(c => c.City.Country))
-                                                        //.Include(r => r.References.Select(t => t.ReferenceType))
+                    //.Include(r => r.References.Select(t => t.ReferenceType))
                                                         .Include(r => r.WorkExperiences)
                                                         .Include(r => r.WorkExperiences.Select(c => c.City.Country))
                                                         .Include(r => r.Trackings.Select(c => c.TrackingType)).ToList());
@@ -499,9 +528,9 @@ namespace AccionLaboral.Controllers
 
             // perform Lucene search
             List<Client> _searchResults;
-                _searchResults = (string.IsNullOrEmpty(searchField)
-                                   ? GoLucene.Search(searchTerm)
-                                   : GoLucene.Search(searchTerm, fields)).ToList();
+            _searchResults = (string.IsNullOrEmpty(searchField)
+                               ? GoLucene.Search(searchTerm)
+                               : GoLucene.Search(searchTerm, fields)).ToList();
             if (string.IsNullOrEmpty(searchTerm) && !_searchResults.Any())
                 _searchResults = GoLucene.GetAllIndexRecords().ToList();
 

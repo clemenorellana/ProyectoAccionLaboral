@@ -14,14 +14,15 @@ namespace AccionLaboral.Models
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-    
-        public AccionLaboralContext() : base("name=AccionLaboralContext")
+
+        public AccionLaboralContext()
+            : base("name=AccionLaboralContext")
         {
         }
 
         static AccionLaboralContext()
         {
-                DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
+            DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
         }
 
         public DbSet<User> Users { get; set; }
@@ -33,7 +34,7 @@ namespace AccionLaboral.Models
         public DbSet<Privilege> Privileges { get; set; }
 
         public DbSet<Role> Roles { get; set; }
-        
+
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<City> Cities { get; set; }
@@ -84,6 +85,6 @@ namespace AccionLaboral.Models
 
         public DbSet<VacantCovered> VacantCovers { get; set; }
 
-    
+
     }
 }
