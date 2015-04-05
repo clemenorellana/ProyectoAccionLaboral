@@ -98,7 +98,7 @@
                         <ul class="nav nav-tabs" ng-init="selected=1">
                             <li class="active" ng-click="selected=1"><a href="RegisterClient#personalInfo" data-toggle="tab">Datos Personales</a></li>
                             <li ng-click="selected=2"><a href="RegisterClient#academicEducationInfo" data-toggle="tab">Información Académica</a></li>
-                            <li ng-click="selected=3"><a href="RegisterClient#workExperienceInfo" data-toggle="tab">Experiencia Laboral</a></li>
+                            <li ng-click="selected=3"><a href="RegisterClient#workExperienceInfo" data-toggle="tab">Experiencia</a></li>
                             <li ng-click="selected=4"><a href="RegisterClient#referencesInfo" data-toggle="tab">Referencias</a></li>
                             <li ng-click="selected=5"><a href="RegisterClient#additionalTrainingInfo" data-toggle="tab">Información Adicional</a></li>
                         </ul>
@@ -943,13 +943,17 @@
                                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-primary text-center" ng-click="addTranning()" data-dismiss="modal" data-placement="top-right" data-container="body" data-duration="3" bs-alert="alert">{{textButton}}</button>
                                 </div>
+                                
                             </form>
+                            
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
             </div>
         </div>
     </div>
+    <br />
+    <br />
     <!-- Footer -->
     <div id="footerwrap">
         <div class="container">

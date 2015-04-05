@@ -59,9 +59,7 @@ angular.module('AccionLaboralApp', [
           
             function closeModals() {
                 $scope.showModal = false;
-                $scope.$apply(function () {
-                    
-                });
+                $scope.$apply();
             }
 
             $scope.$on('IdleStart', function () {
@@ -78,9 +76,7 @@ angular.module('AccionLaboralApp', [
                 closeModals();
                 $scope.showModal = false;
                 $scope.logout();
-                $scope.$apply(function () {
-                    
-                });
+                $scope.$apply();
                 
             });
 
@@ -148,7 +144,7 @@ angular.module('AccionLaboralApp', [
                 $scope.skinClass = "skin-blue";
                 $scope.userValid = true;
                 $scope.template = 'Home/Home';
-                $location.path('/');
+                $location.path('/HomePage');
             }
 
 
@@ -317,7 +313,7 @@ angular.module('AccionLaboralApp', [
                             $scope.userValid = false;
                             $rootScope.userLoggedIn = null;
                             authService.logOut();
-                            $location.path('/');
+                            
                         }
                         else if ($scope.userValid == true)
                         {
@@ -325,7 +321,7 @@ angular.module('AccionLaboralApp', [
                             $scope.skinClass = "skin-blue";
                             $rootScope.userLoggedIn = authService.authentication.employee;
                             $rootScope.forgotPass = false;
-
+                            $location.path('/HomePage');
                             $scope.start();
                         }
                         else
@@ -386,7 +382,7 @@ angular.module('AccionLaboralApp', [
                 var paramEmployeeId = next.params.id;
                 var cureentEmployeeId = $rootScope.userLoggedIn.EmployeeId;
                 if (cureentEmployeeId != paramEmployeeId && next.originalPath == '/Employees/Profile/:id') {
-                    $location.path('/');
+                    $location.path('/HomePage');
                     return;
                 }
 

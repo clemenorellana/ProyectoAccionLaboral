@@ -65,6 +65,7 @@ namespace AccionLaboral.Controllers
                         //AcademicEducations = x.AcademicEducations,
                         Employee = new Employee { Age = x.Age },
                         State = x.State,
+                        StateId = x.StateId,
                         Trackings = x.Trackings,
                         IdentityNumber = x.IdentityNumber,
 
