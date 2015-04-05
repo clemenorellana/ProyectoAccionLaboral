@@ -788,12 +788,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.getCitiesByCountry = function(countryId) {
             if (countryId)
                 return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
-        };
-
-        $scope.getStateByAlias = function (alias) {
-            if (alias)
-                return $filter('filter')($scope.States, { Alias: alias })[0];
-        };
+        };             
 
                 $scope.setScope = function(obj, action) {
 
@@ -952,13 +947,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.Customer = customer;
                 }
                 $scope.disableCustomer = function (customer) {
-                    customer.StateId = $scope.getStateByAlias('DE').StateId;//6
+                    customer.StateId = 6;
                     $scope.New = customer;
                     $scope.enableOrDisableCustomer('Deshabilitado', 'Se ha deshabilitado un cliente correctamente.');
                 };
 
                 $scope.enableCustomer = function (customer) {
-                    customer.StateId = $scope.getStateByAlias('PI').StateId;//1
+                    customer.StateId = 1;
                     customer.Trackings[0].TrackingTypeId = 1;
                     $scope.action = 'edit';
                     $scope.New = customer;
@@ -970,8 +965,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
 
                 $scope.enableOrDisableCustomer = function (title, msg) {
-                    if ($scope.New.Employee)
-                        $scope.New.Employee = undefined;
                     customerRepository.UpdateCustomer($scope.New).success(function () {
                         alertService.add('success', title, msg);
                         $scope.alertsTags = $rootScope.alerts;
@@ -1070,12 +1063,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             return table;
         }
 
-        $scope.getStateByAlias = function (alias) {
-            $scope.getStates();
-            if (alias)
-                return $filter('filter')($scope.States, { Alias: alias })[0];
-        };
-
         //End Sorting//
         $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
         $scope.entryLimit = $scope.itemsPerPageList[0];
@@ -1084,8 +1071,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             if (!term)
                 $scope.load = true;
             customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
-
-                $scope.enrollCustomerData = $filter('filter')(data, { StateId: $scope.getStateByAlias('PI').StateId}, true);
+                $scope.enrollCustomerData = $filter('filter')(data, { StateId: 1}, true);
                 
                 $scope.load = false;
 
@@ -1105,11 +1091,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     });
         }
         $scope.setEnrollClientFiltered = function (term) {
+            if($scope.enrollCustomerData){
             $scope.filtered = filterFilter($scope.enrollCustomerData, term);
 
             $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
                     $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
             $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+            }
         };
     
         $scope.enrollClient_ClearData = function () {
@@ -1233,6 +1221,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.alertsTags = $rootScope.alerts;
         }
 
+     
+
         $scope.$watch('search', function (term) {
                 $scope.setEnrollClients();
 
@@ -1263,13 +1253,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         customerRepository.getLanguageLevels().success(function(data) {
 
             $scope.LanguageLevels = data;
-        });
-        customerRepository.getStates().success(function (data) {
-            $scope.States = data;
-            $scope.selecteds = {};
-            angular.forEach($scope.States, function (value, key) {
-                $scope.selecteds[key] = value[0];
-            });
         });
         $scope.getStates = function () {
             customerRepository.getStates().success(function (data) {
@@ -3076,8 +3059,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             else {
                 //if (term.State) {
                 term.StateId = (!term.StateId) ? "" : term.StateId;
-                if (term.Trackings)
-                    term.Trackings[0].TrackingType.Name = (!term.Trackings[0].TrackingType.Name) ? "" : term.Trackings[0].TrackingType.Name;
+                if(term.Trackings)
+                term.Trackings[0].TrackingType.Name = (!term.Trackings[0].TrackingType.Name) ? "" : term.Trackings[0].TrackingType.Name;
                 //}
             }
             customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
@@ -3101,17 +3084,16 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     });
 
         };
-
+        
         $scope.setFiltered = function (term) {
-            if ($scope.customerData) {
-                $scope.filtered = filterFilter($scope.customerData, term);
+            if($scope.customerData){
+            $scope.filtered = filterFilter($scope.customerData, term);
 
-                $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                        $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-                $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+            $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                    $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
             }
         };
-
 
         //End Sorting//
 
@@ -3236,8 +3218,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
              reset           : "Reiniciar",
              search          : "Buscar campo...",
          nothingSelected : "Ninguno"         //default-label is deprecated and replaced with this.
-         };
-         $rootScope.searchCustomer = "";
+     };
          $scope.fields = [
          { "value": "FirstName", "text": "Nombre", "ticked": true },
          { "value": "LastName", "text": "Apellido", "ticked": true },
