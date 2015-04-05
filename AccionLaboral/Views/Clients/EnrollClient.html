@@ -35,7 +35,7 @@
         </div>
         <div class="box-body" ng-init="setEnrollClients()">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
-            <table class="table table-bordered" ng-show="!load">
+            <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" ng-show="!load">
                 <tr>
                     <th ng-click="sort='IdentityNumber' ; reverse=!reverse">Identidad</th>
                     <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>

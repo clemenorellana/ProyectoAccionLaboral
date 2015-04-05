@@ -129,7 +129,7 @@
             </div>-->
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <div id="CustomersTbl">
-                <table class="table table-bordered" id="tblCust" ng-show="!load">
+                <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" id="tblCust" ng-show="!load">
                     <thead id="filters">
                         <tr>
                             <th class="col-lg-1" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
@@ -140,7 +140,7 @@
                             <th class="col-lg-1" ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
                             <th class="col-lg-1" ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
                             <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha de Ingreso</th>
-                            <th class="col-lg-3 opciones" >Opciones</th>
+                            <th class="col-lg-3 opciones">Opciones</th>
                         </tr>
                         <tr id="filterHeader">
                             <th colspan="1"><input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
@@ -170,9 +170,9 @@
                         <td>{{customer.EnrollDate | date:'dd/MM/yyyy'}}</td>
                         <td class="opciones">
                             <!--<button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button>
-                            <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
-            <button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=5 && customer.StateId!=6" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button>
-            <button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==5 || customer.StateId==6" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button>-->
+                                <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+                <button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=5 && customer.StateId!=6" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button>
+                <button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==5 || customer.StateId==6" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button>-->
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Acciones<span class="fa fa-caret-down"></span></button>
                                 <ul class="dropdown-menu">
