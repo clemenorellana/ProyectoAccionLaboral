@@ -7,7 +7,7 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <!--<div class="pull-left image" ng-click="viewProfile(userLoggedIn.EmployeeId); title='Mi Perfil';" title="Ver Perfil">-->
-                    <div class="pull-left image" >
+                    <div class="pull-left image">
                         <!--<img src="../../Images/avatar3.png" class="img-circle" alt="User Image" />-->
                         <img ng-show="userLoggedIn.Photo" ng-src="data:image/jpeg;base64,{{userLoggedIn.Photo}}" />
                         <img ng-show="!userLoggedIn.Photo" src="../../Images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="userLoggedIn.Photo">
@@ -24,7 +24,7 @@
                             <i class="fa fa-home"></i> <span>Página Principal</span>
                         </a>
                     </li>
-                    
+
                     <li class="treeview" ng-show="getRole('ManageSystem');">
                         <a href="#">
                             <i class="fa fa-gears"></i>
@@ -40,7 +40,7 @@
                             <li><a ng-click="title=''" ng-show="getRole('Cities');" href="#/Cities"><i class="fa fa-angle-double-right"></i> Ciudades</a></li>
                             <li><a ng-click="title=''" ng-show="getRole('Careers');" href="#/Careers"><i class="fa fa-angle-double-right"></i> Tipos de Carreras</a></li>
                             <li><a ng-click="title=''" ng-show="getRole('Contracts');" href="#/Contracts"><i class="fa fa-angle-double-right"></i> Plantillas de Contratos</a></li>
-                            <li><a ng-click="title=''" ng-show="getRole('Interviews');" href="#/Interviews"><i class="fa fa-angle-double-right"></i> Tipos de Entrevista</a></li>                            
+                            <li><a ng-click="title=''" ng-show="getRole('Interviews');" href="#/Interviews"><i class="fa fa-angle-double-right"></i> Tipos de Entrevista</a></li>
                         </ul>
                     </li>
                     <li class="treeview" ng-show="getRole('Clients');">
@@ -98,7 +98,7 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                     </li>
-                    <li class="treeview" >
+                    <li class="treeview">
                         <a href="#">
                             <i class="fa fa-bar-chart-o"></i> <span>Reportes</span>
                             <i class="fa fa-angle-left pull-right"></i>
@@ -108,10 +108,10 @@
                             <!--<li><a ng-show="getRole('CVReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Hoja de Vida</a></li>-->
                             <li><a ng-show="getRole('NewClientsReport');" ng-click="title=''" href="#/ClientsReport"><i class="fa fa-angle-double-right"></i> Reporte de Clientes</a></li>
                             <!--<li><a ng-show="getRole('VacantsReport');" ng-click="title=''" href="#/VacantReport"><i class="fa fa-angle-double-right"></i> Reporte de Cumplimiento de Vacantes</a></li>-->
-                            <li><a  ng-click="title=''" href="#/VacantReport"><i class="fa fa-angle-double-right"></i> Reporte de Cumplimiento de Vacantes</a></li>
+                            <li><a ng-click="title=''" href="#/VacantReport"><i class="fa fa-angle-double-right"></i> Reporte de Cumplimiento de Vacantes</a></li>
                             <!--<li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Candidatos Descartados</a></li>-->
-                            <!--<li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Seguimiento de Candidatos Enviados a Entrevista</a></li>-->                            
-                            <li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href="#/ClientsTrackingReport"><i class="fa fa-angle-double-right"></i> Reporte de Seguimiento Clientes</a></li>                            
+                            <!--<li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Seguimiento de Candidatos Enviados a Entrevista</a></li>-->
+                            <li><a ng-show="getRole('DiscardedCustomersReport');" ng-click="title=''" href="#/ClientsTrackingReport"><i class="fa fa-angle-double-right"></i> Reporte de Seguimiento Clientes</a></li>
                             <li><a ng-show="getRole('NewCompaniesReport');" ng-click="title=''" href="#/NewCompaniesReport"><i class="fa fa-angle-double-right"></i> Reporte de Mercadeo</a></li>
                             <!--<li><a ng-show="getRole('CompaniesReport');" ng-click="title=''" href=""><i class="fa fa-angle-double-right"></i> Reporte de Empresas Existentes</a></li>-->
                         </ul>
@@ -132,20 +132,34 @@
         <aside class="right-side">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <h1>
+                <!--<h1>
                     {{title}}
-                </h1>
+                </h1>-->
+                <div class="modal-dialog" ng-show="showModal">
+                    <div class="modal-content">
+                        <!--<div class="modal-header">
+                            <h3>Su sesión va a expirar.</h3>
+                        </div>-->
+                        <div idle-countdown="countdown" ng-init="countdown=10" class="modal-body">
+                            <h4>
+                                Su sesión se va a cerrar en {{countdown}} segundos.
+                            </h4>
+                        <!--</div>
+                        <div idle-countdown="countdown" ng-init="countdown=10" class="modal-body">-->
+                            <progressbar max="10" value="countdown" animate="false" class="progress-striped active"></progressbar>
+                        </div>
+                    </div>
+                </div>
             </section>
             <!-- Main content -->
+            
+            
+           
+
             <section class="content" ng-view>
                 <hr />
-                <!--<footer>
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-                </footer>-->
-
             </section><!-- /.content -->
         </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
-    
-<!-- AdminLTE App -->
-<script src="../../Scripts/js/AdminLTE/app.js" type="text/javascript"></script>
+    <!-- AdminLTE App -->
+    <script src="../../Scripts/js/AdminLTE/app.js" type="text/javascript"></script>
