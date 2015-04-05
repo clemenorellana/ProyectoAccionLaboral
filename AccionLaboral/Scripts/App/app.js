@@ -23,11 +23,17 @@ angular.module('AccionLaboralApp', [
         'LocalStorageModule',
         'authService',
         'ui.select',
-        'isteven-multi-select'
+        'isteven-multi-select',
+        'ngIdle'
     ])
     .config([
-        '$routeProvider',
-        function($routeProvider) {
+        '$routeProvider', 'KeepaliveProvider', 'IdleProvider',
+        function ($routeProvider, KeepaliveProvider, IdleProvider) {
+            IdleProvider.idle(5*60);
+            IdleProvider.timeout(10);
+            KeepaliveProvider.interval(10);
+
+
             $routeProvider.
                  when('/HomePage', {
                      templateUrl: '/Home/HomePage',
@@ -45,8 +51,53 @@ angular.module('AccionLaboralApp', [
             }
             return [];
         }
-    }).controller('mainController', [
-        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService) {
+    })
+    .controller('mainController', [
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', 'Idle', '$modal', 'alertService',
+        function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService, Idle, Keepalive, $modal, alertService) {
+            $scope.showModal = false;
+          
+            function closeModals() {
+                $scope.showModal = false;
+                $scope.$apply(function () {
+                    
+                });
+            }
+
+            $scope.$on('IdleStart', function () {
+                closeModals();
+                $scope.showModal = true;
+            });
+
+            $scope.$on('IdleEnd', function () {
+                closeModals();
+                $scope.showModal = false;
+            });
+
+            $scope.$on('IdleTimeout', function () {
+                closeModals();
+                $scope.showModal = false;
+                $scope.logout();
+                $scope.$apply(function () {
+                    
+                });
+                
+            });
+
+            $scope.start = function () {
+                closeModals();
+                Idle.watch();
+                $scope.started = true;
+            };
+
+            $scope.stop = function () {
+                closeModals();
+                Idle.unwatch();
+                $scope.started = false;
+
+            };
+
+
             $rootScope.userLoggedIn = authService.authentication.employee;
 
             $rootScope.validPass = true;
@@ -61,7 +112,7 @@ angular.module('AccionLaboralApp', [
                 $scope.alerts.splice(index, 1);
             };
             
-            var progress = 25;
+            var progress = 50;
             var msgs = [
               'Hey! I\'m waiting here...',
               'About half way done...',
@@ -237,6 +288,8 @@ angular.module('AccionLaboralApp', [
                 $scope.skinClass = "bg-black";
                 $scope.template = "Users/Login";
                 $scope.userValid = false;
+
+                $scope.stop();
             }
 
             
@@ -272,6 +325,8 @@ angular.module('AccionLaboralApp', [
                             $scope.skinClass = "skin-blue";
                             $rootScope.userLoggedIn = authService.authentication.employee;
                             $rootScope.forgotPass = false;
+
+                            $scope.start();
                         }
                         else
                         {
@@ -302,9 +357,23 @@ angular.module('AccionLaboralApp', [
 
         }
     ])
-    .run(['authService', '$rootScope', '$location', function (authService, $rootScope,$location) {
+    .run(['authService', '$rootScope', '$location', 'Idle', function (authService, $rootScope, $location, Idle, $scope, $window, $interval) {
+
+        $rootScope.$on('$idleEnd', function () {
+            $scope.showModal = false;
+        });
+
+        $rootScope.$on('$idleTimeout', function () {
+            $scope.showModal = false;
+        });
+
         authService.fillAuthData();
         $rootScope.userLoggedIn = authService.authentication.employee;
+
+        if (authService.authentication.isAuth) {
+            Idle.watch();
+        }
+
 
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
             var isLoggedIn = authService.authentication.isAuth;
@@ -319,7 +388,7 @@ angular.module('AccionLaboralApp', [
                 if (cureentEmployeeId != paramEmployeeId && next.originalPath == '/Employees/Profile/:id') {
                     $location.path('/');
                     return;
-        }
+                }
 
 /*
                 ---------------------------------------------------------

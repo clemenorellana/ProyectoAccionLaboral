@@ -40,6 +40,7 @@
 <body ng-controller="mainController" ng-class="skinClass">
     <!-- header logo: style can be found in header.less -->
     <header class="header" ng-show="userValid">
+
         <a href="#/HomePage" class="logo">
             <img src="../../Images/logo.png" class="img-circle" alt="User Image" />
             <!-- Add the class icon to your logo image or logo icon to add the margining -->
@@ -94,6 +95,7 @@
 
     <div ng-include="template" ng-cloak></div>
 
+
     <script src="../../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../../Scripts/js/date.js"></script>
     <!-- Bootstrap -->
@@ -122,6 +124,8 @@
     <!--role permission security-->
     <script src="../../Scripts/App/Services/Security/authorizationService.js"></script>    
     <script src="../../Scripts/angular-local-storage.min.js"></script>
+
+    <script src="../../Scripts/angular-idle.min.js"></script>
 
 
     <!-- Export to Excel -->
