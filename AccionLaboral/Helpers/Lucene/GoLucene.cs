@@ -147,27 +147,56 @@ namespace AccionLaboral.Helpers.Lucene
         }
         private static Client _mapLuceneDocumentToData(Document doc)
         {
-            return new Client
+            Client client = new Client();
+            try
             {
-                ClientId                         = Convert.ToInt32(doc.Get("ClientId")),
-                Photo                            = System.Text.Encoding.ASCII.GetBytes(doc.Get("Photo")),
-                CorrelativeCode                  = doc.Get("CorrelativeCode"),
-                IdentityNumber                   = doc.Get("IdentityNumber"),
-                FirstName                        = doc.Get("FirstName"),
-                LastName                         = doc.Get("LastName"),
-                StateId                          = Convert.ToInt32(doc.Get("StateId")),
-                Age                              = Convert.ToInt32(doc.Get("Age")),
-                Gender                           = doc.Get("Gender"),
-                Email                            = doc.Get("Email"),
-                Hobby                            = doc.Get("Hobby"),
-                Cellphone                        = doc.Get("Cellphone"),
-                HomePhone                        = doc.Get("HomePhone"),
-                CurrentStudies                   = doc.Get("CurrentStudies"),
-                WageAspiration                   = Convert.ToDouble(doc.Get("WageAspiration")),
-                DesiredEmployment                = doc.Get("DesiredEmployment"),
-                CompaniesWithPreviouslyRequested = doc.Get("CompaniesWithPreviouslyRequested")
+                    client.ClientId = Convert.ToInt32(doc.Get("ClientId"));
+                    client.Photo = (!string.IsNullOrEmpty(doc.Get("Photo"))) ? System.Text.Encoding.ASCII.GetBytes(doc.Get("Photo")): null;
+                    client.CorrelativeCode = doc.Get("CorrelativeCode");
+                    client.IdentityNumber = doc.Get("IdentityNumber");
+                    client.FirstName = doc.Get("FirstName");
+                    client.LastName = doc.Get("LastName");
+                    client.StateId = Convert.ToInt32(doc.Get("StateId"));
+                    client.Age = Convert.ToInt32(doc.Get("Age"));
+                    client.Gender = doc.Get("Gender");
+                    client.Email = doc.Get("Email");
+                    client.Hobby = doc.Get("Hobby");
+                    client.Cellphone = doc.Get("Cellphone");
+                    client.HomePhone = doc.Get("HomePhone");
+                    client.CurrentStudies = doc.Get("CurrentStudies");
+                    client.WageAspiration = Convert.ToDouble(doc.Get("WageAspiration"));
+                    client.DesiredEmployment = doc.Get("DesiredEmployment");
+                    client.CompaniesWithPreviouslyRequested = doc.Get("CompaniesWithPreviouslyRequested");
+                #region Llenar datos de cliente en una sola linea
+                /*client = new Client
+                {
+                    ClientId = Convert.ToInt32(doc.Get("ClientId")),
+                    Photo = System.Text.Encoding.ASCII.GetBytes(doc.Get("Photo")),
+                    CorrelativeCode = doc.Get("CorrelativeCode"),
+                    IdentityNumber = doc.Get("IdentityNumber"),
+                    FirstName = doc.Get("FirstName"),
+                    LastName = doc.Get("LastName"),
+                    StateId = Convert.ToInt32(doc.Get("StateId")),
+                    Age = Convert.ToInt32(doc.Get("Age")),
+                    Gender = doc.Get("Gender"),
+                    Email = doc.Get("Email"),
+                    Hobby = doc.Get("Hobby"),
+                    Cellphone = doc.Get("Cellphone"),
+                    HomePhone = doc.Get("HomePhone"),
+                    CurrentStudies = doc.Get("CurrentStudies"),
+                    WageAspiration = Convert.ToDouble(doc.Get("WageAspiration")),
+                    DesiredEmployment = doc.Get("DesiredEmployment"),
+                    CompaniesWithPreviouslyRequested = doc.Get("CompaniesWithPreviouslyRequested")
 
-            };
+                };*/
+                #endregion
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return client;
         }
 
         // add/update/clear search index data 

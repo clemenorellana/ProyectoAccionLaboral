@@ -1270,13 +1270,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
             $scope.LanguageLevels = data;
         });
-customerRepository.getStates().success(function (data) {
-                $scope.States = data;
-                $scope.selecteds = {};
-                angular.forEach($scope.States, function (value, key) {
-                    $scope.selecteds[key] = value[0];
-                });
+        customerRepository.getStates().success(function (data) {
+            $scope.States = data;
+            $scope.selecteds = {};
+            angular.forEach($scope.States, function (value, key) {
+                $scope.selecteds[key] = value[0];
             });
+        });
         
         $scope.getStates = function () {
             customerRepository.getStates().success(function (data) {
@@ -1420,6 +1420,9 @@ customerRepository.getStates().success(function (data) {
 
                 $scope.New = data;
        
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos.');
+                $scope.alertsTags = $rootScope.alerts;
             });
             
             $scope.index = -1;
@@ -1918,7 +1921,19 @@ customerRepository.getStates().success(function (data) {
                     $scope.allEmployees = data;
                 });
             
+                customerRepository.getStates().success(function (data) {
+                    $scope.States = data;
+                    $scope.selecteds = {};
+                    angular.forEach($scope.States, function (value, key) {
+                        $scope.selecteds[key] = value[0];
+                    });
+                });
 
+                $scope.getStateByAlias = function (alias) {
+                    if (alias)
+                        return $filter('filter')($scope.States, { Alias: alias })[0];
+                    return '';
+                };
 
         $scope.getCareersByAcademicLevel = function(academicLevelId) {
             for (var i = 0; i < $scope.AcademicLevels.length; i++) {
@@ -3077,9 +3092,23 @@ customerRepository.getStates().success(function (data) {
                 customerRepository.getStates().success(function (data) {
                     $scope.States = data;
                 }).error(function () {
-
+                    alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.');
+                    $scope.alertsTags = $rootScope.alerts;
                 });
+                var sizeReferences = (data.References != null) ? data.References.length : 0;
+                for (var i = 0; i < sizeReferences; i++) {
+                    if (data.References[i].ReferenceType.Name == 'L')
+                        $scope.workReferences.push(data.References[i]);
+                    else
+                        $scope.personalReferences.push(data.References[i]);
+                }
 
+                $scope.New = data;
+       
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos.');
+                $scope.alertsTags = $rootScope.alerts;
+                $location.url('ClientTracking');
             });
         }
         
@@ -3158,9 +3187,9 @@ customerRepository.getStates().success(function (data) {
             $location.url('ClientTracking/' + obj.ClientId);
         };
 
-        customerRepository.getEmployees().success(function (data) {
+        /*customerRepository.getEmployees().success(function (data) {
             $scope.Employees = data;
-        })
+        });*/
         customerRepository.getCompanies().success(function (data) {
             $scope.Companies = data;
         });
