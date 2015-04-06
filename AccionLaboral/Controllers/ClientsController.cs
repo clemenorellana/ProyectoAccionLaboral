@@ -68,7 +68,7 @@ namespace AccionLaboral.Controllers
                         StateId = x.StateId,
                         Trackings = x.Trackings,
                         IdentityNumber = x.IdentityNumber,
-
+                        RejectionDescription = x.RejectionDescription
                     }).
                 ToList();
                 //GoLucene.ClearLuceneIndex();
@@ -120,7 +120,9 @@ namespace AccionLaboral.Controllers
                                Cellphone = c.Cellphone,
                                CompleteAddress = c.CompleteAddress,
                                CityId = c.CityId,
-                               State = c.State
+                               State = c.State,
+                               StateId = c.StateId,
+                               RejectionDescription = c.RejectionDescription
                            }).ToList();
 
 

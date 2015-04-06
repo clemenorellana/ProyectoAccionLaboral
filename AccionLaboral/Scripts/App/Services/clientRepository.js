@@ -109,8 +109,8 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         },
         inscribeCustomer: function (client) {
             var newClient = angular.copy(client);
-            newClient.StateId = 2;
-            newClient.Trackings[0].StateId = 2;
+            //newClient.StateId = 2;
+            newClient.Trackings[0].StateId = newClient.StateId;
             newClient.Trackings[0].TrackingTypeId = 2;
             newClient.IsStudying = (client.IsStudying == "1");
             return $http.put(urlCustomer + newClient.ClientId, newClient);
