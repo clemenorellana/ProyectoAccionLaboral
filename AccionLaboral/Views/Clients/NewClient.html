@@ -314,8 +314,8 @@
                                                 <th>Opción</th>
                                             </tr>
                                             <tr ng-repeat="workExperience in workExperiences">
-                                                <td>{{workExperience.StartDate}}</td>
-                                                <td>{{workExperience.EndDate}}</td>
+                                                <td>{{workExperience.StartDate  | date:'dd/MM/yyyy'}}</td>
+                                                <td>{{workExperience.EndDate  | date:'dd/MM/yyyy'}}</td>
                                                 <td>{{workExperience.WorkCountry.Name}}</td>
                                                 <td>{{workExperience.WorkCity.Name}}</td>
                                                 <td>{{workExperience.CompanyName}}</td>
