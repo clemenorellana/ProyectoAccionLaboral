@@ -56,7 +56,7 @@ angular.module('AccionLaboralApp', [
         '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', 'Idle', '$modal', 'alertService',
         function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService, Idle, Keepalive, $modal, alertService) {
             $scope.showModal = false;
-          
+            $rootScope.loading = true;
             function closeModals() {
                 $scope.showModal = false;
                 $scope.$apply(function () {
@@ -122,7 +122,8 @@ angular.module('AccionLaboralApp', [
             var i = 0;
             var fakeProgress = function () {
                 $timeout(function () {
-                    if (progress < 100) {
+                    //if (progress < 100) {
+                    if ($rootScope.loading) {
                         progress += 25;
                         $rootScope.$broadcast('dialogs.wait.progress', { msg: msgs[i++], 'progress': progress });
                         fakeProgress();
@@ -143,12 +144,14 @@ angular.module('AccionLaboralApp', [
                 $scope.skinClass = "bg-black";
                 $scope.template = 'Users/Login';
                 $scope.userValid = false;
+                $rootScope.loading = false;
             }
             else {
                 $scope.skinClass = "skin-blue";
                 $scope.userValid = true;
                 $scope.template = 'Home/Home';
                 $location.path('/');
+                $rootScope.loading = false;
             }
 
 
@@ -169,10 +172,12 @@ angular.module('AccionLaboralApp', [
                     var userValid = data;
                     if (!userValid) {
                         $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
+                        $rootScope.loading = false;
                     }
                 })
                 .error(function (message) {
                     $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                    $rootScope.loading = false;
                 });
 
                 if (Password1 === Password2) {
@@ -189,9 +194,11 @@ angular.module('AccionLaboralApp', [
                     $scope.skinClass = "bg-black";
                     $scope.template = 'Users/Login';
                     $scope.userValid = false;
+                    $rootScope.loading = false;
                 })
                 .error(function (message) {
                     $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                    $rootScope.loading = false;
                 });
 
             }
@@ -210,14 +217,17 @@ angular.module('AccionLaboralApp', [
                         $scope.userValid = false;
 
                         $rootScope.forgotPass = false;
+                        $rootScope.loading = false;
                     } else {
                         $scope.skinClass = "bg-black";
                         $scope.template = "Users/Login";
                         $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
                     };
+                    $rootScope.loading = false;
                 })
                 .error(function (message) {
                     $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                    $rootScope.loading = false;
                 });
 
             }
@@ -294,7 +304,7 @@ angular.module('AccionLaboralApp', [
 
             
             $scope.validateUser = function (userName, password, isValidForm) {
-                $scope.launch('wait');
+                //$scope.launch('wait');
                 if (isValidForm) {
                      
                     $scope.loginData = {
@@ -304,7 +314,7 @@ angular.module('AccionLaboralApp', [
 
                    
                     authService.login($scope.loginData).then(function (response) {
-                            
+                        $scope.launch('wait');
                         var employee = response;
 
                         $scope.userValid = (employee.EmployeeId != 0) ? true : false;
