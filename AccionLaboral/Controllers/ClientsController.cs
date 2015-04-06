@@ -17,7 +17,7 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [System.Web.Http.RoutePrefix("api/clients")]
+    //[System.Web.Http.RoutePrefix("api/clients")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientsController : ApiController
     {
@@ -166,7 +166,7 @@ namespace AccionLaboral.Controllers
             }
             catch (Exception e)
             {
-                var x = e.Message;
+                return NotFound();
             }
 
             return Ok(client);
