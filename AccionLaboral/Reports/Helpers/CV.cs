@@ -409,7 +409,7 @@ namespace AccionLaboral.Reports.Helpers
                     if (item.EducationType.Name == "ACADEMICA")
                         document.ReplaceText("{AcademicEducations}", ((item.Year != null) ? "Año: " + "{Year}" + "\t" : "")
                                                                   + (!(string.IsNullOrEmpty(item.TrainingName)) ? ("Titulo: " + "{TrainingName}") : "") + "\n" +
-                                                                    ((item.City != null) ? "Ciundad-País: " + "{City}" + "\n" : "") +
+                                                                    ((item.City != null) ? "Ciudad-País: " + "{City}" + "\n" : "") +
                                                                     (!(string.IsNullOrEmpty(item.InstitutionName)) ? "Universidad/Institución: " + "{InstitutionName}" : "")
                                                                     + "\n\n{AcademicEducations}",
                                               false, System.Text.RegularExpressions.RegexOptions.None, bold);

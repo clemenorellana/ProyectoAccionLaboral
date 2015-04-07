@@ -135,36 +135,39 @@ namespace AccionLaboral.Controllers
         [System.Web.Http.Route("api/VacantDataReport/")]
         public IHttpActionResult VacantDataReport(VacantFilter id)
         {
-            List<VacantByCompany> vacantsByCompanies = null;
-            
-            if (id.DateFrom.Year == 1 && id.DateTo.Year == 1)
+            List<VacantByCompany> vacantsByCompanies = new List<VacantByCompany>();
+
+            DateTime dtDateFrom = id.DateFrom;
+            TimeSpan tsDateFrom = new TimeSpan(0, 0, 0);
+            id.DateFrom = dtDateFrom.Date + tsDateFrom;
+
+            DateTime dtDateTo = id.DateTo;
+            TimeSpan tsDateTo = new TimeSpan(0, 0, 0);
+            id.DateTo = dtDateTo.Date + tsDateTo;
+
+            List<VacantByCompany> vacantsByCompaniesTemp = db.VacantByCompanies.Include(r => r.Company).Include(r => r.VacantLevel).ToList();
+            foreach (VacantByCompany c in vacantsByCompaniesTemp)
             {
-                vacantsByCompanies = db.VacantByCompanies.Include(r => r.Company).Include(r => r.VacantLevel).ToList();
+                DateTime date = c.RequestDate;
+                TimeSpan ts = new TimeSpan(0, 0, 0);
+                date = date.Date + ts;
+                c.RequestDate = date;
+                vacantsByCompanies.Add(c);
             }
-            else if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
+
+            if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
             {
-                vacantsByCompanies = db.VacantByCompanies
-                                        .Include(r => r.Company)
-                                        .Include(r => r.VacantLevel)
-                                        .Where(r => r.RequestDate.Day >= id.DateFrom.Day && r.RequestDate.Month >= id.DateFrom.Month && r.RequestDate.Year >= id.DateFrom.Year)
-                                        .ToList();
+                vacantsByCompanies = vacantsByCompanies.Where(r => r.RequestDate >= id.DateFrom).ToList();
             }
             else if (id.DateFrom.Year == 1 && id.DateTo.Year > 1)
             {
-                vacantsByCompanies = db.VacantByCompanies
-                                        .Include(r => r.Company)
-                                        .Include(r => r.VacantLevel)
-                                        .Where(r => r.RequestDate.Day <= id.DateTo.Day && r.RequestDate.Month <= id.DateTo.Month && r.RequestDate.Year <= id.DateTo.Year)
-                                        .ToList();
+                vacantsByCompanies = vacantsByCompanies.Where(r => r.RequestDate <= id.DateTo).ToList();
+
             }
             else if (id.DateFrom.Year > 1 && id.DateTo.Year > 1)
             {
-                vacantsByCompanies = db.VacantByCompanies
-                                        .Include(r => r.Company)
-                                        .Include(r => r.VacantLevel)
-                                        .Where(r => r.RequestDate.Day >= id.DateFrom.Day && r.RequestDate.Month >= id.DateFrom.Month && r.RequestDate.Year >= id.DateFrom.Year &&
-                                               r.RequestDate.Day <= id.DateTo.Day && r.RequestDate.Month <= id.DateTo.Month && r.RequestDate.Year <= id.DateTo.Year)
-                                        .ToList();
+                vacantsByCompanies = vacantsByCompanies.Where(r => r.RequestDate >= id.DateFrom && r.RequestDate <= id.DateTo).ToList();
+
             }
 
             List<VacantFilter> vacantList = new List<VacantFilter>();

@@ -150,33 +150,39 @@ namespace AccionLaboral.Controllers
         [System.Web.Http.Route("api/companiesdatareport/")]
         public IHttpActionResult CompaniesDataReport(CompaniesFilters id)
         {
-            List<Company> companies = null;
-            
-            if (id.DateFrom.Year == 1 && id.DateTo.Year == 1)
+            List<Company> companies = new List<Company>();
+
+            DateTime dtDateFrom = id.DateFrom;
+            TimeSpan tsDateFrom = new TimeSpan(0, 0, 0);
+            id.DateFrom = dtDateFrom.Date + tsDateFrom;
+
+            DateTime dtDateTo= id.DateTo;
+            TimeSpan tsDateTo = new TimeSpan(0, 0, 0);
+            id.DateTo = dtDateTo.Date + tsDateTo;
+
+            List<Company> companiesTemp = db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany).ToList();
+            foreach (Company c in companiesTemp)
             {
-                companies = db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany).ToList();
+                DateTime date = c.DateCreated;
+                TimeSpan ts = new TimeSpan(0, 0, 0);
+                date = date.Date + ts;
+                c.DateCreated = date;
+                companies.Add(c);
             }
-            else if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
+
+            if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
             {
-                companies = db.Companies.Include(r => r.ContactsByCompany)
-                                        .Include(r => r.VacantsByCompany)
-                                        .Where(r => r.DateCreated.Day >= id.DateFrom.Day && r.DateCreated.Month >= id.DateFrom.Month && r.DateCreated.Year >= id.DateFrom.Year)
-                                        .ToList();
+                companies = companies.Where(r => r.DateCreated >= id.DateFrom).ToList();
             }
             else if (id.DateFrom.Year == 1 && id.DateTo.Year > 1)
             {
-                companies = db.Companies.Include(r => r.ContactsByCompany)
-                                        .Include(r => r.VacantsByCompany)
-                                        .Where(r => r.DateCreated.Day <= id.DateTo.Day && r.DateCreated.Month <= id.DateTo.Month && r.DateCreated.Year <= id.DateTo.Year)
-                                        .ToList();
+                companies = companies.Where(r => r.DateCreated <= id.DateTo).ToList();
+
             }
             else if (id.DateFrom.Year > 1 && id.DateTo.Year > 1)
             {
-                companies = db.Companies.Include(r => r.ContactsByCompany)
-                                    .Include(r => r.VacantsByCompany)
-                                    .Where(r => r.DateCreated.Day >= id.DateFrom.Day && r.DateCreated.Month >= id.DateFrom.Month && r.DateCreated.Year >= id.DateFrom.Year && 
-                                            r.DateCreated.Day <= id.DateTo.Day && r.DateCreated.Month <= id.DateTo.Month && r.DateCreated.Year <= id.DateTo.Year)
-                                    .ToList();
+                companies = companies.Where(r => r.DateCreated >= id.DateFrom && r.DateCreated <= id.DateTo).ToList();
+
             }
             return Ok(companies);
         }

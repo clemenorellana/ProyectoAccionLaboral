@@ -118,27 +118,46 @@
         <div class="box-body">
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <form name="enrollClientForm" method="post">
+
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Expediente #</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CorrelativeCode" disabled>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.FirstName" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Celular</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-phone"></i>
-                                </div>
-                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" ng-model="enrollClient.Cellphone" required input-mask>
-                            </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            <label>Apellido</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.LastName" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            <label>Edad</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.Age" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
+                    <!--<div class="col-md-6">
+                        <div class="form-group">
+                            <label>Expediente #</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CorrelativeCode" disabled>
+                        </div>
+                    </div>-->
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label>Celular</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="enrollClient.Cellphone" required input-mask>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Correo Electrónico de Facebook</label>
@@ -152,9 +171,12 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Nombre Completo</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.FirstName" required>
+                        <div class="form-group required">
+                            <label>Correo Electrónico</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.Email" required>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -165,9 +187,9 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row">                    
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label>Dirección Residencia</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CompleteAddress" required>
                         </div>
@@ -183,27 +205,10 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Edad</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.Age" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Correo Electrónico</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.Email" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label>Profesión/Oficio</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.Occupation" required>
                         </div>
@@ -211,14 +216,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Porcentaje de Inglés</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.EnglishPercentage" required>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.EnglishPercentage" >
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
+                    <div class="col-md-4">
+                        <div class="form-group required">
                             <label>¿Estudia actualmente?</label>
                             <div class="form-group">
                                 <div class="radio">
@@ -226,7 +231,7 @@
                                         <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked ng-model="enrollClient.IsStudying" required>
                                         Si
                                     </label>
-                                    <label>    </label>
+                                    
                                     <label>
                                         <input type="radio" name="optionsRadios" id="optionsRadios2" value="0" ng-model="enrollClient.IsStudying" required>
                                         No
@@ -235,32 +240,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-4">
                         <div class="form-group">
+                            <label>¿Que estudia?</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CurrentStudies" >
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Cantidad de clases en la Universidad</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.QtyClasses" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
                             <label>Plazas a las que aspira</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.DesiredEmployment" required>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label>¿Que estudia?</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CurrentStudies" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Cantidad de clases en la Universidad</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.QtyClasses" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label>Aspiración Salarial</label>
                             <div class="input-group">
                                 <span class="input-group-addon">$</span>
@@ -269,31 +272,36 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" ng-model="enrollClient.HaveCar" > Posee Vehículo
+                                <input type="checkbox" ng-model="enrollClient.HaveCar"> Posee Vehículo
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" ng-model="enrollClient.HaveMotorcycle" > Posee Motocicleta
+                                <input type="checkbox" ng-model="enrollClient.HaveMotorcycle"> Posee Motocicleta
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" ng-model="enrollClient.HaveLicense" > Posee Licencia
+                                <input type="checkbox" ng-model="enrollClient.HaveLicense"> Posee Licencia
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Tipo de Licencia </label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.LicenseType" >
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.LicenseType">
                         </div>
                     </div>
 
@@ -338,7 +346,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Mencione las últimas empresas donde a solicitado empleo, esto para no enviarlo nuevamente</label>
-                            <textarea class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CompaniesWithPreviouslyRequested" required />
+                            <textarea class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.CompaniesWithPreviouslyRequested"  />
                         </div>
                     </div>
                 </div>
@@ -355,11 +363,14 @@
         </div>
         <div class="box-footer">
             <div class="row">
-                <div class="col-md-6 text-right">
+                <div class="col-md-5 text-right">
                     <button type="submit" class="btn btn-primary" ng-click="saveEnrollClient()">Incribir Cliente</button>
                 </div>
-                <div class="col-md-6 text-left">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" ng-click="enrollClient.RejectionDescription=''" data-target="#rejectionInfo">Rechazar</button>
+                <div class="col-md-2 text-center">
+                    <button type="button" class="btn btn-warning" data-toggle="modal" ng-click="enrollClient.RejectionDescription=''" data-target="#rejectionInfo">Rechazar</button>
+                </div>
+                <div class="col-md-5 text-left">
+                    <button type="submit" class="btn btn-danger" ng-click="backEnrollClients()">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -397,7 +408,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="Reference.Cellphone" required>
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="Reference.Cellphone" required input-mask>
                                 </div><!-- /.input group -->
                             </div>
                         </div>

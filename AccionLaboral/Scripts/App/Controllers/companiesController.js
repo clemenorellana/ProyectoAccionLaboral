@@ -326,7 +326,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
                 $scope.companyList = data;
                 $scope.totalServerItems = data.totalItems;
                 $scope.items = data.items;
-                $scope.load = false;
+                
 
                 if ($rootScope.alerts)
                     $scope.alertsTags = $rootScope.alerts;
@@ -338,7 +338,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
                 $scope.itemsInPage = ($scope.companyList.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.companyList.length) ?
                         $scope.companyList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-
+                $scope.load = false;
             })
             .error(function (data) {
                 $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;

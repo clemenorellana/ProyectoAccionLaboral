@@ -147,7 +147,7 @@ angular.module('AccionLaboralApp', [
             $rootScope.alerts = [];
 
         $scope.back = function () {
-            $scope.New = "";
+            $scope.New = {};
             $scope.episodeImgData = undefined;
             $scope.academicEducations = [], $scope.knownLanguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
         };
@@ -803,6 +803,7 @@ angular.module('AccionLaboralApp', [
 
                         $scope.alertsTags = $rootScope.alerts;
                         //$location.path("/AllClients");
+                        $scope.back();
                     }).error(function () {
                         alertService.add('danger', 'Error', 'No se ha podido registrar. Espere un momento e intente de nuevo.');
 
