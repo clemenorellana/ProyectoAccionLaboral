@@ -29,7 +29,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients
-        public List<Client> GetClients()
+        public IHttpActionResult GetClients()
         {
 
             List<Client> clients = null;
@@ -76,9 +76,10 @@ namespace AccionLaboral.Controllers
             }
             catch (Exception e)
             {
-                var error = e.Message;
+             
+                return NotFound();
             }
-            return clients;
+            return Ok(clients);
         }
 
         // Get api/ClientsByEmployee
@@ -385,9 +386,9 @@ namespace AccionLaboral.Controllers
                 db.SaveChanges();
                 GoLucene.AddUpdateLuceneIndex(client);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                var x = e.Message;
+                return NotFound();
             }
             return CreatedAtRoute("DefaultApi", new { id = client.ClientId }, client);
         }
@@ -396,7 +397,7 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(Client))]
         public IHttpActionResult DeleteClient(int id)
         {
-            Client client = db.Clients.Find(id);
+            Client client = db.Clients.Include(r=>r.Trackings).First(c=>c.ClientId == id);
             if (client == null)
             {
                 return NotFound();
@@ -449,14 +450,15 @@ namespace AccionLaboral.Controllers
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("~/api/exportclients")]
-        //[System.Web.Http.Route("api/exportclients/{id}")]
         public HttpResponseMessage ExportClients(ClientsFilter id)
         {
-            ClientsFilter filters = id;
-            //id.DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? "" : Convert.ToDateTime(id.DateFrom).ToString("dd/MM/yyyy");
-            //id.DateTo = (string.IsNullOrEmpty(id.DateTo)) ? "" : Convert.ToDateTime(id.DateTo).ToString("dd/MM/yyyy");
             try
             {
+                ClientsFilter filters = id;
+                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom);
+                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo);
+                id.Clients = db.Clients.Include(r => r.State).
+                    Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
                 if (filters != null)
                 {
                     string filename = filters.Title.Replace(".", " ") + ".xls";
@@ -477,12 +479,15 @@ namespace AccionLaboral.Controllers
         //[System.Web.Http.Route("api/exportclientstracking/{id}")]
         public HttpResponseMessage ExportClientsTracking(ClientsFilter id)
         {
-            ClientsFilter filters = id;
-
-            //id.DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? "" : Convert.ToDateTime(id.DateFrom).ToString("dd/MM/yyyy");
-            //id.DateTo = (string.IsNullOrEmpty(id.DateTo)) ? "" : Convert.ToDateTime(id.DateTo).ToString("dd/MM/yyyy");
             try
             {
+                ClientsFilter filters = id;
+                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom);
+                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo);
+                id.Clients = db.Clients.
+                    Include(r => r.Trackings.Select(c => c.TrackingType)).
+                    Include(r => r.State).
+                    Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
 
                 if (filters != null)
                 {

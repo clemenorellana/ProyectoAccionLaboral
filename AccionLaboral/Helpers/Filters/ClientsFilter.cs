@@ -11,15 +11,6 @@ namespace AccionLaboral.Helpers.Filters
         public string DateFrom { get; set; }
         public string DateTo { get; set; }
         public string Title { get; set; }
-
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int Age { get; set; }
-        public string Email { get; set; }
-        public string CompleteAddress { get; set; }
-        public string Cellphone { get; set; }
-        public State State { get; set; }
-
         public List<Client> Clients { get; set; }
 
     }

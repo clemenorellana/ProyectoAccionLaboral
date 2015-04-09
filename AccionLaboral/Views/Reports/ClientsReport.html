@@ -47,7 +47,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="date" name="fromDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateFrom">
+                        <input type="date" name="fromDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateFrom" ng-disabled="load">
                     </div>
                 </div>
                 <div class="form-group col-md-4">
@@ -56,18 +56,18 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="date" name="toDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateTo">
+                        <input type="date" name="toDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateTo" ng-disabled="load">
                     </div>
                 </div>
                 <div class="form-group col-md-2">
                     <label></label>
                     <div class="input-group">
-                        <input type="submit" class="btn btn-info" title="Generar Reporte" value="Generar Reporte" ng-click="generateReport()" />
+                        <input type="submit" class="btn btn-info" title="Generar Reporte" value="Generar Reporte" ng-click="generateReport()" ng-disabled="load" />
                     </div>
                 </div>
                 <div class="form-group col-md-2">
                     <br />
-                    <button type="button" class="btn btn-success" aria-expanded="true" data-toggle="modal" data-target="#titleInfo" ng-disabled="filtered.length == 0">
+                    <button type="button" class="btn btn-success" aria-expanded="true" data-toggle="modal" data-target="#titleInfo" ng-disabled="filtered.length == 0 || load">
                         <img src="../../Images/MS/xls-icon24.png" />
                         Exportar
                     </button>
