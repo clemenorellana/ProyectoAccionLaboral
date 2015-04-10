@@ -18,6 +18,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public CompaniesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/Companies
         public IQueryable<Company> GetCompanies()
         {

@@ -18,6 +18,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public CitiesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/Cities
         [Route("api/Cities")]
         [HttpGet]

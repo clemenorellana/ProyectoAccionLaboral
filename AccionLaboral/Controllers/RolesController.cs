@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public RolesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/Roles
         public IQueryable<Role> GetRoles()
         {

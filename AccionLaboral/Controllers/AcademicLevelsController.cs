@@ -18,6 +18,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public AcademicLevelsController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/AcademicLevels
         public IQueryable<AcademicLevel> GetAcademicLevels()
         {

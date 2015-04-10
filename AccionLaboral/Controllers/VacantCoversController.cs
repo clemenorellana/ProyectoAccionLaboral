@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public VacantCoversController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/VacantCovered
         [HttpGet]
         [Route("api/VacantCovered")]

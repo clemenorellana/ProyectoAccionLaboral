@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public StatesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/States
         public IQueryable<State> GetStates()
         {

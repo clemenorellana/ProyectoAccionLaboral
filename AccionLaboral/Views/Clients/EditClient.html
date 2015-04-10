@@ -50,7 +50,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label>Identidad</label>
-                                        <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" ng-class="{'loadinggif': New.IdentityNumber==undefined}" required data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" input-mask>
+                                        <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" ng-class="{'loadinggif': load}" required data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" input-mask>
                                         <!--<span style="color:red" ng-show="!New.FirstName">
                     <span ng-show="!New.FirstName">Nombre es requerido.</span>
                 </span>-->
@@ -62,13 +62,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label>Nombre(s)</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName" ng-class="{'loadinggif': New.FirstName==undefined}" required>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.FirstName" ng-class="{'loadinggif': load}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label>Apellidos</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" ng-class="{'loadinggif': New.LastName==undefined}" required>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" ng-class="{'loadinggif': load}" required>
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-change="calculateAge()" ng-model="New.Birthday" ng-class="{'loadinggif': New.Birthday==undefined}" required>
+                                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-change="calculateAge()" ng-model="New.Birthday" ng-class="{'loadinggif': load}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@
                                     <div class="form-group required">
                                         <label>Edad</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" ng-class="{'loadinggif': New.Age==undefined}" required>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" ng-class="{'loadinggif': load}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +120,7 @@
                                         <label>Correo Electrónico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': New.Email==undefined}" required>
+                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': load}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-mobile-phone"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.Cellphone" ng-class="{'loadinggif': New.Cellphone==undefined}" required input-mask>
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.Cellphone" ng-class="{'loadinggif': load}" required input-mask>
                                         </div><!-- /.input group -->
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-phone"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.HomePhone" ng-class="{'loadinggif': New.HomePhone==undefined}" required input-mask>
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.HomePhone" ng-class="{'loadinggif': load}" required input-mask>
                                         </div><!-- /.input group -->
                                     </div>
                                 </div>
@@ -161,14 +161,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label>Ciudad</label>
-                                        <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="New.CityId" ng-class="{'loadinggif': New.CityId==undefined}" required></select>
+                                        <select class="form-control" ng-options="city.CityId as city.Name for city in Cities" ng-model="New.CityId" ng-class="{'loadinggif': load}" required></select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group required">
                                 <label>Dirección Completa</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" ng-class="{'loadinggif': New.CompleteAddress==undefined}" required>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" ng-class="{'loadinggif': load}" required>
                             </div>
                         </form>
                     </div><!-- /.box-body -->

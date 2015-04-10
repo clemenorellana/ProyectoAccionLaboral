@@ -19,6 +19,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public ContractTemplatesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/ContractTemplates
         public IQueryable<ContractTemplate> GetContractTemplates()
         {

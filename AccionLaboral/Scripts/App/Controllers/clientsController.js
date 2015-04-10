@@ -329,9 +329,10 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
         };
 
-        $scope.$watch('search', function (term) {
+        /*$scope.$watch('search', function (term) {
+            if(term)
                 $scope.setData(term);
-        });
+        });*/
 
         $scope.academicEducations = [], $scope.knownLanguages = [], $scope.knownPrograms = [], $scope.personalReferences = [], $scope.workReferences = [], $scope.workExperiences = [], $scope.Trannings = [];
 
@@ -1452,10 +1453,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 }
 
                 $scope.New = data;
+                $scope.load = false;
        
             }).error(function () {
                 alertService.add('danger', 'Error', 'No se han podido cargar los datos.');
                 $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
             });
             
             $scope.index = -1;

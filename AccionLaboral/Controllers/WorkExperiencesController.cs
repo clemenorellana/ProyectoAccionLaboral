@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public WorkExperiencesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/WorkExperiences
         public IQueryable<WorkExperience> GetWorkExperiences()
         {

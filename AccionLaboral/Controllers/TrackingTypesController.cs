@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public TrackingTypesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/TrackingTypes
         public IQueryable<TrackingType> GetTrackingTypes()
         {

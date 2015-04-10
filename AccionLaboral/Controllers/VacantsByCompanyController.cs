@@ -17,6 +17,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public VacantsByCompanyController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/VacantsByCompany
         public IQueryable<VacantByCompany> GetVacantByCompanies()
         {

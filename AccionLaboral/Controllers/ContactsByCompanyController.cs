@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public ContactsByCompanyController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/ContactsByCompany
         public IQueryable<ContactByCompany> GetContactByCompanies()
         {
