@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public PrivilegesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/Privileges
         public IQueryable<Privilege> GetPrivileges()
         {

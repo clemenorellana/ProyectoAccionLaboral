@@ -20,6 +20,10 @@ namespace AccionLaboral.Controllers
         private AccionLaboralContext db = new AccionLaboralContext();
 
         // GET api/academicEducations
+        public AcademicEducationsController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
         
         [HttpGet]
         public IQueryable<AcademicEducation> GetAcademicEducations()

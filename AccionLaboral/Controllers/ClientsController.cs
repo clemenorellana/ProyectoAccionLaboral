@@ -26,6 +26,7 @@ namespace AccionLaboral.Controllers
         public ClientsController()
         {
             db.Configuration.ProxyCreationEnabled = false;
+            db.Database.CommandTimeout = 180;
         }
 
         // GET api/Clients

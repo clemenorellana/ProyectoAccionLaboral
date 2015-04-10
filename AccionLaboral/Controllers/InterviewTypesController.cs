@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public InterviewTypesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/InterviewTypes
         public IQueryable<InterviewType> GetInterviewTypes()
         {

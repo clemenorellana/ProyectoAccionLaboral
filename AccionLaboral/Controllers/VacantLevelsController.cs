@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public VacantLevelsController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/VacantLevels
         public IQueryable<VacantLevel> GetVacantLevels()
         {

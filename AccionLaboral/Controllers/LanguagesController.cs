@@ -18,6 +18,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public LanguagesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/Languages
         public IQueryable<Language> GetLanguages()
         {

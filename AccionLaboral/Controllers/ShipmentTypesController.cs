@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public ShipmentTypesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/ShipmentTypes
         public IQueryable<ShipmentType> GetShipmentTypes()
         {

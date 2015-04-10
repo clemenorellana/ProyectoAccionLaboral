@@ -16,6 +16,11 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
+        public ReferenceTypesController()
+        {
+            db.Database.CommandTimeout = 180;
+        }
+
         // GET api/ReferenceTypes
         public IQueryable<ReferenceType> GetReferenceTypes()
         {
