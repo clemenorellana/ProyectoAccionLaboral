@@ -130,11 +130,12 @@ namespace AccionLaboral.Controllers
 
         //-------------------------------------------Vacant Report------------------------------------------
 
-
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/VacantDataReport/")]
-        public IHttpActionResult VacantDataReport(VacantFilter id)
+        private List<VacantFilter> getVacantDataReport(DateTime dateFrom, DateTime dateTo)
         {
+            VacantFilter id = new VacantFilter();
+            id.DateFrom = dateFrom;
+            id.DateTo = dateTo;
+
             List<VacantByCompany> vacantsByCompanies = new List<VacantByCompany>();
 
             DateTime dtDateFrom = id.DateFrom;
@@ -171,7 +172,7 @@ namespace AccionLaboral.Controllers
             }
 
             List<VacantFilter> vacantList = new List<VacantFilter>();
-            foreach (var vacant in vacantsByCompanies) 
+            foreach (var vacant in vacantsByCompanies)
             {
                 VacantFilter coverd = new VacantFilter();
                 coverd.VacantByCompany = vacant;
@@ -179,6 +180,58 @@ namespace AccionLaboral.Controllers
                 vacantList.Add(coverd);
             }
 
+            return vacantList;
+        }
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/VacantDataReport/")]
+        public IHttpActionResult VacantDataReport(VacantFilter id)
+        {
+            //List<VacantByCompany> vacantsByCompanies = new List<VacantByCompany>();
+
+            //DateTime dtDateFrom = id.DateFrom;
+            //TimeSpan tsDateFrom = new TimeSpan(0, 0, 0);
+            //id.DateFrom = dtDateFrom.Date + tsDateFrom;
+
+            //DateTime dtDateTo = id.DateTo;
+            //TimeSpan tsDateTo = new TimeSpan(0, 0, 0);
+            //id.DateTo = dtDateTo.Date + tsDateTo;
+
+            //List<VacantByCompany> vacantsByCompaniesTemp = db.VacantByCompanies.Include(r => r.Company).Include(r => r.VacantLevel).ToList();
+            //foreach (VacantByCompany c in vacantsByCompaniesTemp)
+            //{
+            //    DateTime date = c.RequestDate;
+            //    TimeSpan ts = new TimeSpan(0, 0, 0);
+            //    date = date.Date + ts;
+            //    c.RequestDate = date;
+            //    vacantsByCompanies.Add(c);
+            //}
+
+            //if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
+            //{
+            //    vacantsByCompanies = vacantsByCompanies.Where(r => r.RequestDate >= id.DateFrom).ToList();
+            //}
+            //else if (id.DateFrom.Year == 1 && id.DateTo.Year > 1)
+            //{
+            //    vacantsByCompanies = vacantsByCompanies.Where(r => r.RequestDate <= id.DateTo).ToList();
+
+            //}
+            //else if (id.DateFrom.Year > 1 && id.DateTo.Year > 1)
+            //{
+            //    vacantsByCompanies = vacantsByCompanies.Where(r => r.RequestDate >= id.DateFrom && r.RequestDate <= id.DateTo).ToList();
+
+            //}
+
+            //List<VacantFilter> vacantList = new List<VacantFilter>();
+            //foreach (var vacant in vacantsByCompanies) 
+            //{
+            //    VacantFilter coverd = new VacantFilter();
+            //    coverd.VacantByCompany = vacant;
+            //    coverd.VacantCovered = db.VacantCovers.Include(r => r.Employee).Where(r => r.VacantByCompanyId == vacant.VacantByCompanyId).ToList();
+            //    vacantList.Add(coverd);
+            //}
+            List<VacantFilter> vacantList = new List<VacantFilter>();
+            vacantList = getVacantDataReport(id.DateFrom, id.DateTo);
 
             return Ok(vacantList);
         }
@@ -188,6 +241,9 @@ namespace AccionLaboral.Controllers
         public HttpResponseMessage ExportVacantReport(VacantReportFilter id)
         {
             VacantReportFilter filters = id;
+            filters.Vacants = new List<VacantFilter>();
+            filters.Vacants = getVacantDataReport(id.DateFrom, id.DateTo);
+            
             try
             {
                 if (filters != null)

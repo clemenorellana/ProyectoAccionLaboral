@@ -483,12 +483,12 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
     $scope.entryLimit = $scope.itemsPerPageList[0];
     $scope.setVacantData = function () {
         vacantByCompanyRepo.getVacantList().success(function (data) {
-            for (var i = 0; i < data.length; i++)
-            {
-                if(data[i].Active)
-                    $scope.vacantList.push(data[i]);
-            }
-            
+            //for (var i = 0; i < data.length; i++)
+            //{
+            //    if(data[i].Active)
+            //        $scope.vacantList.push(data[i]);
+            //}
+            $scope.vacantList = data;
             $scope.totalServerItems = data.totalItems;
             $scope.items = data.items;
             $scope.load = false;

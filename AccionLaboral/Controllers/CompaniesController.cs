@@ -145,10 +145,7 @@ namespace AccionLaboral.Controllers
 
         //-------------------------------------------Companies Report------------------------------------------
 
-
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/companiesdatareport/")]
-        public IHttpActionResult CompaniesDataReport(CompaniesFilters id)
+        private List<Company> getCompaniesData(CompaniesFilters id)
         {
             List<Company> companies = new List<Company>();
 
@@ -156,7 +153,7 @@ namespace AccionLaboral.Controllers
             TimeSpan tsDateFrom = new TimeSpan(0, 0, 0);
             id.DateFrom = dtDateFrom.Date + tsDateFrom;
 
-            DateTime dtDateTo= id.DateTo;
+            DateTime dtDateTo = id.DateTo;
             TimeSpan tsDateTo = new TimeSpan(0, 0, 0);
             id.DateTo = dtDateTo.Date + tsDateTo;
 
@@ -184,6 +181,52 @@ namespace AccionLaboral.Controllers
                 companies = companies.Where(r => r.DateCreated >= id.DateFrom && r.DateCreated <= id.DateTo).ToList();
 
             }
+            return companies;
+        }
+
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/companiesdatareport/")]
+        public IHttpActionResult CompaniesDataReport(CompaniesFilters id)
+        {
+            //List<Company> companies = new List<Company>();
+
+            //DateTime dtDateFrom = id.DateFrom;
+            //TimeSpan tsDateFrom = new TimeSpan(0, 0, 0);
+            //id.DateFrom = dtDateFrom.Date + tsDateFrom;
+
+            //DateTime dtDateTo= id.DateTo;
+            //TimeSpan tsDateTo = new TimeSpan(0, 0, 0);
+            //id.DateTo = dtDateTo.Date + tsDateTo;
+
+            //List<Company> companiesTemp = db.Companies.Include(r => r.ContactsByCompany).Include(r => r.VacantsByCompany).ToList();
+            //foreach (Company c in companiesTemp)
+            //{
+            //    DateTime date = c.DateCreated;
+            //    TimeSpan ts = new TimeSpan(0, 0, 0);
+            //    date = date.Date + ts;
+            //    c.DateCreated = date;
+            //    companies.Add(c);
+            //}
+
+            //if (id.DateFrom.Year > 1 && id.DateTo.Year == 1)
+            //{
+            //    companies = companies.Where(r => r.DateCreated >= id.DateFrom).ToList();
+            //}
+            //else if (id.DateFrom.Year == 1 && id.DateTo.Year > 1)
+            //{
+            //    companies = companies.Where(r => r.DateCreated <= id.DateTo).ToList();
+
+            //}
+            //else if (id.DateFrom.Year > 1 && id.DateTo.Year > 1)
+            //{
+            //    companies = companies.Where(r => r.DateCreated >= id.DateFrom && r.DateCreated <= id.DateTo).ToList();
+
+            //}
+
+            List<Company> companies = new List<Company>();
+            companies = getCompaniesData(id);
+
             return Ok(companies);
         }
 
@@ -192,6 +235,8 @@ namespace AccionLaboral.Controllers
         public HttpResponseMessage ExportCompaniesReport(CompaniesFilters id)
         {
             CompaniesFilters filters = id;
+            filters.Companies = getCompaniesData(id);
+            
             try
             {
                 if (filters != null)
