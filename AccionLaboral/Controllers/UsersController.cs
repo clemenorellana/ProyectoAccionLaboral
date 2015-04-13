@@ -189,15 +189,24 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(User user)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                //return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
+                return CreatedAtRoute("DefaultApi", new { controller = "users", id = user.UserId }, user);
             }
-
-            db.Users.Add(user);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
+            catch (Exception e)
+            {
+                var x = e.Message;
+            }
+            return CreatedAtRoute("DefaultApi", new { controller = "users", id = user.UserId }, user);
         }
 
         // DELETE api/Users/5

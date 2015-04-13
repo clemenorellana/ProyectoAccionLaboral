@@ -142,7 +142,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.setUserData();
                 $scope.load = false;
-            }).error(function () {
+            }).error(function (error) {
                 alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.load = false;
@@ -162,7 +162,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.setUserData();
                 $scope.load = false;
-            }).error(function () {
+            }).error(function (error) {
                 alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.load = false;

@@ -60,7 +60,13 @@ namespace AccionLaboral.Controllers
             }
             try
             {
-                db.VacantCovers.Add(vacantcovered);
+                int exite = db.VacantCovers.Where(r => r.VacantByCompanyId == vacantcovered.VacantByCompanyId && r.EmployeeId == vacantcovered.EmployeeId).Count();
+
+                if (exite == 0)
+                    db.VacantCovers.Add(vacantcovered);
+                else
+                    db.Entry(vacantcovered).State = EntityState.Modified;
+
                 db.SaveChanges();
             }
             catch (Exception e) {

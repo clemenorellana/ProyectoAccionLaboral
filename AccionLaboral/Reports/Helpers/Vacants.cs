@@ -54,14 +54,15 @@ namespace AccionLaboral.Reports.Helpers
                     if(!vacant.Active)
                         sheet1.GetRow(row).GetCell(5).SetCellValue(vacant.CoveredDate.ToShortDateString() + " -- " + vacant.CoveredTime);
 
-                    List<VacantCovered> coveredList = vacantList[i].VacantCovered;
+                    List<VacantCovered> coveredList = vacantList[i].VacantCovered.Distinct().ToList();
                     int col = 6;
                     int x = 0;
                     foreach (var covered in coveredList) 
                     {
                         int column = col + x;
-                        if(row==9)
-                            sheet1.GetRow(row-1).GetCell(column).SetCellValue("Asesor " + covered.Employee.EmployeeAlias + " - " + covered.Employee.FirstName + " " + covered.Employee.LastName );
+                        //if(row==9)
+                            //sheet1.GetRow(row-1).GetCell(column).SetCellValue("Asesor " + covered.Employee.EmployeeAlias + " - " + covered.Employee.FirstName + " " + covered.Employee.LastName );
+                        sheet1.GetRow(rowStart-1).GetCell(column).SetCellValue("Asesor " + covered.Employee.EmployeeAlias + " - " + covered.Employee.FirstName + " " + covered.Employee.LastName);
                         sheet1.GetRow(row).GetCell(column).SetCellValue(covered.NumberOfProfiles);
                         sheet1.SetColumnHidden(column, false);
                         //sheet1.AutoSizeColumn(column);
