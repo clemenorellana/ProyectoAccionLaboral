@@ -21,7 +21,7 @@
             <br />
             <div class="form-group required">
                 <label for="exampleInputFile">Cambiar foto de Perfil</label>
-                <input type="file" id="exampleInputFile" base-sixty-four-input>
+                <input type="file" id="exampleInputFile" base-sixty-four-input required>
                 <p class="help-block">Seleccione una foto</p>
             </div>
         </div>
@@ -89,7 +89,7 @@
                                     <div class="form-group required">
                                         <label>Edad</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" ng-class="{'loadinggif': load}" required>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" ng-class="{'loadinggif': load}" required data-inputmask="&quot;mask&quot;: &quot;99&quot;" input-mask>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +120,7 @@
                                         <label>Correo Electrónico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': load}" required>
+                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': load}" >
                                         </div>
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-phone"></i>
                                             </div>
-                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.HomePhone" ng-class="{'loadinggif': load}" required input-mask>
+                                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.HomePhone" ng-class="{'loadinggif': load}" input-mask>
                                         </div><!-- /.input group -->
                                     </div>
                                 </div>
@@ -515,7 +515,7 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Año</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year" required>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year" required data-inputmask="&quot;mask&quot;: &quot;9999&quot;" input-mask>
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>
@@ -846,7 +846,7 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Año</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year" required>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year" required data-inputmask="&quot;mask&quot;: &quot;9999&quot;" input-mask>
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>

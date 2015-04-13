@@ -14,6 +14,7 @@ using AccionLaboral.Helpers.Lucene;
 using System.IO;
 using AccionLaboral.Helpers.Filters;
 using System.Web.Http.Cors;
+using System.Drawing.Imaging;
 
 namespace AccionLaboral.Controllers
 {
@@ -37,10 +38,10 @@ namespace AccionLaboral.Controllers
             try
             {
                 clients = db.Clients
-                    //.Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                    //.Include(r => r.Employee)
+                    .Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                    .Include(r => r.Employee)
                     .Include(r => r.State)
-                    /*.Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
+                    .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
                     .Include(r => r.AcademicEducations.Select(c => c.Career))
                     .Include(r => r.AcademicEducations.Select(t => t.EducationType))
                     .Include(r => r.KnownPrograms)
@@ -49,8 +50,9 @@ namespace AccionLaboral.Controllers
                     .Include(r => r.References.Select(c => c.City.Country))
                     .Include(r => r.References.Select(t => t.ReferenceType))
                     .Include(r => r.WorkExperiences)
-                    .Include(r => r.WorkExperiences.Select(c => c.City.Country))*/
+                    .Include(r => r.WorkExperiences.Select(c => c.City.Country))
                     .Include(r => r.Trackings.Select(c => c.TrackingType))
+                    /*
                     .AsEnumerable().Select(x => new Client
                     {
                         ClientId = x.ClientId,
@@ -69,9 +71,22 @@ namespace AccionLaboral.Controllers
                         StateId = x.StateId,
                         Trackings = x.Trackings,
                         IdentityNumber = x.IdentityNumber,
-                        RejectionDescription = x.RejectionDescription
-                    }).
-                ToList();
+                        RejectionDescription = x.RejectionDescription,
+                        References = x.References,
+                        FacebookEmail = x.FacebookEmail,
+                        BBPin = x.BBPin,
+                        Twitter = x.Twitter,
+                        EnglishPercentage = x.EnglishPercentage,
+                        IsStudying = x.IsStudying,
+                        HaveCar = x.HaveCar,
+                        HaveMotorcycle = x.HaveMotorcycle,
+                        HaveLicense = x.HaveLicense,
+                        LicenseType = x.LicenseType,
+                        CompaniesWithPreviouslyRequested = x.CompaniesWithPreviouslyRequested,
+                        Comment = x.Comment,
+                        Occupation = x.Occupation
+                    }).*/
+                .ToList();
                 //GoLucene.ClearLuceneIndex();
                 //GoLucene.AddUpdateLuceneIndex(clients);
             }
@@ -214,6 +229,8 @@ namespace AccionLaboral.Controllers
                            .Include(x => x.Trackings)
                            .Single(c => c.ClientId == client.ClientId);
                 client.EnrollDate = DateTime.Now;
+                if (client.Photo!=null)
+                client.Photo = ConvertImage(client.Photo, 96, 96);
                 db.Entry(dbClients).CurrentValues.SetValues(client);
                 if (client.AcademicEducations != null)
                 {
@@ -381,6 +398,8 @@ namespace AccionLaboral.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                if (client.Photo != null)
+                client.Photo = ConvertImage(client.Photo, 96, 96);
                 client.EnrollDate = DateTime.Now;
                 db.Clients.Add(client);
 
@@ -456,8 +475,8 @@ namespace AccionLaboral.Controllers
             try
             {
                 ClientsFilter filters = id;
-                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom);
-                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo);
+                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom).AddDays(-1);
+                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo).AddDays(1);
                 id.Clients = db.Clients.Include(r => r.State).
                     Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
                 if (filters != null)
@@ -483,11 +502,12 @@ namespace AccionLaboral.Controllers
             try
             {
                 ClientsFilter filters = id;
-                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom);
-                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo);
+                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom).AddDays(-1);
+                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo).AddDays(1);
                 id.Clients = db.Clients.
                     Include(r => r.Trackings.Select(c => c.TrackingType)).
                     Include(r => r.State).
+                    Include(r=>r.Employee).
                     Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
 
                 if (filters != null)
@@ -671,6 +691,28 @@ namespace AccionLaboral.Controllers
             return db.Trackings.Count(e => e.TrackingId == id) > 0;
         }
 
+        private byte[] ConvertImage(byte[] myBytes, int newWidth, int newHeight)
+        {
+            var jpegQuality = 50;
+            System.Drawing.Image image;
+            using (var inputStream = new MemoryStream(myBytes))
+            {
+                image = System.Drawing.Image.FromStream(inputStream);
+                var jpegEncoder = ImageCodecInfo.GetImageDecoders()
+                  .First(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                var encoderParameters = new EncoderParameters(1);
+                encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, jpegQuality);
+                
+                using (var outputStream = new MemoryStream())
+                {
+                    image.Save(outputStream, jpegEncoder, encoderParameters);
+                    myBytes = outputStream.ToArray();
+                }
+            }
+            return myBytes;
+        }
+
+        #region findclientbyidentitynumber
         //[System.Web.Http.HttpGet]
         //[System.Web.Http.Route("api/FindClientByIdentityNumber/{id}")]
         //public Client FindClientByIdentityNumber(string id)
@@ -707,5 +749,6 @@ namespace AccionLaboral.Controllers
 
         //    return client;
         //}
+        #endregion
     }
 }

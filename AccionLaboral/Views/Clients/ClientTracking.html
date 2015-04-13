@@ -17,52 +17,17 @@
                             <button class="btn btn-info btn-sm" ng-click="setData()" title="" data-original-title="Collapse">
                                 <i class="fa  fa-refresh"></i>
                             </button>
-                            <!--<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="glyphicon glyphicon-download-alt">Exportar</i><span class="fa fa-caret-down"></span></button>
-                            <ul class="dropdown-menu">
-                                <li class="btn" id="btnExcelExport" ng-click="exportData()">
-                                    <a href="">
-                                        <img src="../../Images/MS/xls-icon24.png" />XLS
-                                    </a>
-                                </li>
-                            </ul>-->
                         </div>
                     </div>
                 </div>
                 <div class="box-body">
-                    <!--<div class="col-md-12">
-                        <div class="form-group col-md-4">
-                            <label>Desde</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="date" name="fromDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateFrom"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>Hasta</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="date" name="toDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateTo"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label></label>
-                            <div class="input-group">
-                                <input type="submit" class="btn btn-info" title="Generar Reporte" value="Generar Reporte" ng-click="exportClients()" />
-                            </div>
-                        </div>
-                    </div>-->
                     <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
-                    <table class="table table-bordered" ng-show="!load">
-                        <thead>
+                    <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" ng-show="!load">
+                        
                             <tr>
                                 <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
                                 <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
                                 <th ng-click="sort='Age' ; reverse=!reverse">Edad</th>
-                                <th ng-click="sort='Email' ; reverse=!reverse">Correo</th>
                                 <th ng-click="sort='Name' ; reverse=!reverse">Tipo de seguimiento</th>
                                 <th ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
                                 <th ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
@@ -71,10 +36,24 @@
                                 <th>Opciones</th>
                             </tr>
                             <tr>
-                                <th colspan="1"><input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.LastName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.Age" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.Email" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
+                                <th colspan="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                        <input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                    </div>
+                                </th>
+                                <th colspan="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                        <input ng-model="search.LastName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                    </div>
+                                </th>
+                                <th colspan="1">
+                                    <div class="input-group">
+                                        <input ng-model="search.Age" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                    </div>
+                                </th>
+                                
                                 <th colspan="1">
                                     <select ng-model="search.Trackings[0].TrackingType.Name" ng-init="getTrackingTypes()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="trackingType.Name as ('Seguimiento de ' + trackingType.Name) for trackingType in trackingTypes">
                                         <option value="" selected>Todos</option>
@@ -85,18 +64,27 @@
                                         <option value="" selected>Todos</option>
                                     </select>
                                 </th>
-                                <th colspan="1"><input ng-model="search.CompleteAddress" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.Cellphone" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
+                                <th colspan="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                        <input ng-model="search.CompleteAddress" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                    </div>
+                                </th>
+                                <th colspan="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                        <input ng-model="search.Cellphone" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                    </div>
+                                </th>
                                 <th colspan="1"></th>
                                 <th colspan="1"></th>
                             </tr>
-                        </thead>
+                        
                         <tr>
                         <tr ng-repeat="customer in filtered | filter:search:strict | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                             <td>{{customer.FirstName}}</td>
                             <td>{{customer.LastName}}</td>
                             <td>{{customer.Age}}</td>
-                            <td>{{customer.Email}}</td>
                             <td>Seguimiento de {{customer.Trackings[0].TrackingType.Name}}</td>
                             <td>{{customer.State.Name}}</td>
                             <td>{{customer.CompleteAddress}}</td>

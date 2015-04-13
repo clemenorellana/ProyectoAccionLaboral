@@ -8,6 +8,7 @@
     {{ item.msg }}
 </div><!-- End Alert -->
 
+
 <div class="col-md-3">
     <div class="box box-info">
         <div class="box-header">
@@ -96,7 +97,7 @@
                                         <div class="form-group required">
                                             <label>Edad</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" required>
+                                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" required data-inputmask="&quot;mask&quot;: &quot;99&quot;" input-mask>
                                             </div>
                                         </div>
                                     </div>
@@ -515,7 +516,7 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Año</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year" required>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year" required data-inputmask="&quot;mask&quot;: &quot;9999&quot;" input-mask>
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>
@@ -851,7 +852,7 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Año</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year" required>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year" required data-inputmask="&quot;mask&quot;: &quot;9999&quot;" input-mask>
                         </div>
                         <div class="form-group col-md-4">
                             <label>País</label>

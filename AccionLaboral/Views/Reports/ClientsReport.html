@@ -34,7 +34,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<div class="col-md-12">
+<div class="col-md-12" ng-init="setData()">
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Reporte de Clientes</h3>
@@ -75,34 +75,57 @@
             </div>
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <div id="CustomersTbl">
-                <table class="table table-bordered" id="tblCust" ng-show="!load">
-                    <thead id="filters">
-                        <tr>
-                            <th class="col-lg-1" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
-                            <th class="col-lg-1" ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
-                            <th class="col-lg-1" ng-click="sort='Age' ; reverse=!reverse">Edad</th>
-                            <th class="col-lg-2" ng-click="sort='Email' ; reverse=!reverse">Correo</th>
-                            <th class="col-lg-2" ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
-                            <th class="col-lg-1" ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
-                            <th class="col-lg-1" ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
-                            <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha de Ingreso</th>
-                        </tr>
-                        <tr id="filterHeader">
-                            <th colspan="1"><input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.LastName" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.Age" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.Email" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.CompleteAddress" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.Cellphone" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1">
-                                <select ng-model="search.StateId" ng-init="getStates()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="state.StateId as state.Name for state in States">
-                                    <option value="" selected>Todos</option>
-                                </select>
-                            </th>
-                            <!--<th colspan="1"><input ng-model="search.EnrollDate" ng-change="setData(search)" class="form-control" type="datetime-local" /></th>-->
-                            <th colspan="1"></th>
-                        </tr>
-                    </thead>
+                <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" id="tblCust" ng-show="!load">
+                    <tr>
+                        <th class="col-lg-1" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
+                        <th class="col-lg-1" ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
+                        <th class="col-lg-1" ng-click="sort='Age' ; reverse=!reverse">Edad</th>
+                        <th class="col-lg-2" ng-click="sort='Email' ; reverse=!reverse">Correo</th>
+                        <th class="col-lg-2" ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
+                        <th class="col-lg-1" ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
+                        <th class="col-lg-1" ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
+                        <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha de Ingreso</th>
+                    </tr>
+                    <tr id="filterHeader">
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.LastName" ng-change="setData(search)" class="form-control" type="text" />
+                            </div>
+                        </th>
+                        <th colspan="1"><input ng-model="search.Age" ng-change="setData(search)" class="form-control" type="text" /></th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.Email" ng-change="setData(search)" class="form-control" type="text" />
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.CompleteAddress" ng-change="setData(search)" class="form-control" type="text" />
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input ng-model="search.Cellphone" ng-change="setData(search)" class="form-control" type="text" />
+                            </div>
+                        </th>
+                        <th colspan="1">
+                            <select ng-model="search.StateId" ng-init="getStates()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="state.StateId as state.Name for state in States">
+                                <option value="" selected>Todos</option>
+                            </select>
+                        </th>
+                        <!--<th colspan="1"><input ng-model="search.EnrollDate" ng-change="setData(search)" class="form-control" type="datetime-local" /></th>-->
+                        <th colspan="1"></th>
+                    </tr>
                     <tr ng-repeat="customer in filters.Clients | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                         <td>{{customer.FirstName}}</td>
                         <td>{{customer.LastName}}</td>

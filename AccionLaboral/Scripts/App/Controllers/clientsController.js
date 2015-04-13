@@ -29,7 +29,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         when("/ClientTracking/:id", {
             title: 'Seguimiento de Clientes',
             templateUrl: "/Clients/ClientTracking",
-            controller: "CustomerTrackingController"
+            controller: "CustomerTrackingDetailController"
         }).
         when("/SearchClients", {
             title: 'Busqueda de Clientes',
@@ -49,7 +49,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         when("/ClientsTrackingReport", {
             title: 'Reporte de Seguimiento de Clientes',
             templateUrl: "/Clients/ClientsTrackingReport",
-            controller: "CustomerTrackingController"
+            controller: "CustomerTrackingDetailController"
         })
     
 }])
@@ -82,6 +82,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     $scope.generateReport = function () {
         
         //$scope.filters = { "Clients": [], "DateFrom": "", "DateTo": "", "Title": "" };
+        
             $scope.title.replace(/[<>:"\/\\|?*]+/g, ' ');
             if ($scope.dateFrom) {
 
@@ -91,7 +92,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.filters.DateTo = $scope.getFormatDate($scope.dateTo);
                 //filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
             }
-
+            $scope.filtered = angular.copy($scope.customerData)
             $scope.filters.Clients = angular.copy($scope.filtered);
             var clients = [];
 
@@ -101,20 +102,23 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         var dateFrom = new Date($scope.dateFrom),
                             dateTo = new Date($scope.dateTo),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                        enrollDate.setHours(0, 0, 0, 0);
+                            //enrollDate.setHours(0, 0, 0, 0);
+                            enrollDate.setDate(enrollDate.getDate()+1);
                         if (dateFrom <= enrollDate && dateTo >= enrollDate) {
                             clients.push($scope.filters.Clients[i]);
                         }
                     } else if ($scope.dateFrom) {
                         var dateFrom = new Date($scope.dateFrom),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                        enrollDate.setHours(0, 0, 0, 0);
+                            //enrollDate.setHours(0, 0, 0, 0);
+                            enrollDate.setDate(enrollDate.getDate()+1);
                         if (dateFrom <= enrollDate)
                             clients.push($scope.filters.Clients[i]);
                     } else if ($scope.dateTo) {
                         var dateTo = new Date($scope.dateTo),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                        enrollDate.setHours(0, 0, 0, 0);
+                            //enrollDate.setHours(0, 0, 0, 0);
+                            enrollDate.setDate(enrollDate.getDate()+1);
                         if (dateTo >= enrollDate)
                             clients.push($scope.filters.Clients[i]);
                     } else
@@ -122,7 +126,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 }
                 //$scope.filters.Clients = angular.copy(clients);
             }
-            $scope.filtered = angular.copy(clients);
+            $scope.filters.Clients = angular.copy(clients);
             $scope.setFilteredReport();
     }
 
@@ -358,7 +362,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.academicEducations[$scope.index].City = $scope.City,
                         $scope.academicEducations[$scope.index].Year = $scope.Year,
                         $scope.academicEducations[$scope.index].Country = $scope.Country;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var education = {
@@ -372,7 +376,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         Country: $scope.Country
                     };
                     $scope.academicEducations.push(education);
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -408,7 +412,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeAcademicEducation = function(index) {
             $scope.academicEducations.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -435,7 +439,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.knownLanguages[$scope.index].Percentage = $scope.Percentage,
                     $scope.knownLanguages[$scope.index].Language = $scope.Language,
                     $scope.knownLanguages[$scope.index].LanguageLevel = $scope.LanguageLevel;
-                alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             } else {
                 var lang = {
@@ -445,7 +449,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
                 $scope.knownLanguages.push(lang);
                 $scope.clearKnownLanguage();
-                alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             }
             } else {
@@ -455,22 +459,22 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeKnownLanguage = function (index) {
             $scope.knownLanguages.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
         $scope.removeWorkExperience = function(index) {
             $scope.workExperiences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
         $scope.removeWorkReference = function(index) {
             $scope.workReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
         $scope.removePersonalReference = function(index) {
             $scope.personalReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -491,7 +495,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             if ($scope.FormProgram.$valid) {
                 if ($scope.action == 'edit') {
                     $scope.knownPrograms[$scope.index].Name = $scope.NameProgram;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var program = {
@@ -499,7 +503,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     };
                     $scope.knownPrograms.push(program);
                     $scope.clearProgram();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -509,7 +513,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
     $scope.removeKnownProgram = function (index) {
         $scope.knownPrograms.splice(index, 1);
-        alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+        alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
         $scope.alertsTags = $rootScope.alerts;
     };
 
@@ -551,7 +555,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.workExperiences[$scope.index].Archievements = $scope.Achievements,
                     $scope.workExperiences[$scope.index].WorkCity = $scope.WorkCity,
                     $scope.workExperiences[$scope.index].WorkCountry = $scope.WorkCountry;
-                alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             } else {
                 var experience = {
@@ -566,7 +570,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
                 $scope.workExperiences.push(experience);
                 $scope.clearWorkExperience();
-                alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             }
         } else {
@@ -576,7 +580,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     };
     $scope.removeWorkExperience = function (index) {
         $scope.workExperiences.splice(index, 1);
-        alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+        alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
         $scope.alertsTags = $rootScope.alerts;
     };
         /*WorkReference*/
@@ -620,7 +624,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.workReferences[$scope.index].Relationship = $scope.RelationshipWRef,
                     $scope.workReferences[$scope.index].City = $scope.CityWRef,
                     $scope.workReferences[$scope.index].Country = $scope.CountryWRef;
-                alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             } else {
                 var wReference = {
@@ -636,7 +640,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
                 $scope.workReferences.push(wReference);
                 $scope.clearWorkReference();
-                alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             }
         } else {
@@ -646,7 +650,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     };
     $scope.removeWorkReference = function (index) {
         $scope.workReferences.splice(index, 1);
-        alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+        alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
         $scope.alertsTags = $rootScope.alerts;
     };
 
@@ -690,7 +694,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.personalReferences[$scope.index].Relationship = $scope.RelationshipPRef,
                     $scope.personalReferences[$scope.index].City = $scope.CityPRef,
                     $scope.personalReferences[$scope.index].Country = $scope.CountryPRef;
-                alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             } else {
                 var pReference = {
@@ -706,7 +710,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
                 $scope.personalReferences.push(pReference);
                 $scope.clearPersonalReference();
-                alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             }
         } else {
@@ -716,7 +720,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     };
     $scope.removePersonalReference = function (index) {
         $scope.personalReferences.splice(index, 1);
-        alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+        alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
         $scope.alertsTags = $rootScope.alerts;
     };
 
@@ -754,7 +758,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.Trannings[$scope.index].City = $scope._City,
                         $scope.Trannings[$scope.index].Year = $scope._Year,
                         $scope.Trannings[$scope.index].Country = $scope._Country;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var tranning = {
@@ -768,7 +772,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     };
                     $scope.Trannings.push(tranning);
                     $scope.clearTranning();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -779,7 +783,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
         $scope.removeTranning = function(index) {
             $scope.Trannings.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -951,11 +955,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                         if ($scope.action == 'edit') {
                             customerRepository.UpdateCustomer($scope.New).success(function () {
-                                alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                                alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                                 $scope.alertsTags = $rootScope.alerts;
                                 $location.path("/AllClients");
                             }).error(function () {
-                                alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.');
+                                alertService.add('danger', 'Error', 'No se ha podido actualizar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
                                 $scope.alertsTags = $rootScope.alerts;
                             });
                             $scope.action = '';
@@ -963,11 +967,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             customerRepository.InsertCustomer(function() {
 
                             }, $scope.New).success(function () {
-                                alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                                alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                                 $scope.alertsTags = $rootScope.alerts;
                                 $location.path("/AllClients");
                             }).error(function () {
-                                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
+                                alertService.add('danger', 'Error', 'No se ha podido insertar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
                                 $scope.alertsTags = $rootScope.alerts;
                             });
 
@@ -1024,8 +1028,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.DeleteCustomer = function(id) {
                     customerRepository.DeleteCustomer(function() {
                     }, id).success(function() {
-                        alertService.add('success', 'Enhorabuena', 'Registro eliminado.');
+                        alertService.add('success', 'Eliminado', 'El cliente ha sido eliminado.');
                         $scope.alertsTags = $rootScope.alerts;
+                        $scope.setData();
                     }).error(function () {
                         alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
                         $scope.alertsTags = $rootScope.alerts;
@@ -1058,6 +1063,10 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.back = function () {
             $location.path("/AllClients");
         };
+
+        $scope.backEnrollClients = function () {
+            enrollClientExist = !enrollClientExist;
+        }
 
         $scope.exportData = function () {
             if (!$scope.filtered || $scope.filtered.length == 0) {
@@ -1242,7 +1251,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.Reference.ReferenceTypeId = 2;
                     //$scope.Reference.CityId = $scope.City.CityId;
                     $scope.personalReferencesEnroll.push($scope.Reference);
-                    alertService.add('success', 'Enhorabuena', 'Registro agregado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -1480,7 +1489,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             $scope.academicEducations[$scope.index].Year = $scope.Year,
                             $scope.academicEducations[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.CountryId })[0],
                             $scope.academicEducations[$scope.index].CountryId = $scope.CountryId;
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                        alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     } else {
                         var education = {
@@ -1497,7 +1506,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             Country: $filter('filter')($scope.Countries, { CountryId: $scope.CountryId })[0]
                         };
                         $scope.academicEducations.push(education);
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
                     $scope.action = '';
@@ -1535,7 +1544,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             };
             $scope.removeAcademicEducation = function (index) {
                 $scope.academicEducations.splice(index, 1);
-                alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+                alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             };
 
@@ -1564,7 +1573,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             $scope.knownLanguages[$scope.index].LanguageId = $scope.LanguageId,
                             $scope.knownLanguages[$scope.index].LanguageLevel = $filter('filter')($scope.LanguageLevels, { LanguageLevelId: $scope.LanguageLevelId })[0],
                             $scope.knownLanguages[$scope.index].LanguageLevelId = $scope.LanguageLevelId;
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                        alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     } else {
                         var lang = {
@@ -1576,7 +1585,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         };
                         $scope.knownLanguages.push(lang);
                         $scope.clearKnownLanguage();
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
                 } else {
@@ -1586,7 +1595,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             };
             $scope.removeKnownLanguage = function (index) {
                 $scope.knownLanguages.splice(index, 1);
-                alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+                alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             };
 
@@ -1607,7 +1616,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 if ($scope.programFormEdit.$valid) {
                     if ($scope.action == 'edit') {
                         $scope.knownPrograms[$scope.index].Name = $scope.NameProgram;
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                        alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     } else {
                         var program = {
@@ -1615,7 +1624,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         };
                         $scope.knownPrograms.push(program);
                         $scope.clearProgram();
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
                 } else {
@@ -1625,7 +1634,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             };
             $scope.removeKnownProgram = function (index) {
                 $scope.knownPrograms.splice(index, 1);
-                alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+                alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             };
 
@@ -1669,7 +1678,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             $scope.workExperiences[$scope.index].CityId = $scope.WorkCityId,
                             $scope.workExperiences[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.WorkCountryId })[0],
                             $scope.workExperiences[$scope.index].CountryId = $scope.WorkCountryId;
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                        alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     } else {
                         var experience = {
@@ -1686,7 +1695,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         };
                         $scope.workExperiences.push(experience);
                         $scope.clearWorkExperience();
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
                 } else {
@@ -1696,7 +1705,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             };
             $scope.removeWorkExperience = function (index) {
                 $scope.workExperiences.splice(index, 1);
-                alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+                alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             };
 
@@ -1744,7 +1753,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             $scope.workReferences[$scope.index].Country = $filter('filter')($scope.Cities, { CountryId: $scope.CountryIdWRef })[0],
                             $scope.workReferences[$scope.index].CountryId = $scope.CountryIdWRef;
 
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                        alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     } else {
                         var wReference = {
@@ -1763,7 +1772,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.workReferences.push(wReference);
                         $scope.clearWorkReference();
 
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
                 } else {
@@ -1773,7 +1782,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             };
             $scope.removeWorkReference = function (index) {
                 $scope.workReferences.splice(index, 1);
-                alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+                alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             };
 
@@ -1821,7 +1830,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             $scope.personalReferences[$scope.index].CountryId = $scope.CountryIdPRef,
                             $scope.personalReferences[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.CountryIdPRef })[0];
 
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                        alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     } else {
                         var pReference = {
@@ -1840,7 +1849,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.personalReferences.push(pReference);
                         $scope.clearPersonalReference();
 
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
                 } else {
@@ -1850,7 +1859,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             };
             $scope.removePersonalReference = function (index) {
                 $scope.personalReferences.splice(index, 1);
-                alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+                alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             };
            
@@ -1893,7 +1902,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.Trannings[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope._CountryId })[0];
                         $scope.Trannings[$scope.index].CountryId = $scope._CountryId;
 
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                        alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     } else {
                         var tranning = {
@@ -1913,7 +1922,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                         $scope.Trannings.push(tranning);
                         $scope.clearTranning();
-                        alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                        alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
                 } else {
@@ -1923,7 +1932,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             };
             $scope.removeTranning = function (index) {
                 $scope.Trannings.splice(index, 1);
-                alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+                alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
             };
 
@@ -2064,11 +2073,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     }
                     if ($scope.editClientForm.$valid) {
                         customerRepository.UpdateCustomer($scope.New).success(function () {
-                            alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                            alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                             $scope.alertsTags = $rootScope.alerts;
                             $location.path("/AllClients");
                         }).error(function () {
-                            alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.');
+                            alertService.add('danger', 'Error', 'No se ha podido actualizar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
                             $scope.alertsTags = $rootScope.alerts;
                         });
                     } else {
@@ -2078,7 +2087,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 
             }
         }])
-    .controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, alertService) {
+    .controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'filterFilter','alertService', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, filterFilter, alertService) {
 
         
 
@@ -2104,7 +2113,77 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
         }
 
-        
+        //Sorting
+        $scope.sort = "FirstName";
+        $scope.reverse = false;
+
+        $scope.changeSort = function (value) {
+            if ($scope.sort == value) {
+                $scope.reverse = !$scope.reverse;
+                return;
+            }
+
+            $scope.sort = value;
+            $scope.reverse = false;
+        }
+        //End Sorting//
+        $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+        $scope.entryLimit = $scope.itemsPerPageList[0];
+
+        $scope.itemsPerTrackingPageList = [1, 2, 3, 4, 5];
+        $scope.entryTrackingLimit = $scope.itemsPerTrackingPageList[0];
+        $scope.currentPage = 1; //current page
+
+        $scope.setData = function (term) {
+            if (!term)
+                $scope.load = true;
+            else {
+                //if (term.State) {
+                term.StateId = (!term.StateId) ? "" : term.StateId;
+                if (term.Trackings)
+                    term.Trackings[0].TrackingType.Name = (!term.Trackings[0].TrackingType.Name) ? "" : term.Trackings[0].TrackingType.Name;
+                //}
+            }
+            customerRepository.getStates().success(function (data) {
+                $scope.States = data;
+            });
+            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
+                $scope.customerData = data;
+                $scope.load = false;
+
+                if ($rootScope.alerts)
+                    $scope.alertsTags = $rootScope.alerts;
+
+                $scope.maxSize = 5; //pagination max size
+
+                /* init pagination with $scope.list */
+                $scope.setFiltered(term);
+
+
+            })
+                    .error(function (data) {
+                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                        $scope.alertsTags = $rootScope.alerts;
+                        $scope.load = false;
+                    });
+
+        };
+
+        $scope.setFiltered = function (term) {
+            if ($scope.customerData) {
+                $scope.filtered = filterFilter($scope.customerData, term);
+
+                $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                        $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+            }
+        };
+
+        $scope.setScope = function (obj, action) {
+            $scope.action = action;
+            $scope.Client = obj;
+            $location.url('ClientTracking/' + obj.ClientId);
+        };
 
         $scope.createTable = function () {
             var table = document.createElement('table');
@@ -2187,7 +2266,54 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         var imageElement = document.getElementById('exampleInputFile');
         if (imageElement)
             imageElement.addEventListener('change', $scope.handleFileSelectAdd, false);
-                
+
+        $scope.setTracking = function (term) {
+            if (!term)
+                $scope.load = true;
+
+            customerRepository.getCustomer($routeParams.id).success(function (data) {
+                $scope.Trackings = [];
+                $scope.personalReferences = [];
+                if (data.Birthday)
+                    data.Birthday = new Date(data.Birthday);
+
+                $scope.Trackings = angular.copy(data.Trackings);
+
+                $scope.Client = data;
+                $scope.load = false;
+
+                if ($rootScope.alerts)
+                    $scope.alertsTags = $rootScope.alerts;
+                $scope.maxSize = 5; //pagination max size
+                //max rows for data table
+
+                $scope.setTrackingFiltered(term);
+
+                /* init pagination with $scope.list */
+
+                var sizeReferences = (data.References != null) ? data.References.length : 0;
+                for (var i = 0; i < sizeReferences; i++) {
+                    if (data.References[i].ReferenceType.Name == 'L')
+                        $scope.workReferences.push(data.References[i]);
+                    else
+                        $scope.personalReferences.push(data.References[i]);
+                }
+
+                $scope.New = data;
+
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos.');
+                $scope.alertsTags = $rootScope.alerts;
+                $location.url('ClientTracking');
+            });
+            customerRepository.getStates().success(function (data) {
+                $scope.States = data;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.');
+                $scope.alertsTags = $rootScope.alerts;
+            });
+        }
+             /*   
         customerRepository.getCustomer($routeParams.id).success(function (data) {
             $scope.academicEducations = [],
             $scope.knownLaguages = [],
@@ -2222,8 +2348,10 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
 
             $scope.New = data;
+            $scope.Client = data;
+            $scope.load = false;
        
-        });
+        });*/
 
         /*Trackings*/
         $scope.clearTracking = function () {
@@ -2242,7 +2370,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             if ($scope.TrackingFormEdit.$valid) {
                 if ($scope.action == 'edit') {
                     $scope.Trackings[$scope.index].Name = $scope.NameProgram;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var program = {
@@ -2250,7 +2378,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     };
                     $scope.Tracking.push(program);
                     $scope.clearTracking();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -2260,7 +2388,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeTracking = function (index) {
             $scope.Tracking.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
             
@@ -2283,7 +2411,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.academicEducations[$scope.index].Year = $scope.Year,
                         $scope.academicEducations[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.CountryId })[0],
                         $scope.academicEducations[$scope.index].CountryId = $scope.CountryId;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var education = {
@@ -2300,7 +2428,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         Country: $filter('filter')($scope.Countries, { CountryId: $scope.CountryId })[0]
                     };
                     $scope.academicEducations.push(education);
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
                 $scope.action = '';
@@ -2338,7 +2466,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeAcademicEducation = function (index) {
             $scope.academicEducations.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -2367,7 +2495,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.knownLanguages[$scope.index].LanguageId = $scope.LanguageId,
                         $scope.knownLanguages[$scope.index].LanguageLevel = $filter('filter')($scope.LanguageLevels, { LanguageLevelId: $scope.LanguageLevelId })[0],
                         $scope.knownLanguages[$scope.index].LanguageLevelId = $scope.LanguageLevelId;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var lang = {
@@ -2379,7 +2507,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     };
                     $scope.knownLanguages.push(lang);
                     $scope.clearKnownLanguage();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -2389,7 +2517,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeKnownLanguage = function (index) {
             $scope.knownLanguages.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -2410,7 +2538,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             if ($scope.programFormEdit.$valid) {
                 if ($scope.action == 'edit') {
                     $scope.knownPrograms[$scope.index].Name = $scope.NameProgram;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var program = {
@@ -2418,7 +2546,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     };
                     $scope.knownPrograms.push(program);
                     $scope.clearProgram();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -2428,7 +2556,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeKnownProgram = function (index) {
             $scope.knownPrograms.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -2472,7 +2600,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.workExperiences[$scope.index].CityId = $scope.WorkCityId,
                         $scope.workExperiences[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.WorkCountryId })[0],
                         $scope.workExperiences[$scope.index].CountryId = $scope.WorkCountryId;
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var experience = {
@@ -2489,7 +2617,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     };
                     $scope.workExperiences.push(experience);
                     $scope.clearWorkExperience();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -2499,7 +2627,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeWorkExperience = function (index) {
             $scope.workExperiences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -2547,7 +2675,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.workReferences[$scope.index].Country = $filter('filter')($scope.Cities, { CountryId: $scope.CountryIdWRef })[0],
                         $scope.workReferences[$scope.index].CountryId = $scope.CountryIdWRef;
 
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var wReference = {
@@ -2566,7 +2694,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.workReferences.push(wReference);
                     $scope.clearWorkReference();
 
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -2576,7 +2704,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeWorkReference = function (index) {
             $scope.workReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -2624,7 +2752,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.personalReferences[$scope.index].CountryId = $scope.CountryIdPRef,
                         $scope.personalReferences[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope.CountryIdPRef })[0];
 
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var pReference = {
@@ -2643,7 +2771,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.personalReferences.push(pReference);
                     $scope.clearPersonalReference();
 
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -2653,7 +2781,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removePersonalReference = function (index) {
             $scope.personalReferences.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
            
@@ -2696,7 +2824,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.Trannings[$scope.index].Country = $filter('filter')($scope.Countries, { CountryId: $scope._CountryId })[0];
                     $scope.Trannings[$scope.index].CountryId = $scope._CountryId;
 
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 } else {
                     var tranning = {
@@ -2716,7 +2844,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                     $scope.Trannings.push(tranning);
                     $scope.clearTranning();
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha insertado correctamente.');
+                    alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
@@ -2726,7 +2854,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.removeTranning = function (index) {
             $scope.Trannings.splice(index, 1);
-            alertService.add('success', 'Enhorabuena', 'Registro se ha eliminado correctamente.');
+            alertService.add('success', 'Eliminado', 'Registro se ha eliminado correctamente.');
             $scope.alertsTags = $rootScope.alerts;
         };
 
@@ -2755,7 +2883,22 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
             $scope.LanguageLevels = data;
         });
+        $scope.getStates = function () {
+            customerRepository.getStates().success(function (data) {
+                $scope.States = data;
+            });
+        };
+        customerRepository.getStates().success(function (data) {
 
+            $scope.States = data;
+        });
+
+        $scope.getStateByAlias = function (alias) {
+            if($scope.States)
+            if (alias)
+                return $filter('filter')($scope.States, { Alias: alias })[0];
+            return '';
+        }
 
         $scope.getCareersByAcademicLevel = function(academicLevelId) {
             for (var i = 0; i < $scope.AcademicLevels.length; i++) {
@@ -2850,11 +2993,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
             if ($scope.editClientForm.$valid) {
                 customerRepository.UpdateCustomer($scope.New).success(function () {
-                    alertService.add('success', 'Enhorabuena', 'Registro se ha actualizado correctamente.');
+                    alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                     $location.path("/AllClients");
                 }).error(function () {
-                    alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.');
+                    alertService.add('danger', 'Error', 'No se ha podido actualizar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
                     $scope.alertsTags = $rootScope.alerts;
                 });
             } else {
@@ -2863,7 +3006,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
                 
         }
-    }]).controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $window, filterFilter, customerRepository, alertService) {
+    }])
+    .controller("CustomerTrackingDetailController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $window, filterFilter, customerRepository, alertService) {
         $scope.itemsInReportPage = 0;
         $scope.getFormatDate = function (date) {
             var dd = date.getDate();
@@ -2895,25 +3039,29 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                 $scope.filters.Clients = angular.copy($scope.filtered);
                 var clients = [];
+                if($scope.filters.Clients)
                 for (var i = 0; i < $scope.filters.Clients.length; i++) {
                     if ($scope.dateFrom && $scope.dateTo) {
                         var dateFrom = new Date($scope.dateFrom),
                             dateTo = new Date($scope.dateTo),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                        enrollDate.setHours(0, 0, 0, 0);
+                        //enrollDate.setHours(0, 0, 0, 0);
+                        enrollDate = new Date(enrollDate.getUTCFullYear(), enrollDate.getUTCMonth(), enrollDate.getUTCDate());
                         if (dateFrom <= enrollDate && dateTo >= enrollDate) {
                             clients.push($scope.filters.Clients[i]);
                         }
                     } else if ($scope.dateFrom) {
                         var dateFrom = new Date($scope.dateFrom),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                        enrollDate.setHours(0, 0, 0, 0);
+                        //enrollDate.setHours(0, 0, 0, 0);
+                        enrollDate = new Date(enrollDate.getUTCFullYear(), enrollDate.getUTCMonth(), enrollDate.getUTCDate());
                         if (dateFrom <= enrollDate)
                             clients.push($scope.filters.Clients[i]);
                     } else if ($scope.dateTo) {
                         var dateTo = new Date($scope.dateTo),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                        enrollDate.setHours(0, 0, 0, 0);
+                        //enrollDate.setHours(0, 0, 0, 0);
+                        enrollDate = new Date(enrollDate.getUTCFullYear(), enrollDate.getUTCMonth(), enrollDate.getUTCDate());
                         if (dateTo >= enrollDate)
                             clients.push($scope.filters.Clients[i]);
                     } else
@@ -3127,12 +3275,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.setTrackingFiltered(term);
 
                 /* init pagination with $scope.list */
-                customerRepository.getStates().success(function (data) {
-                    $scope.States = data;
-                }).error(function () {
-                    alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.');
-                    $scope.alertsTags = $rootScope.alerts;
-                });
+                
                 var sizeReferences = (data.References != null) ? data.References.length : 0;
                 for (var i = 0; i < sizeReferences; i++) {
                     if (data.References[i].ReferenceType.Name == 'L')
@@ -3148,6 +3291,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.alertsTags = $rootScope.alerts;
                 $location.url('ClientTracking');
             });
+            customerRepository.getStates().success(function (data) {
+                $scope.States = data;
+            }).error(function () {
+                alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.');
+                $scope.alertsTags = $rootScope.alerts;
+            });
         }
         
         $scope.setData = function (term) {
@@ -3160,6 +3309,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 term.Trackings[0].TrackingType.Name = (!term.Trackings[0].TrackingType.Name) ? "" : term.Trackings[0].TrackingType.Name;
                 //}
             }
+            customerRepository.getStates().success(function (data) {
+                $scope.States = data;
+            });
             customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
                 $scope.customerData = data;
                 $scope.load = false;
@@ -3209,6 +3361,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
         $scope.$watch('search', function (term) {
             // Create $scope.filtered and then calculat $scope.noOfPages, no racing!
+            if(term)
             $scope.setData(term);
         });
 
@@ -3219,11 +3372,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
         });
 
-        $scope.setScope = function (obj, action) {
-            $scope.action = action;
-            $scope.Client = obj;
-            $location.url('ClientTracking/' + obj.ClientId);
-        };
+        
 
         /*customerRepository.getEmployees().success(function (data) {
             $scope.Employees = data;
@@ -3274,6 +3423,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.trackingTypes = data;
             })
         }
+
+         
+            $scope.getStates();
+
+        $scope.getStateByAlias = function (alias) {
+            //
+            if ($scope.States)
+                if (alias) {
+                    return $filter('filter')($scope.States, { Alias: alias })[0];
+                }
+            return '';
+        };
 
         $scope.fillTracking = function () {
             if ($scope.trackingFormEdit.$valid) {

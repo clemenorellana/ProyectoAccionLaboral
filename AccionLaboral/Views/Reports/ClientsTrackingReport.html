@@ -35,12 +35,12 @@
 
 <section>
 
-    <div class="box-body">
+    <div class="box-body" ng-init="setData()">
 
         <form role="form">
             <div class="box box-info">
                 <div class="box-header">
-                    <h4 class="box-title">Reporte de Seguimiento de Clientes</h4>                    
+                    <h4 class="box-title">Reporte de Seguimiento de Clientes</h4>
                 </div>
                 <div class="box-body">
                     <div class="col-md-12">
@@ -77,46 +77,69 @@
                         </div>
                     </div>
                     <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
-                    <table class="table table-bordered" ng-show="!load">
-                        <thead>
-                            <tr>
-                                <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
-                                <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
-                                <th ng-click="sort='Age' ; reverse=!reverse">Edad</th>
-                                <th ng-click="sort='Email' ; reverse=!reverse">Correo</th>
-                                <th ng-click="sort='Name' ; reverse=!reverse">Tipo de seguimiento</th>
-                                <th ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
-                                <th ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
-                                <th ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
-                                <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha de Ingreso</th>
-                            </tr>
-                            <tr>
-                                <th colspan="1"><input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.LastName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.Age" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.Email" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1">
-                                    <select ng-model="search.Trackings[0].TrackingType.Name" ng-init="getTrackingTypes()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="trackingType.Name as ('Seguimiento de ' + trackingType.Name) for trackingType in trackingTypes">
-                                        <option value="" selected>Todos</option>
-                                    </select>
-                                </th>
-                                <th colspan="1">
-                                    <select ng-model="search.StateId" ng-init="getStates()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="state.StateId as state.Name for state in States">
-                                        <option value="" selected>Todos</option>
-                                    </select>
-                                </th>
-                                <th colspan="1"><input ng-model="search.CompleteAddress" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"><input ng-model="search.Cellphone" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                                <th colspan="1"></th>
-                            </tr>
-                        </thead>
+                    <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" ng-show="!load">
+                        <tr>
+                            <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
+                            <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
+                            <th ng-click="sort='Age' ; reverse=!reverse">Edad</th>
+                            <th ng-click="sort='EmployeeAlias' ; reverse=!reverse">Empleado</th>
+                            <th ng-click="sort='Name' ; reverse=!reverse">Tipo de seguimiento</th>
+                            <th ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
+                            <th ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
+                            <th ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
+                            <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha de Ingreso</th>
+                        </tr>
+                        <tr>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.LastName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1"><input ng-model="search.Age" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.Employee.EmployeeAlias" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1">
+                                <select ng-model="search.Trackings[0].TrackingType.Name" ng-init="getTrackingTypes()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="trackingType.Name as ('Seguimiento de ' + trackingType.Name) for trackingType in trackingTypes">
+                                    <option value="" selected>Todos</option>
+                                </select>
+                            </th>
+                            <th colspan="1">
+                                <select ng-model="search.StateId" ng-init="getStates()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="state.StateId as state.Name for state in States">
+                                    <option value="" selected>Todos</option>
+                                </select>
+                            </th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.CompleteAddress" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.Cellphone" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1"></th>
+                        </tr>
                         <tr>
 
                         <tr ng-repeat="customer in filters.Clients | filter:search:strict | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                             <td>{{customer.FirstName}}</td>
                             <td>{{customer.LastName}}</td>
                             <td>{{customer.Age}}</td>
-                            <td>{{customer.Email}}</td>
+                            <td>{{customer.Employee.EmployeeAlias}}</td>
                             <td>Seguimiento de {{customer.Trackings[0].TrackingType.Name}}</td>
                             <td>{{customer.State.Name}}</td>
                             <td>{{customer.CompleteAddress}}</td>

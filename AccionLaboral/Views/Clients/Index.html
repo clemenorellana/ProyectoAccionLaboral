@@ -72,7 +72,6 @@
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Salir</button>
-                    <!--<button type="submit" class="btn btn-primary text-center" data-dismiss="modal">Aceptar</button>-->
                 </div>
             </form>
         </div><!-- /.modal-content -->
@@ -89,66 +88,60 @@
                         <button class="btn btn-info btn-sm" ng-click="setData()" title="" data-original-title="Collapse">
                             <i class="fa  fa-refresh"></i>
                         </button>
-                        <!--<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="glyphicon glyphicon-download-alt">Exportar</i><span class="fa fa-caret-down"></span></button>
-                        <ul class="dropdown-menu">
-                            <li class="btn" id="btnExcelExport" ng-click="exportClients()">
-                                <a href="">
-                                    <img src="../../Images/MS/xls-icon24.png" />XLS
-                                </a>
-                            </li>
-                        </ul>-->
                 </div>
             </div>
         </div>
         <div class="box-body">
-            <!--<div class="col-md-12">
-                <div class="form-group col-md-4">
-                    <label>Desde</label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </div>
-                        <input type="date" name="fromDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateFrom">
-                    </div>
-                </div>
-                <div class="form-group col-md-4">
-                    <label>Hasta</label>
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </div>
-                        <input type="date" name="toDate" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="dateTo">
-                    </div>
-                </div>
-                <div class="form-group col-md-2">
-                    <label></label>
-                    <div class="input-group">
-                        <input type="submit" class="btn btn-info" title="Generar Reporte" value="Generar Reporte" ng-click="exportClients()"/>
-                    </div>
-                </div>
-            </div>-->
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <div id="CustomersTbl">
                 <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" id="tblCust" ng-show="!load">
-                    <thead id="filters">
+                    <!--<thead id="filters">-->
                         <tr>
-                            <th class="col-lg-1" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
-                            <th class="col-lg-1" ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
+                            <th class="col-lg-2" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
+                            <th class="col-lg-2" ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
                             <th class="col-lg-1" ng-click="sort='Age' ; reverse=!reverse">Edad</th>
-                            <th class="col-lg-2" ng-click="sort='Email' ; reverse=!reverse">Correo</th>
+                            <th class="col-lg-1" ng-click="sort='Email' ; reverse=!reverse">Correo</th>
                             <th class="col-lg-2" ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
                             <th class="col-lg-1" ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
                             <th class="col-lg-1" ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
                             <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha de Ingreso</th>
-                            <th class="col-lg-3 opciones">Opciones</th>
+                            <th class="col-lg-1 opciones">Opciones</th>
                         </tr>
                         <tr id="filterHeader">
-                            <th colspan="1"><input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.LastName" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.Age" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.Email" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.CompleteAddress" ng-change="setData(search)" class="form-control" type="text" /></th>
-                            <th colspan="1"><input ng-model="search.Cellphone" ng-change="setData(search)" class="form-control" type="text" /></th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.FirstName" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.LastName" ng-change="setData(search)" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <input ng-model="search.Age" ng-change="setData(search)" class="form-control" type="text" />
+                                </div>
+                            </th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.Email" ng-change="setData(search)" class="form-control" type="text" />
+                                    </div>
+</th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input ng-model="search.CompleteAddress" ng-change="setData(search)" class="form-control" type="text" />
+                                    </div>
+</th>
+                            <th colspan="1">
+                                <div class="input-group">
+                                    <input ng-model="search.Cellphone" ng-change="setData(search)" class="form-control" type="text" />
+                                    </div>
+</th>
                             <th colspan="1">
                                 <select ng-model="search.StateId" ng-init="getStates()" ng-change="setData(search)" ng-class="reverse" class="form-control" ng-options="state.StateId as state.Name for state in States">
                                     <option value="" selected>Todos</option>
@@ -158,7 +151,7 @@
                             <th colspan="1"></th>
                             <th colspan="1"></th>
                         </tr>
-                    </thead>
+                    <!--</thead>-->
                     <tr ng-repeat="customer in filtered | filter:search:strict  | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                         <td>{{customer.FirstName}}</td>
                         <td>{{customer.LastName}}</td>
@@ -169,15 +162,12 @@
                         <td>{{customer.State.Name}}</td>
                         <td>{{customer.EnrollDate | date:'dd/MM/yyyy'}}</td>
                         <td class="opciones">
-                            <!--<button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button>
-                                <button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
-                <button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=5 && customer.StateId!=6" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button>
-                <button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==5 || customer.StateId==6" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button>-->
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Acciones<span class="fa fa-caret-down"></span></button>
                                 <ul class="dropdown-menu">
                                     <li class="btn"><button type="button" class="btn btn-info" id="editCustomer" ng-click="setScope(customer,'edit')" title="Editar"><i class="fa fa-edit"></i></button></li>
                                     <li class="btn"><button type="button" class="btn btn-danger" id="deleteCustomer" data-toggle="modal" data-target="#deleteClientInfo" ng-click="selectedCustomer(customer.ClientId)" title="Eliminar"><i class="fa fa-trash-o"></i></button></li>
+                                    <li></li>
                                     <li class="btn" ng-show="customer.StateId!= getStateByAlias('IC').StateId && customer.StateId!=getStateByAlias('DE').StateId"><button type="button" class="btn btn-danger" id="disableCustomer" ng-show="customer.StateId!=getStateByAlias('IC').StateId && customer.StateId!=getStateByAlias('DE').StateId" data-toggle="modal" data-target="#disableClientInfo" ng-click="selectedCustomer(customer.ClientId, customer)" title="Deshabilitar"><i class="fa fa-ban">Deshabilitar</i></button></li>
                                     <li class="btn" ng-show="customer.StateId==getStateByAlias('IC').StateId || customer.StateId==getStateByAlias('DE').StateId"><button type="button" class="btn btn-info" id="enableCustomer" ng-show="customer.StateId==getStateByAlias('IC').StateId || customer.StateId==getStateByAlias('DE').StateId" ng-click="enableCustomer(customer)" title="Habilitar"><i class="fa fa-check">Habilitar</i></button></li>
                                 </ul>
@@ -194,7 +184,6 @@
                 </div>
                 <div class="col-md-4">
                     <pagination boundary-links="true" items-per-page="entryLimit" total-items="filtered.length" num-pages="noOfPages" max-size="maxSize" ng-model="currentPage" ng-change="setData()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
-                    <!--<pagination boundary-links="true" num-pages="noOfPages" ng-model="currentPage" max-size="maxSize" class="pagination-sm" previous-text="&laquo;" next-text="&raquo;"></pagination>-->
                 </div>
                 <div class="col-md-4">
                     <div class="col-xs-4">
