@@ -3514,6 +3514,20 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $location.path("/AllClients");
     };
 
+    $scope.refreshData = function () {
+        customerRepository.Refresh().success(function (data) {
+            $scope.load = false;
+
+            alertService.add('success', 'Mensaje', 'Los datos se han cargado correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
+            //max rows for data table
+        })
+                .error(function (data) {
+                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                    $scope.alertsTags = $rootScope.alerts;
+                    $scope.load = false;
+                });
+    }
 
     $scope.exportData = function () {
         if (!$scope.filtered || $scope.filtered.length == 0) {

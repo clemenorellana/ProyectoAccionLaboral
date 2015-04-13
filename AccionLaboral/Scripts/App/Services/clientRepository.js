@@ -91,6 +91,9 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             };
             return $http.post(urlCustomer, newClient);
         },
+        Refresh: function () {
+            return $http.post('api/refreshclients')
+        },
         InsertTracking: function (tracking) {
             return $http.post('api/TrackingDetails', tracking)
         },

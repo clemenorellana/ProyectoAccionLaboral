@@ -429,6 +429,40 @@ namespace AccionLaboral.Controllers
             return Ok(client);
         }
 
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/refreshclients")]
+        public HttpResponseMessage RefreshClients()
+        {
+            List<Client> clients = null;
+            try
+            {
+                clients = db.Clients
+                    .Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                    //.Include(r => r.Employee)
+                    .Include(r => r.State)
+                    .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
+                    .Include(r => r.AcademicEducations.Select(c => c.Career))
+                    .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                    .Include(r => r.KnownPrograms)
+                    .Include(r => r.Languages.Select(l => l.Language))
+                    .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                    .Include(r => r.References.Select(c => c.City.Country))
+                    .Include(r => r.References.Select(t => t.ReferenceType))
+                    .Include(r => r.WorkExperiences)
+                    .Include(r => r.WorkExperiences.Select(c => c.City.Country))
+                    .Include(r => r.Trackings.Select(c => c.TrackingType))
+                    .ToList();
+                GoLucene.ClearLuceneIndex();
+                GoLucene.AddUpdateLuceneIndex(clients);
+
+            }
+            catch (Exception)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");
+            }
+            return Request.CreateResponse<List<Client>>(HttpStatusCode.OK, clients);
+        }
+
         // Get api/ExportClient
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/exportclient/{id}")]
