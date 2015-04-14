@@ -26,8 +26,8 @@ namespace AccionLaboral.Helpers.Lucene
             {
                 if (_directoryTemp == null) _directoryTemp = FSDirectory.Open(new DirectoryInfo(_luceneDir));
                 if (IndexWriter.IsLocked(_directoryTemp)) IndexWriter.Unlock(_directoryTemp);
-                var lockFilePath = Path.Combine(_luceneDir, "write.lock");
-                if (File.Exists(lockFilePath)) File.Delete(lockFilePath);
+                //var lockFilePath = Path.Combine(_luceneDir, "write.lock");
+                //if (File.Exists(lockFilePath)) File.Delete(lockFilePath);
                 return _directoryTemp;
             }
         }
