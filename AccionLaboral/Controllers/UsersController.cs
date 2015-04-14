@@ -55,12 +55,9 @@ namespace AccionLaboral.Controllers
 
             var userId = users[0].UserId;
 
-            //employee = db.Employees.Include(r => r.Role).Include(r => r.Role.Privileges).Where(r => r.UserId == userId).ToList()[0];
             employee = db.Employees.Include(r => r.Role).Where(r => r.UserId == userId).ToList()[0];
 
             return employee;
-
-            //return users.Count > 0;
         }
 
 
@@ -68,7 +65,6 @@ namespace AccionLaboral.Controllers
         [HttpPost]
         public bool ValidateUserName(User user)
         {
-            //return db.Users.Count(e => e.UserName == user.UserName) > 0;
             return UserExists(user.UserName);
         }
 
@@ -120,15 +116,6 @@ namespace AccionLaboral.Controllers
                                   , employee.User.UserName
                                   , uri
                                   );
-
-            //m.Body = string.Format("Dear {0} <BR/> Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>"
-            //                        , user.UserName
-            //                        , Url.Link("ConfirmEmail", "Account", new { Token = user.UserId, Email = employee.Email }, Request.Url.Scheme));
-
-
-            //<BR/>
-            //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
-
 
             m.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
@@ -202,13 +189,11 @@ namespace AccionLaboral.Controllers
                     return BadRequest(ModelState);
                 }
 
-                //encrypt password
                 user.Password = Encryptdata(user.Password);
 
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                //return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
                 return CreatedAtRoute("DefaultApi", new { controller = "users", id = user.UserId }, user);
             }
             catch (Exception e)
