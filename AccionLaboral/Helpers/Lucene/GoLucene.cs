@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AccionLaboral.Helpers.Lucene
@@ -25,9 +26,10 @@ namespace AccionLaboral.Helpers.Lucene
             get
             {
                 if (_directoryTemp == null) _directoryTemp = FSDirectory.Open(new DirectoryInfo(_luceneDir));
+                IndexWriter.DefaultWriteLockTimeout = 3000 * 60;
                 if (IndexWriter.IsLocked(_directoryTemp)) IndexWriter.Unlock(_directoryTemp);
-                //var lockFilePath = Path.Combine(_luceneDir, "write.lock");
-                //if (File.Exists(lockFilePath)) File.Delete(lockFilePath);
+                var lockFilePath = Path.Combine(_luceneDir, "write.lock");
+                if (File.Exists(lockFilePath)) File.Delete(lockFilePath);
                 return _directoryTemp;
             }
         }
@@ -200,9 +202,18 @@ namespace AccionLaboral.Helpers.Lucene
         }
 
         // add/update/clear search index data 
-        public static void AddUpdateLuceneIndex(Client sampleData)
+        public static bool AddUpdateLuceneIndex(Client sampleData)
         {
-            AddUpdateLuceneIndex(new List<Client> { sampleData });
+            try
+            {
+                AddUpdateLuceneIndex(new List<Client> { sampleData });
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            return true;
         }
         public static void AddUpdateLuceneIndex(IEnumerable<Client> sampleDatas)
         {
@@ -363,6 +374,8 @@ namespace AccionLaboral.Helpers.Lucene
 
             // add entry to index
             writer.AddDocument(doc);
+            writer.Commit();
+            writer.Dispose();
         }
 
         public static Int32 GetYearsExperience(ICollection<WorkExperience> workExperiences)

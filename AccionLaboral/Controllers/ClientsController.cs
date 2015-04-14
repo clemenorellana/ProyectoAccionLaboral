@@ -15,6 +15,7 @@ using System.IO;
 using AccionLaboral.Helpers.Filters;
 using System.Web.Http.Cors;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
 
 namespace AccionLaboral.Controllers
 {
@@ -205,7 +206,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Clients/5
-        public IHttpActionResult PutClient(int id, Client client)
+        public async Task<IHttpActionResult> PutClient(int id, Client client)
         {
             if (!ModelState.IsValid)
             {
@@ -370,8 +371,8 @@ namespace AccionLaboral.Controllers
                     }
                 }
 
+                await Task.Run(() => db.SaveChangesAsync());
                 GoLucene.AddUpdateLuceneIndex(client);
-                db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -390,7 +391,7 @@ namespace AccionLaboral.Controllers
 
         // POST api/Clients
         [ResponseType(typeof(Client))]
-        public IHttpActionResult PostClient(Client client)
+        public async Task<IHttpActionResult> PostClient(Client client)
         {
             try
             {
@@ -404,7 +405,8 @@ namespace AccionLaboral.Controllers
                 db.Clients.Add(client);
 
                 db.SaveChanges();
-                GoLucene.AddUpdateLuceneIndex(client);
+                await Task.Run(()=>
+                GoLucene.AddUpdateLuceneIndex(client));
             }
             catch (Exception)
             {
@@ -456,9 +458,9 @@ namespace AccionLaboral.Controllers
                 GoLucene.AddUpdateLuceneIndex(clients);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "No se pudo generar el reporte");
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
             return Request.CreateResponse<List<Client>>(HttpStatusCode.OK, clients);
         }
