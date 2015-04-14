@@ -101,7 +101,12 @@
                     </div>
                     <div class="form-group">
                         <label>Teléfono</label>
-                        <input type="tel" class="form-control" placeholder="Ingresar ..." ng-model="contact_Telephone">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="contact_Telephone" input-mask>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label># de Extensión</label>
