@@ -11,6 +11,9 @@ using System.Web.Http.Description;
 using AccionLaboral.Models;
 using System.Threading.Tasks;
 using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
+using System.IO;
 
 namespace AccionLaboral.Controllers
 {
@@ -43,6 +46,7 @@ namespace AccionLaboral.Controllers
         [HttpPost]
         public Employee Login(User user)
         {
+            user.Password = Encryptdata(user.Password);
             var users = db.Users.Where(r => r.UserName == user.UserName && r.Password == user.Password).ToList();
             Employee employee = new Employee();
             if (users.Count == 0)
@@ -72,6 +76,8 @@ namespace AccionLaboral.Controllers
         [HttpPut]
         public IHttpActionResult ChangePassword(User user)
         {
+            user.Password = Encryptdata(user.Password);
+
             var userToUpdate = db.Users.Where(r => r.UserName == user.UserName).ToList();
             userToUpdate[0].Password = user.Password;
 
@@ -196,6 +202,9 @@ namespace AccionLaboral.Controllers
                     return BadRequest(ModelState);
                 }
 
+                //encrypt password
+                user.Password = Encryptdata(user.Password);
+
                 db.Users.Add(user);
                 db.SaveChanges();
 
@@ -242,6 +251,28 @@ namespace AccionLaboral.Controllers
         private bool UserExists(string userName)
         {
             return db.Users.Count(e => e.UserName == userName) > 0;
+        }
+
+        public static string Encryptdata(string data)
+        {
+            string EncryptionKey = "MAKV2SPBNI99212";
+            byte[] clearBytes = Encoding.Unicode.GetBytes(data);
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(clearBytes, 0, clearBytes.Length);
+                        cs.Close();
+                    }
+                    data = Convert.ToBase64String(ms.ToArray());
+                }
+            }
+            return data;
         }
 
     }
