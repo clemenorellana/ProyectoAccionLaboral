@@ -374,8 +374,8 @@ namespace AccionLaboral.Helpers.Lucene
 
             // add entry to index
             writer.AddDocument(doc);
-            writer.Commit();
-            writer.Dispose();
+            //writer.Commit();
+            //writer.Dispose();
         }
 
         public static Int32 GetYearsExperience(ICollection<WorkExperience> workExperiences)
