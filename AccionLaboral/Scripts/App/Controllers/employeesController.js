@@ -269,6 +269,13 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
     }
 
     $scope.saveEmployee = function () {
+        if (!$scope.employeeForm.$valid)
+        {
+            alertService.add('danger', 'Error', 'Complete correctamente todos los campos.');
+            $scope.alertsTags = $rootScope.alerts;
+            return;
+        }
+
         var exists = false;
         
         if (!exists) {
