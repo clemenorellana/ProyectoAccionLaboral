@@ -163,7 +163,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
+                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId">
+                                                <option value="">-- Seleccione una opción --</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -514,27 +516,35 @@
             <form action="#" method="post" name="academicEducationModal">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label>Año</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year" required data-inputmask="&quot;mask&quot;: &quot;9999&quot;" input-mask>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.Name for country in Countries track by country.CountryId" ng-model="Country" required></select>
+                            <select class="form-control" ng-options="country.Name for country in Countries track by country.CountryId" ng-model="Country" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(Country.CountryId)" ng-model="City" required></select>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(Country.CountryId)" ng-model="City" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Nivel Académico</label>
-                            <select class="form-control" ng-options="academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevel" required></select>
+                            <select class="form-control" ng-options="academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevel" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Carrera</label>
-                            <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId" required></select>
+                            <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -570,13 +580,15 @@
                         <div class="form-group col-md-6">
                             <label>Idioma</label>
                             <select class="form-control" ng-options="Language.Name for Language in Languages" ng-model="Language" required>
+                                <option value="">-- Seleccione una opción --</option>
                             </select>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Nivel</label>
                             <select class="form-control" ng-options="LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevel" required>
+                                <option value="">-- Seleccione una opción --</option>
                             </select>
                         </div>
                     </div>
@@ -655,11 +667,14 @@
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="Country.Name for Country in Countries" ng-model="WorkCountry" required> 
+                                <option value="">-- Seleccione una opción --</option>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="City.Name for City in getCitiesByCountry(WorkCountry.CountryId)" ng-model="WorkCity" required></select>
+                            <select class="form-control" ng-options="City.Name for City in getCitiesByCountry(WorkCountry.CountryId)" ng-model="WorkCity" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -740,12 +755,14 @@
                         <div class="form-group col-md-6">
                             <label>País</label>
                             <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryWRef" required>
-                          
+                                <option value="">-- Seleccione una opción --</option>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryWRef.CountryId)" ng-model="CityWRef" required></select>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryWRef.CountryId)" ng-model="CityWRef" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     
@@ -815,11 +832,15 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryPRef" required></select>
+                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryPRef" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryPRef.CountryId)" ng-model="CityPRef" required></select>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryPRef.CountryId)" ng-model="CityPRef" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -850,32 +871,39 @@
             <form action="#" method="post" name="trainingForm">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label>Año</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year" required data-inputmask="&quot;mask&quot;: &quot;9999&quot;" input-mask>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
                             <label>País</label>
-                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="_Country" required></select>
+                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="_Country" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-5">
                             <label>Ciudad</label>
-                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(_Country.CountryId)" ng-model="_City" required></select>
+                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(_Country.CountryId)" ng-model="_City" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
-
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Carrera</label>
-                            <select class="form-control" ng-options="career.Name for career in AllCarees" ng-model="_Career" required></select>
+                            <select class="form-control" ng-options="career.Name for career in AllCarees" ng-model="_Career" required>
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <div class="form-group col-md-12">
-                                <label>Título de la formación</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName" required>
-                            </div>
+                            <label>Título de la formación</label>
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
                             <label>Nombre de la Institución</label>
                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_InstitutionName" required>
                         </div>

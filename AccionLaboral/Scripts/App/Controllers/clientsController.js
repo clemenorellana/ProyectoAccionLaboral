@@ -1065,7 +1065,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
 
         $scope.backEnrollClients = function () {
-            enrollClientExist = !enrollClientExist;
+            $scope.enrollClientExist = !$scope.enrollClientExist;
         }
 
         $scope.exportData = function () {

@@ -27,25 +27,25 @@
                 <tr>
                     <th href="#" ng-click="sort='Name' ; reverse=!reverse" title="Clic para ordenar">Carrera</th>
                     <th ng-click="sort='AcademicLevel.Name' ; reverse=!reverse" title="Clic para ordenar">Nivel Académico</th>
-                    <th>Opciones</th>
+                    <th class="col-md-2">Opciones</th>
                 </tr>
                 <tr>
                     <th colspan="1">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
                             <input ng-model="search.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />                            
-                            <span class="input-group-btn">
+                            <!--<span class="input-group-btn">
                                 <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
-                            </span>
+                            </span>-->
                         </div>
                     </th>
                     <th colspan="1">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
                             <input ng-model="search.AcademicLevel.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
-                            <span class="input-group-btn">
+                            <!--<span class="input-group-btn">
                                 <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.AcademicLevel.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
-                            </span>
+                            </span>-->
                         </div>
                     </th>
                     <th colspan="1"></th>
@@ -98,7 +98,9 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>Nivel Académico</label>
-                            <select class="form-control" ng-options="academicLevel.AcademicLevelId as academicLevel.Name for academicLevel in Career_AcademicLevels" ng-model="Career_AcademicLevel"></select>
+                            <select class="form-control" ng-options="academicLevel.AcademicLevelId as academicLevel.Name for academicLevel in Career_AcademicLevels" ng-model="Career_AcademicLevel">
+                                <option value="">-- Seleccione una opción --</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">

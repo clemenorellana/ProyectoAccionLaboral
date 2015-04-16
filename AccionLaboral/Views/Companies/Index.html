@@ -50,25 +50,25 @@
                 <tr>
                     <th href="#" ng-click="sort='search.Name' ; reverse=!reverse" title="Clic para ordenar">Nombre</th>
                     <th ng-click="sort='Area' ; reverse=!reverse" title="Clic para ordenar">Area / Rubro</th>
-                    <th >Opciones</th>
+                    <th class="col-md-2" >Opciones</th>
                 </tr>
                 <tr>
                     <th colspan="1">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
                             <input ng-model="search.Name" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
-                            <span class="input-group-btn">
+                            <!--<span class="input-group-btn">
                                 <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Name='';" title="Borrar"><i class="fa fa-eraser"></i></button>
-                            </span>
+                            </span>-->
                         </div>
                     </th>
                     <th colspan="1">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
                             <input ng-model="search.Area" ng-class="reverse" class="form-control" type="text" placeholder="Buscar..." />
-                            <span class="input-group-btn">
+                            <!--<span class="input-group-btn">
                                 <button type='submit' name='seach' id='search-btn' class="btn btn-flat" ng-click="search.Area='';" title="Borrar"><i class="fa fa-eraser"></i></button>
-                            </span>
+                            </span>-->
                         </div>
                     </th>
                     <th colspan="1"></th>
