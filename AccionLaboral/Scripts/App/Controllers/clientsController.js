@@ -16,10 +16,15 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             templateUrl: "/Clients/Edit",
             controller: "editCustomerController"
         }).
-        when("/EnrollClient", {
+        when("/EnrollClient/:id", {
             title: 'Inscribir Cliente',
             templateUrl: "/Clients/Enroll",
             controller: "EnrollCustomerController"
+        }).
+        when("/EnrolledClients", {
+            title: 'Lista de Clientes Pre-Inscritos',
+            templateUrl: "/Clients/AllEnrolledClients",
+            controller: "EnrolledCustomersController"
         }).
         when("/ClientTracking", {
             title: 'Seguimiento de Clientes',
@@ -81,7 +86,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     $scope.filters = { "Clients": [], "DateFrom": "", "DateTo": "", "Title":"" };
     $scope.generateReport = function () {
         
-        //$scope.filters = { "Clients": [], "DateFrom": "", "DateTo": "", "Title": "" };
         
             $scope.title.replace(/[<>:"\/\\|?*]+/g, ' ');
             if ($scope.dateFrom) {
@@ -90,7 +94,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
             if ($scope.dateTo) {
                 $scope.filters.DateTo = $scope.getFormatDate($scope.dateTo);
-                //filters.DateTo = getDateFromFormat($scope.dateTo, "dd/MM/yyyy");
             }
             $scope.filtered = angular.copy($scope.customerData)
             $scope.filters.Clients = angular.copy($scope.filtered);
@@ -102,7 +105,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         var dateFrom = new Date($scope.dateFrom),
                             dateTo = new Date($scope.dateTo),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                            //enrollDate.setHours(0, 0, 0, 0);
                             enrollDate.setDate(enrollDate.getDate()+1);
                         if (dateFrom <= enrollDate && dateTo >= enrollDate) {
                             clients.push($scope.filters.Clients[i]);
@@ -110,21 +112,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     } else if ($scope.dateFrom) {
                         var dateFrom = new Date($scope.dateFrom),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                            //enrollDate.setHours(0, 0, 0, 0);
                             enrollDate.setDate(enrollDate.getDate()+1);
                         if (dateFrom <= enrollDate)
                             clients.push($scope.filters.Clients[i]);
                     } else if ($scope.dateTo) {
                         var dateTo = new Date($scope.dateTo),
                             enrollDate = new Date($scope.filters.Clients[i].EnrollDate);
-                            //enrollDate.setHours(0, 0, 0, 0);
                             enrollDate.setDate(enrollDate.getDate()+1);
                         if (dateTo >= enrollDate)
                             clients.push($scope.filters.Clients[i]);
                     } else
                         clients = angular.copy($scope.filters.Clients);
                 }
-                //$scope.filters.Clients = angular.copy(clients);
             }
             $scope.filters.Clients = angular.copy(clients);
             $scope.setFilteredReport();
@@ -995,19 +994,29 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 }
 
                 $scope.disableCustomer = function (customer) {
-                    customer.StateId = $scope.getStateByAlias('DE').StateId; //6;
-                    customer.Employee = null;
-                    $scope.New = customer;
-                    $scope.enableOrDisableCustomer('Deshabilitado', 'Se ha deshabilitado un cliente correctamente.');
+                    customerRepository.getCustomer(customer.ClientId).success(function (data) {
+                        data.StateId = $scope.getStateByAlias('DE').StateId; //6;
+                        data.Employee = null;
+                        $scope.New = data;
+                        $scope.enableOrDisableCustomer('Deshabilitado', 'Se ha deshabilitado un cliente correctamente.');
+                    }).error(function (error) {
+                        alertService.add('danger', 'Error', 'No se ha podido deshabilitar el cliente.');
+                        $scope.alertsTags = $rootScope.alerts;
+                    });
                 };
 
                 $scope.enableCustomer = function (customer) {
-                    customer.StateId = $scope.getStateByAlias('PI').StateId;//1;
-                    customer.Trackings[0].TrackingTypeId = 1;
-                    customer.Employee = null;
-                    $scope.action = 'edit';
-                    $scope.New = customer;
-                    $scope.enableOrDisableCustomer('Habilitado', 'Se ha habilitado un cliente correctamente.');
+                    customerRepository.getCustomer(customer.ClientId).success(function (data) {
+                        data.StateId = $scope.getStateByAlias('PI').StateId;//1;
+                        data.Trackings[0].TrackingTypeId = 1;
+                        data.Employee = null;
+                        $scope.action = 'edit';
+                        $scope.New = data;
+                        $scope.enableOrDisableCustomer('Habilitado', 'Se ha habilitado un cliente correctamente.');
+                    }).error(function (error) {
+                        alertService.add('danger', 'Error', 'No se ha podido habilitar el cliente.');
+                        $scope.alertsTags = $rootScope.alerts;
+                    });
                 };
 
                 $scope.setRejectionDescription = function (description) {
@@ -1015,7 +1024,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
 
                 $scope.enableOrDisableCustomer = function (title, msg) {
-                    customerRepository.UpdateCustomer($scope.New).success(function () {
+                    customerRepository.ChangeValues($scope.New).success(function () {
                         alertService.add('success', title, msg);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.setData();
@@ -1053,10 +1062,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
         }
     })
-    .controller('EnrollCustomerController', ['$scope', '$rootScope', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, customerRepository, filterFilter, alertService) {
+    .controller('EnrollCustomerController', ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, filterFilter, alertService) {
         //enroll costumer
         $scope.enrollClientExist = false;
         $scope.showMsgErrorClient = false;
+        $scope.load = true;
         if (!$rootScope.alerts)
             $rootScope.alerts = [];
 
@@ -1065,97 +1075,35 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
 
         $scope.backEnrollClients = function () {
-            enrollClientExist = !enrollClientExist;
+            $location.path("/EnrolledClients");
         }
-
-        $scope.exportData = function () {
-            if (!$scope.filtered || $scope.filtered.length == 0) {
-                alertService.add('danger', 'Error', 'No hay datos.');
+        $scope.setClient = function () {
+            $scope.load = true;
+            customerRepository.getCustomer($routeParams.id).success(function (data) {
+                $scope.enrollClient = data;
+                $scope.load = false;
+                $scope.personalReferencesEnroll = [];
+                if ($scope.enrollClient.References)
+                    for (var j = 0; j < $scope.enrollClient.References.length; j++) {
+                        if ($scope.enrollClient.References[j].ReferenceType.Name != 'L')
+                            $scope.personalReferencesEnroll.push($scope.enrollClient.References[j]);
+                    }
+            }).error(function (error) {
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos del cliente.');
                 $scope.alertsTags = $rootScope.alerts;
-            } else {
-                var uri = 'data:application/vnd.ms-excel;base64,'
-              , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-              , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-              , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
-
-                var newTable = $scope.createTable();
-                var ctx = { worksheet: name || 'Worksheet', table: newTable.innerHTML }
-                window.location.href = uri + base64(format(template, ctx));
-            }
+            });
         }
 
-        $scope.createTable = function () {
-            var table = document.createElement('table');
-            var tbody = document.createElement('tbody');
-            var thead = document.createElement('thead');
-
-            table.appendChild(thead);
-            $scope.headers = ["Identidad", "Nombre", "Apellido"];
-            for (var i = 0; i < $scope.headers.length; i++) {
-                thead.appendChild(document.createElement("th")).
-                appendChild(document.createTextNode($scope.headers[i]));
-            }
-
-            for (i = 0; i < $scope.filtered.length; i++) {
-                var vals = $scope.filtered[i];
-                var row = document.createElement('tr');
-
-                var cellID = document.createElement('td');
-                cellID.textContent = vals.IdentityNumber;
-                row.appendChild(cellID);
-
-                var cellFirstName = document.createElement('td');
-                cellFirstName.textContent = vals.FirstName;
-                row.appendChild(cellFirstName);
-
-                var cellLastName = document.createElement('td');
-                cellLastName.textContent = vals.LastName;
-                row.appendChild(cellLastName);
-
-                tbody.appendChild(row);
-            }
-            table.appendChild(tbody);
-            return table;
-        }
-
-        
+        $scope.getStateByAlias = function (alias) {
+            if (alias && $scope.States)
+                return $filter('filter')($scope.States, { Alias: alias })[0];
+            return '';
+        };
 
         //End Sorting//
         $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
         $scope.entryLimit = $scope.itemsPerPageList[0];
         $scope.currentPage = 1; //current page
-        $scope.setEnrollClients = function (term) {
-            if (!term)
-                $scope.load = true;
-            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
-                $scope.enrollCustomerData = $filter('filter')(data, { StateId: $scope.getStateByAlias('PI').StateId }, true);
-                
-                $scope.load = false;
-
-                if ($rootScope.alerts)
-                    $scope.alertsTags = $rootScope.alerts;
-                $scope.maxSize = 5; //pagination max size
-                //max rows for data table
-
-                /* init pagination with $scope.list */
-                $scope.setEnrollClientFiltered(term);
-
-            })
-                    .error(function (data) {
-                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
-                        $scope.alertsTags = $rootScope.alerts;
-                        $scope.load = false;
-                    });
-        }
-        $scope.setEnrollClientFiltered = function (term) {
-            if($scope.enrollCustomerData){
-            $scope.filtered = filterFilter($scope.enrollCustomerData, term);
-
-            $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                    $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
-            }
-        };
     
         $scope.enrollClient_ClearData = function () {
             enrollClient_cancel();
@@ -1164,8 +1112,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
         $scope.enrollClient_cancel = function () {
             $scope.saveEnrollClient('reject');
-            $scope.enrollClientExist = false;
-            $scope.enrollClient = null;
+            $location.path("/EnrolledClients");
         }
 
         $scope.searchClient = function (enrollClient) {
@@ -1180,35 +1127,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.enrollClient = angular.copy(enrollClient);
             $scope.load = false;
             $scope.enrollClientExist = true;
-           /* customerRepository.getCustomers().success(function (data) {
-                $scope.customer = data;
-                $scope.enrollClientExist = false;
-                $scope.personalReferencesEnroll = [];
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].FirstName.toUpperCase() == enrollClient.FirstName.toUpperCase() && data[i].LastName.toUpperCase() == enrollClient.LastName.toUpperCase()) {
-                        $scope.enrollClientExist = true;
-                        $scope.enrollClient = angular.copy(data[i]);
-                        $scope.load = false;
-                        $scope.showMsgErrorClient = false;
-
-                        for (var j = 0; j < data[i].References.length; j++) {
-                            if (data[i].References[j].ReferenceType.Name != 'L')
-                                $scope.personalReferencesEnroll.push(data[i].References[j]);
-                        }
-
-                        break;
-                    }
-                }
-                $scope.totalServerItems = data.totalItems;
-                $scope.items = data.items;
-                $scope.load = false;
-                $scope.showMsgErrorClient = true;
-            })
-            .error(function (data) {
-                alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
-                $scope.alertsTags = $rootScope.alerts;
-                $scope.load = false;
-            });*/
         };
 
         $scope.saveEnrollClient = function (action) {
@@ -1226,9 +1144,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     else
                     alertService.add('success', 'Inscrito', 'Un nuevo cliente ha sido inscrito.');
                     $scope.alertsTags = $rootScope.alerts;
-                    $scope.enrollClientExist = false;
-                    $scope.setEnrollClients();
-                }).error(function () {
+                    //$location.path("EnrolledClients");
+                }).error(function (error) {
                     if (action == 'reject')
                         alertService.add('danger', 'Error', 'No se ha podido rechazar el cliente.');
                     else
@@ -1280,12 +1197,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.alertsTags = $rootScope.alerts;
         }
 
-     
-
-        $scope.$watch('search', function (term) {
-                $scope.setEnrollClients();
-
-        });
 
         customerRepository.getCareers().success(function (data) {
             $scope.AllCarees = data;
@@ -1297,51 +1208,130 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         customerRepository.getCountries().success(function(data) {
             $scope.Countries = data;
         });
-        customerRepository.getAcademicLevels().success(function(data) {
 
-            $scope.AcademicLevels = data;
-        });
-        customerRepository.getEducationTypes().success(function(data) {
-
-            $scope.EducationTypes = data;
-        });
-        customerRepository.getLanguages().success(function(data) {
-
-            $scope.Languages = data;
-        });
-        customerRepository.getLanguageLevels().success(function(data) {
-
-            $scope.LanguageLevels = data;
-        });
         customerRepository.getStates().success(function (data) {
             $scope.States = data;
-            $scope.selecteds = {};
-            angular.forEach($scope.States, function (value, key) {
-                $scope.selecteds[key] = value[0];
-            });
         });
         
-        $scope.getStates = function () {
-            customerRepository.getStates().success(function (data) {
-                $scope.States = data;
-                $scope.selecteds = {};
-                angular.forEach($scope.States, function (value, key) {
-                    $scope.selecteds[key] = value[0];
-                });
-            });
-        };
-                
         $scope.getCitiesByCountry = function(countryId) {
             if (countryId)
                 return $filter('filter')($scope.Countries, { CountryId: countryId })[0].Cities;
             return '';
         };
-        $scope.getStateByAlias = function (alias) {
-            if (alias)
-                return $filter('filter')($scope.States, { Alias: alias })[0];
-            return '';
-        };
     }])
+    .controller('EnrolledCustomersController', ['$scope', '$rootScope', '$location', '$filter', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, customerRepository, filterFilter, alertService) {
+         //enroll costumer
+         $scope.enrollClientExist = false;
+         $scope.showMsgErrorClient = false;
+         if (!$rootScope.alerts)
+             $rootScope.alerts = [];
+
+         $scope.exportData = function () {
+             if (!$scope.filtered || $scope.filtered.length == 0) {
+                 alertService.add('danger', 'Error', 'No hay datos.');
+                 $scope.alertsTags = $rootScope.alerts;
+             } else {
+                 var uri = 'data:application/vnd.ms-excel;base64,'
+               , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+               , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+               , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+
+                 var newTable = $scope.createTable();
+                 var ctx = { worksheet: name || 'Worksheet', table: newTable.innerHTML }
+                 window.location.href = uri + base64(format(template, ctx));
+             }
+         }
+
+         $scope.createTable = function () {
+             var table = document.createElement('table');
+             var tbody = document.createElement('tbody');
+             var thead = document.createElement('thead');
+
+             table.appendChild(thead);
+             $scope.headers = ["Identidad", "Nombre", "Apellido"];
+             for (var i = 0; i < $scope.headers.length; i++) {
+                 thead.appendChild(document.createElement("th")).
+                 appendChild(document.createTextNode($scope.headers[i]));
+             }
+
+             for (i = 0; i < $scope.filtered.length; i++) {
+                 var vals = $scope.filtered[i];
+                 var row = document.createElement('tr');
+
+                 var cellID = document.createElement('td');
+                 cellID.textContent = vals.IdentityNumber;
+                 row.appendChild(cellID);
+
+                 var cellFirstName = document.createElement('td');
+                 cellFirstName.textContent = vals.FirstName;
+                 row.appendChild(cellFirstName);
+
+                 var cellLastName = document.createElement('td');
+                 cellLastName.textContent = vals.LastName;
+                 row.appendChild(cellLastName);
+
+                 tbody.appendChild(row);
+             }
+             table.appendChild(tbody);
+             return table;
+         }
+
+         //End Sorting//
+         $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
+         $scope.entryLimit = $scope.itemsPerPageList[0];
+         $scope.currentPage = 1; //current page
+         $scope.setEnrollClients = function (term) {
+             if (!term)
+                 $scope.load = true;
+             customerRepository.getEnrolledCustomers($rootScope.userLoggedIn).success(function (data) {
+                 var state = $scope.getStateByAlias('PI');
+                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: $scope.getStateByAlias('PI').StateId }, true);
+
+                 $scope.load = false;
+
+                 if ($rootScope.alerts)
+                     $scope.alertsTags = $rootScope.alerts;
+                 $scope.maxSize = 5; //pagination max size
+                 //max rows for data table
+
+                 /* init pagination with $scope.list */
+                 $scope.setEnrollClientFiltered(term);
+
+             })
+                     .error(function (data) {
+                         alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                         $scope.alertsTags = $rootScope.alerts;
+                         $scope.load = false;
+                     });
+         }
+         $scope.setEnrollClientFiltered = function (term) {
+             if ($scope.enrollCustomerData) {
+                 $scope.filtered = filterFilter($scope.enrollCustomerData, term);
+
+                 $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                         $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                 $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+             }
+         };
+
+         $scope.searchClient = function (enrollClient) {
+             $scope.load = true;
+             $location.path("/EnrollClient/" + enrollClient.ClientId);
+         };
+         customerRepository.getStates().success(function (data) {
+             $scope.States = data;
+             $scope.selecteds = {};
+             angular.forEach($scope.States, function (value, key) {
+                 $scope.selecteds[key] = value[0];
+             });
+         });
+
+         $scope.getStateByAlias = function (alias) {
+             if (alias && $scope.States)
+                 return $filter('filter')($scope.States, { Alias: alias })[0];
+             return '';
+         };
+     }])
     .controller("editCustomerController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'customerRepository', 'filterFilter', function ($scope, $rootScope, $routeParams, $location, $filter, $window, customerRepository, filterFilter) {
             $rootScope.alerts = [];
             $scope.advisor = {};
@@ -2147,7 +2137,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             customerRepository.getStates().success(function (data) {
                 $scope.States = data;
             });
-            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
+            customerRepository.getTrackingCustomers($rootScope.userLoggedIn).success(function (data) {
                 $scope.customerData = data;
                 $scope.load = false;
 
@@ -2184,6 +2174,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.Client = obj;
             $location.url('ClientTracking/' + obj.ClientId);
         };
+
+        $scope.getTrackingTypes = function () {
+            customerRepository.getTrackingTypes().success(function (data) {
+                $scope.trackingTypes = data;
+            })
+        }
 
         $scope.createTable = function () {
             var table = document.createElement('table');
@@ -3274,16 +3270,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                 $scope.setTrackingFiltered(term);
 
-                /* init pagination with $scope.list */
-                
-                var sizeReferences = (data.References != null) ? data.References.length : 0;
-                for (var i = 0; i < sizeReferences; i++) {
-                    if (data.References[i].ReferenceType.Name == 'L')
-                        $scope.workReferences.push(data.References[i]);
-                    else
-                        $scope.personalReferences.push(data.References[i]);
-                }
-
                 $scope.New = data;
        
             }).error(function () {
@@ -3713,7 +3699,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.enableOrDisableCustomer('Habilitado', 'Se ha habilitado un cliente correctamente.');
                 };
      }])
-.filter('propsFilter', function() {
+    .filter('propsFilter', function() {
   return function(items, props) {
     var out = [];
     var theStatus = new Object();
@@ -3746,7 +3732,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
     return out;
   }
-}).filter("RangeFilter", function() {
+    })
+    .filter("RangeFilter", function () {
     return function (items, from, to) {
         var result = [];
         
@@ -3762,7 +3749,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         }            
         return result;
     };
-}).directive('inputMask', function () {
+    })
+    .directive('inputMask', function () {
     return {
         restrict: 'A',
         link: function (scope, el, attrs) {

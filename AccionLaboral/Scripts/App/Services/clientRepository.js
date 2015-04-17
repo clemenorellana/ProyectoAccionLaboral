@@ -15,6 +15,24 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
 
             return $http.get(urlCustomersByEmployee);
         },
+        getEnrolledCustomers: function (employee) {
+            var urlCustomersByEmployee;
+            if (employee.Role.Alias == "ASREC")
+                urlCustomersByEmployee = 'api/enrolledclientsbyemployee/' + employee.EmployeeId;
+            else
+                urlCustomersByEmployee = 'api/enrolledclients/';
+
+            return $http.get(urlCustomersByEmployee);
+        },
+        getTrackingCustomers: function (employee) {
+            var urlCustomersByEmployee;
+            if (employee.Role.Alias == "ASREC")
+                urlCustomersByEmployee = 'api/trackingclientsbyemployee/' + employee.EmployeeId;
+            else
+                urlCustomersByEmployee = 'api/trackingclients/';
+
+            return $http.get(urlCustomersByEmployee);
+        },
         getEmployees: function () {
             return $http.get('api/Employees');
         },
@@ -102,6 +120,15 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             
             return $http.put(urlCustomer + client.ClientId, client);
         },
+
+        ChangeValues: function (client) {
+            return $http({
+                method: "put",
+                url: "/api/changeclientvalues/" + client.ClientId,
+                data: client
+            });
+            //return $http.put('api/changestatus/' + client.ClientId, client);
+        },
         //updateTracking: function (Tracking) {
           //  return $http.put(urlCustomer + Client.ClientId, Client);
         //},
@@ -114,7 +141,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             newClient.Trackings[0].StateId = newClient.StateId;
             newClient.Trackings[0].TrackingTypeId = 2;
             newClient.IsStudying = (client.IsStudying == "1");
-            return $http.put(urlCustomer + newClient.ClientId, newClient);
+            return $http.put("api/changeclientvalues/" + newClient.ClientId, newClient);
         },
         //method for delete
         DeleteCustomer: function (callback, id) {
