@@ -377,9 +377,9 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
                 finalContractContent = finalContractContent.replace(/{Identidad}/g, $scope.client.IdentityNumber);
                 //finalContractContent = finalContractContent.replace(/{Inciso}/g, "Inciso A");
                 //finalContractContent = finalContractContent.replace(/{EmpresaColocado}/g, "Inciso A");
-                finalContractContent = finalContractContent.replace(/{FechaDia}/g, day);
-                finalContractContent = finalContractContent.replace(/{FechaMes}/g, month);
-                finalContractContent = finalContractContent.replace(/{FechaAnio}/g, year);
+                finalContractContent = finalContractContent.replace(/{Dia}/g, day);
+                finalContractContent = finalContractContent.replace(/{Mes}/g, month);
+                finalContractContent = finalContractContent.replace(/{Anio}/g, year);
                 $scope.contractContent = finalContractContent;
 
                 $scope.placeHolders = [];

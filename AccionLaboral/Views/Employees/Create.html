@@ -12,7 +12,7 @@
     <div class="box box-info">
         <div class="box-header">
             <h3 class="box-title">Foto de Perfil</h3>
-        </div><!-- /.box-header -->
+        </div>
         <div class="box-body">
             <div class="text-center">
                 <img ng-show="employee_Photo" ng-src="data:image/jpeg;base64,{{employee_Photo}}" />
@@ -27,160 +27,169 @@
         </div>
     </div>
 </div>
+<div class="box-content">
+    <form name="employeeForm">
+        <div class="col-md-9">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">{{employee_modalTitle}}</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <!--<div class="col-md-6">
+                            <div class="form-group required">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_FirstName" ng-class="{'loadinggif': employee_FirstName==undefined} && $scope.screenAction=='edit'" required>
+                            </div>
+                        </div>-->
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label>Nombre(s)</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="Ingresar ..." ng-model="employee_FirstName" ng-class="{'loadinggif': employee_FirstName==undefined} && $scope.screenAction=='edit'" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label>Apellido</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_LastName" ng-class="{'loadinggif': employee_LastName==undefined} && $scope.screenAction=='edit'" required>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="col-md-9">
-    <div class="box box-info">
-        <div class="box-header">
-            <h3 class="box-title">{{employee_modalTitle}}</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Fecha de Nacimiento</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday" ng-change="calculateEmployeeAge()" ng-class="{'loadinggif': employee_Birthday==undefined} && $scope.screenAction=='edit'" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Edad</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Age" ng-class="{'loadinggif': employee_Age==undefined} && $scope.screenAction=='edit'" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Genero</label>
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="employee_Gender" required>
+                                            Femenino
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="employee_Gender" required>
+                                            Masculino
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="employee_Email" ng-class="{'loadinggif': employee_Email==undefined} && $scope.screenAction=='edit'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Celular</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-mobile-phone"></i>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="employee_Cellphone" ng-class="{'loadinggif': employee_Cellphone==undefined} && $scope.screenAction=='edit'" input-mask required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Teléfono Fijo</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="employee_HomePhone" ng-class="{'loadinggif': employee_HomePhone==undefined} && $scope.screenAction=='edit'" input-mask>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label>Dirección</label>
+                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Address" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Carrera</label>
+                                <select class="form-control" ng-options="career.CareerId as career.Name for career in employeesCareersList" ng-model="employee_Career" ng-class="{'loadinggif': employee_Career==undefined} && $scope.screenAction=='edit'" required>
+                                    <option value="">-- Seleccione una opción --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Tipo de Empleado</label>
+                                <select class="form-control" ng-options="role.RoleId as role.Name for role in employeesRolesList" ng-model="employee_Role" ng-class="{'loadinggif': employee_Role==undefined && $scope.screenAction=='edit'}" required>
+                                    <option value="">-- Seleccione una opción --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Alias</label>
+                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_EmployeeAlias" ng-class="{'loadinggif': employee_EmployeeAlias==undefined} && $scope.screenAction=='edit'" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                <label>Usuario</label>
+                                <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserId as user.UserName for user in employeesUsersList" ng-model="employee_User" ng-class="{'loadinggif': employee_User==undefined} && $scope.screenAction=='edit'" required>
+                                    <option value="">-- Seleccione una opción --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-6 has-error">
+                            <p class="help-block" ng-show="!employeeForm.$valid">* Complete todos los campos requeridos.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">{{employee_buttonName}}</button>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_FirstName" ng-class="{'loadinggif': employee_FirstName==undefined} && $scope.screenAction=='edit'">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Apellido</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_LastName" ng-class="{'loadinggif': employee_LastName==undefined} && $scope.screenAction=='edit'">
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Fecha de Nacimiento</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-                            <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="employee_Birthday" ng-change="calculateEmployeeAge()" ng-class="{'loadinggif': employee_Birthday==undefined} && $scope.screenAction=='edit'">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Edad</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Age" ng-class="{'loadinggif': employee_Age==undefined} && $scope.screenAction=='edit'">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Genero</label>
-                        <div class="form-group">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="F" checked ng-model="employee_Gender">
-                                    Femenino
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="M" ng-model="employee_Gender">
-                                    Masculino
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="employee_Email" ng-class="{'loadinggif': employee_Email==undefined} && $scope.screenAction=='edit'">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Celular</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-mobile-phone"></i>
-                            </div>
-                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_Cellphone" ng-class="{'loadinggif': employee_Cellphone==undefined} && $scope.screenAction=='edit'">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Teléfono Fijo</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-phone"></i>
-                            </div>
-                            <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask="" ng-model="employee_HomePhone" ng-class="{'loadinggif': employee_HomePhone==undefined} && $scope.screenAction=='edit'">
-                        </div><!-- /.input group -->
-                    </div>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label>Dirección</label>
-                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_Address">
-            </div>
-            
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Carrera</label>
-                        <select class="form-control" ng-options="career.CareerId as career.Name for career in employeesCareersList" ng-model="employee_Career" ng-class="{'loadinggif': employee_Career==undefined} && $scope.screenAction=='edit'" required>
-                            <option value="">-- Seleccione una opción --</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Tipo de Empleado</label>
-                        <select class="form-control" ng-options="role.RoleId as role.Name for role in employeesRolesList" ng-model="employee_Role" ng-class="{'loadinggif': employee_Role==undefined && $scope.screenAction=='edit'}" required>
-                            <option value="">-- Seleccione una opción --</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Alias</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="employee_EmployeeAlias" ng-class="{'loadinggif': employee_EmployeeAlias==undefined} && $scope.screenAction=='edit'" required>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Usuario</label>
-                        <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserId as user.UserName for user in employeesUsersList" ng-model="employee_User" ng-class="{'loadinggif': employee_User==undefined} && $scope.screenAction=='edit'">
-                            <option value="">-- Seleccione una opción --</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div><!-- /.box-body -->
-        <div class="box-footer">
-            <div class="row">
-                <!--<div class="col-md-6 text-center">-->
-                    <div class="col-md-6 text-right">
-                        <button type="submit" class="btn btn-primary" ng-click="saveEmployee()">{{employee_buttonName}}</button>
-                    </div>
-                <!--</div>
-                <div class="col-md-6 text-center">-->
-                    <div class="col-md-6 text-left">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="employee_cancelRedirect()">Cancelar</button>
-                    </div>
-                <!--</div>-->
-            </div>
-        </div>
-    </div>
-
+    </form>
 </div>
-
-
