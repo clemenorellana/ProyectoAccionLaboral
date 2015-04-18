@@ -34,124 +34,128 @@ namespace AccionLaboral.Controllers
         // GET api/Clients
         public IHttpActionResult GetClients()
         {
-
-            List<Client> clients = null;
-            try
-            {
-                clients = db.Clients
-                    .Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                    .Include(r => r.Employee)
-                    .Include(r => r.State)
-                    .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
-                    .Include(r => r.AcademicEducations.Select(c => c.Career))
-                    .Include(r => r.AcademicEducations.Select(t => t.EducationType))
-                    .Include(r => r.KnownPrograms)
-                    .Include(r => r.Languages.Select(l => l.Language))
-                    .Include(r => r.Languages.Select(l => l.LanguageLevel))
-                    .Include(r => r.References.Select(c => c.City.Country))
-                    .Include(r => r.References.Select(t => t.ReferenceType))
-                    .Include(r => r.WorkExperiences)
-                    .Include(r => r.WorkExperiences.Select(c => c.City.Country))
-                    .Include(r => r.Trackings.Select(c => c.TrackingType))
-                    /*
-                    .AsEnumerable().Select(x => new Client
-                    {
-                        ClientId = x.ClientId,
-                        CorrelativeCode = x.CorrelativeCode,
-                        FirstName = x.FirstName,
-                        LastName = x.LastName,
-                        Age = x.Age,
-                        Email = x.Email,
-                        CompleteAddress = x.CompleteAddress,
-                        Cellphone = x.Cellphone,
-                        EnrollDate = x.EnrollDate,
-                        CityId = x.CityId,
-                        //AcademicEducations = x.AcademicEducations,
-                        Employee = new Employee { Age = x.Age },
-                        State = x.State,
-                        StateId = x.StateId,
-                        Trackings = x.Trackings,
-                        IdentityNumber = x.IdentityNumber,
-                        RejectionDescription = x.RejectionDescription,
-                        References = x.References,
-                        FacebookEmail = x.FacebookEmail,
-                        BBPin = x.BBPin,
-                        Twitter = x.Twitter,
-                        EnglishPercentage = x.EnglishPercentage,
-                        IsStudying = x.IsStudying,
-                        HaveCar = x.HaveCar,
-                        HaveMotorcycle = x.HaveMotorcycle,
-                        HaveLicense = x.HaveLicense,
-                        LicenseType = x.LicenseType,
-                        CompaniesWithPreviouslyRequested = x.CompaniesWithPreviouslyRequested,
-                        Comment = x.Comment,
-                        Occupation = x.Occupation
-                    }).*/
+            var clients = db.Clients.Include(r => r.State)
+                .Select(x => new
+                {
+                    x.ClientId,
+                    x.FirstName,
+                    x.LastName,
+                    x.EnrollDate,
+                    x.Age,
+                    x.StateId,
+                    x.Email,
+                    x.State,
+                    x.CompleteAddress,
+                    x.Cellphone,
+                    x.RejectionDescription
+                })
+                .OrderByDescending(r => r.EnrollDate)
                 .ToList();
-                //GoLucene.ClearLuceneIndex();
-                //GoLucene.AddUpdateLuceneIndex(clients);
-            }
-            catch (Exception e)
-            {
-             
+
+            if (clients == null)
                 return NotFound();
-            }
+
             return Ok(clients);
         }
 
         // Get api/ClientsByEmployee
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/clientsbyemployee/{id}")]
-        public List<Client> ClientsByEmployee(int id)
+        public IHttpActionResult ClientsByEmployee(int id)
         {
-            List<Client> clients = null;
-            var dbQuery = clients;
-            try
-            {
-                clients = db.Clients
-                    .Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                    .Include(r => r.Employee)
-                    .Include(r => r.State)
-                    /*       .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
-                           .Include(r => r.AcademicEducations.Select(c => c.Career))
-                           .Include(r => r.AcademicEducations.Select(t => t.EducationType))
-                           .Include(r => r.KnownPrograms)
-                           .Include(r => r.Languages.Select(l => l.Language))
-                           .Include(r => r.Languages.Select(l => l.LanguageLevel))
-                           .Include(r => r.References.Select(c => c.City.Country))
-                           .Include(r => r.References.Select(t => t.ReferenceType))
-                           .Include(r => r.WorkExperiences)
-                           .Include(r => r.WorkExperiences.Select(c => c.City.Country))*/
-                    .Include(r => r.Trackings.Select(c => c.TrackingType))
-                    .Where(r => r.EmployeeId == id)
-                    .ToList();
-                dbQuery = (from c in db.Clients
-                           join s in db.States
-                             on c.StateId equals s.StateId
-                           where c.EmployeeId == id
-                           select new Client
-                           {
-                               FirstName = c.FirstName,
-                               LastName = c.LastName,
-                               Age = c.Age,
-                               Email = c.Email,
-                               Cellphone = c.Cellphone,
-                               CompleteAddress = c.CompleteAddress,
-                               CityId = c.CityId,
-                               State = c.State,
-                               StateId = c.StateId,
-                               RejectionDescription = c.RejectionDescription
-                           }).ToList();
+            var clients = db.Clients.Include(r => r.State)
+                .Select(x => new
+                {
+                    x.ClientId,
+                    x.FirstName,
+                    x.LastName,
+                    x.EnrollDate,
+                    x.Age,
+                    x.StateId,
+                    x.Email,
+                    x.State,
+                    x.EmployeeId,
+                    x.CompleteAddress,
+                    x.Cellphone,
+                    x.RejectionDescription
+                })
+                .OrderBy(r => r.EnrollDate)
+                .Where(r => r.EmployeeId == id)
+                .ToList();
 
+            if (clients == null)
+                return NotFound();
 
-            }
-            catch (Exception e)
-            {
-                var error = e.Message;
-            }
-            return dbQuery;
+            return Ok(clients);
         }
 
+        // Get api/enrolledclientsbyemployee
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/enrolledclientsbyemployee/{id}")]
+        public IHttpActionResult GetEnrolledClients(int id)
+        {
+            var clients = db.Clients.Include(r => r.State)
+                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, x.StateId, x.EmployeeId, x.State })
+                .OrderBy(r => r.EnrollDate)
+                .Where(r => r.EmployeeId == id).ToList();
+            if (clients == null)
+                NotFound();
+
+            return Ok(clients);
+        }
+
+        // Get api/enrolledclients
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/enrolledclients")]
+        public IHttpActionResult GetEnrolledClients()
+        {
+            return Ok(db.Clients.Include(r => r.State)
+                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, StateId = x.StateId, x.EmployeeId, x.State })
+                .OrderBy(r => r.EnrollDate)
+                .ToList());
+
+
+        }
+
+        // Get api/trackingclients
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/trackingclients")]
+        public IHttpActionResult GetTrackingClients()
+        {
+            var clients = db.Clients
+                .Include(r => r.State)
+                .Include(r => r.Trackings.Select(c => c.TrackingType))
+                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.Age,Trackings = x.Trackings.Select(c =>new {c.TrackingType}), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
+                .OrderBy(r => r.EnrollDate)
+                .ToList();
+
+            if (clients == null)
+                return NotFound();
+
+            return Ok(clients);
+
+
+        }
+
+        // Get api/trackingclients
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/trackingclientsbyemployee/{id}")]
+        public IHttpActionResult GetTrackingClients(int id)
+        {
+            var clients = Ok(db.Clients
+                .Include(r => r.State)
+                .Include(r => r.Trackings.Select(c => c.TrackingType))
+                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.Age, Trackings = x.Trackings.Select(c => new { c.TrackingType }), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
+                .OrderBy(r => r.EnrollDate)
+                .Where(r => r.EmployeeId == id)
+                .ToList());
+
+            if (clients == null)
+                return NotFound();
+            return Ok(clients);
+
+
+        }
 
         // GET api/Clients/5
         [ResponseType(typeof(Client))]
@@ -206,7 +210,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Clients/5
-        public async Task<IHttpActionResult> PutClient(int id, Client client)
+        public IHttpActionResult PutClient(int id, Client client)
         {
             if (!ModelState.IsValid)
             {
@@ -371,10 +375,10 @@ namespace AccionLaboral.Controllers
                     }
                 }
 
-                await Task.Run(() => db.SaveChangesAsync());
-                //GoLucene.AddUpdateLuceneIndex(client);
+                db.SaveChanges();
+                GoLucene.AddUpdateLuceneIndex(client);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
                 if (!ClientExists(id))
                 {
@@ -387,6 +391,35 @@ namespace AccionLaboral.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // Get api/trackingclients
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/changeclientvalues/{id}")]
+        public IHttpActionResult ChangeClientValues(int id, Client client)
+        {
+            client.State = null;
+            try
+            {
+                //db.Clients.Attach(client);
+                var dbClients = db.Clients
+                           .Include(x => x.AcademicEducations)
+                           .Include(x => x.Languages)
+                           .Include(x => x.KnownPrograms)
+                           .Include(x => x.WorkExperiences)
+                           .Include(x => x.References)
+                           .Include(x => x.Trackings)
+                           .Single(c => c.ClientId == client.ClientId);
+                db.Entry(dbClients).CurrentValues.SetValues(client);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return StatusCode(HttpStatusCode.NoContent);
+
         }
 
         // POST api/Clients
@@ -405,8 +438,8 @@ namespace AccionLaboral.Controllers
                 db.Clients.Add(client);
 
                 db.SaveChanges();
-                //await Task.Run(()=>
-                //GoLucene.AddUpdateLuceneIndex(client));
+                await Task.Run(()=>
+                GoLucene.AddUpdateLuceneIndex(client));
             }
             catch (Exception)
             {
@@ -424,7 +457,7 @@ namespace AccionLaboral.Controllers
             {
                 return NotFound();
             }
-            //GoLucene.ClearLuceneIndexRecord(id);
+            GoLucene.ClearLuceneIndexRecord(id);
             db.Clients.Remove(client);
             db.SaveChanges();
 
