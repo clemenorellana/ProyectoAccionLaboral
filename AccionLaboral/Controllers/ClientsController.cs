@@ -109,10 +109,17 @@ namespace AccionLaboral.Controllers
         [System.Web.Http.Route("api/enrolledclients")]
         public IHttpActionResult GetEnrolledClients()
         {
-            return Ok(db.Clients.Include(r => r.State)
+            var clients = db.Clients.Include(r => r.State)
+                .Where(r => r.State.Alias == "PI")
                 .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, StateId = x.StateId, x.EmployeeId, x.State })
                 .OrderBy(r => r.EnrollDate)
-                .ToList());
+                .ToList();
+
+            return Ok(clients);
+            //return Ok(db.Clients.Include(r => r.State)
+            //    .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, StateId = x.StateId, x.EmployeeId, x.State })
+            //    .OrderBy(r => r.EnrollDate)
+            //    .ToList());
 
 
         }
