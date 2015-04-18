@@ -26,20 +26,20 @@ namespace AccionLaboral.Controllers
         // GET api/Employees
         [Route("api/Employees")]
         [HttpGet]
-        public List<Employee> GetEmployees()
+        public IHttpActionResult GetEmployees()
         {
-            //return db.Employees.Include("Career").Include("User").Include("Role");
-            
-            var query = db.Employees.AsEnumerable().Select(x => new Employee{ EmployeeId = x.EmployeeId,
-                                                                              EmployeeAlias = x.EmployeeAlias,
-                                                                              FirstName = x.FirstName,
-                                                                              LastName = x.LastName,
-                                                                              Email = x.Email,
-                                                                              Cellphone = x.Cellphone
-            });
+            var employees = db.Employees.Select(x => new 
+            {
+                x.EmployeeId,
+                x.EmployeeAlias,
+                x.FirstName,
+                x.LastName,
+                x.Email,
+                x.Cellphone
+            }).OrderBy(r => r.FirstName).ToList();
 
-            
-            return query.ToList(); 
+
+            return Ok(employees); 
         }
 
 
