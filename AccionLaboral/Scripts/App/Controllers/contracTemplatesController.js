@@ -313,6 +313,7 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     $scope.setContractData();
 
     $scope.generateContrat = function () {
+        $scope.contractContent = null;
         $scope.loadData = true;
         $scope.client = null;
 
@@ -359,24 +360,22 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         }
         var year = dateNow.getFullYear();
 
+        var id = { 
+            EmployeeId : $rootScope.userLoggedIn.EmployeeId,
+            EmployeeRolAlias : $rootScope.userLoggedIn.Role.Alias,
+            ClientIdentityNumber : $scope.identityNumber
+        }
 
-        customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
-            for (var i = 0; i < data.length; i++)
-            {
-                if (data[i].IdentityNumber == $scope.identityNumber) {
-                    $scope.client = data[i];
-                    break;
-                }
-            }
-            if ($scope.client == null)
+        customerRepository.findClientByIdentityNumber(id).success(function (data) {
+        
+            $scope.client = data;
+            if (data == null)
                 alertService.add('danger', 'Error', 'No existe ningun cliente con esa de identidad.');
             else {
-                //replace(/abc/g, '');
+                
                 var contractContent = $scope.contractTemplate.Description;
                 var finalContractContent = contractContent.replace(/{NombreCompleto}/g, $scope.client.FirstName + " " + $scope.client.LastName);
                 finalContractContent = finalContractContent.replace(/{Identidad}/g, $scope.client.IdentityNumber);
-                //finalContractContent = finalContractContent.replace(/{Inciso}/g, "Inciso A");
-                //finalContractContent = finalContractContent.replace(/{EmpresaColocado}/g, "Inciso A");
                 finalContractContent = finalContractContent.replace(/{Dia}/g, day);
                 finalContractContent = finalContractContent.replace(/{Mes}/g, month);
                 finalContractContent = finalContractContent.replace(/{Anio}/g, year);

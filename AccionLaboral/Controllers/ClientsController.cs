@@ -749,42 +749,32 @@ namespace AccionLaboral.Controllers
         }
 
         #region findclientbyidentitynumber
-        //[System.Web.Http.HttpGet]
-        //[System.Web.Http.Route("api/FindClientByIdentityNumber/{id}")]
-        //public Client FindClientByIdentityNumber(string id)
-        //{
-        //    Client client = null;
-        //    try
-        //    {
-        //        client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
-        //            .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
-        //            .Include(r => r.AcademicEducations.Select(c => c.Career))
-        //            .Include(r => r.AcademicEducations.Select(t => t.EducationType))
-        //            .Include(r => r.KnownPrograms)
-        //            .Include(r => r.Languages.Select(l => l.Language))
-        //            .Include(r => r.Languages.Select(l => l.LanguageLevel))
-        //            .Include(r => r.References.Select(c => c.City))
-        //            .Include(r => r.References.Select(t => t.ReferenceType))
-        //            .Include(r => r.WorkExperiences)
-        //            .Include(r => r.WorkExperiences.Select(c => c.City))
-        //            .Include(r => r.State)
-        //            .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
-        //            .Include(r => r.Trackings.Select(c => c.State))
-        //            .Include(r => r.Trackings.Select(c => c.TrackingType))
-        //            .First(r => r.IdentityNumber == id);
+        public class FindClient
+        { 
+            public int EmployeeId { get; set;}
+            public string EmployeeRolAlias { get; set; }
+            public string ClientIdentityNumber { get; set; }
+        }
 
-        //        if (client == null)
-        //        {
-        //            return client;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        var x = e.Message;
-        //    }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/FindClientByIdentityNumber/")]
+        public IHttpActionResult FindClientByIdentityNumber(FindClient id)
+        {
+            Client client = null;
+            try
+            {
+                if(id.EmployeeRolAlias == "ASREC")
+                    client = db.Clients.Where(r => r.EmployeeId == id.EmployeeId && r.IdentityNumber == id.ClientIdentityNumber).First();
+                else
+                    client = db.Clients.First(r => r.IdentityNumber == id.ClientIdentityNumber);
+            }
+            catch (Exception e)
+            {
+                var x = e.Message;
+            }
 
-        //    return client;
-        //}
+            return Ok(client);
+        }
         #endregion
     }
 }

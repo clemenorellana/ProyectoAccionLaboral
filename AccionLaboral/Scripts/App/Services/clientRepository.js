@@ -126,7 +126,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
         }
         ,
         findClientByIdentityNumber: function (id) {
-            return $http.get('api/FindClientByIdentityNumber' + '/' + id);
+            return $http.post('api/FindClientByIdentityNumber', id);
         }
 
     }
