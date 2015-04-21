@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,11 +14,11 @@ namespace AccionLaboral.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         public int EmployeeId { get; set; }
         [Required]
-        [Index("IX_EmployeeFirstNameLastName", 1, IsUnique = true)]
+        //[Index("IX_EmployeeFirstNameLastName", 1, IsUnique = true)]
         [StringLength(50)]
         public string FirstName { get; set; }
         [Required]
-        [Index("IX_EmployeeFirstNameLastName", 2, IsUnique = true)]
+        //[Index("IX_EmployeeFirstNameLastName", 2, IsUnique = true)]
         [StringLength(50)]
         public string LastName { get; set; }
         [EmailAddress]
@@ -31,13 +32,13 @@ namespace AccionLaboral.Models
         public string EmployeeAlias { get; set; }        
         public int CareerId { get; set; }
         public DateTime AdmissionDate { get; set; }
-        public int RoleId { get; set; }
-        public int UserId { get; set; }
+        public string RoleId { get; set; }
+        public string UserId { get; set; }
         public byte[] Photo { get; set; } 
 
 
         public Role Role { get; set; }
-        public User User { get; set; }
+        public IdentityUser User { get; set; }
         public Career Career { get; set; }
     }
 }

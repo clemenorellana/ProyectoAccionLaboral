@@ -308,7 +308,8 @@ angular.module('AccionLaboralApp', [
                         password: password
                     };
 
-                   
+                    //var token = authService.accessToken($scope.loginData);
+                    //$scope.loginData.token = token;
                     authService.login($scope.loginData).then(function (response) {
                         $scope.launch('wait');
                         var employee = response;
