@@ -134,21 +134,21 @@ namespace AccionLaboral.Controllers
         [System.Web.Http.Route("~/api/ExportContractReport")]
         public HttpResponseMessage ExportContractReport(ContractFilter id)
         {
-            ContractFilter filters = id;
+            //ContractFilter filters = id;
             try
             {
-                if (filters != null)
+                if (id != null)
                 {
-                    string filename = "Contrato_" + filters.ClientData.FirstName + "_" + filters.ClientData.LastName + ".docx";
-                    id.FileName = "Contrato_" + filters.ClientData.FirstName + "_" + filters.ClientData.LastName;
+                    string filename = "Contrato_" + id.ClientData.FirstName + "_" + id.ClientData.LastName + ".docx";
+                    id.FileName = "Contrato_" + id.ClientData.FirstName + "_" + id.ClientData.LastName;
                     string path = AppDomain.CurrentDomain.BaseDirectory;
                     string documentPath = path + "Reports\\" + filename;
                     string templatePath = path + "Reports" + "\\" + "ContractTemplate.docx";
                     using (DocX doc = DocX.Load(templatePath))
                     {
-                        ContractTemplate contract = filters.ContractTemplateData;
-                        contract.Description = filters.ContractContent;
-                        Contracts.CreateContract(doc, contract);
+                        //ContractTemplate contract = filters.ContractTemplateData;
+                        //contract.Description = filters.ContractContent;
+                        Contracts.CreateContract(doc, id);
                         doc.SaveAs(documentPath);
                     }
                 }

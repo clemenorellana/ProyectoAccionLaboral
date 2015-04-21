@@ -800,20 +800,104 @@ namespace AccionLaboral.Controllers
         [System.Web.Http.Route("api/FindClientByIdentityNumber/")]
         public IHttpActionResult FindClientByIdentityNumber(FindClient id)
         {
-            Client client = null;
             try
             {
-                if(id.EmployeeRolAlias == "ASREC")
-                    client = db.Clients.Where(r => r.EmployeeId == id.EmployeeId && r.IdentityNumber == id.ClientIdentityNumber).First();
+                if (id.EmployeeRolAlias == "ASREC")
+                {
+                     var client = db.Clients
+                             .Include(r => r.References)
+                             .Select(x => new Client
+                             {
+                                 ClientId = x.ClientId,
+                                 EmployeeId = x.EmployeeId,
+                                 FirstName = x.FirstName,
+                                 LastName = x.LastName,
+                                 Age = x.Age,
+                                 BBPin = x.BBPin,
+                                 Birthday = x.Birthday,
+                                 Cellphone = x.Cellphone,
+                                 EnrollDate = x.EnrollDate,
+                                 HaveCar = x.HaveCar,
+                                 HaveLicense = x.HaveLicense,
+                                 HaveMotorcycle = x.HaveMotorcycle,
+                                 IdentityNumber = x.IdentityNumber,
+                                 IsStudying = x.IsStudying,
+                                 LicenseType = x.LicenseType,
+                                 Occupation = x.Occupation,
+                                 QtyClasses = x.QtyClasses,
+                                 WageAspiration = x.WageAspiration,
+                                 Twitter = x.Twitter,
+                                 CompaniesWithPreviouslyRequested = x.CompaniesWithPreviouslyRequested,
+                                 CompleteAddress = x.CompleteAddress,
+                                 CorrelativeCode = x.CorrelativeCode,
+                                 DesiredEmployment = x.DesiredEmployment,
+                                 Email = x.Email,
+                                 EnglishPercentage = x.EnglishPercentage,
+                                 FacebookEmail = x.FacebookEmail,
+                                 Neighborhood = x.Neighborhood,
+                                 CurrentStudies = x.CurrentStudies,
+                                 References = x.References
+                             }
+                             )
+                             .Where(r => r.EmployeeId == id.EmployeeId && r.IdentityNumber == id.ClientIdentityNumber)
+                             .First()
+                             ;
+
+                     return Ok(client);
+                }
                 else
-                    client = db.Clients.First(r => r.IdentityNumber == id.ClientIdentityNumber);
+                {
+                     var client = db.Clients
+                            .Select(x => new 
+                            {
+                                x.ClientId,
+                                x.EmployeeId,
+                                x.FirstName,
+                                x.LastName,
+                                x.Age,
+                                x.BBPin,
+                                x.Birthday,
+                                x.Cellphone,
+                                x.EnrollDate,
+                                x.HaveCar,
+                                x.HaveLicense,
+                                x.HaveMotorcycle,
+                                x.IdentityNumber,
+                                x.IsStudying,
+                                x.LicenseType,
+                                x.Occupation,
+                                x.QtyClasses,
+                                x.WageAspiration,
+                                x.Twitter,
+                                x.CompaniesWithPreviouslyRequested,
+                                x.CompleteAddress,
+                                x.CorrelativeCode,
+                                x.DesiredEmployment,
+                                x.Email,
+                                x.EnglishPercentage,
+                                x.FacebookEmail,
+                                x.Neighborhood,
+                                x.CurrentStudies,
+                                x.References
+                            }
+                            )
+                            .Where(r => r.IdentityNumber == id.ClientIdentityNumber)
+                            .First();
+
+                     return Ok(client);
+                }
+
             }
             catch (Exception e)
             {
                 var x = e.Message;
             }
 
-            return Ok(client);
+            
+            NotFound();
+            Client c = null;
+
+            return Ok(c);
         }
         #endregion
     }
