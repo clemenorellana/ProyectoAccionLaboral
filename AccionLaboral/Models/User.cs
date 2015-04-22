@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,13 +13,13 @@ namespace AccionLaboral.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int UserId {get; set;}
-        [Required]
-        [Index(IsUnique=true)]
-        [StringLength(25)]
-        public string UserName { get; set; }
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        //[Required]
+        //[Index(IsUnique=true)]
+        //[StringLength(25)]
+        //public string UserName { get; set; }
+        //[Required]
+        //[DataType(DataType.Password)]
+        //public string Password { get; set; }
         public bool Active { get; set; }
         public bool Busy { get; set; } // know if the user is assigned to an employee
 

@@ -101,7 +101,7 @@ namespace AccionLaboral.Controllers
             db.SaveChanges();
 
             
-            User user = db.Users.Find(employee.UserId);
+            var user = db.Users.Find(employee.UserId);
 
             MailMessage message = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
                                              new MailAddress(employee.Email)
@@ -118,13 +118,11 @@ namespace AccionLaboral.Controllers
                                     <BR/>
                                     Su usuario es: {1}
                                     <BR/>
-                                    Su contraseña temporal es: {2}
-                                    <BR/>
                                     <BR/>
                                     <a href={3}>De clic aquí para activar su cuenta</a>"
                                   , employee.FirstName
                                   , user.UserName
-                                  , user.Password
+                                  //, user.PasswordHash
                                   , uri);
             //<BR/>
             //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Owin.Security.OAuth;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -10,6 +11,9 @@ namespace AccionLaboral
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            // Configure Web API to use only bearer token authentication.
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             // Web API routes
             config.EnableCors();
@@ -27,12 +31,12 @@ namespace AccionLaboral
                 defaults: new { id = RouteParameter.Optional }
             );
             //string searchTerm, string searchField, bool? searchDefault, int? limit
-            
-                config.Routes.MapHttpRoute(
-                name: "SearchApi",
-                routeTemplate: "api/{action}/{searchTerm}/{searchField}/{limit}",
-                defaults: new { limit = RouteParameter.Optional }
-            );
+
+            config.Routes.MapHttpRoute(
+            name: "SearchApi",
+            routeTemplate: "api/{action}/{searchTerm}/{searchField}/{limit}",
+            defaults: new { limit = RouteParameter.Optional }
+        );
 
             config.Routes.MapHttpRoute(
                 name: "ClientsByEmployee",
