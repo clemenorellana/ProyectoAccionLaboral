@@ -14,9 +14,11 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class UsersController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
@@ -29,7 +31,7 @@ namespace AccionLaboral.Controllers
         // GET api/Users
         [Route("api/Users")]
         [HttpGet]
-        public IQueryable<User> GetUsers()
+        public IQueryable<IdentityUser> GetUsers()
         {
             return db.Users;
         }
@@ -37,23 +39,23 @@ namespace AccionLaboral.Controllers
         // GET api/UsersFree
         [Route("api/UsersFree")]
         [HttpGet]
-        public IQueryable<User> GetUsersFree()
+        public IQueryable<IdentityUser> GetUsersFree()
         {
             return db.Users.Where(r => r.Busy == false);
         }
 
         [Route("api/Users/Login")]
         [HttpPost]
-        public Employee Login(User user)
+        public Employee Login(IdentityUser user)
         {
-            user.Password = Encryptdata(user.Password);
-            var users = db.Users.Where(r => r.UserName == user.UserName && r.Password == user.Password).ToList();
+            user.PasswordHash = user.PasswordHash;
+            var users = db.Users.Where(r => r.UserName == user.UserName && r.PasswordHash == user.PasswordHash).ToList();
             Employee employee = new Employee();
             if (users.Count == 0)
                 return employee;
             
 
-            var userId = users[0].UserId;
+            var userId = users[0].Id;
 
             employee = db.Employees.Include(r => r.Role).Where(r => r.UserId == userId).ToList()[0];
 
@@ -63,36 +65,36 @@ namespace AccionLaboral.Controllers
 
         [Route("api/Users/ValidateUserName")]
         [HttpPost]
-        public bool ValidateUserName(User user)
+        public bool ValidateUserName(IdentityUser user)
         {
-            return UserExists(user.UserName);
+            return UserNameExists(user.UserName);
         }
 
-        [Route("api/Users/ChangePassword")]
+        /*[Route("api/Users/ChangePassword")]
         [HttpPut]
-        public IHttpActionResult ChangePassword(User user)
+        public IHttpActionResult ChangePassword(IdentityUser user)
         {
-            user.Password = Encryptdata(user.Password);
+            user.PasswordHash = Encryptdata(user.PasswordHash);
 
             var userToUpdate = db.Users.Where(r => r.UserName == user.UserName).ToList();
-            userToUpdate[0].Password = user.Password;
+            userToUpdate[0].PasswordHash = user.PasswordHash;
 
             user = userToUpdate[0];
 
-            return PutUser(user.UserId, user);
-        }
+            return PutUser(user.Id, user);
+        }*/
 
 
         [Route("api/Users/RequestChangePassword")]
         [HttpPost]
-        public bool RequestChangePassword(User user)
+        public bool RequestChangePassword(IdentityUser user)
         {
             var users = db.Users.Where(r => r.UserName == user.UserName).ToList();
 
             if (users.Count == 0)
                 return false;
 
-            var userId = users[0].UserId;
+            var userId = users[0].Id;
 
             Employee employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
 
@@ -131,9 +133,9 @@ namespace AccionLaboral.Controllers
         [Route("api/Users")]
         [HttpGet]
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
+        public IHttpActionResult GetUser(string id)
         {
-            User user = db.Users.Find(id);
+            IdentityUser user = db.Users.Find(id);
             if (user == null)
             {
                 return NotFound();
@@ -143,14 +145,14 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Users/5
-        public IHttpActionResult PutUser(int id, User user)
+        public IHttpActionResult PutUser(string id, IdentityUser user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.UserId)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
@@ -177,10 +179,10 @@ namespace AccionLaboral.Controllers
         }
 
         // POST api/Users
-        [Route("api/Users")]
+        /*[Route("api/Users")]
         [HttpPost]
         [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User user)
+        public IHttpActionResult PostUser(IdentityUser user)
         {
             try
             {
@@ -189,7 +191,7 @@ namespace AccionLaboral.Controllers
                     return BadRequest(ModelState);
                 }
 
-                user.Password = Encryptdata(user.Password);
+                user.PasswordHash = user.PasswordHash; //Encryptdata(user.Password);
 
                 db.Users.Add(user);
                 db.SaveChanges();
@@ -201,13 +203,13 @@ namespace AccionLaboral.Controllers
                 var x = e.Message;
             }
             return CreatedAtRoute("DefaultApi", new { controller = "users", id = user.UserId }, user);
-        }
+        }*/
 
         // DELETE api/Users/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(int id)
+        public IHttpActionResult DeleteUser(string id)
         {
-            User user = db.Users.Find(id);
+            ApplicationUser user = db.Users.Find(id);
             if (user == null)
             {
                 return NotFound();
@@ -228,12 +230,12 @@ namespace AccionLaboral.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
-            return db.Users.Count(e => e.UserId == id) > 0;
+            return db.Users.Count(e => e.Id == id) > 0;
         }
 
-        private bool UserExists(string userName)
+        private bool UserNameExists(string userName)
         {
             return db.Users.Count(e => e.UserName == userName) > 0;
         }

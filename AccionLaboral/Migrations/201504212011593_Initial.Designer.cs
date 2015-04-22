@@ -7,13 +7,13 @@ namespace AccionLaboral.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class first_mig_7_feb : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(first_mig_7_feb));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201502071736059_first_mig_7_feb"; }
+            get { return "201504212011593_Initial"; }
         }
         
         string IMigrationMetadata.Source

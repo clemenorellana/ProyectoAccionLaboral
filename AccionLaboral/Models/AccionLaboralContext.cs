@@ -1,31 +1,59 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using MySql.Data.Entity;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AccionLaboral.Models
 {
-    public class AccionLaboralContext : DbContext
+
+    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    public class ApplicationUser : IdentityUser
     {
-        // You can add custom code to this file. Changes will not be overwritten.
-        // 
-        // If you want Entity Framework to drop and regenerate your database
-        // automatically whenever you change your model schema, please use data migrations.
-        // For more information refer to the documentation:
-        // http://msdn.microsoft.com/en-us/data/jj591621.aspx
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+            // Add custom user claims here
+            return userIdentity;
+        }
+        [DefaultValue("true")]
+        public bool Active { get; set; }
+        [DefaultValue("true")]
+        public bool Busy { get; set; } // know if the user is assigned to an employee
+    }
 
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
+    public class AccionLaboralContext : IdentityDbContext<ApplicationUser>
+    {
         public AccionLaboralContext()
-            : base("name=AccionLaboralContext")
+            : base("DefaultConnection")
         {
         }
 
-        static AccionLaboralContext()
+        public static AccionLaboralContext Create()
         {
-            DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
+            return new AccionLaboralContext();
         }
 
-        public DbSet<User> Users { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>()
+                .Property(c => c.Name).HasMaxLength(256).IsRequired();
+
+            modelBuilder.Entity<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>().ToTable("AspNetUsers")//I have to declare the table name, otherwise IdentityUser will be created
+                .Property(c => c.UserName).HasMaxLength(256).IsRequired();
+        }
+
+        //public DbSet<User> Users { get; set; }
 
         public DbSet<Career> Careers { get; set; }
 
@@ -33,7 +61,7 @@ namespace AccionLaboral.Models
 
         public DbSet<Privilege> Privileges { get; set; }
 
-        public DbSet<Role> Roles { get; set; }
+        //public DbSet<Role> Roles { get; set; }
 
         public DbSet<Country> Countries { get; set; }
 
@@ -84,7 +112,5 @@ namespace AccionLaboral.Models
         public DbSet<InterviewType> InterviewTypes { get; set; }
 
         public DbSet<VacantCovered> VacantCovers { get; set; }
-
-
     }
 }

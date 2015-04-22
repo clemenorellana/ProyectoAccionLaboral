@@ -8,8 +8,22 @@ using System.Web;
 
 namespace AccionLaboral.Models
 {
+    //public class MyUser : IdentityUser
+    //{
+    //    public virtual User MyUserInfo { get; set; }
+    //}
     public class User
     {
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+        //public int UserId {get; set;}
+        //[Required]
+        //[Index(IsUnique = true)]
+        //[StringLength(25)]
+        //public string UserName { get; set; }
+        //[Required]
+        //[DataType(DataType.Password)]
+        //public string Password { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int UserId {get; set;}

@@ -1,4 +1,5 @@
 ﻿using AccionLaboral.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -101,6 +102,7 @@ namespace AccionLaboral.Controllers
             db.SaveChanges();
 
             
+            IdentityUser user = db.Users.Find(employee.UserId);
             var user = db.Users.Find(employee.UserId);
 
             MailMessage message = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
@@ -122,6 +124,7 @@ namespace AccionLaboral.Controllers
                                     <a href={3}>De clic aquí para activar su cuenta</a>"
                                   , employee.FirstName
                                   , user.UserName
+                                  //, user.Password
                                   //, user.PasswordHash
                                   , uri);
             //<BR/>

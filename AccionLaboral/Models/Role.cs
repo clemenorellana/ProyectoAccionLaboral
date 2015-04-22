@@ -10,9 +10,9 @@ namespace AccionLaboral.Models
 {
     public class Role : IdentityRole
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-        public int RoleId { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int RoleId { get; set; }
         public string Alias { get; set; }
         //[Required]
         //public string Name { get; set; }
