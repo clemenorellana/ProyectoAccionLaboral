@@ -284,7 +284,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             //user.Busy = true;
 
             for(var i=0; i<$scope.employeesUsersList.length; i++){
-                if($scope.employeesUsersList[i].UserId == id)
+                if($scope.employeesUsersList[i].Id == id)
                     user = $scope.employeesUsersList[i];
             }
             user.Busy = true;

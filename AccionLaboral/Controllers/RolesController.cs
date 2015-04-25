@@ -24,9 +24,9 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Roles
-        public async Task<IHttpActionResult> GetRoles()
+        public IHttpActionResult GetRoles()
         {
-            var roles = await db.Roles.ToListAsync();
+            List<IdentityRole> roles = db.Roles.ToList();
             return Ok(roles);
         }
 

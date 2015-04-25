@@ -47,7 +47,7 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(Employee))]
         public IHttpActionResult GetEmployee(int id)
         {
-            Employee employee = db.Employees.Find(id);
+            Employee employee = db.Employees.Include(r=>r.User).Include(r=>r.Role).Where(r=> r.EmployeeId == id).First();
             if (employee == null)
             {
                 return NotFound();

@@ -94,7 +94,7 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
     authServiceFactory.authentication = _authentication;
 
     authServiceFactory.updateAuthenticationData = function (employee) {
-        
+        var deferred = $q.defer();
         _fillAuthData();
         var userName = _authentication.userName;
         var token = _authentication.token;
@@ -106,7 +106,9 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
         _authentication.token = token;
         _authentication.employee = employee;
 
+        deferred.resolve(_authentication);
 
+        return deferred.promise;
     }
 
     return authServiceFactory;
