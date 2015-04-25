@@ -10,7 +10,7 @@ namespace AccionLaboral.Models
     public class Career
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CareerId { get; set; }
         [Required]
         public string Name { get; set; }

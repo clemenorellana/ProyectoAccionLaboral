@@ -31,15 +31,9 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
     }
 
     var _login = function (loginData) {
-        _authentication = {
-            isAuth: false,
-            userName: "",
-            token: "",
-            employee: {}
-        };
         //_getToken(loginData);
         var dataToken = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
-        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.PasswordHash;
+        var data = "grant_type=password&username=" + loginData.userName + "&PasswordHash=" + loginData.password;
 
         var deferred = $q.defer();
 
@@ -48,10 +42,11 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
             _authentication.token = responseToken.access_token;
             $http.post(url + '/Login', data, { headers: { 'Authorization': 'Bearer ' + _authentication.token, 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
 
-                localStorageService.set('authorizationData', { token: _authentication.access_token, userName: loginData.userName, employee: response });
+                localStorageService.set('authorizationData', { token: _authentication.token, userName: loginData.userName, employee: response });
             
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
+                _authentication.token = _authentication.token;
                 _authentication.employee = response;
 
                 deferred.resolve(response);
@@ -74,6 +69,7 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
 
         _authentication.isAuth = false;
         _authentication.userName = "";
+        _authentication.token = "";
         _authentication.employee = {};
 
     };
@@ -84,6 +80,7 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
         if (authData) {
             _authentication.isAuth = true;
             _authentication.userName = authData.userName;
+            _authentication.token = authData.token;
             _authentication.employee = authData.employee;
         }
 
@@ -100,12 +97,15 @@ appServices.factory('authService', ['$http', '$q', 'localStorageService', functi
         
         _fillAuthData();
         var userName = _authentication.userName;
+        var token = _authentication.token;
 
-        localStorageService.set('authorizationData', {  userName: userName, employee: employee });
+        localStorageService.set('authorizationData', {  userName: userName, employee: employee, token: token });
         
         _authentication.isAuth = true;
-        _authentication.userName = userName
+        _authentication.userName = userName;
+        _authentication.token = token;
         _authentication.employee = employee;
+
 
     }
 

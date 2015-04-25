@@ -4,7 +4,8 @@ var accionLabControllers = angular.module('clientsRepository', []);
 var urlCustomer = 'api/clients/';
 
 //the factory object for the webAPI call.
-accionLabControllers.factory('customerRepository',['$http', function ($http) {
+accionLabControllers.factory('customerRepository', ['$http', "$rootScope", function ($http, $rootScope) {
+    var token = $rootScope.userToken;
     return {
         getCustomers: function (employee) {
             var urlCustomersByEmployee;
@@ -13,7 +14,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             else
                 urlCustomersByEmployee = 'api/clients/';
 
-            return $http.get(urlCustomersByEmployee);
+            return $http.get(urlCustomersByEmployee, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getEnrolledCustomers: function (employee) {
             var urlCustomersByEmployee;
@@ -22,7 +23,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             else
                 urlCustomersByEmployee = 'api/enrolledclients/';
 
-            return $http.get(urlCustomersByEmployee);
+            return $http.get(urlCustomersByEmployee, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getTrackingCustomers: function (employee) {
             var urlCustomersByEmployee;
@@ -31,58 +32,58 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             else
                 urlCustomersByEmployee = 'api/trackingclients/';
 
-            return $http.get(urlCustomersByEmployee);
+            return $http.get(urlCustomersByEmployee, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getEmployees: function () {
-            return $http.get('api/Employees');
+            return $http.get('api/Employees', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getCities: function (callback) {
-            return $http.get('api/Cities');
+            return $http.get('api/Cities', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getCustomer: function (id) {
-            return $http.get(urlCustomer + id);
+            return $http.get(urlCustomer + id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         exportCustomer: function (id) {
-            return $http.get('Clients/ExportClient/' + id);
+            return $http.get('Clients/ExportClient/' + id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         exportCustomers: function (filters) {
             filters.Clients = null;
-            return $http.post('api/exportclients/', filters);
+            return $http.post('api/exportclients/', filters, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         exportCustomersTracking: function (filters) {
             filters.Clients = null;
-            return $http.post('api/exportclientstracking', filters);
+            return $http.post('api/exportclientstracking', filters, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         searchCustomers: function (searchTerm, searchField, limit) {
             var searchUrl = 'api/SearchClients/' + searchTerm + '/' + ((searchField) ? searchField : null) + '/' + ((limit) ? limit : 0);
-            return $http.get(searchUrl);
+            return $http.get(searchUrl, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getCountries: function (callback) {
-            return $http.get('api/Countries');
+            return $http.get('api/Countries', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getAcademicLevels: function (callback) {
-            return $http.get('api/AcademicLevels');
+            return $http.get('api/AcademicLevels', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getCareers: function () {
-            return $http.get('api/Careers');
+            return $http.get('api/Careers', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getEducationTypes: function (callback) {
-            return $http.get('api/EducationTypes');
+            return $http.get('api/EducationTypes', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getCompanies: function (callback) {
-            return $http.get('api/Companies');
+            return $http.get('api/Companies', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getLanguages: function (callback) {
-            return $http.get('api/Languages');
+            return $http.get('api/Languages', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getLanguageLevels: function (callback) {
-            return $http.get('api/LanguageLevels');
+            return $http.get('api/LanguageLevels', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getTrackingTypes: function () {
-            return $http.get('api/trackingtypes');
+            return $http.get('api/trackingtypes', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getStates: function(){
-            return $http.get('api/States');
+            return $http.get('api/States', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
 
         //method for insert
@@ -107,25 +108,26 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
                 "WorkExperiences": client.workExperiences, "References": client.workReferences, "Trackings": Tracking
 
             };
-            return $http.post(urlCustomer, newClient);
+            return $http.post(urlCustomer, newClient, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         Refresh: function () {
-            return $http.post('api/refreshclients')
+            return $http.post('api/refreshclients', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } })
         },
         InsertTracking: function (tracking) {
-            return $http.post('api/TrackingDetails', tracking)
+            return $http.post('api/TrackingDetails', tracking, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } })
         },
         //method for update
         UpdateCustomer: function (client) {
             
-            return $http.put(urlCustomer + client.ClientId, client);
+            return $http.put(urlCustomer + client.ClientId, client, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
 
         ChangeValues: function (client) {
             return $http({
                 method: "put",
                 url: "/api/changeclientvalues/" + client.ClientId,
-                data: client
+                data: client,
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' }
             });
             //return $http.put('api/changestatus/' + client.ClientId, client);
         },
@@ -133,7 +135,7 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
           //  return $http.put(urlCustomer + Client.ClientId, Client);
         //},
         UpdateTracking: function (client) {
-            return $http.put('api/Trackings/' + client.Trackings[0].TrackingId, client);
+            return $http.put('api/Trackings/' + client.Trackings[0].TrackingId, client, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         inscribeCustomer: function (client) {
             var newClient = angular.copy(client);
@@ -141,80 +143,21 @@ accionLabControllers.factory('customerRepository',['$http', function ($http) {
             newClient.Trackings[0].StateId = newClient.StateId;
             newClient.Trackings[0].TrackingTypeId = 2;
             newClient.IsStudying = (client.IsStudying == "1");
-            return $http.put("api/changeclientvalues/" + newClient.ClientId, newClient);
+            return $http.put("api/changeclientvalues/" + newClient.ClientId, newClient, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for delete
         DeleteCustomer: function (callback, id) {
-            return $http.delete(urlCustomer + '/' + id);
+            return $http.delete(urlCustomer + '/' + id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for delete
         DeleteTracking: function (id) {
-            return $http.delete('api/TrackingDetails' + '/' + id);
+            return $http.delete('api/TrackingDetails' + '/' + id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         }
         ,
         findClientByIdentityNumber: function (id) {
-            return $http.get('api/FindClientByIdentityNumber' + '/' + id);
+            return $http.get('api/FindClientByIdentityNumber' + '/' + id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         }
 
     }
 }]);
-/*
-//controller   
-customersApp.controller('customerCtrl', function ($scope, customerRepository) {
-    getCustomers();
-    function getCustomers() {
-        customerRepository.getCustomers(function (results) {
-            $scope.customerData = results;
-        })
-    }
-
-    $scope.setScope = function (obj, action) {
-
-        $scope.action = action;
-        $scope.New = obj;
-    }
-
-    $scope.gridOptions = {
-        data: 'customerData',
-        showGroupPanel: true,
-        columnDefs: [{ field: 'name', displayName: 'Name', width: '15%' },
-            { field: 'city', displayName: 'City', width: '15%' },
-            { field: 'address', displayName: 'Address', width: '15%' },
-            { field: 'contactNo', displayName: 'Contact No', width: '15%' },
-            { field: 'emailId', displayName: 'Email Id', width: '15%' },
-            { displayName: 'Options', cellTemplate: '<input type="button" ng-click="setScope(row.entity,\'edit\')" name="edit"  value="Edit">&nbsp;<input type="button" ng-click="Deleteclient(row.entity.id)"  name="delete"  value="Delete">', width: '25%' }
-        ]
-    };
-
-
-    $scope.update = function () {
-        if ($scope.action == 'edit') {
-            customerRepository.updateclient(function() {
-                $scope.status = 'customer updated successfully';
-                alert('customer updated successfully');
-                getCustomers();
-            }, $scope.New);
-            $scope.action = '';
-        }
-        else {
-            customerRepository.insertclient(function() {
-                alert('customer inserted successfully');
-                getCustomers();
-            }, $scope.New);
-
-        }
-
-
-    }
-
-    $scope.Deleteclient = function (id) {
-        customerRepository.deleteclient(function() {
-            alert('Customer deleted');
-            getCustomers();
-        }, id);
-
-    }
-
-});
-*/
 

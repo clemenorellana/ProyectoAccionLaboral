@@ -10,6 +10,16 @@ namespace AccionLaboral.Models
 {
     public class Role : IdentityRole
     {
+        public Role()
+        {
+
+        }
+
+        public Role(string roleName, string alias)
+            : base(roleName)
+        {
+            this.Alias = alias;
+        }
         //[Key]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //public int RoleId { get; set; }
@@ -22,5 +32,14 @@ namespace AccionLaboral.Models
         //public ICollection<User> Users { get; set; }
 
 
+    }
+
+    public class ApplicationUserRole : IdentityUserRole
+    {
+        public ApplicationUserRole()
+            : base()
+        { }
+
+        public Role Role { get; set; }
     }
 }

@@ -1,16 +1,5 @@
 ﻿using Microsoft.Owin.Security.OAuth;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-
-namespace AccionLaboral
-{
-    public static class WebApiConfig
-    {
-        public static void Register(HttpConfiguration config)
-        {
-            // Web API configuration and services
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,12 +32,12 @@ namespace AccionLaboral
                 defaults: new { id = RouteParameter.Optional }
             );
             //string searchTerm, string searchField, bool? searchDefault, int? limit
-
-            config.Routes.MapHttpRoute(
-            name: "SearchApi",
-            routeTemplate: "api/{action}/{searchTerm}/{searchField}/{limit}",
-            defaults: new { limit = RouteParameter.Optional }
-        );
+            
+                config.Routes.MapHttpRoute(
+                name: "SearchApi",
+                routeTemplate: "api/{action}/{searchTerm}/{searchField}/{limit}",
+                defaults: new { limit = RouteParameter.Optional }
+            );
 
             config.Routes.MapHttpRoute(
                 name: "ClientsByEmployee",
@@ -65,6 +54,7 @@ namespace AccionLaboral
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml"));
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling =
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
 
         }
     }

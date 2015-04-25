@@ -11,7 +11,7 @@ namespace AccionLaboral.Models
     public class Employee
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmployeeId { get; set; }
         [Required]
         //[Index("IX_EmployeeFirstNameLastName", 1, IsUnique = true)]
@@ -29,16 +29,16 @@ namespace AccionLaboral.Models
         public string HomePhone { get; set; }
         public string Address { get; set; }
         public string Gender { get; set; }
-        public string EmployeeAlias { get; set; }        
+        public string EmployeeAlias { get; set; }
         public int CareerId { get; set; }
         public DateTime AdmissionDate { get; set; }
         public string RoleId { get; set; }
         public string UserId { get; set; }
-        public byte[] Photo { get; set; } 
+        public byte[] Photo { get; set; }
 
 
         public Role Role { get; set; }
-        public IdentityUser User { get; set; }
+        public User User { get; set; }
         public Career Career { get; set; }
     }
 }

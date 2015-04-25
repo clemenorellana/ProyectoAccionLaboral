@@ -17,19 +17,22 @@ namespace AccionLaboral.Controllers
 {
     public class EmployeesController : ApiController
     {
-        private AccionLaboralContext db = new AccionLaboralContext();
+        private AccionLaboralContext db;
 
         public EmployeesController()
         {
+            db = new AccionLaboralContext();
             db.Database.CommandTimeout = 180;
+            
         }
 
         // GET api/Employees
         [Route("api/Employees")]
         [HttpGet]
-        public IQueryable<Employee> GetEmployees()
+        public IHttpActionResult GetEmployees()
         {
-            return db.Employees.Include("Career").Include("User").Include("Role");
+            var employees = db.Employees.Include("Career").Include("Role").ToList();
+            return Ok(employees);
         }
 
 
@@ -103,7 +106,6 @@ namespace AccionLaboral.Controllers
 
             
             IdentityUser user = db.Users.Find(employee.UserId);
-            var user = db.Users.Find(employee.UserId);
 
             MailMessage message = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
                                              new MailAddress(employee.Email)
@@ -125,7 +127,6 @@ namespace AccionLaboral.Controllers
                                   , employee.FirstName
                                   , user.UserName
                                   //, user.Password
-                                  //, user.PasswordHash
                                   , uri);
             //<BR/>
             //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));

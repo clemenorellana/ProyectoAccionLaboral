@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
-using System.Web.Mvc;
 using AccionLaboral.Helpers.Lucene;
 using System.IO;
 using AccionLaboral.Helpers.Filters;
@@ -19,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace AccionLaboral.Controllers
 {
-    //[System.Web.Http.RoutePrefix("api/clients")]
+    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientsController : ApiController
     {
@@ -41,7 +40,6 @@ namespace AccionLaboral.Controllers
                     x.FirstName,
                     x.LastName,
                     x.EnrollDate,
-                    x.IdentityNumber,
                     x.Age,
                     x.StateId,
                     x.Email,
@@ -71,7 +69,6 @@ namespace AccionLaboral.Controllers
                     x.FirstName,
                     x.LastName,
                     x.EnrollDate,
-                    x.IdentityNumber,
                     x.Age,
                     x.StateId,
                     x.Email,
@@ -395,7 +392,7 @@ namespace AccionLaboral.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // Get api/trackingclients
+        // Get api/ChangeClientValues
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/changeclientvalues/{id}")]
         public IHttpActionResult ChangeClientValues(int id, Client client)
@@ -475,7 +472,6 @@ namespace AccionLaboral.Controllers
             {
                 clients = db.Clients
                     .Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                    //.Include(r => r.Employee)
                     .Include(r => r.State)
                     .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
                     .Include(r => r.AcademicEducations.Select(c => c.Career))
@@ -567,7 +563,6 @@ namespace AccionLaboral.Controllers
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("~/api/exportclientstracking")]
-        //[System.Web.Http.Route("api/exportclientstracking/{id}")]
         public HttpResponseMessage ExportClientsTracking(ClientsFilter id)
         {
             try

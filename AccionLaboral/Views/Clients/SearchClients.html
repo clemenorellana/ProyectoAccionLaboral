@@ -10,31 +10,32 @@
 
 <div class="col-md-12">
     <!-- Chat box -->
-    <div class="box box-success">
-        <div class="box-header">
-            
+    <div class="box-body chat" id="chat-box">
+        <div class="box box-success">
+            <div class="box-header">
+
                 <i class="fa fa-search"></i>
                 <h3 class="box-title">Búsqueda de Clientes</h3>
-            <div class="row">
-                <div class="col-md-offset-8">
-                    <label>Filtros:</label>
-                    <div isteven-multi-select
-                         input-model="fields"
-                         output-model="selectedCustomers"
-                         button-label="text"
-                         item-label="text"
-                         translation="localLang"
-                         tick-property="ticked"
-                         max-height="70px"></div>
+                <div class="row">
+                    <div class="col-md-offset-8">
+                        <label>Filtros:</label>
+                        <div isteven-multi-select
+                             input-model="fields"
+                             output-model="selectedCustomers"
+                             button-label="text"
+                             item-label="text"
+                             translation="localLang"
+                             tick-property="ticked"
+                             max-height="70px"></div>
+                    </div>
+                </div>
+                <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                    <div class="btn-group" data-toggle="btn-toggle">
+
+                    </div>
                 </div>
             </div>
-            <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                <div class="btn-group" data-toggle="btn-toggle">
-                    
-                </div>
-            </div>
-        </div>
-        <div class="box-body chat" id="chat-box">
+
             <form ng-submit="searchClients(searchCustomer)" class="form-box">
                 <div class="form-group">
                     <div class="input-group">
@@ -46,15 +47,15 @@
             </form>
             <!-- chat item -->
 
-            
-            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
-        <div class="table-responsive">
 
-        </div>       
-        <div ng-show="true" class="item row"  ng-repeat="customer in customerData">
+            <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
+            <div class="table-responsive">
+
+            </div>
+            <div ng-show="true" class="item row" ng-repeat="customer in customerData">
                 <!--<img ng-src="data:image/jpeg;base64,{{customer.Photo}}" class="online" />-->
                 <br />
-            <br />
+                <br />
                 <p class="message">
                     <a href="" class="name" ng-show="isSelectedField('FirstName') || isSelectedField('LastName')">
                         <small class="text-muted pull-right"><i class="fa fa-square"></i> {{customer.State.Name}}</small>
@@ -92,10 +93,10 @@
                             </tr>
                         </tbody>
                     </table>
-                        <div class="pull-right">
-                            <button class="btn btn-primary btn-sm btn-flat" ng-click="setScope(customer)">Ver Perfil</button>
-                        </div>
-                    </div><!-- /.attachment -->
+                    <div class="pull-right">
+                        <button class="btn btn-primary btn-sm btn-flat" ng-click="setScope(customer)">Ver Perfil</button>
+                    </div>
+                </div><!-- /.attachment -->
             </div><!-- /.item -->
         </div><!-- /.chat -->
 

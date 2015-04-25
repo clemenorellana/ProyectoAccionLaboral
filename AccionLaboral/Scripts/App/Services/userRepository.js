@@ -1,7 +1,8 @@
 var accionLabControllers = angular.module('usersRepository', []);
 
-accionLabControllers.factory('usersRepo', ['$http', function ($http) {
+accionLabControllers.factory('usersRepo', ['$http', '$rootScope', function ($http, $rootScope) {
     var url = 'api/Users';
+    var token = $rootScope.userToken;
     return {
         getUsersList: function (callback) {
             return $http.get(url);
@@ -10,11 +11,12 @@ accionLabControllers.factory('usersRepo', ['$http', function ($http) {
         insertUser: function (callback, user) {
             var user = {
                 "UserName": user.UserName,
-                "Password": user.UserName,
+                "Password": "AccionLaboral_123",//user.UserName,
+                "ConfirmPassword": "AccionLaboral_123",
                 "Active": true,
                 "Busy": false,
             };
-            return $http.post(url, user);
+            return $http.post("api/account/register", user, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for update
         //updateUser: function (callback, user) {

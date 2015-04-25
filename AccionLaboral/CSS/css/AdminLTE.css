@@ -11,29 +11,6 @@
 ----------------------------
 */
 
-/*Loading...*/
-#veil {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height:100%;
-	width:100%;
-	cursor: not-allowed;
-	filter: alpha(opacity=60);
-	opacity: 0.6;
-	background: #000000 url(http://youanimeoficial.webcindario.com/imagenes/loading.gif) no-repeat center;
-}
-#feedLoading {
-	position: absolute;
-	top:200px;
-	width:100%;
-	text-align: center;
-	font-size: 4em;
-	color:white;
-	text-shadow: 2px 2px 2px #021124;
-}
-/*end loading...*/
-
 /*Table Style*/
 zui-table {
     border: solid 1px #DDEEEE;

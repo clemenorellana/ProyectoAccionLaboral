@@ -8,15 +8,16 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using AccionLaboral.Models;
 
 namespace AccionLaboral.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
-        private readonly Func<UserManager<IdentityUser>> _userManagerFactory;
+        private readonly Func<UserManager<User>> _userManagerFactory;
 
-        public ApplicationOAuthProvider(string publicClientId, Func<UserManager<IdentityUser>> userManagerFactory)
+        public ApplicationOAuthProvider(string publicClientId, Func<UserManager<User>> userManagerFactory)
         {
             if (publicClientId == null)
             {
@@ -34,24 +35,32 @@ namespace AccionLaboral.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            using (UserManager<IdentityUser> userManager = _userManagerFactory())
+            try
             {
-                IdentityUser user = await userManager.FindAsync(context.UserName, context.Password);
-
-                if (user == null)
+                using (UserManager<User> userManager = _userManagerFactory())
                 {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
-                    return;
-                }
+                    User user = await userManager.FindAsync(context.UserName, context.Password);
 
-                ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,
-                    context.Options.AuthenticationType);
-                ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
-                    CookieAuthenticationDefaults.AuthenticationType);
-                AuthenticationProperties properties = CreateProperties(user.UserName);
-                AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
-                context.Validated(ticket);
-                context.Request.Context.Authentication.SignIn(cookiesIdentity);
+                    if (user == null)
+                    {
+                        context.SetError("invalid_grant", "El usuario o contraseña es incorrecta.");
+                        return;
+                    }
+
+                    ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,
+                        context.Options.AuthenticationType);
+                    ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
+                        CookieAuthenticationDefaults.AuthenticationType);
+                    AuthenticationProperties properties = CreateProperties(user.UserName);
+                    AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+                    context.Validated(ticket);
+                    context.Request.Context.Authentication.SignIn(cookiesIdentity);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

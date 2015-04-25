@@ -24,20 +24,21 @@ namespace AccionLaboral.Controllers
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
-
         public AccountController()
             : this(Startup.UserManagerFactory(), Startup.OAuthOptions.AccessTokenFormat)
         {
+            AccionLaboralContext db = new AccionLaboralContext();
+            UserManager = new UserManager<User>(new UserStore<User>(db));
         }
 
-        public AccountController(UserManager<IdentityUser> userManager,
+        public AccountController(UserManager<User> userManager,
             ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
         }
 
-        public UserManager<IdentityUser> UserManager { get; private set; }
+        public UserManager<User> UserManager { get; private set; }
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
@@ -245,7 +246,7 @@ namespace AccionLaboral.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+            User user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
@@ -321,9 +322,11 @@ namespace AccionLaboral.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityUser user = new IdentityUser
+            User user = new User
             {
-                UserName = model.UserName
+                UserName = model.UserName,
+                Active = model.Active,
+                Busy = model.Busy
             };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
@@ -355,9 +358,11 @@ namespace AccionLaboral.Controllers
                 return InternalServerError();
             }
 
-            IdentityUser user = new IdentityUser
+            User user = new User
             {
-                UserName = model.UserName
+                UserName = model.UserName,
+                Email = "roger@gmail.com",
+                EmailConfirmed = true
             };
             user.Logins.Add(new IdentityUserLogin
             {
