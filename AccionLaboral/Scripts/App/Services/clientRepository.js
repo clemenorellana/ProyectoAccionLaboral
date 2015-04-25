@@ -111,7 +111,7 @@ accionLabControllers.factory('customerRepository', ['$http', "$rootScope", funct
             return $http.post(urlCustomer, newClient, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         Refresh: function () {
-            return $http.post('api/refreshclients', { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } })
+            return $http.post('api/refreshclients', null, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } })
         },
         InsertTracking: function (tracking) {
             return $http.post('api/TrackingDetails', tracking, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } })
@@ -129,11 +129,7 @@ accionLabControllers.factory('customerRepository', ['$http', "$rootScope", funct
                 data: client,
                 headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' }
             });
-            //return $http.put('api/changestatus/' + client.ClientId, client);
         },
-        //updateTracking: function (Tracking) {
-          //  return $http.put(urlCustomer + Client.ClientId, Client);
-        //},
         UpdateTracking: function (client) {
             return $http.put('api/Trackings/' + client.Trackings[0].TrackingId, client, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },

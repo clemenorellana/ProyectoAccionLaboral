@@ -46,6 +46,7 @@ namespace AccionLaboral.Controllers
                     x.State,
                     x.CompleteAddress,
                     x.Cellphone,
+                    x.IdentityNumber,
                     x.RejectionDescription
                 })
                 .OrderByDescending(r => r.EnrollDate)
@@ -76,6 +77,7 @@ namespace AccionLaboral.Controllers
                     x.EmployeeId,
                     x.CompleteAddress,
                     x.Cellphone,
+                    x.IdentityNumber,
                     x.RejectionDescription
                 })
                 .OrderBy(r => r.EnrollDate)
@@ -392,7 +394,7 @@ namespace AccionLaboral.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // Get api/ChangeClientValues
+        // Put api/ChangeClientValues
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/changeclientvalues/{id}")]
         public IHttpActionResult ChangeClientValues(int id, Client client)
@@ -419,6 +421,145 @@ namespace AccionLaboral.Controllers
             }
             return StatusCode(HttpStatusCode.NoContent);
 
+        }
+
+        // Put api/enrollclient
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/enrollclient/{id}")]
+        public IHttpActionResult EnrollClient(int id, Client client)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != client.ClientId)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                client.State = null;
+                var dbClients = db.Clients
+                           .Include(x => x.AcademicEducations)
+                           .Include(x => x.Languages)
+                           .Include(x => x.KnownPrograms)
+                           .Include(x => x.WorkExperiences)
+                           .Include(x => x.References)
+                           .Include(x => x.Trackings)
+                           .Single(c => c.ClientId == client.ClientId);
+                client.EnrollDate = DateTime.Now;
+                
+                db.Entry(dbClients).CurrentValues.SetValues(client);
+
+                //References
+                if (client.References != null)
+                {
+                    foreach (var dbReference in dbClients.References.ToList())
+                        if (!client.References.Any(s => s.ReferenceId == dbReference.ReferenceId))
+                            db.References.Remove(dbReference);
+
+                    foreach (var newReference in client.References)
+                    {
+                        newReference.City = null;
+                        newReference.ReferenceType = null;
+                        newReference.ClientId = client.ClientId;
+                        if (newReference.ReferenceId != 0)
+                        {
+                            var dbReference = dbClients.References.SingleOrDefault(s => s.ReferenceId == newReference.ReferenceId);
+                            db.Entry(dbReference).CurrentValues.SetValues(newReference);
+                        }
+                        else
+                        {
+                            dbClients.References.Add(newReference);
+                        }
+
+                    }
+                }
+
+
+                db.SaveChanges();
+                GoLucene.AddUpdateLuceneIndex(client);
+            }
+            catch (Exception)
+            {
+                if (!ClientExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // Put api/trackingclient
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/clienttracking/{id}")]
+        public IHttpActionResult ClientTracking(int id, Client client)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != client.ClientId)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                client.State = null;
+                var dbClients = db.Clients
+                           .Include(x => x.AcademicEducations)
+                           .Include(x => x.Languages)
+                           .Include(x => x.KnownPrograms)
+                           .Include(x => x.WorkExperiences)
+                           .Include(x => x.References)
+                           .Include(x => x.Trackings)
+                           .Single(c => c.ClientId == client.ClientId);
+
+                db.Entry(dbClients).CurrentValues.SetValues(client);
+
+                //Trackings
+                if (client.Trackings != null)
+                {
+                    foreach (var dbSubFoo in dbClients.Trackings.ToList())
+                        if (!client.Trackings.Any(s => s.TrackingId == dbSubFoo.TrackingId))
+                            db.Trackings.Remove(dbSubFoo);
+
+                    foreach (var newSubFoo in client.Trackings)
+                    {
+                        var dbSubFoo = dbClients.Trackings.SingleOrDefault(s => s.TrackingId == newSubFoo.TrackingId);
+                        if (dbSubFoo != null)
+                            db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                        else
+                            dbClients.Trackings.Add(newSubFoo);
+                    }
+                }
+
+
+                db.SaveChanges();
+                GoLucene.AddUpdateLuceneIndex(client);
+            }
+            catch (Exception)
+            {
+                if (!ClientExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST api/Clients
