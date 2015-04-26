@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace AccionLaboral.Controllers
 {
@@ -22,16 +24,17 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Roles
-        public IQueryable<Role> GetRoles()
+        public IHttpActionResult GetRoles()
         {
-            return db.Roles;
+            List<IdentityRole> roles = db.Roles.ToList();
+            return Ok(roles);
         }
 
         // GET api/Roles/5
-        [ResponseType(typeof(Role))]
-        public IHttpActionResult GetRole(int id)
+        [ResponseType(typeof(IdentityRole))]
+        public IHttpActionResult GetRole(string id)
         {
-            Role role = db.Roles.Find(id);
+            IdentityRole role = db.Roles.Find(id);
             if (role == null)
             {
                 return NotFound();
@@ -41,14 +44,14 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Roles/5
-        public IHttpActionResult PutRole(int id, Role role)
+        public IHttpActionResult PutRole(string id, IdentityRole role)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != role.RoleId)
+            if (id != role.Id)
             {
                 return BadRequest();
             }
@@ -86,14 +89,14 @@ namespace AccionLaboral.Controllers
             db.Roles.Add(role);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = role.RoleId }, role);
+            return CreatedAtRoute("DefaultApi", new { id = role.Id }, role);
         }
 
         // DELETE api/Roles/5
-        [ResponseType(typeof(Role))]
-        public IHttpActionResult DeleteRole(int id)
+        [ResponseType(typeof(IdentityRole))]
+        public IHttpActionResult DeleteRole(string id)
         {
-            Role role = db.Roles.Find(id);
+            IdentityRole role = db.Roles.Find(id);
             if (role == null)
             {
                 return NotFound();
@@ -114,9 +117,9 @@ namespace AccionLaboral.Controllers
             base.Dispose(disposing);
         }
 
-        private bool RoleExists(int id)
+        private bool RoleExists(string id)
         {
-            return db.Roles.Count(e => e.RoleId == id) > 0;
+            return db.Roles.Count(e => e.Id == id) > 0;
         }
     }
 }

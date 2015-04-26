@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccionLaboral.Models;
-using System.Web.Mvc;
 using AccionLaboral.Helpers.Lucene;
 using System.IO;
 using AccionLaboral.Helpers.Filters;
@@ -19,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace AccionLaboral.Controllers
 {
-    //[System.Web.Http.RoutePrefix("api/clients")]
+    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientsController : ApiController
     {
@@ -35,11 +34,9 @@ namespace AccionLaboral.Controllers
         public IHttpActionResult GetClients()
         {
             var clients = db.Clients.Include(r => r.State)
-                .Include(r => r.Employee.EmployeeAlias)
                 .Select(x => new
                 {
                     x.ClientId,
-                    x.IdentityNumber,
                     x.FirstName,
                     x.LastName,
                     x.EnrollDate,
@@ -49,8 +46,8 @@ namespace AccionLaboral.Controllers
                     x.State,
                     x.CompleteAddress,
                     x.Cellphone,
-                    x.RejectionDescription,
-                    x.Employee.EmployeeAlias
+                    x.IdentityNumber,
+                    x.RejectionDescription
                 })
                 .OrderByDescending(r => r.EnrollDate)
                 .ToList();
@@ -80,6 +77,7 @@ namespace AccionLaboral.Controllers
                     x.EmployeeId,
                     x.CompleteAddress,
                     x.Cellphone,
+                    x.IdentityNumber,
                     x.RejectionDescription
                 })
                 .OrderBy(r => r.EnrollDate)
@@ -112,17 +110,10 @@ namespace AccionLaboral.Controllers
         [System.Web.Http.Route("api/enrolledclients")]
         public IHttpActionResult GetEnrolledClients()
         {
-            var clients = db.Clients.Include(r => r.State)
-                .Where(r => r.State.Alias == "PI")
+            return Ok(db.Clients.Include(r => r.State)
                 .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, StateId = x.StateId, x.EmployeeId, x.State })
                 .OrderBy(r => r.EnrollDate)
-                .ToList();
-
-            return Ok(clients);
-            //return Ok(db.Clients.Include(r => r.State)
-            //    .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, StateId = x.StateId, x.EmployeeId, x.State })
-            //    .OrderBy(r => r.EnrollDate)
-            //    .ToList());
+                .ToList());
 
 
         }
@@ -403,7 +394,7 @@ namespace AccionLaboral.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // Get api/trackingclients
+        // Put api/ChangeClientValues
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/changeclientvalues/{id}")]
         public IHttpActionResult ChangeClientValues(int id, Client client)
@@ -430,6 +421,145 @@ namespace AccionLaboral.Controllers
             }
             return StatusCode(HttpStatusCode.NoContent);
 
+        }
+
+        // Put api/enrollclient
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/enrollclient/{id}")]
+        public IHttpActionResult EnrollClient(int id, Client client)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != client.ClientId)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                client.State = null;
+                var dbClients = db.Clients
+                           .Include(x => x.AcademicEducations)
+                           .Include(x => x.Languages)
+                           .Include(x => x.KnownPrograms)
+                           .Include(x => x.WorkExperiences)
+                           .Include(x => x.References)
+                           .Include(x => x.Trackings)
+                           .Single(c => c.ClientId == client.ClientId);
+                client.EnrollDate = DateTime.Now;
+                
+                db.Entry(dbClients).CurrentValues.SetValues(client);
+
+                //References
+                if (client.References != null)
+                {
+                    foreach (var dbReference in dbClients.References.ToList())
+                        if (!client.References.Any(s => s.ReferenceId == dbReference.ReferenceId))
+                            db.References.Remove(dbReference);
+
+                    foreach (var newReference in client.References)
+                    {
+                        newReference.City = null;
+                        newReference.ReferenceType = null;
+                        newReference.ClientId = client.ClientId;
+                        if (newReference.ReferenceId != 0)
+                        {
+                            var dbReference = dbClients.References.SingleOrDefault(s => s.ReferenceId == newReference.ReferenceId);
+                            db.Entry(dbReference).CurrentValues.SetValues(newReference);
+                        }
+                        else
+                        {
+                            dbClients.References.Add(newReference);
+                        }
+
+                    }
+                }
+
+
+                db.SaveChanges();
+                GoLucene.AddUpdateLuceneIndex(client);
+            }
+            catch (Exception)
+            {
+                if (!ClientExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // Put api/trackingclient
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/clienttracking/{id}")]
+        public IHttpActionResult ClientTracking(int id, Client client)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != client.ClientId)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                client.State = null;
+                var dbClients = db.Clients
+                           .Include(x => x.AcademicEducations)
+                           .Include(x => x.Languages)
+                           .Include(x => x.KnownPrograms)
+                           .Include(x => x.WorkExperiences)
+                           .Include(x => x.References)
+                           .Include(x => x.Trackings)
+                           .Single(c => c.ClientId == client.ClientId);
+
+                db.Entry(dbClients).CurrentValues.SetValues(client);
+
+                //Trackings
+                if (client.Trackings != null)
+                {
+                    foreach (var dbSubFoo in dbClients.Trackings.ToList())
+                        if (!client.Trackings.Any(s => s.TrackingId == dbSubFoo.TrackingId))
+                            db.Trackings.Remove(dbSubFoo);
+
+                    foreach (var newSubFoo in client.Trackings)
+                    {
+                        var dbSubFoo = dbClients.Trackings.SingleOrDefault(s => s.TrackingId == newSubFoo.TrackingId);
+                        if (dbSubFoo != null)
+                            db.Entry(dbSubFoo).CurrentValues.SetValues(newSubFoo);
+                        else
+                            dbClients.Trackings.Add(newSubFoo);
+                    }
+                }
+
+
+                db.SaveChanges();
+                GoLucene.AddUpdateLuceneIndex(client);
+            }
+            catch (Exception)
+            {
+                if (!ClientExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST api/Clients
@@ -483,7 +613,6 @@ namespace AccionLaboral.Controllers
             {
                 clients = db.Clients
                     .Include(r => r.AcademicEducations.Select(c => c.City.Country))
-                    //.Include(r => r.Employee)
                     .Include(r => r.State)
                     .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel.Careers))
                     .Include(r => r.AcademicEducations.Select(c => c.Career))
@@ -556,13 +685,8 @@ namespace AccionLaboral.Controllers
                 ClientsFilter filters = id;
                 DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom).AddDays(-1);
                 DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo).AddDays(1);
-                var clients = db.Clients
-                            .Include(r => r.State)
-                            .Include(r => r.Employee)
-                            .Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo)
-                            .ToList()
-                            ;
-                id.Clients = clients;
+                id.Clients = db.Clients.Include(r => r.State).
+                    Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
                 if (filters != null)
                 {
                     string filename = filters.Title.Replace(".", " ") + ".xls";
@@ -580,7 +704,6 @@ namespace AccionLaboral.Controllers
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("~/api/exportclientstracking")]
-        //[System.Web.Http.Route("api/exportclientstracking/{id}")]
         public HttpResponseMessage ExportClientsTracking(ClientsFilter id)
         {
             try
@@ -797,116 +920,42 @@ namespace AccionLaboral.Controllers
         }
 
         #region findclientbyidentitynumber
-        public class FindClient
-        { 
-            public int EmployeeId { get; set;}
-            public string EmployeeRolAlias { get; set; }
-            public string ClientIdentityNumber { get; set; }
-        }
+        //[System.Web.Http.HttpGet]
+        //[System.Web.Http.Route("api/FindClientByIdentityNumber/{id}")]
+        //public Client FindClientByIdentityNumber(string id)
+        //{
+        //    Client client = null;
+        //    try
+        //    {
+        //        client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+        //            .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
+        //            .Include(r => r.AcademicEducations.Select(c => c.Career))
+        //            .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+        //            .Include(r => r.KnownPrograms)
+        //            .Include(r => r.Languages.Select(l => l.Language))
+        //            .Include(r => r.Languages.Select(l => l.LanguageLevel))
+        //            .Include(r => r.References.Select(c => c.City))
+        //            .Include(r => r.References.Select(t => t.ReferenceType))
+        //            .Include(r => r.WorkExperiences)
+        //            .Include(r => r.WorkExperiences.Select(c => c.City))
+        //            .Include(r => r.State)
+        //            .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
+        //            .Include(r => r.Trackings.Select(c => c.State))
+        //            .Include(r => r.Trackings.Select(c => c.TrackingType))
+        //            .First(r => r.IdentityNumber == id);
 
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/FindClientByIdentityNumber/")]
-        public IHttpActionResult FindClientByIdentityNumber(FindClient id)
-        {
-            try
-            {
-                if (id.EmployeeRolAlias == "ASREC")
-                {
-                     var client = db.Clients
-                             .Include(r => r.References)
-                             .Select(x => new Client
-                             {
-                                 ClientId = x.ClientId,
-                                 EmployeeId = x.EmployeeId,
-                                 FirstName = x.FirstName,
-                                 LastName = x.LastName,
-                                 Age = x.Age,
-                                 BBPin = x.BBPin,
-                                 Birthday = x.Birthday,
-                                 Cellphone = x.Cellphone,
-                                 EnrollDate = x.EnrollDate,
-                                 HaveCar = x.HaveCar,
-                                 HaveLicense = x.HaveLicense,
-                                 HaveMotorcycle = x.HaveMotorcycle,
-                                 IdentityNumber = x.IdentityNumber,
-                                 IsStudying = x.IsStudying,
-                                 LicenseType = x.LicenseType,
-                                 Occupation = x.Occupation,
-                                 QtyClasses = x.QtyClasses,
-                                 WageAspiration = x.WageAspiration,
-                                 Twitter = x.Twitter,
-                                 CompaniesWithPreviouslyRequested = x.CompaniesWithPreviouslyRequested,
-                                 CompleteAddress = x.CompleteAddress,
-                                 CorrelativeCode = x.CorrelativeCode,
-                                 DesiredEmployment = x.DesiredEmployment,
-                                 Email = x.Email,
-                                 EnglishPercentage = x.EnglishPercentage,
-                                 FacebookEmail = x.FacebookEmail,
-                                 Neighborhood = x.Neighborhood,
-                                 CurrentStudies = x.CurrentStudies,
-                                 References = x.References
-                             }
-                             )
-                             .Where(r => r.EmployeeId == id.EmployeeId && r.IdentityNumber == id.ClientIdentityNumber)
-                             .First()
-                             ;
+        //        if (client == null)
+        //        {
+        //            return client;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        var x = e.Message;
+        //    }
 
-                     return Ok(client);
-                }
-                else
-                {
-                     var client = db.Clients
-                            .Select(x => new 
-                            {
-                                x.ClientId,
-                                x.EmployeeId,
-                                x.FirstName,
-                                x.LastName,
-                                x.Age,
-                                x.BBPin,
-                                x.Birthday,
-                                x.Cellphone,
-                                x.EnrollDate,
-                                x.HaveCar,
-                                x.HaveLicense,
-                                x.HaveMotorcycle,
-                                x.IdentityNumber,
-                                x.IsStudying,
-                                x.LicenseType,
-                                x.Occupation,
-                                x.QtyClasses,
-                                x.WageAspiration,
-                                x.Twitter,
-                                x.CompaniesWithPreviouslyRequested,
-                                x.CompleteAddress,
-                                x.CorrelativeCode,
-                                x.DesiredEmployment,
-                                x.Email,
-                                x.EnglishPercentage,
-                                x.FacebookEmail,
-                                x.Neighborhood,
-                                x.CurrentStudies,
-                                x.References
-                            }
-                            )
-                            .Where(r => r.IdentityNumber == id.ClientIdentityNumber)
-                            .First();
-
-                     return Ok(client);
-                }
-
-            }
-            catch (Exception e)
-            {
-                var x = e.Message;
-            }
-
-            
-            NotFound();
-            Client c = null;
-
-            return Ok(c);
-        }
+        //    return client;
+        //}
         #endregion
     }
 }

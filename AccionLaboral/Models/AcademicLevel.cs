@@ -10,7 +10,7 @@ namespace AccionLaboral.Models
     public class AcademicLevel
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]   
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AcademicLevelId { get; set; }
         [Required]
         public string Name { get; set; }

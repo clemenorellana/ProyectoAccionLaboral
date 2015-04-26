@@ -95,6 +95,7 @@ angular.module('AccionLaboralApp', [
 
 
             $rootScope.userLoggedIn = authService.authentication.employee;
+            $rootScope.userToken = authService.authentication.token;
 
             $rootScope.validPass = true;
             $scope.alerts = [];
@@ -308,13 +309,15 @@ angular.module('AccionLaboralApp', [
                         password: password
                     };
 
-                   
+                    //var token = authService.accessToken($scope.loginData);
+                    //$scope.loginData.token = token;
                     authService.login($scope.loginData).then(function (response) {
                         $scope.launch('wait');
                         var employee = response;
 
                         $scope.userValid = (employee.EmployeeId != 0) ? true : false;
 
+                        //if ($scope.userValid == true && !employee.User.Active)
                         if ($scope.userValid == true && !employee.User.Active)
                         {
                             $scope.skinClass = "bg-black";
@@ -322,6 +325,7 @@ angular.module('AccionLaboralApp', [
                             $scope.addAlert("danger", "El usuario esta inactivo.");
                             $scope.userValid = false;
                             $rootScope.userLoggedIn = null;
+                            $rootScope.userToken = null;
                             authService.logOut();
                             
                         }
@@ -330,6 +334,7 @@ angular.module('AccionLaboralApp', [
                             $scope.template = 'Home/Home';
                             $scope.skinClass = "skin-blue";
                             $rootScope.userLoggedIn = authService.authentication.employee;
+                            $rootScope.userToken = authService.authentication.token;
                             $rootScope.forgotPass = false;
                             $location.path('/HomePage');
                             $scope.start();
@@ -341,13 +346,14 @@ angular.module('AccionLaboralApp', [
                             $scope.addAlert("danger", "Usuario o clave invalido. Intente de nuevo.");
                             $scope.userValid = false;
                             $rootScope.userLoggedIn = null;
+                            $rootScope.userToken = null;
                             authService.logOut();
                             $location.path('/');
                         }
                     },
                     function (err) {
                         $scope.message = err.error_description;
-                        $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                        $scope.addAlert("danger",$scope.message);
                         });
                 }
                 else {
@@ -375,6 +381,7 @@ angular.module('AccionLaboralApp', [
 
         authService.fillAuthData();
         $rootScope.userLoggedIn = authService.authentication.employee;
+        $rootScope.userToken = authService.authentication.token;
 
         if (authService.authentication.isAuth) {
             Idle.watch();

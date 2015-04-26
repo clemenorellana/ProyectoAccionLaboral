@@ -14,9 +14,15 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
+using System.Web;
 
 namespace AccionLaboral.Controllers
 {
+    //[Authorize]
     public class UsersController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
@@ -29,35 +35,56 @@ namespace AccionLaboral.Controllers
         // GET api/Users
         [Route("api/Users")]
         [HttpGet]
-        public IQueryable<User> GetUsers()
+        public HttpResponseMessage GetUsers()
         {
-            return db.Users;
+            var users = db.Users.ToList();
+            return Request.CreateResponse(HttpStatusCode.OK, users);
         }
 
         // GET api/UsersFree
         [Route("api/UsersFree")]
         [HttpGet]
-        public IQueryable<User> GetUsersFree()
+        public IHttpActionResult GetUsersFree()
         {
-            return db.Users.Where(r => r.Busy == false);
+            var users = db.Users.Where(r => r.Busy == false).ToList();
+            return Ok(users);
         }
 
         [Route("api/Users/Login")]
         [HttpPost]
-        public Employee Login(User user)
+        public EmployeeInfo Login(User user)
         {
-            user.Password = Encryptdata(user.Password);
-            var users = db.Users.Where(r => r.UserName == user.UserName && r.Password == user.Password).ToList();
             Employee employee = new Employee();
-            if (users.Count == 0)
-                return employee;
-            
+            //if (users.Count == 0)
+            //return employee;
+            var userId = User.Identity.GetUserId();
+            var users = db.Users.ToList();
 
-            var userId = users[0].UserId;
+            employee = db.Employees.Include(r => r.Role).Include(r => r.User).Where(r => r.UserId == userId).ToList()[0];
 
-            employee = db.Employees.Include(r => r.Role).Where(r => r.UserId == userId).ToList()[0];
-
-            return employee;
+            EmployeeInfo employeeInfo = new EmployeeInfo
+            {
+                EmployeeId = employee.EmployeeId,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email,
+                Birthday = employee.Birthday,
+                Age = employee.Age,
+                Cellphone = employee.Cellphone,
+                HomePhone = employee.HomePhone,
+                Address = employee.Address,
+                Gender = employee.Gender,
+                EmployeeAlias = employee.EmployeeAlias,
+                CareerId = employee.CareerId,
+                AdmissionDate = employee.AdmissionDate,
+                RoleId = employee.RoleId,
+                UserId = employee.UserId,
+                Photo = employee.Photo,
+                User = new UserInfo { UserName = employee.User.UserName, Active = employee.User.Active, Busy = employee.User.Busy },
+                Role = new RoleInfo { Name = employee.Role.Name, Alias = employee.Role.Alias },
+                Career = employee.Career
+            };
+            return employeeInfo;
         }
 
 
@@ -65,22 +92,22 @@ namespace AccionLaboral.Controllers
         [HttpPost]
         public bool ValidateUserName(User user)
         {
-            return UserExists(user.UserName);
+            return UserNameExists(user.UserName);
         }
 
-        [Route("api/Users/ChangePassword")]
+        /*[Route("api/Users/ChangePassword")]
         [HttpPut]
         public IHttpActionResult ChangePassword(User user)
         {
-            user.Password = Encryptdata(user.Password);
+            user.PasswordHash = Encryptdata(user.PasswordHash);
 
             var userToUpdate = db.Users.Where(r => r.UserName == user.UserName).ToList();
-            userToUpdate[0].Password = user.Password;
+            userToUpdate[0].PasswordHash = user.PasswordHash;
 
             user = userToUpdate[0];
 
-            return PutUser(user.UserId, user);
-        }
+            return PutUser(user.Id, user);
+        }*/
 
 
         [Route("api/Users/RequestChangePassword")]
@@ -92,7 +119,7 @@ namespace AccionLaboral.Controllers
             if (users.Count == 0)
                 return false;
 
-            var userId = users[0].UserId;
+            var userId = users[0].Id;
 
             Employee employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
 
@@ -131,7 +158,7 @@ namespace AccionLaboral.Controllers
         [Route("api/Users")]
         [HttpGet]
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
+        public IHttpActionResult GetUser(string id)
         {
             User user = db.Users.Find(id);
             if (user == null)
@@ -143,14 +170,14 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Users/5
-        public IHttpActionResult PutUser(int id, User user)
+        public IHttpActionResult PutUser(string id, User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.UserId)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
@@ -177,7 +204,7 @@ namespace AccionLaboral.Controllers
         }
 
         // POST api/Users
-        [Route("api/Users")]
+        /*[Route("api/Users")]
         [HttpPost]
         [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(User user)
@@ -189,7 +216,7 @@ namespace AccionLaboral.Controllers
                     return BadRequest(ModelState);
                 }
 
-                user.Password = Encryptdata(user.Password);
+                user.PasswordHash = user.PasswordHash; //Encryptdata(user.Password);
 
                 db.Users.Add(user);
                 db.SaveChanges();
@@ -201,23 +228,23 @@ namespace AccionLaboral.Controllers
                 var x = e.Message;
             }
             return CreatedAtRoute("DefaultApi", new { controller = "users", id = user.UserId }, user);
-        }
+        }*/
 
         // DELETE api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(int id)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+        /* [ResponseType(typeof(User))]
+         public IHttpActionResult DeleteUser(string id)
+         {
+             ApplicationUser user = db.Users.Find(id);
+             if (user == null)
+             {
+                 return NotFound();
+             }
 
-            db.Users.Remove(user);
-            db.SaveChanges();
+             db.Users.Remove(user);
+             db.SaveChanges();
 
-            return Ok(user);
-        }
+             return Ok(user);
+         }*/
 
         protected override void Dispose(bool disposing)
         {
@@ -228,12 +255,12 @@ namespace AccionLaboral.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
-            return db.Users.Count(e => e.UserId == id) > 0;
+            return db.Users.Count(e => e.Id == id) > 0;
         }
 
-        private bool UserExists(string userName)
+        private bool UserNameExists(string userName)
         {
             return db.Users.Count(e => e.UserName == userName) > 0;
         }
@@ -259,6 +286,113 @@ namespace AccionLaboral.Controllers
             }
             return data;
         }
+
+        #region Helpers
+
+        private IAuthenticationManager Authentication
+        {
+            get { return Request.GetOwinContext().Authentication; }
+        }
+
+        private IHttpActionResult GetErrorResult(IdentityResult result)
+        {
+            if (result == null)
+            {
+                return InternalServerError();
+            }
+
+            if (!result.Succeeded)
+            {
+                if (result.Errors != null)
+                {
+                    foreach (string error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // No ModelState errors are available to send, so just return an empty BadRequest.
+                    return BadRequest();
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return null;
+        }
+
+        private class ExternalLoginData
+        {
+            public string LoginProvider { get; set; }
+            public string ProviderKey { get; set; }
+            public string UserName { get; set; }
+
+            public IList<Claim> GetClaims()
+            {
+                IList<Claim> claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider));
+
+                if (UserName != null)
+                {
+                    claims.Add(new Claim(ClaimTypes.Name, UserName, null, LoginProvider));
+                }
+
+                return claims;
+            }
+
+            public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
+            {
+                if (identity == null)
+                {
+                    return null;
+                }
+
+                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
+                    || String.IsNullOrEmpty(providerKeyClaim.Value))
+                {
+                    return null;
+                }
+
+                if (providerKeyClaim.Issuer == ClaimsIdentity.DefaultIssuer)
+                {
+                    return null;
+                }
+
+                return new ExternalLoginData
+                {
+                    LoginProvider = providerKeyClaim.Issuer,
+                    ProviderKey = providerKeyClaim.Value,
+                    UserName = identity.FindFirstValue(ClaimTypes.Name)
+                };
+            }
+        }
+
+        private static class RandomOAuthStateGenerator
+        {
+            private static RandomNumberGenerator _random = new RNGCryptoServiceProvider();
+
+            public static string Generate(int strengthInBits)
+            {
+                const int bitsPerByte = 8;
+
+                if (strengthInBits % bitsPerByte != 0)
+                {
+                    throw new ArgumentException("strengthInBits must be evenly divisible by 8.", "strengthInBits");
+                }
+
+                int strengthInBytes = strengthInBits / bitsPerByte;
+
+                byte[] data = new byte[strengthInBytes];
+                _random.GetBytes(data);
+                return HttpServerUtility.UrlTokenEncode(data);
+            }
+        }
+
+        #endregion
 
     }
 }

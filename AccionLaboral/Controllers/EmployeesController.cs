@@ -1,4 +1,5 @@
 ﻿using AccionLaboral.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace AccionLaboral.Controllers
 {
     public class EmployeesController : ApiController
     {
-        private AccionLaboralContext db = new AccionLaboralContext();
+        private AccionLaboralContext db;
 
         public EmployeesController()
         {
+            db = new AccionLaboralContext();
             db.Database.CommandTimeout = 180;
+            
         }
 
         // GET api/Employees
@@ -28,18 +31,8 @@ namespace AccionLaboral.Controllers
         [HttpGet]
         public IHttpActionResult GetEmployees()
         {
-            var employees = db.Employees.Select(x => new 
-            {
-                x.EmployeeId,
-                x.EmployeeAlias,
-                x.FirstName,
-                x.LastName,
-                x.Email,
-                x.Cellphone
-            }).OrderBy(r => r.FirstName).ToList();
-
-
-            return Ok(employees); 
+            var employees = db.Employees.Include("Career").Include("Role").ToList();
+            return Ok(employees);
         }
 
 
@@ -54,7 +47,7 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(Employee))]
         public IHttpActionResult GetEmployee(int id)
         {
-            Employee employee = db.Employees.Find(id);
+            Employee employee = db.Employees.Include(r=>r.User).Include(r=>r.Role).Where(r=> r.EmployeeId == id).First();
             if (employee == null)
             {
                 return NotFound();
@@ -112,7 +105,7 @@ namespace AccionLaboral.Controllers
             db.SaveChanges();
 
             
-            User user = db.Users.Find(employee.UserId);
+            IdentityUser user = db.Users.Find(employee.UserId);
 
             MailMessage message = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
                                              new MailAddress(employee.Email)
@@ -129,13 +122,11 @@ namespace AccionLaboral.Controllers
                                     <BR/>
                                     Su usuario es: {1}
                                     <BR/>
-                                    Su contraseña temporal es: {2}
-                                    <BR/>
                                     <BR/>
                                     <a href={3}>De clic aquí para activar su cuenta</a>"
                                   , employee.FirstName
                                   , user.UserName
-                                  , user.Password
+                                  //, user.Password
                                   , uri);
             //<BR/>
             //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
