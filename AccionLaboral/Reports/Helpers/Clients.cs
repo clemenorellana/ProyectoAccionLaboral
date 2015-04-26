@@ -1,4 +1,5 @@
 ﻿using AccionLaboral.Helpers.Filters;
+using AccionLaboral.Models;
 using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -27,12 +28,15 @@ namespace AccionLaboral.Reports.Helpers
             for (int i = 0; i < filters.Clients.Count; i++)
             {
                 DateTime enrollDate = filters.Clients[i].EnrollDate ?? DateTime.Now;
-                sheet1.GetRow(i + 5).GetCell(0).SetCellValue(filters.Clients[i].ClientId);
+                sheet1.GetRow(i + 5).GetCell(0).SetCellValue(filters.Clients[i].IdentityNumber);
                 sheet1.GetRow(i + 5).GetCell(1).SetCellValue(filters.Clients[i].FirstName);
                 sheet1.GetRow(i + 5).GetCell(2).SetCellValue(filters.Clients[i].LastName);
-                sheet1.GetRow(i + 5).GetCell(3).SetCellValue(filters.Clients[i].Email);
-                sheet1.GetRow(i + 5).GetCell(4).SetCellValue(filters.Clients[i].CompleteAddress);
-                sheet1.GetRow(i + 5).GetCell(5).SetCellValue(filters.Clients[i].Cellphone);
+                //sheet1.GetRow(i + 5).GetCell(3).SetCellValue(filters.Clients[i].Email);
+                sheet1.GetRow(i + 5).GetCell(3).SetCellValue(filters.Clients[i].CompleteAddress);
+                sheet1.GetRow(i + 5).GetCell(4).SetCellValue(filters.Clients[i].Cellphone);
+                Employee employee = filters.Clients[i].Employee;
+                sheet1.GetRow(i + 5).GetCell(5).SetCellValue((employee != null) ? employee.FirstName + " " + employee.LastName : "");
+                
                 sheet1.GetRow(i + 5).GetCell(6).SetCellValue(filters.Clients[i].State.Name);
                 sheet1.GetRow(i + 5).GetCell(7).SetCellValue(enrollDate.ToString("dd/MM/yyyy"));
             }

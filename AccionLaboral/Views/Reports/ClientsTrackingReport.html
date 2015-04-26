@@ -77,12 +77,12 @@
                         </div>
                     </div>
                     <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
-                    <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" ng-show="!load">
+                    <table class="table table-bordered" ng-show="!load">
                         <tr>
                             <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
                             <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
                             <th ng-click="sort='Age' ; reverse=!reverse">Edad</th>
-                            <th ng-click="sort='EmployeeAlias' ; reverse=!reverse">Empleado</th>
+                            <th ng-click="sort='EmployeeAlias' ; reverse=!reverse">Asesor</th>
                             <th ng-click="sort='Name' ; reverse=!reverse">Tipo de seguimiento</th>
                             <th ng-click="sort='StateId' ; reverse=!reverse">Estado</th>
                             <th ng-click="sort='CompleteAddress' ; reverse=!reverse">Dirección</th>
@@ -139,7 +139,7 @@
                             <td>{{customer.FirstName}}</td>
                             <td>{{customer.LastName}}</td>
                             <td>{{customer.Age}}</td>
-                            <td>{{customer.Employee.EmployeeAlias}}</td>
+                            <td>{{customer.EmployeeAlias}}</td>
                             <td>Seguimiento de {{customer.Trackings[0].TrackingType.Name}}</td>
                             <td>{{customer.State.Name}}</td>
                             <td>{{customer.CompleteAddress}}</td>

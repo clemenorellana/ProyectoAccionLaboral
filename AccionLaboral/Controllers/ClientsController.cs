@@ -35,9 +35,11 @@ namespace AccionLaboral.Controllers
         public IHttpActionResult GetClients()
         {
             var clients = db.Clients.Include(r => r.State)
+                .Include(r => r.Employee.EmployeeAlias)
                 .Select(x => new
                 {
                     x.ClientId,
+                    x.IdentityNumber,
                     x.FirstName,
                     x.LastName,
                     x.EnrollDate,
@@ -47,7 +49,8 @@ namespace AccionLaboral.Controllers
                     x.State,
                     x.CompleteAddress,
                     x.Cellphone,
-                    x.RejectionDescription
+                    x.RejectionDescription,
+                    x.Employee.EmployeeAlias
                 })
                 .OrderByDescending(r => r.EnrollDate)
                 .ToList();
@@ -553,8 +556,13 @@ namespace AccionLaboral.Controllers
                 ClientsFilter filters = id;
                 DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom).AddDays(-1);
                 DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo).AddDays(1);
-                id.Clients = db.Clients.Include(r => r.State).
-                    Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
+                var clients = db.Clients
+                            .Include(r => r.State)
+                            .Include(r => r.Employee)
+                            .Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo)
+                            .ToList()
+                            ;
+                id.Clients = clients;
                 if (filters != null)
                 {
                     string filename = filters.Title.Replace(".", " ") + ".xls";

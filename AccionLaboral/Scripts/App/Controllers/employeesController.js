@@ -118,7 +118,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
 
 
     //Sorting
-    $scope.sort = "EmployeeAlias";
+    $scope.sort = "FirstName";
     $scope.reverse = false;
 
     $scope.changeSort = function (value) {
@@ -189,6 +189,7 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         });
     }
     else {
+       
         actionEmployee = "edit";
         $scope.editUserName = false;
         $scope.employee_modalTitle = "Editar Empleado";
@@ -198,9 +199,9 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
         employeesRepo.getEmployeesUsers().success(function (data) {
             $scope.employeesUsersList = data;
         });
-
+        
         employeesRepo.getEmployee(id).success(function (data) {
-            
+            $scope.load = true;
             $scope.employee_EmployeeId = data.EmployeeId;
             $scope.employee_FirstName = data.FirstName;
             $scope.employee_LastName = data.LastName;
@@ -217,7 +218,13 @@ angular.module("employeesController", ['ngRoute', 'employeesRepository', 'alertR
             $scope.employee_Role = data.RoleId;
             $scope.employee_User = data.UserId;
             $scope.employee_Photo = data.Photo;
+            $scope.load = false;
+        }).error(function (data) {
+            alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
         });
+        
     }
 
     $scope.screenAction = actionEmployee;
