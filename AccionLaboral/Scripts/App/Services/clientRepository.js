@@ -99,7 +99,7 @@ accionLabControllers.factory('customerRepository', ['$http', "$rootScope", funct
                 "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
 
-                "CityId": client.CityId.CityId,
+                "CityId": (client.CityId) ? client.CityId.CityId:null,
                 "EmployeeId": client.AdvisorId,
                 "CareerId": client.CareerId,
                 "StateId": 1,

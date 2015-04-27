@@ -97,6 +97,7 @@ namespace AccionLaboral.Controllers
         public IHttpActionResult GetEnrolledClients(int id)
         {
             var clients = db.Clients.Include(r => r.State)
+                .Include(r => r.Trackings.Select(c => c.TrackingType))
                 .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, x.StateId, x.EmployeeId, x.State })
                 .OrderBy(r => r.EnrollDate)
                 .Where(r => r.EmployeeId == id).ToList();
@@ -112,7 +113,7 @@ namespace AccionLaboral.Controllers
         public IHttpActionResult GetEnrolledClients()
         {
             return Ok(db.Clients.Include(r => r.State)
-                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, StateId = x.StateId, x.EmployeeId, x.State })
+                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, x.StateId, x.EmployeeId, x.State })
                 .OrderBy(r => r.EnrollDate)
                 .ToList());
 

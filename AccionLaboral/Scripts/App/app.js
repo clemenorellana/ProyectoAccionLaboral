@@ -53,8 +53,8 @@ angular.module('AccionLaboralApp', [
         }
     })
     .controller('mainController', [
-        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', 'Idle', '$modal', 'alertService',
-        function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService, Idle, Keepalive, $modal, alertService) {
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', 'Idle', '$modal', '$modalStack', '$log', 'alertService', 'loadingService',
+        function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService, Idle, Keepalive, $modal, $modalStack, $log, alertService, loadingService) {
             $scope.showModal = false;
             $rootScope.loading = true;
             function closeModals() {
@@ -129,6 +129,24 @@ angular.module('AccionLaboralApp', [
                     }
                 }, 1000);
             }; // end fakeProgress 
+
+            $scope.open = function (size) {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'loadingModal.html',
+                        controller: 'mainController',
+                        size: size,
+                        resolve: {
+                            items: function () {
+                                return $scope.items;
+                            }
+                        }
+                    });
+                modalInstance.result.then(function (selectedItem) {
+                    $rootScope.enrollClient = selectedItem;
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
 
             $scope.launch = function (dialog) {
                 $dialogs.wait(msgs[i++], progress);
@@ -302,6 +320,7 @@ angular.module('AccionLaboralApp', [
             
             $scope.validateUser = function (userName, password, isValidForm) {
                 //$scope.launch('wait');
+                $("#loadingModal").modal('show');
                 if (isValidForm) {
                      
                     $scope.loginData = {
@@ -327,15 +346,17 @@ angular.module('AccionLaboralApp', [
                             $rootScope.userLoggedIn = null;
                             $rootScope.userToken = null;
                             authService.logOut();
-                            
+                            $("#loadingModal").modal('hide');
                         }
                         else if ($scope.userValid == true)
                         {
+                            $("#loadingModal").modal('hide');
                             $scope.template = 'Home/Home';
                             $scope.skinClass = "skin-blue";
                             $rootScope.userLoggedIn = authService.authentication.employee;
                             $rootScope.userToken = authService.authentication.token;
                             $rootScope.forgotPass = false;
+                            $modalStack.dismissAll();
                             $location.path('/HomePage');
                             $scope.start();
                         }
@@ -348,16 +369,19 @@ angular.module('AccionLaboralApp', [
                             $rootScope.userLoggedIn = null;
                             $rootScope.userToken = null;
                             authService.logOut();
+                            $("#loadingModal").modal('hide');
                             $location.path('/');
                         }
                     },
                     function (err) {
                         $scope.message = err.error_description;
-                        $scope.addAlert("danger",$scope.message);
+                        $scope.addAlert("danger", $scope.message);
+                        $("#loadingModal").modal('hide');
                         });
                 }
                 else {
                     $scope.addAlert("danger", "Existen campos invalidos");
+                    $("#loadingModal").modal('hide');
                 }
                 }
 
