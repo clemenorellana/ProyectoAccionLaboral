@@ -149,8 +149,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.setFilteredReport();
 
         })
-                .error(function (data) {
-                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                .error(function (error) {
+                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
                 });
@@ -166,7 +166,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                  .success(function (data) {
                      $window.open("Clients/Download/" + $scope.filters.Title.replace(".", " "), '_blank');
                  }).error(function (data, status, headers, config) {
-                     alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
+                     alertService.add('danger', 'Error', 'No se ha podido generar el reporte.' + ' \nDetalle: ' + data.Message);
                      $scope.alertsTags = $rootScope.alerts;
                  });
                 } else {
@@ -316,7 +316,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     
                 })
                     .error(function(data) {
-                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + data.Message);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.load = false;
                     });
@@ -957,8 +957,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                                 alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                                 $scope.alertsTags = $rootScope.alerts;
                                 $location.path("/AllClients");
-                            }).error(function () {
-                                alertService.add('danger', 'Error', 'No se ha podido actualizar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
+                            }).error(function (error) {
+                                alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.' + ' \nDetalle: ' + erro.Message);
                                 $scope.alertsTags = $rootScope.alerts;
                             });
                             $scope.action = '';
@@ -969,8 +969,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                                 alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                                 $scope.alertsTags = $rootScope.alerts;
                                 $location.path("/AllClients");
-                            }).error(function () {
-                                alertService.add('danger', 'Error', 'No se ha podido insertar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
+                            }).error(function (error) {
+                                alertService.add('danger', 'Error', 'No se ha podido insertar el registro.' + ' \nDetalle: ' + error.Message);
                                 $scope.alertsTags = $rootScope.alerts;
                             });
 
@@ -1000,7 +1000,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.New = data;
                         $scope.enableOrDisableCustomer('Deshabilitado', 'Se ha deshabilitado un cliente correctamente.');
                     }).error(function (error) {
-                        alertService.add('danger', 'Error', 'No se ha podido deshabilitar el cliente.');
+                        alertService.add('danger', 'Error', 'No se ha podido deshabilitar el cliente.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
                 };
@@ -1014,7 +1014,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         $scope.New = data;
                         $scope.enableOrDisableCustomer('Habilitado', 'Se ha habilitado un cliente correctamente.');
                     }).error(function (error) {
-                        alertService.add('danger', 'Error', 'No se ha podido habilitar el cliente.');
+                        alertService.add('danger', 'Error', 'No se ha podido habilitar el cliente.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
                 };
@@ -1028,8 +1028,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         alertService.add('success', title, msg);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.setData();
-                    }).error(function () {
-                        alertService.add('danger', 'Error', 'No se ha podido deshabilitar el cliente.');
+                    }).error(function (error) {
+                        alertService.add('danger', 'Error', 'No se ha podido deshabilitar el cliente.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
                 }
@@ -1040,8 +1040,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         alertService.add('success', 'Eliminado', 'El cliente ha sido eliminado.');
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.setData();
-                    }).error(function () {
-                        alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.');
+                    }).error(function (error) {
+                        alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
 
@@ -1089,7 +1089,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             $scope.personalReferencesEnroll.push($scope.enrollClient.References[j]);
                     }
             }).error(function (error) {
-                alertService.add('danger', 'Error', 'No se han podido cargar los datos del cliente.');
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos del cliente.' + ' \nDetalle: ' + error.Message);
                 $scope.alertsTags = $rootScope.alerts;
             });
         }
@@ -1111,7 +1111,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
 
         $scope.enrollClient_cancel = function () {
-            $scope.saveEnrollClient('reject');
+            //$scope.saveEnrollClient('reject');
             $location.path("/EnrolledClients");
         }
 
@@ -1147,9 +1147,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     //$location.path("EnrolledClients");
                 }).error(function (error) {
                     if (action == 'reject')
-                        alertService.add('danger', 'Error', 'No se ha podido rechazar el cliente.');
+                        alertService.add('danger', 'Error', 'No se ha podido rechazar el cliente.' + ' \nDetalle: ' + error.Message);
                     else
-                        alertService.add('danger', 'Error', 'No se ha podido inscribir el cliente.');
+                        alertService.add('danger', 'Error', 'No se ha podido inscribir el cliente.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
                 });
@@ -1299,7 +1299,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
              })
                      .error(function (data) {
-                         alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                         alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
                          $scope.alertsTags = $rootScope.alerts;
                          $scope.load = false;
                      });
@@ -1374,8 +1374,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         alertService.add('success', 'Asignado', 'El asesor ha sido asignado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.backToSearch();
-                    }).error(function () {
-                        alertService.add('danger', 'Error', 'No se ha podido asignar asesor.');
+                    }).error(function (error) {
+                        alertService.add('danger', 'Error', 'No se ha podido asignar asesor.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
                 } else {
@@ -1454,8 +1454,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.New = data;
                 $scope.load = false;
        
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se han podido cargar los datos.');
+            }).error(function (error) {
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos.' + ' \nDetalle: ' + error.Message);
                 $scope.alertsTags = $rootScope.alerts;
                 $scope.load = false;
             });
@@ -2066,8 +2066,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                             $scope.alertsTags = $rootScope.alerts;
                             $location.path("/AllClients");
-                        }).error(function () {
-                            alertService.add('danger', 'Error', 'No se ha podido actualizar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
+                        }).error(function (error) {
+                            alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.' + ' \nDetalle: ' + error.Message);
                             $scope.alertsTags = $rootScope.alerts;
                         });
                     } else {
@@ -2151,8 +2151,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
 
             })
-                    .error(function (data) {
-                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                    .error(function (error) {
+                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.load = false;
                     });
@@ -2297,15 +2297,15 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                 $scope.New = data;
 
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se han podido cargar los datos.');
+            }).error(function (error) {
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos.' + ' \nDetalle: ' + error.Message);
                 $scope.alertsTags = $rootScope.alerts;
                 $location.url('ClientTracking');
             });
             customerRepository.getStates().success(function (data) {
                 $scope.States = data;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.');
+            }).error(function (error) {
+                alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.' + ' \nDetalle: ' + error.Message);
                 $scope.alertsTags = $rootScope.alerts;
             });
         }
@@ -2992,8 +2992,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                     $location.path("/AllClients");
-                }).error(function () {
-                    alertService.add('danger', 'Error', 'No se ha podido actualizar el registro. Recuerde que la foto debe tener un tama\u00f1o m\u00e1ximo de 1MB');
+                }).error(function (error) {
+                    alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                 });
             } else {
@@ -3077,7 +3077,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                      .success(function (data) {
                          $window.open("Clients/Download/" + $scope.filters.Title.replace(".", " "), '_blank');
                      }).error(function (data, status, headers, config) {
-                         alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
+                         alertService.add('danger', 'Error', 'No se ha podido generar el reporte.' + ' \nDetalle: ' + data.Message);
                          $scope.alertsTags = $rootScope.alerts;
                      });
                     } else {
@@ -3272,15 +3272,15 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                 $scope.New = data;
        
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se han podido cargar los datos.');
+            }).error(function (error) {
+                alertService.add('danger', 'Error', 'No se han podido cargar los datos.' + ' \nDetalle: ' + error.Message);
                 $scope.alertsTags = $rootScope.alerts;
-                $location.url('ClientTracking');
+                $location.path('ClientTracking');
             });
             customerRepository.getStates().success(function (data) {
                 $scope.States = data;
-            }).error(function () {
-                alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.');
+            }).error(function (error) {
+                alertService.add('danger', 'Error', 'No se han podido cargar los estados de clientes.' + ' \nDetalle: ' + error.Message);
                 $scope.alertsTags = $rootScope.alerts;
             });
         }
@@ -3312,8 +3312,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
 
             })
-                    .error(function (data) {
-                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                    .error(function (error) {
+                        alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.load = false;
                     });
@@ -3372,11 +3372,10 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             });
         };
         $scope.insertTracking = function (tracking) {
-            //tracking.ShipmentTypeId = 1;
             tracking.TrackingId = $scope.Trackings[0].TrackingId;
             customerRepository.InsertTracking(tracking).success(function () {
                 $scope.setTracking();
-            }).error(function () {
+            }).error(function (error) {
 
             });
         };
@@ -3389,8 +3388,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.saveTracking = function () {
             $scope.Client.Trackings[0].TrackingDetails = $scope.Trackings[0].TrackingDetails;
             customerRepository.UpdateTracking($scope.Client).success(function () {
-                $location.url('ClientTracking');
-            }).error(function () {
+                $location.path('ClientTracking');
+            }).error(function (error) {
                 
             });
         };
@@ -3398,8 +3397,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.getTracking = function (tracking) {
             var index = $scope.Trackings[0].TrackingDetails.indexOf(tracking);
             $scope.tracking = angular.copy($scope.Trackings[0].TrackingDetails[index]);
-            //if ($scope.tracking.Comment)
-            //$scope.tracking.Comment = $scope.Trackings[0].TrackingDetails[index].Comment;
             $scope.index = index;
             $scope.action = 'edit';
         }
@@ -3508,8 +3505,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $scope.alertsTags = $rootScope.alerts;
             //max rows for data table
         })
-                .error(function (data) {
-                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                .error(function (error) {
+                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
                 });
@@ -3626,8 +3623,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
 
         })
-                .error(function (data) {
-                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.');
+                .error(function (error) {
+                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
                 });

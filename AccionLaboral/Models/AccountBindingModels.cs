@@ -64,6 +64,8 @@ namespace AccionLaboral.Models
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
+        public bool Active { get; set; }
+        public bool Busy { get; set; }
     }
 
     public class RemoveLoginBindingModel

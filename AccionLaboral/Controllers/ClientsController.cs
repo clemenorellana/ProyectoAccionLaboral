@@ -33,7 +33,7 @@ namespace AccionLaboral.Controllers
         // GET api/Clients
         public IHttpActionResult GetClients()
         {
-            var clients = db.Clients.Include(r => r.State)
+            var clients = db.Clients.Include(r => r.State).Include(r=>r.Employee)
                 .Select(x => new
                 {
                     x.ClientId,
@@ -47,6 +47,7 @@ namespace AccionLaboral.Controllers
                     x.CompleteAddress,
                     x.Cellphone,
                     x.IdentityNumber,
+                    x.Employee.Address,
                     x.RejectionDescription
                 })
                 .OrderByDescending(r => r.EnrollDate)
