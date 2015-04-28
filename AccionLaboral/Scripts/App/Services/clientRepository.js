@@ -151,7 +151,8 @@ accionLabControllers.factory('customerRepository', ['$http', "$rootScope", funct
         }
         ,
         findClientByIdentityNumber: function (id) {
-            return $http.get('api/FindClientByIdentityNumber' + '/' + id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
+            //return $http.get('api/FindClientByIdentityNumber' + '/' + id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.post('api/FindClientByIdentityNumber' , id, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         }
 
     }
