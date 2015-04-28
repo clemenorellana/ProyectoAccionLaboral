@@ -8,31 +8,29 @@
     {{ item.msg }}
 </div><!-- End Alert -->
 
-<div class="col-md-12">
+<div class="col-md-12 tab-content no-padding" style="position: relative; height: 729px;">
     <!-- Chat box -->
+    
+        <div class="box box-success" style="height:100%">
+            <div class="box-header">
 
-    <div class="box box-success">
-        <div class="box-header">
-            <i class="fa fa-search"></i>
-            <h3 class="box-title">Búsqueda de Clientes</h3>
-            <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                <div class="btn-group" data-toggle="btn-toggle">
-
+                <i class="fa fa-search"></i>
+                <h3 class="box-title">Búsqueda de Clientes</h3>
+                <div class="row">
+                    <div class="col-md-offset-8">
+                        <label>Filtros:</label>
+                        <div isteven-multi-select
+                             input-model="fields"
+                             output-model="selectedCustomers"
+                             button-label="text"
+                             item-label="text"
+                             translation="localLang"
+                             tick-property="ticked"
+                             max-height="525px"></div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="box-body chat" id="chat-box">
-            <div class="row">
-                <div class="col-md-12">
-                    <label>Filtros:</label>
-                    <div isteven-multi-select
-                         input-model="fields"
-                         output-model="selectedCustomers"
-                         button-label="text"
-                         item-label="text"
-                         translation="localLang"
-                         tick-property="ticked"
-                         max-height="100px">
+                <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                    <div class="btn-group" data-toggle="btn-toggle">
 
                     </div>
                 </div>
@@ -102,6 +100,5 @@
                 </div><!-- /.item -->
             </div><!-- /.chat -->
 
-        </div>
     </div>
 </div>

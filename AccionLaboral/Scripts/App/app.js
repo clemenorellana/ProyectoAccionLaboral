@@ -60,23 +60,7 @@ angular.module('AccionLaboralApp', [
     .controller('mainController', [
         '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', 'Idle', '$modal', '$modalStack', '$log', 'alertService', 'modalService',
         function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService, Idle, Keepalive, $modal, $modalStack, $log, alertService, modalService) {
-            ///modal service
-            var custName = 'calseto';
-            var modalOptions = {
-                closeButtonText: 'Cancel',
-                actionButtonText: 'Delete Customer',
-                headerText: 'Delete ' + custName + '?',
-                bodyText: 'Are you sure you want to delete this customer?'
-            };
-            $scope.test = function () {
-                modalService.showModal({}, modalOptions).then(function (result) {
-                    
-                });
-            }
-            ////end modal service
-
-
-
+            
             $scope.showModal = false;
             $rootScope.loading = true;
             function closeModals() {
@@ -133,10 +117,10 @@ angular.module('AccionLaboralApp', [
             
             var progress = 50;
             var msgs = [
-              'Hey! I\'m waiting here...',
-              'About half way done...',
-              'Almost there?',
-              'Woo Hoo! I made it!'
+              '',
+              '',
+              '',
+              ''
             ];
             var i = 0;
             var fakeProgress = function () {
@@ -150,32 +134,13 @@ angular.module('AccionLaboralApp', [
                         $rootScope.$broadcast('dialogs.wait.complete');
                     }
                 //}, 1000);
-            }; // end fakeProgress 
-
-            $scope.open = function (size) {
-                    /*var modalInstance = $modal.open({
-                        templateUrl: 'loadingModal.html',
-                        controller: 'mainController',
-                        size: size,
-                        resolve: {
-                            items: function () {
-                                return $scope.items;
-                            }
-                        }
-                    });
-                modalInstance.result.then(function (selectedItem) {
-                    $rootScope.enrollClient = selectedItem;
-                }, function () {
-                    $log.info('Modal dismissed at: ' + new Date());
-                });*/
-            };
+            }; // end fakeProgress
 
             $scope.launch = function (dialog) {
                 $dialogs.wait(msgs[i++], progress);
                 fakeProgress();
             };
 
-            
             var isLoggedIn = authService.authentication.isAuth;
             if (isLoggedIn == false || isLoggedIn == null) { // si no esta conectado
                 $scope.skinClass = "bg-black";
@@ -343,7 +308,6 @@ angular.module('AccionLaboralApp', [
             $scope.validateUser = function (userName, password, isValidForm) {
                 $scope.launch('wait');
                 //$("#loadingModal").modal('show');
-                $scope.open();
                 if (isValidForm) {
                      
                     $scope.loginData = {

@@ -58,7 +58,27 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         })
     
 }])
-.controller('CustomerController', ['$scope', '$rootScope', '$location', '$filter', '$window', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, $window, customerRepository, filterFilter, alertService) {
+.controller('CustomerController', ['$scope', '$rootScope', '$location', '$filter', '$window', '$modal', '$modalStack', '$log', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $location, $filter, $window, $modal, $modalStack, $log, customerRepository, filterFilter, alertService) {
+
+    $scope.open = function (size) {
+
+        var modalInstance = $modal.open({
+            templateUrl: 'loadingModal.html',
+            controller: 'CustomerController',
+            size: size,
+            resolve: {
+                items: function () {
+                    return $scope.customerData;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $rootScope.enrollClient = selectedItem;
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    };
     //enroll costumer
     $scope.enrollClientExist = false;
     $scope.showMsgErrorClient = false;
@@ -69,8 +89,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     $scope.back = function () {
         $location.path("/AllClients");
     };
-
-    
 
     $scope.itemsInReportPage = 0;
     $scope.getFormatDate = function (date) {
@@ -161,6 +179,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
     };
 
     $scope.exportClients = function () {
+        $scope.open();
         if ($scope.title) {
             $scope.filters.Title = ($scope.title) ? $scope.title.replace(/[<>:"\/\\|?*]+/g, ' ') : "";
 
@@ -169,7 +188,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     customerRepository.exportCustomers($scope.filters)
                  .success(function (data) {
                      $window.open("Clients/Download/" + $scope.filters.Title.replace(".", " "), '_blank');
+                     $modalStack.dismissAll();
                  }).error(function (data, status, headers, config) {
+                     $modalStack.dismissAll();
                      alertService.add('danger', 'Error', 'No se ha podido generar el reporte.' + ' \nDetalle: ' + data.Message);
                      $scope.alertsTags = $rootScope.alerts;
                  });
@@ -841,8 +862,10 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $location.url('editClient/' + obj.ClientId);
                 };
 
-                $scope.update = function() {
+                $scope.update = function () {
+                    
                     if ($scope.clientForm.$valid) {
+                        $scope.open();
                         if ($scope.episodeImgData)
                             $scope.New.Photo = $scope.episodeImgData.replace(/data:image\/jpeg;base64,/g, '');
 
@@ -958,10 +981,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                         if ($scope.action == 'edit') {
                             customerRepository.UpdateCustomer($scope.New).success(function () {
+                                $modalStack.dismissAll();
                                 alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                                 $scope.alertsTags = $rootScope.alerts;
                                 $location.path("/AllClients");
                             }).error(function (error) {
+                                $modalStack.dismissAll();
                                 alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.' + ' \nDetalle: ' + erro.Message);
                                 $scope.alertsTags = $rootScope.alerts;
                             });
@@ -970,10 +995,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                             customerRepository.InsertCustomer(function() {
 
                             }, $scope.New).success(function () {
+                                $modalStack.dismissAll();
                                 alertService.add('success', 'Agregado', 'Registro se ha agregado correctamente.');
                                 $scope.alertsTags = $rootScope.alerts;
                                 $location.path("/AllClients");
                             }).error(function (error) {
+                                $modalStack.dismissAll();
                                 alertService.add('danger', 'Error', 'No se ha podido insertar el registro.' + ' \nDetalle: ' + error.Message);
                                 $scope.alertsTags = $rootScope.alerts;
                             });
@@ -981,6 +1008,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         }
 
                     } else {
+                        $modalInstance.dismiss('cancel');
+                        //$modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'Complete correctamente todos los campos.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
@@ -992,16 +1021,18 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 }
                 
                 $scope.getStateByAlias = function (alias) {
-                    if (alias)
+                    if (alias && $scope.States)
                         return $filter('filter')($scope.States, { Alias: alias })[0];
                     return '';
                 }
 
                 $scope.disableCustomer = function (customer) {
+                    $scope.open();
                     customerRepository.getCustomer(customer.ClientId).success(function (data) {
                         data.StateId = $scope.getStateByAlias('DE').StateId; //6;
                         data.Employee = null;
                         $scope.New = data;
+
                         $scope.enableOrDisableCustomer('Deshabilitado', 'Se ha deshabilitado un cliente correctamente.');
                     }).error(function (error) {
                         alertService.add('danger', 'Error', 'No se ha podido deshabilitar el cliente.' + ' \nDetalle: ' + error.Message);
@@ -1010,6 +1041,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 };
 
                 $scope.enableCustomer = function (customer) {
+                    $scope.open();
                     customerRepository.getCustomer(customer.ClientId).success(function (data) {
                         data.StateId = $scope.getStateByAlias('PI').StateId;//1;
                         data.Trackings[0].TrackingTypeId = 1;
@@ -1029,22 +1061,27 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                 $scope.enableOrDisableCustomer = function (title, msg) {
                     customerRepository.ChangeValues($scope.New).success(function () {
+                        $modalStack.dismissAll();
                         alertService.add('success', title, msg);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.setData();
                     }).error(function (error) {
+                        $modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'No se ha podido deshabilitar el cliente.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
                 }
 
-                $scope.DeleteCustomer = function(id) {
+                $scope.DeleteCustomer = function (id) {
+                    $scope.open();
                     customerRepository.DeleteCustomer(function() {
-                    }, id).success(function() {
+                    }, id).success(function () {
+                        $modalStack.dismissAll();
                         alertService.add('success', 'Eliminado', 'El cliente ha sido eliminado.');
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.setData();
                     }).error(function (error) {
+                        $modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'No se ha podido eliminar el registro.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
@@ -1067,6 +1104,25 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         }
     })
     .controller('EnrollCustomerController', ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$modal', '$modalStack', '$log', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $modal, $modalStack, $log, customerRepository, filterFilter, alertService) {
+        $scope.openLoading = function (size) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'loadingModal.html',
+                controller: 'EnrollCustomerController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.customerData;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                $rootScope.enrollClient = selectedItem;
+            }, function () {
+                //$log.info('Modal dismissed at: ' + new Date());
+            });
+        };
         //enroll costumer
         $scope.enrollClientExist = false;
         $scope.showMsgErrorClient = false;
@@ -1144,8 +1200,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         };
         $scope.enrollClient_cancel = function () {
             $scope.saveRejectClient('reject');
-            $modalStack.dismissAll();
-            $location.path("/EnrolledClients");
         }
 
         $scope.searchClient = function (enrollClient) {
@@ -1169,14 +1223,16 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $rootScope.enrollClient.Employee = null;
             
             if ($scope.enrollClientForm.$valid) {
+                $scope.openLoading();
                 if ($scope.personalReferencesEnroll)
                     $rootScope.enrollClient.References = $scope.personalReferencesEnroll;
                 customerRepository.inscribeCustomer($rootScope.enrollClient).success(function () {
+                    $modalStack.dismissAll();
                     alertService.add('success', 'Inscrito', 'Un nuevo cliente ha sido inscrito.');
                     $scope.alertsTags = $rootScope.alerts;
-                    //$location.path("EnrolledClients");
+                    $location.path("EnrolledClients");
                 }).error(function (error) {
-                   
+                    $modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'No se ha podido inscribir el cliente.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
@@ -1194,10 +1250,14 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $rootScope.enrollClient.Employee = null;
 
             if ($scope.formReject.$valid) {
+                $scope.openLoading();
                 customerRepository.inscribeCustomer($rootScope.enrollClient).success(function () {
+                    $modalStack.dismissAll();
                         alertService.add('success', 'Rechazado', 'El cliente ha sido rechazado.');
-                    $scope.alertsTags = $rootScope.alerts;
+                        $scope.alertsTags = $rootScope.alerts;
+                        $location.path("EnrolledClients");
                 }).error(function (error) {
+                    $modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'No se ha podido rechazar el cliente.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
@@ -1380,8 +1440,29 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
              return '';
          };
      }])
-    .controller("editCustomerController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'customerRepository', 'filterFilter', function ($scope, $rootScope, $routeParams, $location, $filter, $window, customerRepository, filterFilter) {
-            $rootScope.alerts = [];
+    .controller("editCustomerController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', '$modal', '$modalStack', '$log', 'customerRepository', 'filterFilter', function ($scope, $rootScope, $routeParams, $location, $filter, $window, $modal, $modalStack, $log, customerRepository, filterFilter) {
+
+        $scope.open = function (size) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'loadingModal.html',
+                controller: 'editCustomerController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.customerData;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                $rootScope.enrollClient = selectedItem;
+            }, function () {
+                //$log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        $rootScope.alerts = [];
             $scope.advisor = {};
 
             $scope.disabled = undefined;
@@ -1396,33 +1477,31 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             
             $scope.generateCV = function () {
                 try {
+                    $scope.open();
                     $window.open("Clients/ExportClient/" + $routeParams.id, '_blank');
                     //$window.location.href = "Clients/ExportClient/" + $routeParams.id;
+                    $modalStack.dismissAll();
                     alertService.add('success', 'Generado', 'La hoja de vida ha sido generada correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                 } catch (e) {
+                    $modalStack.dismissAll();
                     alertService.add('danger', 'Error', 'No se ha podido crear la hoja de vida.');
                     $scope.alertsTags = $rootScope.alerts;
                 }
-
-                /*customerRepository.exportCustomer($routeParams.id).success(function (data) {
-                    if (data) {
-                        
-                    } else {
-                        
-                    }
-                });*/
             }
 
             $scope.assignAdvisor = function (employee) {
                 if (employee) {
+                    $scope.open();
                     $scope.New.EmployeeId = employee.EmployeeId;
                     $scope.New.CorrelativeCode = $scope.New.ClientId + "A" + $rootScope.userLoggedIn.EmployeeId;
                     customerRepository.UpdateCustomer($scope.New).success(function () {
+                        $modalStack.dismissAll();
                         alertService.add('success', 'Asignado', 'El asesor ha sido asignado correctamente.');
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.backToSearch();
                     }).error(function (error) {
+                        $modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'No se ha podido asignar asesor.' + ' \nDetalle: ' + error.Message);
                         $scope.alertsTags = $rootScope.alerts;
                     });
@@ -2036,7 +2115,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                     $scope.Careers = $filter('filter')($scope.AcademicLevels, { AcademicLevelId: $scope.AcademicLevelId })[0].Careers;
             }
 
-            $scope.update = function() {
+            $scope.update = function () {
                 $scope.New.References = [];
                 $scope.New.AcademicEducations = [];
 
@@ -2110,11 +2189,14 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         }
                     }
                     if ($scope.editClientForm.$valid) {
+                        $scope.open();
                         customerRepository.UpdateCustomer($scope.New).success(function () {
+                            $modalStack.dismissAll();
                             alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                             $scope.alertsTags = $rootScope.alerts;
                             $location.path("/AllClients");
                         }).error(function (error) {
+                            $modalStack.dismissAll();
                             alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.' + ' \nDetalle: ' + error.Message);
                             $scope.alertsTags = $rootScope.alerts;
                         });
@@ -2125,9 +2207,30 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 
             }
         }])
-    .controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', 'customerRepository', 'filterFilter','alertService', function ($scope, $rootScope, $routeParams, $location, $filter, customerRepository, filterFilter, alertService) {
+    .controller("CustomerTrackingController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$modal', '$modalStack', '$log', 'customerRepository', 'filterFilter', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $modal, $modalStack, $log, customerRepository, filterFilter, alertService) {
 
-        
+        /*Modal*/
+
+        $scope.open = function (size) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'rejectModal.html',
+                controller: 'CustomerTrackingController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.enrollClientForm;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                $rootScope.enrollClient = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        /*End Modal*/
 
         $scope.back = function () {
             $location.path("/AllClients");
@@ -2357,45 +2460,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.alertsTags = $rootScope.alerts;
             });
         }
-             /*   
-        customerRepository.getCustomer($routeParams.id).success(function (data) {
-            $scope.academicEducations = [],
-            $scope.knownLaguages = [],
-            $scope.knownPrograms = [],
-            $scope.personalReferences = [],
-            $scope.workReferences = [],
-            $scope.workExperiences = [];
-            $scope.Trannings = [];
-            $scope.Trackings = [];
-            if (data.Birthday)
-                data.Birthday = new Date(data.Birthday);
-            $scope.academicEducations = [];
-            var educations = data.AcademicEducations;
-            $scope.knownLanguages = data.Languages;
-            $scope.knownPrograms = data.KnownPrograms;
-            $scope.workExperiences = data.WorkExperiences;
-            $scope.Trannings = [];
-            $scope.workReferences = [],
-                $scope.personalReferences = [];
-            for (var j = 0; j < data.AcademicEducations.length; j++) {
-                if (data.AcademicEducations[j].EducationType.Name == 'ACADEMICA') {
-                    $scope.academicEducations.push(data.AcademicEducations[j]);
-                } else {
-                    $scope.Trannings.push(data.AcademicEducations[j]);
-                }
-            }
-            for (var i = 0; i < data.References.length; i++) {
-                if (data.References[i].ReferenceType.Name == 'L')
-                    $scope.workReferences.push(data.References[i]);
-                else
-                    $scope.personalReferences.push(data.References[i]);
-            }
-
-            $scope.New = data;
-            $scope.Client = data;
-            $scope.load = false;
-       
-        });*/
 
         /*Trackings*/
         $scope.clearTracking = function () {
@@ -3036,11 +3100,14 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 }
             }
             if ($scope.editClientForm.$valid) {
+                $scope.open();
                 customerRepository.UpdateCustomer($scope.New).success(function () {
+                    $modalStack.dismissAll();
                     alertService.add('success', 'Actualizado', 'Registro se ha actualizado correctamente.');
                     $scope.alertsTags = $rootScope.alerts;
                     $location.path("/AllClients");
                 }).error(function (error) {
+                    $modalStack.dismissAll();
                     alertService.add('danger', 'Error', 'No se ha podido actualizar el registro.' + ' \nDetalle: ' + error.Message);
                     $scope.alertsTags = $rootScope.alerts;
                 });
@@ -3051,7 +3118,30 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 
         }
     }])
-    .controller("CustomerTrackingDetailController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $window, filterFilter, customerRepository, alertService) {
+    .controller("CustomerTrackingDetailController", ['$scope', '$rootScope', '$routeParams', '$location', '$filter', '$window', '$modal', '$modalStack', '$log', 'filterFilter', 'customerRepository', 'alertService', function ($scope, $rootScope, $routeParams, $location, $filter, $window, $modal, $modalStack, $log, filterFilter, customerRepository, alertService) {
+        /*Modal*/
+
+        $scope.open = function (size) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'loadingModal.html',
+                controller: 'CustomerTrackingDetailController',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.enrollClientForm;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                $rootScope.enrollClient = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        /*End Modal*/
+
         $scope.itemsInReportPage = 0;
         $scope.getFormatDate = function (date) {
             var dd = date.getDate();
@@ -3121,10 +3211,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
                 if ($scope.filters)
                     if ($scope.filters.Clients.length > 0) {
+                        $scope.open();
                         customerRepository.exportCustomersTracking($scope.filters)
                      .success(function (data) {
                          $window.open("Clients/Download/" + $scope.filters.Title.replace(".", " "), '_blank');
+                         $modalStack.dismissAll();
                      }).error(function (data, status, headers, config) {
+                         $modalStack.dismissAll();
                          alertService.add('danger', 'Error', 'No se ha podido generar el reporte.' + ' \nDetalle: ' + data.Message);
                          $scope.alertsTags = $rootScope.alerts;
                      });
@@ -3406,11 +3499,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
         });
 
-        
-
-        /*customerRepository.getEmployees().success(function (data) {
-            $scope.Employees = data;
-        });*/
         customerRepository.getCompanies().success(function (data) {
             $scope.Companies = data;
         });
@@ -3659,23 +3747,35 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         for (var i = 0; i < $scope.selectedCustomers.length; i++) {
             $scope.selectedFields += (i == $scope.selectedCustomers.length - 1) ? $scope.selectedCustomers[i].value : $scope.selectedCustomers[i].value + ",";
         };
-        customerRepository.searchCustomers(searchTerm, $scope.selectedFields).success(function (data) {
-            $scope.customerData = data;
+        if (searchTerm) {
+            if ($scope.selectedCustomers.length) {
+                customerRepository.searchCustomers(searchTerm, $scope.selectedFields).success(function (data) {
+                    $scope.customerData = data;
 
-            $scope.load = false;
-
-            if ($rootScope.alerts)
-                $scope.alertsTags = $rootScope.alerts;
-            $scope.maxSize = 5; //pagination max size
-            //max rows for data table
-
-
-        })
-                .error(function (error) {
-                    alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
-                    $scope.alertsTags = $rootScope.alerts;
                     $scope.load = false;
-                });
+
+                    if ($rootScope.alerts)
+                        $scope.alertsTags = $rootScope.alerts;
+                    $scope.maxSize = 5; //pagination max size
+                    //max rows for data table
+
+
+                })
+                        .error(function (error) {
+                            alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
+                            $scope.alertsTags = $rootScope.alerts;
+                            $scope.load = false;
+                        });
+            } else {
+                alertService.add('danger', 'Error', 'No hay filtros seleccionados para poder buscar.');
+                $scope.alertsTags = $rootScope.alerts;
+                $scope.load = false;
+            }
+        } else {
+            alertService.add('danger', 'Error', 'Debe ingresar datos de clientes para poder buscar.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.load = false;
+        }
     }
     $scope.changeSort = function (value) {
         if ($scope.sort == value) {
@@ -3802,7 +3902,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             $(el).inputmask(scope.$eval(attrs.inputMask));
         }
     };
-    }).directive('modal', function () {
+    })
+    .directive('modal', function () {
         return {
             template: '<div class="modal fade">' +
                 '<div class="modal-dialog">' +

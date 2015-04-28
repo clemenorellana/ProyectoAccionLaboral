@@ -429,21 +429,23 @@
         </div><!-- /.modal-content -->
 </script>
 
-<!--<modal title="Login form" visible="showEnrollModal">
-    <form action="#" method="post" name="formReject">
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Causa de Rechazo</label>
-                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.RejectionDescription" required></textarea>
+<script type="text/ng-template" id="loadingModal.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="fa "></i>Cargando...</h4>
+        </div>
+        <form action="#" method="post" name="formReject">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer clearfix">
-            <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="enrollClient_cancel()">Aceptar</button>
-        </div>
-    </form>
-</modal>-->
+        </form>
+    </div><!-- /.modal-content -->
+</script>

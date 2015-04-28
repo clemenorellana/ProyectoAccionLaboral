@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientsController : ApiController
     {
@@ -31,6 +30,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients
+        [Authorize]
         public IHttpActionResult GetClients()
         {
             var clients = db.Clients.Include(r => r.State).Include(r=>r.Employee)
@@ -60,6 +60,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/ClientsByEmployee
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/clientsbyemployee/{id}")]
         public IHttpActionResult ClientsByEmployee(int id)
@@ -92,6 +93,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/enrolledclientsbyemployee
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/enrolledclientsbyemployee/{id}")]
         public IHttpActionResult GetEnrolledClients(int id)
@@ -108,6 +110,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/enrolledclients
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/enrolledclients")]
         public IHttpActionResult GetEnrolledClients()
@@ -121,6 +124,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/trackingclients
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/trackingclients")]
         public IHttpActionResult GetTrackingClients()
@@ -141,6 +145,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/trackingclients
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/trackingclientsbyemployee/{id}")]
         public IHttpActionResult GetTrackingClients(int id)
@@ -161,6 +166,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients/5
+        [Authorize]
         [ResponseType(typeof(Client))]
         public IHttpActionResult GetClient(int id)
         {
@@ -198,6 +204,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients/5
+        [Authorize]
         [ResponseType(typeof(Client))]
         public IHttpActionResult Tracking(int id)
         {
@@ -213,6 +220,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Clients/5
+        [Authorize]
         public IHttpActionResult PutClient(int id, Client client)
         {
             if (!ModelState.IsValid)
@@ -236,7 +244,7 @@ namespace AccionLaboral.Controllers
                            .Include(x => x.References)
                            .Include(x => x.Trackings)
                            .Single(c => c.ClientId == client.ClientId);
-                client.EnrollDate = DateTime.Now;
+                //client.EnrollDate = DateTime.Now;
                 if (client.Photo!=null)
                 client.Photo = ConvertImage(client.Photo, 96, 96);
                 db.Entry(dbClients).CurrentValues.SetValues(client);
@@ -397,6 +405,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Put api/ChangeClientValues
+        [Authorize]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/changeclientvalues/{id}")]
         public IHttpActionResult ChangeClientValues(int id, Client client)
@@ -426,6 +435,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Put api/enrollclient
+        [Authorize]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/enrollclient/{id}")]
         public IHttpActionResult EnrollClient(int id, Client client)
@@ -500,6 +510,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Put api/trackingclient
+        [Authorize]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/clienttracking/{id}")]
         public IHttpActionResult ClientTracking(int id, Client client)
@@ -591,6 +602,7 @@ namespace AccionLaboral.Controllers
         }
 
         // DELETE api/Clients/5
+        [Authorize]
         [ResponseType(typeof(Client))]
         public IHttpActionResult DeleteClient(int id)
         {
@@ -606,6 +618,7 @@ namespace AccionLaboral.Controllers
             return Ok(client);
         }
 
+        [Authorize]
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/refreshclients")]
         public HttpResponseMessage RefreshClients()
@@ -640,6 +653,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/ExportClient
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/exportclient/{id}")]
         public string ExportClient(int id)
@@ -678,6 +692,7 @@ namespace AccionLaboral.Controllers
             return path;
         }
 
+        [Authorize]
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("~/api/exportclients")]
         public HttpResponseMessage ExportClients(ClientsFilter id)
@@ -706,6 +721,7 @@ namespace AccionLaboral.Controllers
             }
         }
 
+        [Authorize]
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("~/api/exportclientstracking")]
         public HttpResponseMessage ExportClientsTracking(ClientsFilter id)
@@ -738,6 +754,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/ExportClient
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/SearchClients/{searchTerm}/{searchField}/{limit}")]
         public List<Client> SearchClients(string searchTerm, string searchField, int? limit)
@@ -924,6 +941,7 @@ namespace AccionLaboral.Controllers
         }
 
         #region findclientbyidentitynumber
+
         public class FindClient
         {
             public int EmployeeId { get; set; }
@@ -1021,13 +1039,11 @@ namespace AccionLaboral.Controllers
 
                     return Ok(client);
                 }
-
             }
             catch (Exception e)
             {
                 var x = e.Message;
             }
-
 
             NotFound();
             Client c = null;

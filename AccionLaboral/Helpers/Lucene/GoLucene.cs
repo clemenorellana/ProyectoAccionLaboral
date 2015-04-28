@@ -111,8 +111,8 @@ namespace AccionLaboral.Helpers.Lucene
                         (global::Lucene.Net.Util.Version.LUCENE_30, new[] { "ClientId", "CorrelativeCode", "IdentityNumber",
                                                                              "IdentityNumber","FirstName","LastName","Age",
                                                                              "Gender","Email","Hobby","Cellphone","HomePhone",
-                                                                             "CurrentStudies","WageAspiration","DesiredEmployment"
-                                                                             ,"CompaniesWithPreviouslyRequested"}, analyzer);
+                                                                             "CurrentStudies","WageAspiration","DesiredEmployment",
+                                                                             "CompleteAddress","CompaniesWithPreviouslyRequested"}, analyzer);
 
                     var query = parseQuery(searchQuery, parser);
                     var hits = searcher.Search(query, null, hits_limit, Sort.INDEXORDER).ScoreDocs;
@@ -155,6 +155,7 @@ namespace AccionLaboral.Helpers.Lucene
                     client.Photo = (!string.IsNullOrEmpty(doc.Get("Photo"))) ? System.Text.Encoding.ASCII.GetBytes(doc.Get("Photo")): null;
                     client.CorrelativeCode = doc.Get("CorrelativeCode");
                     client.IdentityNumber = doc.Get("IdentityNumber");
+                    client.CompleteAddress = doc.Get("CompleteAddress");
                     client.FirstName = doc.Get("FirstName");
                     client.LastName = doc.Get("LastName");
                     client.StateId = Convert.ToInt32(doc.Get("StateId"));
