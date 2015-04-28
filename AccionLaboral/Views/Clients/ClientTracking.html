@@ -23,7 +23,7 @@
                 <div class="box-body">
                     <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
                     <!--<table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" ng-show="!load">-->
-                    <table class="table table-bordered" ng-show="!load">
+                    <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" ng-show="!load">
                         <tr>
                             <th ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
                             <th ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
@@ -79,8 +79,6 @@
                             <th colspan="1"></th>
                             <th colspan="1"></th>
                         </tr>
-
-                        <tr>
                         <tr ng-repeat="customer in filtered | filter:search:strict | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">
                             <td>{{customer.FirstName}}</td>
                             <td>{{customer.LastName}}</td>

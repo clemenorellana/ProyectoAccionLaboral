@@ -89,6 +89,10 @@ radio.ng-touched.ng-invalid:not(.has-focus){
    border:1px solid #f00;
 }
 
+textarea.ng-touched.ng-invalid:not(.has-focus){
+   border:1px solid #f00;
+}
+
 file.ng-touched.ng-invalid:not(.has-focus){
    border:1px solid #f00;
 }

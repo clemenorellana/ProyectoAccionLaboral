@@ -23,12 +23,12 @@ using System.Linq;
         {
             ApplicationRoleManager _roleManager = new ApplicationRoleManager(new RoleStore<Role>(context));
 
-            /*context.CreateRole(_roleManager, "Asesor Corporativo", "ASCOR");
+            context.CreateRole(_roleManager, "Asesor Corporativo", "ASCOR");
             context.CreateRole(_roleManager, "Asesor de Reclutamiento", "ASREC");
             context.CreateRole(_roleManager, "Asistente de Gerencia", "ASIGE");
             context.CreateRole(_roleManager, "Gerente de Agencia", "GTEAG");
             context.CreateRole(_roleManager, "Gerente General", "GTEGE");
-            context.CreateRole(_roleManager, "Admin. del Sistema", "ADMIN");*/
+            context.CreateRole(_roleManager, "Admin. del Sistema", "ADMIN");
 
             var countries = new List<Country>
             {

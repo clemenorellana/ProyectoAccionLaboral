@@ -3,9 +3,11 @@
 
 angular.module('AccionLaboralApp', [
         'ngRoute',
+        'ngResource',
         'ngCookies',
         'ui.bootstrap',
         'dialogs',
+        //'mainController',
         'clientsController',
         'careersController',
         'contractTemplatesController',
@@ -22,18 +24,19 @@ angular.module('AccionLaboralApp', [
         'ui.select',
         'LocalStorageModule',
         'authService',
+        'loadingRepository',
         'ui.select',
         'isteven-multi-select',
         'ngIdle'
     ])
     .config([
-        '$routeProvider', 'KeepaliveProvider', 'IdleProvider',
-        function ($routeProvider, KeepaliveProvider, IdleProvider) {
+        '$routeProvider', '$httpProvider','KeepaliveProvider', 'IdleProvider',
+        function ($routeProvider, $httpProvider, KeepaliveProvider, IdleProvider) {
             IdleProvider.idle(5*60);
             IdleProvider.timeout(10);
             KeepaliveProvider.interval(10);
 
-
+            /*
             $routeProvider.
                  when('/HomePage', {
                      templateUrl: '/Home/HomePage',
@@ -41,9 +44,11 @@ angular.module('AccionLaboralApp', [
                  }).
                 otherwise({
                     redirectTo: '/'
-                });
+                });*/
+
         }
-    ]).filter('startFrom', function() {
+    ])
+    .filter('startFrom', function () {
         return function(input, start) {
             if (input) {
                 start = +start; //parse to int
@@ -53,13 +58,30 @@ angular.module('AccionLaboralApp', [
         }
     })
     .controller('mainController', [
-        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', 'Idle', '$modal', 'alertService',
-        function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService, Idle, Keepalive, $modal, alertService) {
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', 'Idle', '$modal', '$modalStack', '$log', 'alertService', 'modalService',
+        function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService, Idle, Keepalive, $modal, $modalStack, $log, alertService, modalService) {
+            ///modal service
+            var custName = 'calseto';
+            var modalOptions = {
+                closeButtonText: 'Cancel',
+                actionButtonText: 'Delete Customer',
+                headerText: 'Delete ' + custName + '?',
+                bodyText: 'Are you sure you want to delete this customer?'
+            };
+            $scope.test = function () {
+                modalService.showModal({}, modalOptions).then(function (result) {
+                    
+                });
+            }
+            ////end modal service
+
+
+
             $scope.showModal = false;
             $rootScope.loading = true;
             function closeModals() {
                 $scope.showModal = false;
-                $scope.$apply();
+                //$scope.$apply();
             }
 
             $scope.$on('IdleStart', function () {
@@ -76,7 +98,7 @@ angular.module('AccionLaboralApp', [
                 closeModals();
                 $scope.showModal = false;
                 $scope.logout();
-                $scope.$apply();
+                //$scope.$apply();
                 
             });
 
@@ -118,7 +140,7 @@ angular.module('AccionLaboralApp', [
             ];
             var i = 0;
             var fakeProgress = function () {
-                $timeout(function () {
+                //$timeout(function () {
                     //if (progress < 100) {
                     if ($rootScope.loading) {
                         progress += 25;
@@ -127,8 +149,26 @@ angular.module('AccionLaboralApp', [
                     } else {
                         $rootScope.$broadcast('dialogs.wait.complete');
                     }
-                }, 1000);
+                //}, 1000);
             }; // end fakeProgress 
+
+            $scope.open = function (size) {
+                    /*var modalInstance = $modal.open({
+                        templateUrl: 'loadingModal.html',
+                        controller: 'mainController',
+                        size: size,
+                        resolve: {
+                            items: function () {
+                                return $scope.items;
+                            }
+                        }
+                    });
+                modalInstance.result.then(function (selectedItem) {
+                    $rootScope.enrollClient = selectedItem;
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });*/
+            };
 
             $scope.launch = function (dialog) {
                 $dialogs.wait(msgs[i++], progress);
@@ -232,18 +272,18 @@ angular.module('AccionLaboralApp', [
 
             $scope.getRole = function (menu) {
                 
-                /*
-                ---------------------------------------------------------
-                Listado de roles
-                    Alias - Nombre del Rol
-                    ADMIN - Administrador del Sistema	
-                    GTEGE - Gerente General	
-                    GTEAG - Gerente de Agencia	
-                    ASIGE - Asistente de Gerencia	
-                    ASREC - Asesor de Reclutamiento	
-                    ASCOR - Asesor Corporativo	 
-                ---------------------------------------------------------        
-                */
+                
+                //---------------------------------------------------------
+                //Listado de roles
+                //    Alias - Nombre del Rol
+                //    ADMIN - Administrador del Sistema	
+                //    GTEGE - Gerente General	
+                //    GTEAG - Gerente de Agencia	
+                //    ASIGE - Asistente de Gerencia	
+                //    ASREC - Asesor de Reclutamiento	
+                //    ASCOR - Asesor Corporativo	 
+                //---------------------------------------------------------        
+               
 
                 var user = $rootScope.userLoggedIn;
                 // Opciones del menu de "Administrar el Sistema"
@@ -301,7 +341,9 @@ angular.module('AccionLaboralApp', [
 
             
             $scope.validateUser = function (userName, password, isValidForm) {
-                //$scope.launch('wait');
+                $scope.launch('wait');
+                //$("#loadingModal").modal('show');
+                $scope.open();
                 if (isValidForm) {
                      
                     $scope.loginData = {
@@ -312,7 +354,7 @@ angular.module('AccionLaboralApp', [
                     //var token = authService.accessToken($scope.loginData);
                     //$scope.loginData.token = token;
                     authService.login($scope.loginData).then(function (response) {
-                        $scope.launch('wait');
+                        //$scope.launch('wait');
                         var employee = response;
 
                         $scope.userValid = (employee.EmployeeId != 0) ? true : false;
@@ -327,17 +369,21 @@ angular.module('AccionLaboralApp', [
                             $rootScope.userLoggedIn = null;
                             $rootScope.userToken = null;
                             authService.logOut();
-                            
+                            $scope.loading = true;
+                            fakeProgress();
                         }
                         else if ($scope.userValid == true)
                         {
+                            $("#loadingModal").modal('hide');
                             $scope.template = 'Home/Home';
                             $scope.skinClass = "skin-blue";
                             $rootScope.userLoggedIn = authService.authentication.employee;
                             $rootScope.userToken = authService.authentication.token;
                             $rootScope.forgotPass = false;
+                            $scope.alerts = [];
                             $location.path('/HomePage');
                             $scope.start();
+                            $modal.dismissAll();
                         }
                         else
                         {
@@ -348,16 +394,22 @@ angular.module('AccionLaboralApp', [
                             $rootScope.userLoggedIn = null;
                             $rootScope.userToken = null;
                             authService.logOut();
+                            $scope.loading = true;
+                            fakeProgress();
                             $location.path('/');
                         }
                     },
                     function (err) {
                         $scope.message = err.error_description;
-                        $scope.addAlert("danger",$scope.message);
+                        $scope.addAlert("danger", $scope.message);
+                        $scope.loading = true;
+                        fakeProgress();
                         });
                 }
                 else {
                     $scope.addAlert("danger", "Existen campos invalidos");
+                    $scope.loading = true;
+                    fakeProgress();
                 }
                 }
 
@@ -403,18 +455,18 @@ angular.module('AccionLaboralApp', [
                     return;
                 }
 
-/*
-                ---------------------------------------------------------
-                Listado de roles
-                    Alias - Nombre del Rol
-                    ADMIN - Administrador del Sistema	
-                    GTEGE - Gerente General	
-                    GTEAG - Gerente de Agencia	
-                    ASIGE - Asistente de Gerencia	
-                    ASREC - Asesor de Reclutamiento	
-                    ASCOR - Asesor Corporativo	 
-                ---------------------------------------------------------        
-                */
+
+                //---------------------------------------------------------
+                //Listado de roles
+                //    Alias - Nombre del Rol
+                //    ADMIN - Administrador del Sistema	
+                //    GTEGE - Gerente General	
+                //    GTEAG - Gerente de Agencia	
+                //    ASIGE - Asistente de Gerencia	
+                //    ASREC - Asesor de Reclutamiento	
+                //    ASCOR - Asesor Corporativo	 
+                //---------------------------------------------------------        
+                
 
                 //Permisos para el Asesor de Reclutamiento
                 var role = $rootScope.userLoggedIn.Role;

@@ -155,9 +155,9 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group required">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId">
+                                            <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId" required>
                                                 <option value="">-- Seleccione una opción --</option>
                                             </select>
                                         </div>
@@ -711,13 +711,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Nombre</label>
+                                <label>Nombre(s)</label>
                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNameWRef" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Apellido</label>
+                                <label>Apellidos</label>
                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNameWRef" required>
                             </div>
                         </div>
@@ -790,13 +790,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Nombre</label>
+                                <label>Nombre(s)</label>
                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNamePRef" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Apellido</label>
+                                <label>Apellidos</label>
                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNamePRef" required>
                             </div>
                         </div>

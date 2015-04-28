@@ -65,7 +65,7 @@ angular.module("careersController", ['ngRoute', 'careersRepository', 'alertRepos
             $scope.load = false;
         })
         .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.error = "Ha ocurrido un error al cargar los datos." + ' \nDetalle: ' + data.ExceptionMessage;
             $scope.load = false;
         });
 

@@ -99,7 +99,7 @@ accionLabControllers.factory('customerRepository', ['$http', "$rootScope", funct
                 "WageAspiration": client.WageAspiration, "FacebookEmail": client.FacebookEmail, "BBPin": client.BBPin,
                 "Twitter": client.Twitter, "DesiredEmployment": client.DesiredEmployment, "CompaniesWithPreviouslyRequested": client.CompaniesWithPreviouslyRequested,
 
-                "CityId": client.CityId.CityId,
+                "CityId": (client.CityId) ? client.CityId.CityId:null,
                 "EmployeeId": client.AdvisorId,
                 "CareerId": client.CareerId,
                 "StateId": 1,
@@ -139,7 +139,7 @@ accionLabControllers.factory('customerRepository', ['$http', "$rootScope", funct
             newClient.Trackings[0].StateId = newClient.StateId;
             newClient.Trackings[0].TrackingTypeId = 2;
             newClient.IsStudying = (client.IsStudying == "1");
-            return $http.put("api/changeclientvalues/" + newClient.ClientId, newClient, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.put("api/enrollclient/" + newClient.ClientId, newClient, { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for delete
         DeleteCustomer: function (callback, id) {

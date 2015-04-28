@@ -284,10 +284,13 @@
                     <button type="submit" class="btn btn-primary" ng-click="saveEnrollClient()">Incribir Cliente</button>
                 </div>
                 <div class="col-md-2 text-center">
-                    <button type="button" class="btn btn-warning" data-toggle="modal" ng-click="enrollClient.RejectionDescription=''" data-target="#rejectionInfo">Rechazar</button>
+                    <!--<button ng-click="toggleEnrollModal()" class="btn btn-default">Rechazar</button>-->
+                    <!--<button type="button" class="btn btn-warning" data-toggle="modal" ng-click="enrollClient.RejectionDescription=''" data-target="#rejectionInfo">Rechazar</button>-->
+                    <button class="btn btn-default" ng-click="open()">Rechazar</button>
                 </div>
                 <div class="col-md-5 text-left">
                     <button type="submit" class="btn btn-danger" ng-click="backEnrollClients()">Cancelar</button>
+
                 </div>
             </div>
         </div>
@@ -381,7 +384,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><i class="fa "></i>Rechazar Cliente</h4>
             </div>
-            <form action="#" method="post" name="formReject">
+            <form action="#" method="post" name="formReject" >
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -394,9 +397,53 @@
                 </div>
                 <div class="modal-footer clearfix">
                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="enrollClient_cancel()">Aceptar</button>
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="enrollClient_cancel()">Aceptar</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script type="text/ng-template" id="rejectModal.html">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="cancel()" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Rechazar Cliente</h4>
+            </div>
+            <form action="#" method="post" name="formReject">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Causa de Rechazo</label>
+                                <textarea class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.RejectionDescription" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="btn btn-danger text-center" data-dismiss="modal" ng-click="cancel()">Cancelar</button>
+                    <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="enrollClient_cancel()">Aceptar</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+</script>
+
+<!--<modal title="Login form" visible="showEnrollModal">
+    <form action="#" method="post" name="formReject">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Causa de Rechazo</label>
+                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.RejectionDescription" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer clearfix">
+            <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary text-center" data-dismiss="modal" ng-click="enrollClient_cancel()">Aceptar</button>
+        </div>
+    </form>
+</modal>-->

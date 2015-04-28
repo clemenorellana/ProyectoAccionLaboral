@@ -361,8 +361,8 @@ namespace AccionLaboral.Controllers
             User user = new User
             {
                 UserName = model.UserName,
-                Email = "roger@gmail.com",
-                EmailConfirmed = true
+                Active = model.Active,
+                Busy = model.Busy
             };
             user.Logins.Add(new IdentityUserLogin
             {
