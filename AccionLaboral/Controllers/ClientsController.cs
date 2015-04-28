@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientsController : ApiController
     {
@@ -31,6 +30,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients
+        [Authorize]
         public IHttpActionResult GetClients()
         {
             var clients = db.Clients.Include(r => r.State).Include(r=>r.Employee)
@@ -60,6 +60,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/ClientsByEmployee
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/clientsbyemployee/{id}")]
         public IHttpActionResult ClientsByEmployee(int id)
@@ -92,6 +93,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/enrolledclientsbyemployee
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/enrolledclientsbyemployee/{id}")]
         public IHttpActionResult GetEnrolledClients(int id)
@@ -108,6 +110,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/enrolledclients
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/enrolledclients")]
         public IHttpActionResult GetEnrolledClients()
@@ -121,6 +124,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/trackingclients
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/trackingclients")]
         public IHttpActionResult GetTrackingClients()
@@ -141,6 +145,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/trackingclients
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/trackingclientsbyemployee/{id}")]
         public IHttpActionResult GetTrackingClients(int id)
@@ -161,6 +166,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients/5
+        [Authorize]
         [ResponseType(typeof(Client))]
         public IHttpActionResult GetClient(int id)
         {
@@ -198,6 +204,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients/5
+        [Authorize]
         [ResponseType(typeof(Client))]
         public IHttpActionResult Tracking(int id)
         {
@@ -213,6 +220,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Clients/5
+        [Authorize]
         public IHttpActionResult PutClient(int id, Client client)
         {
             if (!ModelState.IsValid)
@@ -236,7 +244,7 @@ namespace AccionLaboral.Controllers
                            .Include(x => x.References)
                            .Include(x => x.Trackings)
                            .Single(c => c.ClientId == client.ClientId);
-                client.EnrollDate = DateTime.Now;
+                //client.EnrollDate = DateTime.Now;
                 if (client.Photo!=null)
                 client.Photo = ConvertImage(client.Photo, 96, 96);
                 db.Entry(dbClients).CurrentValues.SetValues(client);
@@ -397,6 +405,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Put api/ChangeClientValues
+        [Authorize]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/changeclientvalues/{id}")]
         public IHttpActionResult ChangeClientValues(int id, Client client)
@@ -426,6 +435,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Put api/enrollclient
+        [Authorize]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/enrollclient/{id}")]
         public IHttpActionResult EnrollClient(int id, Client client)
@@ -500,6 +510,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Put api/trackingclient
+        [Authorize]
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/clienttracking/{id}")]
         public IHttpActionResult ClientTracking(int id, Client client)
@@ -591,6 +602,7 @@ namespace AccionLaboral.Controllers
         }
 
         // DELETE api/Clients/5
+        [Authorize]
         [ResponseType(typeof(Client))]
         public IHttpActionResult DeleteClient(int id)
         {
@@ -606,6 +618,7 @@ namespace AccionLaboral.Controllers
             return Ok(client);
         }
 
+        [Authorize]
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/refreshclients")]
         public HttpResponseMessage RefreshClients()
@@ -640,6 +653,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/ExportClient
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/exportclient/{id}")]
         public string ExportClient(int id)
@@ -678,6 +692,7 @@ namespace AccionLaboral.Controllers
             return path;
         }
 
+        [Authorize]
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("~/api/exportclients")]
         public HttpResponseMessage ExportClients(ClientsFilter id)
@@ -704,6 +719,7 @@ namespace AccionLaboral.Controllers
             }
         }
 
+        [Authorize]
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("~/api/exportclientstracking")]
         public HttpResponseMessage ExportClientsTracking(ClientsFilter id)
@@ -736,6 +752,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/ExportClient
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/SearchClients/{searchTerm}/{searchField}/{limit}")]
         public List<Client> SearchClients(string searchTerm, string searchField, int? limit)
@@ -922,42 +939,42 @@ namespace AccionLaboral.Controllers
         }
 
         #region findclientbyidentitynumber
-        //[System.Web.Http.HttpGet]
-        //[System.Web.Http.Route("api/FindClientByIdentityNumber/{id}")]
-        //public Client FindClientByIdentityNumber(string id)
-        //{
-        //    Client client = null;
-        //    try
-        //    {
-        //        client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
-        //            .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
-        //            .Include(r => r.AcademicEducations.Select(c => c.Career))
-        //            .Include(r => r.AcademicEducations.Select(t => t.EducationType))
-        //            .Include(r => r.KnownPrograms)
-        //            .Include(r => r.Languages.Select(l => l.Language))
-        //            .Include(r => r.Languages.Select(l => l.LanguageLevel))
-        //            .Include(r => r.References.Select(c => c.City))
-        //            .Include(r => r.References.Select(t => t.ReferenceType))
-        //            .Include(r => r.WorkExperiences)
-        //            .Include(r => r.WorkExperiences.Select(c => c.City))
-        //            .Include(r => r.State)
-        //            .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
-        //            .Include(r => r.Trackings.Select(c => c.State))
-        //            .Include(r => r.Trackings.Select(c => c.TrackingType))
-        //            .First(r => r.IdentityNumber == id);
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/FindClientByIdentityNumber/{id}")]
+        public Client FindClientByIdentityNumber(string id)
+        {
+            Client client = null;
+            try
+            {
+                client = db.Clients.Include(r => r.AcademicEducations.Select(c => c.City.Country))
+                    .Include(r => r.AcademicEducations.Select(l => l.AcademicLevel))
+                    .Include(r => r.AcademicEducations.Select(c => c.Career))
+                    .Include(r => r.AcademicEducations.Select(t => t.EducationType))
+                    .Include(r => r.KnownPrograms)
+                    .Include(r => r.Languages.Select(l => l.Language))
+                    .Include(r => r.Languages.Select(l => l.LanguageLevel))
+                    .Include(r => r.References.Select(c => c.City))
+                    .Include(r => r.References.Select(t => t.ReferenceType))
+                    .Include(r => r.WorkExperiences)
+                    .Include(r => r.WorkExperiences.Select(c => c.City))
+                    .Include(r => r.State)
+                    .Include(r => r.Trackings.Select(c => c.TrackingDetails.Select(d => d.ShipmentType)))
+                    .Include(r => r.Trackings.Select(c => c.State))
+                    .Include(r => r.Trackings.Select(c => c.TrackingType))
+                    .First(r => r.IdentityNumber == id);
 
-        //        if (client == null)
-        //        {
-        //            return client;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        var x = e.Message;
-        //    }
+                if (client == null)
+                {
+                    return client;
+                }
+            }
+            catch (Exception e)
+            {
+                var x = e.Message;
+            }
 
-        //    return client;
-        //}
+            return client;
+        }
         #endregion
     }
 }
