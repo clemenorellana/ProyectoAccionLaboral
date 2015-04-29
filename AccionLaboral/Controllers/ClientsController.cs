@@ -153,7 +153,7 @@ namespace AccionLaboral.Controllers
             var clients = Ok(db.Clients
                 .Include(r => r.State)
                 .Include(r => r.Trackings.Select(c => c.TrackingType))
-                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.Age, Trackings = x.Trackings.Select(c => new { c.TrackingType }), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
+                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.Employee.EmployeeAlias, x.EnrollDate, x.Age, Trackings = x.Trackings.Select(c => new { c.TrackingType }), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
                 .OrderBy(r => r.EnrollDate)
                 .Where(r => r.EmployeeId == id)
                 .ToList());
