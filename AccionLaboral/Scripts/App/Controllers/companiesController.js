@@ -276,8 +276,22 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
 
     $scope.setCompanyData();
 }])
-.controller('newCompaniesReportCtrl', ['$scope', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'companiesRepo', '$routeParams', '$window',
-    function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams, $window) {
+.controller('newCompaniesReportCtrl', ['$scope', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'companiesRepo', '$routeParams', '$window','$modal','$modalStack','$log',
+    function ($scope, $rootScope, $location, $filter, filterFilter, alertService, companiesRepo, $routeParams, $window, $modal, $modalStack, $log) {
+
+        $scope.open = function (size) {
+            var modalInstance = $modal.open({
+                templateUrl: 'loadingModal.html',
+                controller: 'newCompaniesReportCtrl',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.companyList;
+                    }
+                }
+            });
+        };
+
         $scope.companyList = [];
         $scope.tituloPrueba = false;
         
@@ -349,6 +363,7 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
         };
 
         $scope.exportCompaniesReport = function () {
+
             if ($scope.reportName == "" || $scope.reportName == null) {
                 alertService.add('danger', 'Error', 'Aisgnar un nombre al archivo a exportar.');
                 $scope.alertsTags = $rootScope.alerts;
@@ -361,20 +376,26 @@ angular.module("companiesController", ['ngRoute', 'companiesRepository', 'alertR
                 "ReportName": $scope.reportName
             };
 
+            $scope.open();
+
             filters.Companies = angular.copy($scope.companyList);           
             if (filters.Companies.length > 0) {
                 companiesRepo.exportCompaniesReport(filters)
                  .success(function (data) {
                      var fileName = data.ReportName;
-                     $window.open("Companies/Download/" + fileName, '_blank');
+                     if(fileName != null && fileName != "")
+                        $window.open("Companies/Download/" + fileName, '_blank');
                      $scope.reportName = "";
+                     $modalStack.dismissAll();
                  }).error(function (data, status, headers, config) {
                      alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
                      $scope.alertsTags = $rootScope.alerts;
+                     $modalStack.dismissAll();
                  });
             } else {
                 alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
                 $scope.alertsTags = $rootScope.alerts;
+                $modalStack.dismissAll();
             }
         };
 

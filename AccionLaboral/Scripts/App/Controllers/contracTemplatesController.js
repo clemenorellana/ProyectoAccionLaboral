@@ -279,7 +279,21 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
 
     $scope.setContractData();
 }])
-.controller('contractTemplateReportCtrl', ['$scope', 'contractTemplatesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'customerRepository','$window', function ($scope, contractTemplatesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, customerRepository, $window) {
+.controller('contractTemplateReportCtrl', ['$scope', 'contractTemplatesRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'customerRepository', '$window',  '$modal', '$modalStack', '$log', function ($scope, contractTemplatesRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, customerRepository, $window, $modal, $modalStack, $log) {
+
+    $scope.open = function (size) {
+        var modalInstance = $modal.open({
+            templateUrl: 'loadingModal.html',
+            controller: 'contractTemplateReportCtrl',
+            size: size,
+            resolve: {
+                items: function () {
+                    return $scope.contractTemplateList;
+                }
+            }
+        });
+    };
+
     var actionContractTemplate = "";
     $scope.contractTemplateList = [];
     $scope.contractId = $routeParams.id;
@@ -429,6 +443,8 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
     
 
     $scope.exportContratReport = function () {
+        $scope.open();
+
         var id = $scope.contractContent;
 
         var contract = {
@@ -440,10 +456,13 @@ angular.module("contractTemplatesController", ['ngRoute', 'contractTemplatesRepo
         contractTemplatesRepo.exportContractReport(contract)
                  .success(function (data) {
                      var id = data.FileName;
-                     $window.open("ContractTemplates/Download/" + id, '_blank');
+                     if (id != null && id != "")
+                         $window.open("ContractTemplates/Download/" + id, '_blank');
+                     $modalStack.dismissAll();
                  }).error(function (data, status, headers, config) {
                      alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
                      $scope.alertsTags = $rootScope.alerts;
+                     $modalStack.dismissAll();
                  });
     };
 

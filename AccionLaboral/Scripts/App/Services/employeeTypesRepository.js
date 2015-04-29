@@ -13,7 +13,7 @@ accionLabControllers.factory('employeeTypesRepo', ['$http', function ($http) {
         //method for update
         updateEmployeeType: function (callback, employeeType) {
             
-            return $http.put(url + '/' + employeeType.RoleId, employeeType);
+            return $http.put(url + '/' + employeeType.Id, employeeType);
         },
         //method for delete
         deleteEmployeeType: function (callback, id) {

@@ -522,8 +522,21 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
 
     $scope.setVacantData();
 }])
-.controller('vacantsReportCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'employeesRepo', '$window', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, employeesRepo, $window) {
+.controller('vacantsReportCtrl', ['$scope', 'vacantByCompanyRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', 'employeesRepo', '$window', '$modal', '$modalStack', '$log', function ($scope, vacantByCompanyRepo, $routeParams, $rootScope, $location, $filter, filterFilter, alertService, employeesRepo, $window, $modal, $modalStack, $log) {
     
+    $scope.open = function (size) {
+        var modalInstance = $modal.open({
+            templateUrl: 'loadingModal.html',
+            controller: 'vacantsReportCtrl',
+            size: size,
+            resolve: {
+                items: function () {
+                    return $scope.vacantList;
+                }
+            }
+        });
+    };
+
     $scope.employeeList = [];
     $scope.columnsList = [];
     
@@ -670,21 +683,26 @@ angular.module("vacantsByCompaniesController", ['ngRoute', 'vacantByCompanyRepos
             "DateTo": $scope.filterEndDate,
             "ReportName": $scope.reportName
         };
-        debugger
-        //filters.Companies = angular.copy($scope.companyList);
+        
+        $scope.open();
+        
         if (filters.Vacants.length > 0) {
             vacantByCompanyRepo.exportVacantReport(filters)
              .success(function (data) {
                  var fileName = data.ReportName;
-                 $window.open("VacantsByCompany/Download/" + fileName, '_blank');
+                 if(fileName != null && fileName != "")
+                    $window.open("VacantsByCompany/Download/" + fileName, '_blank');
                  $scope.reportName = "";
+                 $modalStack.dismissAll();
              }).error(function (data, status, headers, config) {
                  alertService.add('danger', 'Error', 'No se ha podido generar el reporte.');
                  $scope.alertsTags = $rootScope.alerts;
+                 $modalStack.dismissAll();
              });
         } else {
             alertService.add('danger', 'Error', 'No hay datos entre el rango de fecha seleccionado.');
             $scope.alertsTags = $rootScope.alerts;
+            $modalStack.dismissAll();
         }
     };
 }]);

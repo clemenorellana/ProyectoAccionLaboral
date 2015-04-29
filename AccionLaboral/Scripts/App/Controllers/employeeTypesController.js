@@ -83,7 +83,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
     }
 
     $scope.editEmployeeType = function (employeeTypeToEdit) {
-        $scope.EmployeeType_RoleId = employeeTypeToEdit.RoleId;
+        $scope.EmployeeType_Id = employeeTypeToEdit.Id;
         $scope.EmployeeType_Name = employeeTypeToEdit.Name;
         $scope.EmployeeType_Alias = employeeTypeToEdit.Alias;
     };
@@ -92,7 +92,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
 
     $scope.employeeTypeClearData = function () {
         $scope.actionEmployeeType = "";
-        $scope.EmployeeType_RoleId = "";
+        $scope.EmployeeType_Id = "";
         $scope.EmployeeType_Name = "";
         $scope.EmployeeType_Alias = "";
     }
@@ -124,7 +124,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
             }
             else {
                 employeeType = {
-                    RoleId: $scope.EmployeeType_RoleId,
+                    Id: $scope.EmployeeType_Id,
                     Alias: $scope.EmployeeType_Alias,
                     Name: $scope.EmployeeType_Name
                 };
@@ -154,7 +154,7 @@ angular.module("employeeTypesController", ['ngRoute', 'employeeTypesRepository',
     };
 
     $scope.setEmployeeTypeToDelete = function (employeeType) {
-        $scope.employeeTypeToDeleteId = employeeType.RoleId;
+        $scope.employeeTypeToDeleteId = employeeType.Id;
     };
 
     $scope.cancelEmployeeTypetDelete = function () {

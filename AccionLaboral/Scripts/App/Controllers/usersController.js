@@ -22,7 +22,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
 
 }]
 )
-.controller('usersCtrl', ['$scope', 'usersRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, usersRepo, $rootScope, $location, $filter, filterFilter, alertService) {
+.controller('usersCtrl', ['$scope', 'usersRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, usersRepo,   $rootScope, $location, $filter, filterFilter, alertService) {
 
     $scope.usersList = [];
     $scope.actionUser = "";
@@ -76,7 +76,7 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
                                         $scope.usersList.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
         })
         .error(function (data) {
-            $scope.error = "Ha ocurrido un error al cargar los datos." + data.ExceptionMessage;
+            $scope.error = "Ha ocurrido un error al cargar los datos." + ' \nDetalle: ' + data.ExceptionMessage;
             $scope.load = false;
         });
 
@@ -138,9 +138,10 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
 
             usersRepo.insertUser(function () {
             }, user).success(function () {
+                $scope.setUserData();
                 alertService.add('success', 'Mensaje', 'El Usuario se ha insertado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
-                $scope.setUserData();
+                
                 $scope.load = false;
             }).error(function (error) {
                 alertService.add('danger', 'Error', 'No se ha podido insertar el registro.');
@@ -158,9 +159,10 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
 
             usersRepo.updateUser(function () {
             }, user).success(function () {
+                $scope.setUserData();
                 alertService.add('success', 'Mensaje', 'El Usuario se ha editado correctamente.');
                 $scope.alertsTags = $rootScope.alerts;
-                $scope.setUserData();
+                
                 $scope.load = false;
             }).error(function (error) {
                 alertService.add('danger', 'Error', 'No se ha podido editar el registro.');
