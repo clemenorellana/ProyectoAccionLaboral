@@ -124,7 +124,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/trackingclients
-        [Authorize]
+        //[Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/trackingclients")]
         public IHttpActionResult GetTrackingClients()
@@ -132,7 +132,7 @@ namespace AccionLaboral.Controllers
             var clients = db.Clients
                 .Include(r => r.State)
                 .Include(r => r.Trackings.Select(c => c.TrackingType))
-                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.Age,Trackings = x.Trackings.Select(c =>new {c.TrackingType}), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
+                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.Employee.EmployeeAlias, x.EnrollDate, x.Age,Trackings = x.Trackings.Select(c =>new {c.TrackingType}), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
                 .OrderBy(r => r.EnrollDate)
                 .ToList();
 
