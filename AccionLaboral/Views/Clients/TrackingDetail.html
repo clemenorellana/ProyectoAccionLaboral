@@ -1,14 +1,11 @@
 ﻿<!-- Alert -->
 <div ng-repeat="item in alertsTags" ng-class="{'alerts alert alert-success alert-dismissable': item.type == 'success', 'alerts alert alert-danger alert-dismissable': item.type == 'danger'}">
-
     <i class="fa fa-check" ng-show="item.type=='success'"></i>
     <i class="fa fa-ban" ng-show="item.type=='danger'"></i>
     <button type="button" class="close" ng-click="item.close()" aria-hidden="true">×</button>
     <h4>{{ item.title }}</h4>
     {{ item.msg }}
 </div><!-- End Alert -->
-
-
 <!-- Delete confirmation modal -->
 <div class="modal fade" id="deleteTrackingInfo" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -30,7 +27,6 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
 <div class="col-md-12" ng-init="setTracking()">
     <div class="nav-tabs-custom">
         <div class="tab-content">
@@ -41,20 +37,19 @@
                     <div class="box-body">
                         <form role="form" name="ClientTrackingForm" ng-submit="saveTracking(client)">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label>Nombre(s)</label>
                                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.FirstName" ng-class="{'loadinggif': load}" ng-disabled="true">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Apellido</label>
+                                        <label>Apellidos</label>
                                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.LastName" ng-class="{'loadinggif': load}" ng-disabled="true">
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -68,18 +63,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" ng-show="Client.StateId==getStateByAlias('PI').StateId">
-                                <label>Dirección Completa</label>
-                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.CompleteAddress" ng-class="{'loadinggif': load}" ng-disabled="true" required>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-show="Client.StateId==getStateByAlias('PI').StateId">
+                                        <label>Dirección Completa</label>
+                                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="Client.CompleteAddress" ng-class="{'loadinggif': load}" ng-disabled="true" required />
+                                    </div>
+                                </div>
                             </div>
-
                             <div class="row" ng-show="Client.StateId==getStateByAlias('IN').StateId">
                                 <!--<div class="col-md-6">
-                    <div class="form-group">
-                        <label>Empresa</label>
-                        <select class="form-control" ng-options="Company.CompanyId as Company.Name for Company in Companies" ng-model="Client.CompanyId" ng-class="{'loadinggif': load}" ng-disabled="true" required></select>
-                    </div>
-                </div>-->
+                                    <div class="form-group">
+                                        <label>Empresa</label>
+                                        <select class="form-control" ng-options="Company.CompanyId as Company.Name for Company in Companies" ng-model="Client.CompanyId" ng-class="{'loadinggif': load}" ng-disabled="true" required></select>
+                                    </div>
+                                </div>-->
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Plaza a la que aspira</label>
@@ -88,26 +86,26 @@
                                 </div>
                             </div>
                             <!--<div class="row" ng-show="Client.StateId==getStateByAlias('IN').StateId">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Enviado</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.Shipped" ng-disabled="true" ng-class="{'loadinggif': load}">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Asesor</label>
-                        <select class="form-control" ng-options="employee.EmployeeId as (employee.FirstName + ' ' + employee.LastName) for employee in Employees" ng-model="Client.AdvisorId" ng-class="{'loadinggif': load}" ng-disabled="true" required></select>
-                    </div>
-                </div>
-            </div>-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Enviado</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.Shipped" ng-disabled="true" ng-class="{'loadinggif': load}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Asesor</label>
+                                        <select class="form-control" ng-options="employee.EmployeeId as (employee.FirstName + ' ' + employee.LastName) for employee in Employees" ng-model="Client.AdvisorId" ng-class="{'loadinggif': load}" ng-disabled="true" required></select>
+                                    </div>
+                                </div>
+                            </div>-->
                             <div class="row">
                                 <!--<div class="col-md-6" ng-show="Client.StateId==getStateByAlias('PI').StateId">
-                    <div class="form-group">
-                        <label>Medio de Información</label>
-                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.InformationMedia" ng-class="{'loadinggif': load}" ng-disabled="true">
-                    </div>
-                </div>-->
+                                    <div class="form-group">
+                                        <label>Medio de Información</label>
+                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.InformationMedia" ng-class="{'loadinggif': load}" ng-disabled="true">
+                                    </div>
+                                </div>-->
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Estado</label>
@@ -125,15 +123,14 @@
                                             </button>
                                         </div>
                                     </div>
-
                                     <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
                                     <table class="table table-bordered" ng-show="!load">
                                         <thead>
                                             <tr>
-                                                <th ng-click="sort='Date' ; reverse=!reverse">Fecha</th>
+                                                <th class="col-md-3" ng-click="sort='Date' ; reverse=!reverse">Fecha</th>
                                                 <th ng-click="sort='Description' ; reverse=!reverse">Descripción</th>
                                                 <th ng-click="sort='Comment' ; reverse=!reverse" ng-show="Client.StateId==getStateByAlias('IN')">Observación</th>
-                                                <th>Opciones</th>
+                                                <th class="col-md-1">Opciones</th>
                                             </tr>
                                             <tr>
                                                 <th colspan="1">
@@ -148,10 +145,10 @@
                                                         <input ng-model="searchTracking.Description" ng-change="setTracking(searchTracking)" class="form-control" type="text" />
                                                     </div>
                                                 </th>
-                                                <th colspan="1">
+                                                <th colspan="2">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                                        <input ng-model="searchTracking.Comment" ng-change="setTracking(searchTracking)" class="form-control" type="text" />
+                                                        <!--<span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                                        <input ng-model="searchTracking.Comment" ng-change="setTracking(searchTracking)" class="form-control" type="text" />-->
                                                     </div>
                                                 </th>
                                                 <th ng-show="Client.StateId==getStateByAlias('IN')" colspan="1"></th>
@@ -197,8 +194,8 @@
                                         <button type="button" class="btn btn-danger" ng-click="back()">Cancelar</button>
                                     </div>
                                     <!--<div class="has-error">
-                        <p class="help-block" ng-show="!ClientTrackingForm.$valid">Complete todos los campos requeridos.</p>
-                    </div>-->
+                                        <p class="help-block" ng-show="!ClientTrackingForm.$valid">Complete todos los campos requeridos.</p>
+                                    </div>-->
                                 </div>
                             </div>
                         </form>
@@ -208,31 +205,31 @@
         </div>
     </div>
 </div>
-                <!-- ADD TRACKING INFO MODAL -->
-                <div class="modal fade" id="trackingInfo" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title"><i class="fa "></i>Nuevo seguimiento</h4>
-                            </div>
-                            <form action="#" method="post" name="trackingFormEdit">
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label>Descripción</label>
-                                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Description" />
-                                    </div>
-                                    <div class="form-group" ng-show="Client.StateId==getStateByAlias('IN')">
-                                        <label>Observación</label>
-                                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Comment" />
-                                    </div>
-                                    <div class="modal-footer clearfix">
-                                        <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
-                                        <button type="submit" data-dismiss="modal" class="btn btn-primary text-center" ng-click="fillTracking()">Aceptar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
+<!-- ADD TRACKING INFO MODAL -->
+<div class="modal fade" id="trackingInfo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa "></i>Nuevo seguimiento</h4>
+            </div>
+            <form action="#" method="post" name="trackingFormEdit">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Description" />
+                    </div>
+                    <div class="form-group" ng-show="Client.StateId==getStateByAlias('IN')">
+                        <label>Observación</label>
+                        <textarea class="form-control" placeholder="Ingresar ..." ng-model="tracking.Comment" />
+                    </div>
+                    <div class="modal-footer clearfix">
+                        <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" data-dismiss="modal" class="btn btn-primary text-center" ng-click="fillTracking()">Aceptar</button>
+                    </div>
                 </div>
-                <!-- /.modal -->
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

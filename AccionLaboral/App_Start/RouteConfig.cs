@@ -20,6 +20,12 @@ namespace AccionLaboral
             );
 
             routes.MapRoute(
+                name: "register",
+                url: "{controller}/{action}/{userName}/{token}",
+                defaults: new { controller = "Home", action = "Index", userName = UrlParameter.Optional, token = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Download",
                 url: "{controller}/{action}/{filename}",
                 defaults: new { controller = "Home", action = "Index", filename = UrlParameter.Optional }

@@ -19,16 +19,20 @@ namespace AccionLaboral.Controllers
             return new FilePathResult("~/Views/Home/Index.html", "text/html");
         }
 
-        public ActionResult RegisterClient()
+        public ActionResult RegisterClient(string userName, string token)
         {
-            ViewBag.Message = "Your application description page.";
+            return new FilePathResult("~/Views/Accounts/ChangePassword.html", "text/html");
+        }
 
-            return new FilePathResult("~/Views/Clientes/RegisterClient.html", "text/html");
+        public ActionResult RegisterUser()
+        {
+            return new FilePathResult("~/Views/Home/HomePage.html", "text/html");
         }
 
         public ActionResult HomePage()
         {
             return new FilePathResult("~/Views/Home/HomePage.html", "text/html");
         }
+
     }
 }
