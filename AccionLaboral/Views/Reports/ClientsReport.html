@@ -75,7 +75,7 @@
             </div>
             <div ng-show="load" style="border: 1px solid #ddd; padding-left: 40%; margin: 40px 5px; width: 100%;"><img src="../../Images/ajax-loader.gif" width="150" height="150" />CARGANDO...</div>
             <div id="CustomersTbl">
-                <table class="table table-bordered zui-table zui-table-zebra zui-table-horizontal" id="tblCust" ng-show="!load">
+                <table class="table table-bordered zui-table" id="tblCust" ng-show="!load">
                     <tr>
                         <th class="col-lg-1" ng-click="sort='FirstName' ; reverse=!reverse">Nombre</th>
                         <th class="col-lg-1" ng-click="sort='LastName' ; reverse=!reverse">Apellido</th>
