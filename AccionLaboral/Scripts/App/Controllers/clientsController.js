@@ -3439,7 +3439,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             customerRepository.getStates().success(function (data) {
                 $scope.States = data;
             });
-            customerRepository.getCustomers($rootScope.userLoggedIn).success(function (data) {
+            customerRepository.getTrackingCustomers($rootScope.userLoggedIn).success(function (data) {
                 $scope.customerData = data;
                 $scope.load = false;
 

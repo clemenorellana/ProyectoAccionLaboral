@@ -106,7 +106,7 @@
                             <th colspan="1">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    <input ng-model="search.Employee.EmployeeAlias" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
+                                    <input ng-model="search.EmployeeAlias" ng-change="setData(search)" ng-class="reverse" class="form-control" type="text" />
                                 </div>
                             </th>
                             <th colspan="1">
@@ -139,7 +139,7 @@
                             <td>{{customer.FirstName}}</td>
                             <td>{{customer.LastName}}</td>
                             <td>{{customer.Age}}</td>
-                            <td>{{customer.Employee.EmployeeAlias}}</td>
+                            <td>{{customer.EmployeeAlias}}</td>
                             <td>Seguimiento de {{customer.Trackings[0].TrackingType.Name}}</td>
                             <td>{{customer.State.Name}}</td>
                             <td>{{customer.CompleteAddress}}</td>
