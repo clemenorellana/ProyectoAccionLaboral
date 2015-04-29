@@ -23,6 +23,43 @@
             <br />
             <div class="row">
                 <div class="col-md-12">
+                    <label>
+                        Puede usar las siguientes palabras reservadas que el sistema reconocerá , de modo que éstas serán reemplazadas automáticamente por el sistema una vez que genere un contrato:
+                    </label>
+                    <table class="table table-bordered" ng-show="!load">
+                        <tr>
+                            <th> Palabra Reservada</th>
+                            <th> Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>{Identidad}</td>
+                            <td>Ésta palabra se reemplazará automáticamente por el # de Identidad del cliente.</td>
+                        </tr>
+                        <tr>
+                            <td>{NombreCompleto}</td>
+                            <td>Ésta palabra se reemplazará automáticamente por el nombre completo del cliente.</td>
+                        </tr>
+                        <tr>
+                            <td>{Dia}</td>
+                            <td>Ésta palabra se reemplazará automáticamente por el día actual del sistema.</td>
+                        </tr>
+                        <tr>
+                            <td>{Mes}</td>
+                            <td>Ésta palabra se reemplazará automáticamente por el mes actual del sistema.</td>
+                        </tr>
+                        <tr>
+                            <td>{Anio}</td>
+                            <td>Ésta palabra se reemplazará automáticamente por el año actual del sistema.</td>
+                        </tr>
+                        <tr>
+                            <td colspan ="2">NOTA: También puede utilizar otras palabras para luego ser reemplazadas como ser {EmpresaColocado}, siempre y cuando esté dentro de "{ }"</tdcolspan>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
                     <label>Contenido del Contrato</label>
                     <form>
                         <textarea id="editor1" name="editor1" rows="25" cols="170" ng-model="Contract_Description" placeholder="Ingresar...">
@@ -32,18 +69,18 @@
                 </div>
             </div>
         </div><!-- /.box-body -->
-        <div class="box-footer">
-            <div class="row">
-                <div class="col-md-6 text-right">
-                    <button type="submit" class="btn btn-primary" ng-click="saveContract()">{{contract_buttonName}}</button>
-                </div>
-                <div class="col-md-6 text-left">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="contract_cancelRedirect()">Cancelar</button>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <button type="submit" class="btn btn-primary" ng-click="saveContract()">{{contract_buttonName}}</button>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="contract_cancelRedirect()">Cancelar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-</div>
+        </div>
 
 
