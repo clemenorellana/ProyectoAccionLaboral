@@ -700,12 +700,19 @@ namespace AccionLaboral.Controllers
             try
             {
                 ClientsFilter filters = id;
-                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom).AddDays(-1);
-                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo).AddDays(1);
+                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom);
+                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo);
+
                 id.Clients = db.Clients
                             .Include(r => r.State)
                             .Include(r => r.Employee)
                             .Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
+
+                if (DateFrom.Year != 1)
+                    id.DateFrom = DateFrom.ToString("dd/MM/yyyy");
+                if (DateTo.Year != 9999)
+                    id.DateTo = DateTo.ToString("dd/MM/yyyy");
+
                 if (filters != null)
                 {
                     string filename = filters.Title.Replace(".", " ") + ".xls";
@@ -729,13 +736,19 @@ namespace AccionLaboral.Controllers
             try
             {
                 ClientsFilter filters = id;
-                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom).AddDays(-1);
-                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo).AddDays(1);
+                DateTime DateFrom = (string.IsNullOrEmpty(id.DateFrom)) ? new DateTime(1, 1, 1) : Convert.ToDateTime(id.DateFrom);
+                DateTime DateTo = (string.IsNullOrEmpty(id.DateTo)) ? new DateTime(9999, 1, 1) : Convert.ToDateTime(id.DateTo);
+
                 id.Clients = db.Clients.
                     Include(r => r.Trackings.Select(c => c.TrackingType)).
                     Include(r => r.State).
                     Include(r=>r.Employee).
                     Where(r => r.EnrollDate >= DateFrom && r.EnrollDate <= DateTo).ToList();
+
+                if (DateFrom.Year != 1)
+                    id.DateFrom = DateFrom.ToString("dd/MM/yyyy");
+                if (DateTo.Year != 9999)
+                    id.DateTo = DateTo.ToString("dd/MM/yyyy");
 
                 if (filters != null)
                 {
