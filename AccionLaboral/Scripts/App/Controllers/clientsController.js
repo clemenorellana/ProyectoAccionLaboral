@@ -183,6 +183,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         if ($scope.title) {
             $scope.filters.Title = ($scope.title) ? $scope.title.replace(/[<>:"\/\\|?*]+/g, ' ') : "";
 
+            $scope.filters.DateFrom = $scope.dateFrom;
+            $scope.filters.DateTo = $scope.dateTo;
+
             if ($scope.filters)
                 if ($scope.filters.Clients.length > 0) {
                     customerRepository.exportCustomers($scope.filters)
@@ -3208,7 +3211,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.exportClients = function () {
             if ($scope.title) {
                 $scope.filters.Title = ($scope.title) ? $scope.title.replace(/[<>:"\/\\|?*]+/g, ' ') : "";
-
+                $scope.filters.DateFrom = $scope.dateFrom;
+                $scope.filters.DateTo = $scope.dateTo;
                 if ($scope.filters)
                     if ($scope.filters.Clients.length > 0) {
                         $scope.open();
