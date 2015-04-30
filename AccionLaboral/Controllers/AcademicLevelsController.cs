@@ -13,7 +13,6 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AcademicLevelsController : ApiController
     {
@@ -44,6 +43,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/AcademicLevels/5
+        [Authorize]
         public IHttpActionResult PutAcademicLevel(int id, AcademicLevel academiclevel)
         {
             if (!ModelState.IsValid)
@@ -79,6 +79,7 @@ namespace AccionLaboral.Controllers
 
         // POST api/AcademicLevels
         [ResponseType(typeof(AcademicLevel))]
+        [Authorize]
         public IHttpActionResult PostAcademicLevel(AcademicLevel academiclevel)
         {
             if (!ModelState.IsValid)
@@ -94,6 +95,7 @@ namespace AccionLaboral.Controllers
 
         // DELETE api/AcademicLevels/5
         [ResponseType(typeof(AcademicLevel))]
+        [Authorize]
         public IHttpActionResult DeleteAcademicLevel(int id)
         {
             AcademicLevel academiclevel = db.AcademicLevels.Find(id);

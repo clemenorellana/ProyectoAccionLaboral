@@ -14,7 +14,6 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AcademicEducationsController : ApiController
     {
@@ -58,6 +57,7 @@ namespace AccionLaboral.Controllers
         // PUT api/AcademicEducations/5
         [Route("api/client/{clientId}/academicEducations/{academicEducationId}")]
         [HttpPut]
+        [Authorize]
         public IHttpActionResult PutAcademicEducation(int clientId, int academicEducationId, AcademicEducation academiceducation)
         {
             if (!ModelState.IsValid)
@@ -103,6 +103,7 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(AcademicEducation))]
         [Route("api/client/{clientId}/academicEducations")]
         [HttpPost]
+        [Authorize]
         public IHttpActionResult PostAcademicEducation(int clientId, AcademicEducation academiceducation)
         {
             if (!ModelState.IsValid)
@@ -127,6 +128,7 @@ namespace AccionLaboral.Controllers
         [ResponseType(typeof(AcademicEducation))]
         [Route("api/client/{clientId}/academicEducations/{academicEducationId}")]
         [HttpDelete]
+        [Authorize]
         public IHttpActionResult DeleteAcademicEducation(int clientId, int academicEducationId)
         {
             var client = db.Clients.Find(clientId);
