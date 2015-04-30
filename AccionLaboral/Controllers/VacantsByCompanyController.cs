@@ -13,6 +13,7 @@ using AccionLaboral.Helpers.Filters;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class VacantsByCompanyController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();

@@ -19,7 +19,7 @@ namespace AccionLaboral.Controllers
             return new FilePathResult("~/Views/Home/Index.html", "text/html");
         }
 
-        public ActionResult RegisterClient(string userName, string token)
+        public ActionResult ChangePassword(string userName, string id)
         {
             return new FilePathResult("~/Views/Accounts/ChangePassword.html", "text/html");
         }

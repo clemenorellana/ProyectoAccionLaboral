@@ -20,9 +20,9 @@ namespace AccionLaboral
             );
 
             routes.MapRoute(
-                name: "register",
-                url: "{controller}/{action}/{userName}/{token}",
-                defaults: new { controller = "Home", action = "Index", userName = UrlParameter.Optional, token = UrlParameter.Optional }
+                name: "ChangePassword",
+                url: "{controller}/{action}/{userName}/{id}",
+                defaults: new { controller = "Home", action = "Index", userName = UrlParameter.Optional, id = UrlParameter.Optional }
             );
 
             routes.MapRoute(

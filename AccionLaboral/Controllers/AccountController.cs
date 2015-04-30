@@ -19,7 +19,7 @@ using AccionLaboral.Results;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -108,6 +108,7 @@ namespace AccionLaboral.Controllers
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
+            //string id = UserManager.Users.Where(r => r.UserName == "roger").First().Id;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

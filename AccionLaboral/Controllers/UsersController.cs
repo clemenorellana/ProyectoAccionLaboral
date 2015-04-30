@@ -35,6 +35,7 @@ namespace AccionLaboral.Controllers
         // GET api/Users
         [Route("api/Users")]
         [HttpGet]
+        [Authorize]
         public HttpResponseMessage GetUsers()
         {
             var users = db.Users.ToList();
@@ -44,6 +45,7 @@ namespace AccionLaboral.Controllers
         // GET api/UsersFree
         [Route("api/UsersFree")]
         [HttpGet]
+        [Authorize]
         public IHttpActionResult GetUsersFree()
         {
             var users = db.Users.Where(r => r.Busy == false).ToList();
@@ -95,21 +97,6 @@ namespace AccionLaboral.Controllers
             return UserNameExists(user.UserName);
         }
 
-        /*[Route("api/Users/ChangePassword")]
-        [HttpPut]
-        public IHttpActionResult ChangePassword(User user)
-        {
-            user.PasswordHash = Encryptdata(user.PasswordHash);
-
-            var userToUpdate = db.Users.Where(r => r.UserName == user.UserName).ToList();
-            userToUpdate[0].PasswordHash = user.PasswordHash;
-
-            user = userToUpdate[0];
-
-            return PutUser(user.Id, user);
-        }*/
-
-
         [Route("api/Users/RequestChangePassword")]
         [HttpPost]
         public bool RequestChangePassword(User user)
@@ -158,6 +145,7 @@ namespace AccionLaboral.Controllers
         [Route("api/Users")]
         [HttpGet]
         [ResponseType(typeof(User))]
+        [Authorize]
         public IHttpActionResult GetUser(string id)
         {
             User user = db.Users.Find(id);
@@ -170,6 +158,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Users/5
+        [Authorize]
         public IHttpActionResult PutUser(string id, User user)
         {
             if (!ModelState.IsValid)

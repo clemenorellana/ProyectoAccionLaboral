@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class VacantCoversController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
