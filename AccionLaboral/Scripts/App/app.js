@@ -36,7 +36,7 @@ angular.module('AccionLaboralApp', [
             IdleProvider.timeout(10);
             KeepaliveProvider.interval(10);
 
-            /*
+            
             $routeProvider.
                  when('/HomePage', {
                      templateUrl: '/Home/HomePage',
@@ -44,7 +44,7 @@ angular.module('AccionLaboralApp', [
                  }).
                 otherwise({
                     redirectTo: '/'
-                });*/
+                });
 
         }
     ])

@@ -146,7 +146,7 @@
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label>Tipo de Empleado</label>
-                            <select class="form-control" ng-options="role.RoleId as role.Name for role in employeesRolesList" ng-model="employee_Role" ng-class="{'loadinggif': employee_Role==undefined && $scope.screenAction=='edit'}" required>
+                            <select class="form-control" ng-options="role.Id as role.Name for role in employeesRolesList" ng-model="employee_Role" ng-class="{'loadinggif': employee_Role==undefined && $scope.screenAction=='edit'}" required>
                                 <option value="">-- Seleccione una opción --</option>
                             </select>
                         </div>
@@ -160,7 +160,7 @@
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label>Usuario</label>
-                            <select ng-disabled="!editUserName" class="form-control" ng-options="user.UserId as user.UserName for user in employeesUsersList" ng-model="employee_User" ng-class="{'loadinggif': employee_User==undefined} && $scope.screenAction=='edit'" required>
+                            <select ng-disabled="!editUserName" class="form-control" ng-options="user.Id as user.UserName for user in employeesUsersList" ng-model="employee_User" ng-class="{'loadinggif': employee_User==undefined} && $scope.screenAction=='edit'" required>
                                 <option value="">-- Seleccione una opción --</option>
                             </select>
                         </div>
