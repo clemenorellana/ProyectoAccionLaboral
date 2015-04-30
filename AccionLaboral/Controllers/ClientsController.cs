@@ -387,7 +387,7 @@ namespace AccionLaboral.Controllers
                 }
 
                 db.SaveChanges();
-                GoLucene.AddUpdateLuceneIndex(client);
+                //GoLucene.AddUpdateLuceneIndex(client);
             }
             catch (Exception)
             {
@@ -492,7 +492,7 @@ namespace AccionLaboral.Controllers
 
 
                 db.SaveChanges();
-                GoLucene.AddUpdateLuceneIndex(client);
+                //GoLucene.AddUpdateLuceneIndex(client);
             }
             catch (Exception)
             {
@@ -558,7 +558,7 @@ namespace AccionLaboral.Controllers
 
 
                 db.SaveChanges();
-                GoLucene.AddUpdateLuceneIndex(client);
+                //GoLucene.AddUpdateLuceneIndex(client);
             }
             catch (Exception)
             {
@@ -591,8 +591,8 @@ namespace AccionLaboral.Controllers
                 db.Clients.Add(client);
 
                 db.SaveChanges();
-                await Task.Run(()=>
-                GoLucene.AddUpdateLuceneIndex(client));
+                //await Task.Run(()=>
+                //GoLucene.AddUpdateLuceneIndex(client));
             }
             catch (Exception)
             {
@@ -611,7 +611,7 @@ namespace AccionLaboral.Controllers
             {
                 return NotFound();
             }
-            GoLucene.ClearLuceneIndexRecord(id);
+            //GoLucene.ClearLuceneIndexRecord(id);
             db.Clients.Remove(client);
             db.SaveChanges();
 
