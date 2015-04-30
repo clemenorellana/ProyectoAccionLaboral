@@ -13,7 +13,6 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EducationTypesController : ApiController
     {
@@ -44,6 +43,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/EducationTypes/5
+        [Authorize]
         public IHttpActionResult PutEducationType(int id, EducationType educationtype)
         {
             if (!ModelState.IsValid)
@@ -79,6 +79,7 @@ namespace AccionLaboral.Controllers
 
         // POST api/EducationTypes
         [ResponseType(typeof(EducationType))]
+        [Authorize]
         public IHttpActionResult PostEducationType(EducationType educationtype)
         {
             if (!ModelState.IsValid)
@@ -94,6 +95,7 @@ namespace AccionLaboral.Controllers
 
         // DELETE api/EducationTypes/5
         [ResponseType(typeof(EducationType))]
+        [Authorize]
         public IHttpActionResult DeleteEducationType(int id)
         {
             EducationType educationtype = db.EducationTypes.Find(id);
