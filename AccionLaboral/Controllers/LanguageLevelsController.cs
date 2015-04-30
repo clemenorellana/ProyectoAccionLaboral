@@ -13,7 +13,6 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LanguageLevelsController : ApiController
     {
@@ -44,6 +43,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/LanguageLevels/5
+        [Authorize]
         public IHttpActionResult PutLanguageLevel(int id, LanguageLevel languagelevel)
         {
             if (!ModelState.IsValid)
@@ -79,6 +79,7 @@ namespace AccionLaboral.Controllers
 
         // POST api/LanguageLevels
         [ResponseType(typeof(LanguageLevel))]
+        [Authorize]
         public IHttpActionResult PostLanguageLevel(LanguageLevel languagelevel)
         {
             if (!ModelState.IsValid)
@@ -94,6 +95,7 @@ namespace AccionLaboral.Controllers
 
         // DELETE api/LanguageLevels/5
         [ResponseType(typeof(LanguageLevel))]
+        [Authorize]
         public IHttpActionResult DeleteLanguageLevel(int id)
         {
             LanguageLevel languagelevel = db.LanguageLevels.Find(id);

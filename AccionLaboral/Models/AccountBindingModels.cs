@@ -32,6 +32,24 @@ namespace AccionLaboral.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class ForgotPasswordBindingModel
+    {
+        [Required]
+        [Display(Name = "Id")]
+        public string Id { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "La {0} debe ser de al menos {2} caracteres de longitud.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Nueva Contraseña")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmar Contraseña")]
+        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la confirmación de contraseña no coinciden.")]
+        public string ConfirmPassword { get; set; }
+    }
+
     public class RegisterBindingModel
     {
         [Required]
@@ -66,6 +84,11 @@ namespace AccionLaboral.Models
         public string UserName { get; set; }
         public bool Active { get; set; }
         public bool Busy { get; set; }
+    }
+
+    public class RequestPassword
+    {
+        public string UserName { get; set; }
     }
 
     public class RemoveLoginBindingModel

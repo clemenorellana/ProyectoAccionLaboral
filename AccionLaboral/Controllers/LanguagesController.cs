@@ -13,7 +13,6 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LanguagesController : ApiController
     {
@@ -44,6 +43,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Languages/5
+        [Authorize]
         public IHttpActionResult PutLanguage(int id, Language language)
         {
             if (!ModelState.IsValid)
@@ -79,6 +79,7 @@ namespace AccionLaboral.Controllers
 
         // POST api/Languages
         [ResponseType(typeof(Language))]
+        [Authorize]
         public IHttpActionResult PostLanguage(Language language)
         {
             if (!ModelState.IsValid)
@@ -94,6 +95,7 @@ namespace AccionLaboral.Controllers
 
         // DELETE api/Languages/5
         [ResponseType(typeof(Language))]
+        [Authorize]
         public IHttpActionResult DeleteLanguage(int id)
         {
             Language language = db.Languages.Find(id);

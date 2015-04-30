@@ -13,7 +13,6 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CountriesController : ApiController
     {
@@ -46,6 +45,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Countries/5
+        [Authorize]
         public IHttpActionResult PutCountry(int id, Country country)
         {
             if (!ModelState.IsValid)
@@ -83,6 +83,7 @@ namespace AccionLaboral.Controllers
         [Route("api/Countries")]
         [HttpPost]
         [ResponseType(typeof(Country))]
+        [Authorize]
         public IHttpActionResult PostCountry(Country country)
         {
             if (!ModelState.IsValid)
@@ -98,6 +99,7 @@ namespace AccionLaboral.Controllers
 
         // DELETE api/Countries/5
         [ResponseType(typeof(Country))]
+        [Authorize]
         public IHttpActionResult DeleteCountry(int id)
         {
             Country country = db.Countries.Find(id);

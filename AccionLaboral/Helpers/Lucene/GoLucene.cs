@@ -19,7 +19,7 @@ namespace AccionLaboral.Helpers.Lucene
     {
         // properties
         public static string _luceneDir =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "lucene_index");
+            Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "lucene_index");
         private static FSDirectory _directoryTemp;
         private static FSDirectory _directory
         {

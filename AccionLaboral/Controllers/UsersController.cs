@@ -35,7 +35,7 @@ namespace AccionLaboral.Controllers
         // GET api/Users
         [Route("api/Users")]
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public HttpResponseMessage GetUsers()
         {
             var users = db.Users.ToList();
@@ -140,6 +140,47 @@ namespace AccionLaboral.Controllers
             return users.Count > 0;
         }
 
+        [Route("api/Users/RequestPassword")]
+        [HttpPost]
+        public IHttpActionResult RequestPassword(RequestPassword UserName)
+        {
+            var users = db.Users.Where(r => r.UserName == UserName.UserName).ToList();
+
+            if (users.Count == 0)
+                return NotFound();
+
+            var userId = users[0].Id;
+
+            Employee employee = db.Employees.Where(r => r.UserId == userId).ToList()[0];
+
+
+            MailMessage m = new MailMessage(new MailAddress("accionlaboralhnsps@gmail.com", "Acción Laboral"),
+                                             new MailAddress(employee.Email)
+                                           );
+            m.Subject = "Cambiar Contraseña";
+
+            string url =HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + "/Home/ChangePassword/#" + UserName.UserName + "/" + userId;
+
+            m.Body = string.Format(@"Estimado(a) {0}
+                                    <BR/>
+                                    Se ha solicitado un cambio de contraseña.
+                                    <BR/>
+                                    Su usuario es: {1}
+                                    <BR/>
+                                    <a href='{2}'>Haga clic aquí para cambiar su contraseña</a>"
+                                  , employee.FirstName
+                                  , employee.User.UserName
+                                  , url
+                                  );
+
+            m.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            smtp.Credentials = new NetworkCredential("accionlaboralhnsps@gmail.com", "4ccionl4bor4l");
+            smtp.EnableSsl = true;
+            smtp.Send(m);
+
+            return Ok();
+        }
 
         // GET api/Users/5
         [Route("api/Users")]

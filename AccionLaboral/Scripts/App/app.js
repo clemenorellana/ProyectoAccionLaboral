@@ -7,7 +7,6 @@ angular.module('AccionLaboralApp', [
         'ngCookies',
         'ui.bootstrap',
         'dialogs',
-        //'mainController',
         'clientsController',
         'careersController',
         'contractTemplatesController',
@@ -220,16 +219,19 @@ angular.module('AccionLaboralApp', [
 
                         $rootScope.forgotPass = false;
                         $rootScope.loading = false;
+                        fakeProgress();
                     } else {
                         $scope.skinClass = "bg-black";
                         $scope.template = "Users/Login";
-                        $scope.addAlert("danger", "Usuario no valido. Intente de nuevo.");
+                        $scope.addAlert("danger", "Usuario no v\u00e1lido. Intente de nuevo.");
                     };
                     $rootScope.loading = false;
+                    fakeProgress();
                 })
                 .error(function (message) {
-                    $scope.addAlert("danger", "Ha ocurrido un error en el servidor.");
+                    $scope.addAlert("danger", "Usuario no v\u00e1lido. Intente de nuevo.");
                     $rootScope.loading = false;
+                    fakeProgress();
                 });
 
             }
@@ -378,6 +380,35 @@ angular.module('AccionLaboralApp', [
                 }
 
             }
+    ])
+    .controller('RequestPasswordController', [
+        '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService) {
+            
+            $scope.getParams = function () {
+                var urlParams = $location.path();
+                var protocol = $location.protocol();
+                var host = $location.host();
+                var port = $location.port();
+                var params = urlParams.split('/');
+                return { "username": params[1], "id": params[2], "url": protocol + "://" + host + ":" + port };
+            }
+
+            $scope.forgotPassword = function (newPassword, confirmPassword) {
+                var allParams = $scope.getParams();
+                usersRepo.forgotPassword(allParams.url, allParams.id, newPassword, confirmPassword).success(function () {
+                    $scope.success = "Su contrase\u00f1a ha sido cambiada exit\u00f3samente.";
+                    $scope.newMessage = "";
+                    $scope.confirmMessage = "";
+                    $scope.newPassword = "";
+                    $scope.confirmPassword = "";
+                }).error(function (error) {
+                    $scope.alerts = [];
+                    $scope.newMessage = (error.ModelState["model.NewPassword"]) ? error.ModelState["model.NewPassword"].toString() : "";
+                    $scope.confirmMessage = (error.ModelState["model.ConfirmPassword"]) ? error.ModelState["model.ConfirmPassword"].toString() : "";
+                    $scope.success = "";
+                })
+            }
+        }
     ])
     .controller('homePageController', [
         '$scope', '$location', '$cookies', '$rootScope', '$timeout', '$dialogs', 'usersRepo', 'employeesRepo', '$cookieStore', 'authService', function ($scope, $location, $cookies, $rootScope, $timeout, $dialogs, usersRepo, employeesRepo, $cookieStore, authService) {

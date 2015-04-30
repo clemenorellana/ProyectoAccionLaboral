@@ -16,6 +16,8 @@ using Microsoft.Owin.Security.OAuth;
 using AccionLaboral.Models;
 using AccionLaboral.Providers;
 using AccionLaboral.Results;
+using System.Net.Mail;
+using System.Net;
 
 namespace AccionLaboral.Controllers
 {
@@ -117,6 +119,33 @@ namespace AccionLaboral.Controllers
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
             IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/ForgotPassword
+        [Route("ForgotPassword")]
+        public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result = await UserManager.RemovePasswordAsync(model.Id);
+            IHttpActionResult errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+            result = await UserManager.AddPasswordAsync(model.Id, model.NewPassword);
+            errorResult = GetErrorResult(result);
 
             if (errorResult != null)
             {

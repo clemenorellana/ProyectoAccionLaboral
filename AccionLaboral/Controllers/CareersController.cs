@@ -14,7 +14,7 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
-    [Authorize]
+    
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CareersController : ApiController
     {
@@ -54,6 +54,7 @@ namespace AccionLaboral.Controllers
         }
 
         // PUT api/Careers/5
+        [Authorize]
         public IHttpActionResult PutCareer(int id, Career career)
         {
             if (!ModelState.IsValid)
@@ -91,6 +92,7 @@ namespace AccionLaboral.Controllers
         [Route("api/Careers")]
         [HttpPost]
         [ResponseType(typeof(Career))]
+        [Authorize]
         public IHttpActionResult PostCareer(Career career)
         {
             if (!ModelState.IsValid)
@@ -106,6 +108,7 @@ namespace AccionLaboral.Controllers
 
         // DELETE api/Careers/5
         [ResponseType(typeof(Career))]
+        [Authorize]
         public IHttpActionResult DeleteCareer(int id)
         {
             Career career = db.Careers.Find(id);
