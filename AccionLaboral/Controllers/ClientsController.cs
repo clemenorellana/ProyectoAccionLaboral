@@ -124,7 +124,7 @@ namespace AccionLaboral.Controllers
         }
 
         // Get api/trackingclients
-        //[Authorize]
+        [Authorize]
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/trackingclients")]
         public IHttpActionResult GetTrackingClients()

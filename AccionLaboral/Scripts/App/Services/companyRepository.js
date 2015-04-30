@@ -1,11 +1,11 @@
 ﻿var accionLabControllers = angular.module('companiesRepository', []);
 
 
-accionLabControllers.factory('companiesRepo', ['$http', function ($http) {
+accionLabControllers.factory('companiesRepo', ['$http', '$rootScope', function ($http, $rootScope) {
     var urlCompany = 'api/Companies';
     return {
         getCompanyList: function (callback) {
-            return $http.get(urlCompany);
+            return $http.get(urlCompany, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         }
         ,
         //insert method
@@ -17,11 +17,11 @@ accionLabControllers.factory('companiesRepo', ['$http', function ($http) {
                 "ContactsByCompany": company.ContactsByCompany
                 //"VacantsByCompany": company.VacantsByCompany
             };
-            return $http.post(urlCompany, newCompany)
+            return $http.post(urlCompany, newCompany, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } })
         },
         //update method
         getCompany: function (id) {
-            return $http.get(urlCompany + "/" + id);
+            return $http.get(urlCompany + "/" + id, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         updateCompany: function (callback, company) {
             debugger
@@ -33,20 +33,20 @@ accionLabControllers.factory('companiesRepo', ['$http', function ($http) {
                 "ContactsByCompany": company.ContactsByCompany
                 //"VacantsByCompany": company.VacantsByCompany
             };
-            return $http.put(urlCompany + '/' + newCompany.CompanyId, newCompany);
+            return $http.put(urlCompany + '/' + newCompany.CompanyId, newCompany, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //delete method
         deleteCompany: function (callback, id) {
-            return $http.delete(urlCompany + '/' + id);
+            return $http.delete(urlCompany + '/' + id, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         }
         ,
         //Reports
         getCompaniesDataReport: function (id) {
-            return $http.post('api/companiesdatareport/', id);
+            return $http.post('api/companiesdatareport/', id, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         }
         ,
         exportCompaniesReport: function (filters) {
-            return $http.post('api/exportcompaniesreport/', filters);
+            return $http.post('api/exportcompaniesreport/', filters, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         }
     }
 }]);

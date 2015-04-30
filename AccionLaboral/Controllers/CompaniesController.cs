@@ -14,6 +14,7 @@ using AccionLaboral.Helpers.Filters;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class CompaniesController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();

@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class RolesController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();

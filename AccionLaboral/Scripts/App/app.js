@@ -412,13 +412,14 @@ angular.module('AccionLaboralApp', [
                 $scope.userValid = false;
             }
             else {
+                    if(next){
                 var paramEmployeeId = next.params.id;
                 var cureentEmployeeId = $rootScope.userLoggedIn.EmployeeId;
                 if (cureentEmployeeId != paramEmployeeId && next.originalPath == '/Employees/Profile/:id') {
                     $location.path('/HomePage');
                     return;
                 }
-
+                    }
 
                 //---------------------------------------------------------
                 //Listado de roles

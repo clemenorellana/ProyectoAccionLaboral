@@ -18,11 +18,15 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
         when('/ResetPassword', {
             templateUrl: '/Users/ResetPassword',
             controller: 'usersCtrl'
+        }).
+        when('/ChangePassword', {
+            templateUrl: '/Users/ChangePassword',
+            controller: 'usersCtrl'
         });
 
 }]
 )
-.controller('usersCtrl', ['$scope', 'usersRepo', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'alertService', function ($scope, usersRepo,   $rootScope, $location, $filter, filterFilter, alertService) {
+.controller('usersCtrl', ['$scope', '$routeParams', '$rootScope', '$location', '$filter', 'filterFilter', 'usersRepo', 'alertService', function ($scope, $routeParams, $rootScope, $location, $filter, filterFilter, usersRepo, alertService) {
 
     $scope.usersList = [];
     $scope.actionUser = "";
@@ -48,12 +52,42 @@ angular.module("usersController", ['ngRoute', 'usersRepository', 'alertRepositor
         $scope.reverse = false;
     }
     //End Sorting//
-
+    
     $scope.$watch('search', function (term) {
-        $scope.filtered = filterFilter($scope.usersList, term);
-        $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+        if ($scope.usersList) {
+            if ($scope.usersList.length > 0) {
+                $scope.filtered = filterFilter($scope.usersList, term);
+                $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+            }
+        }
     });
 
+    /*Change Password*/
+    $scope.goToChangePassword = function () {
+        $location.path("ChangePassword");
+    }
+
+    $scope.saveNewPassword = function (oldPassword, newPassword, confirmPassword) {
+        usersRepo.changePassword(oldPassword, newPassword, confirmPassword).success(function () {
+            alertService.add('success', 'Mensaje', 'Su contrase\u00f1a ha sido cambiada exit\u00f3samente.');
+            $scope.alertsTags = $rootScope.alerts;
+            $scope.oldPassword = "";
+            $scope.newPassword = "";
+            $scope.confirmPassword = "";
+            $scope.newMessage = "";
+            $scope.confirmMessage = "";
+            $scope.currentMessage = "";
+        }).error(function (error) {
+            $scope.alerts = [];
+            $scope.newMessage = (error.ModelState["model.NewPassword"]) ? error.ModelState["model.NewPassword"].toString() : "";
+            $scope.confirmMessage = (error.ModelState["model.ConfirmPassword"]) ? error.ModelState["model.ConfirmPassword"].toString() : "";
+            
+            if ($scope.confirmMessage == "" && $scope.newMessage == "") {
+                $scope.currentMessage = "Contraseña incorrecta";
+            }
+        });
+    }
+    /*End Change Password*/
 
     $scope.itemsPerPageList = [5, 10, 20, 30, 40, 50];
     $scope.entryLimit = $scope.itemsPerPageList[0];

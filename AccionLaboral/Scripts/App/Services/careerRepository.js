@@ -1,14 +1,14 @@
 ﻿var accionLabControllers = angular.module('careersRepository', []);
 
 
-accionLabControllers.factory('careersRepo', ['$http', function ($http) {
+accionLabControllers.factory('careersRepo', ['$http', '$rootScope', function ($http, $rootScope) {
     var url = 'api/Careers';
     return {
         getCarrerList: function (callback) {
-            return $http.get(url);
+            return $http.get(url, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getAcademicLevels: function (callback) {
-            return $http.get('api/AcademicLevels');
+            return $http.get('api/AcademicLevels', { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for insert
         insertCareer: function (callback, career) {
@@ -16,7 +16,7 @@ accionLabControllers.factory('careersRepo', ['$http', function ($http) {
                 "Name": career.Name,
                 "AcademicLevelId": career.AcademicLevelId
             };
-            return $http.post(url, career);
+            return $http.post(url, career, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for update
         updateCareer: function (callback, career) {
@@ -25,11 +25,11 @@ accionLabControllers.factory('careersRepo', ['$http', function ($http) {
                 "Name": career.Name,
                 "AcademicLevelId": career.AcademicLevelId
             };
-            return $http.put(url + '/' + career.CareerId, career);
+            return $http.put(url + '/' + career.CareerId, career, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for delete
         deleteCareer: function (callback, id) {
-            return $http.delete(url + '/' + id);
+            return $http.delete(url + '/' + id, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         }
     }
 }]);

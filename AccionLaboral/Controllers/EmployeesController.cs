@@ -15,6 +15,7 @@ using System.Web.Http.Description;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class EmployeesController : ApiController
     {
         private AccionLaboralContext db;

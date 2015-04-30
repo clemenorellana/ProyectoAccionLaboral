@@ -14,6 +14,7 @@ using System.Web.Http.Cors;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CareersController : ApiController
     {

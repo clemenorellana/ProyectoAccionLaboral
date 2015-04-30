@@ -15,6 +15,7 @@ using Novacode;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class ContractTemplatesController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();

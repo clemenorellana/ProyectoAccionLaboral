@@ -12,6 +12,7 @@ using AccionLaboral.Models;
 
 namespace AccionLaboral.Controllers
 {
+    [Authorize]
     public class WorkExperiencesController : ApiController
     {
         private AccionLaboralContext db = new AccionLaboralContext();
