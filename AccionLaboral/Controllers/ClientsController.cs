@@ -30,7 +30,7 @@ namespace AccionLaboral.Controllers
         }
 
         // GET api/Clients
-        [Authorize]
+        //[Authorize]
         public IHttpActionResult GetClients()
         {
             var clients = db.Clients.Include(r => r.State).Include(r=>r.Employee)

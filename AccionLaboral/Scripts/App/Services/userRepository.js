@@ -48,13 +48,22 @@ accionLabControllers.factory('usersRepo', ['$http', '$rootScope', function ($htt
             var user = {
                 "UserName": userName
             };
-            return $http.post(url + '/RequestChangePassword', user, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.post(url + '/RequestPassword', user);
         },
         validateUserName: function (userName) {
             var user = {
                 "UserName": userName
             };
             return $http.post(url + '/ValidateUserName', user, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
+        },
+        forgotPassword: function (urlParam, id, newPassword, confirmPassword) {
+            var user = {
+                "Id": id,
+                "NewPassword": newPassword,
+                "ConfirmPassword": confirmPassword
+            };
+
+            return $http.post(urlParam + '/api/Account/ForgotPassword', user);
         },
         changePassword: function (oldPassword, newPassword, confirmPassword) {
             var user = {
