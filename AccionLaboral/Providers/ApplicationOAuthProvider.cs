@@ -57,7 +57,7 @@ namespace AccionLaboral.Providers
                     context.Request.Context.Authentication.SignIn(cookiesIdentity);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;

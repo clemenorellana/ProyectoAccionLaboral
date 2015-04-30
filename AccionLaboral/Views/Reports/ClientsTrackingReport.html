@@ -89,7 +89,7 @@
                             <th ng-click="sort='Cellphone' ; reverse=!reverse">Celular</th>
                             <th class="col-lg-1" ng-click="sort='EnrollDate' ; reverse=!reverse">Fecha de Ingreso</th>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <th colspan="1">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -132,7 +132,7 @@
                                 </div>
                             </th>
                             <th colspan="1"></th>
-                        </tr>
+                        </tr>-->
                         <tr>
 
                         <tr ng-repeat="customer in filters.Clients | filter:search:strict | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit | orderBy:sort:reverse">

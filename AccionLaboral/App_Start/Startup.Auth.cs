@@ -26,7 +26,8 @@ namespace AccionLaboral
                 TokenEndpointPath = new PathString("/Token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1)
+                ,
                 //Comentar esta línea antes de hacer el deploy
                 AllowInsecureHttp = true
             };
