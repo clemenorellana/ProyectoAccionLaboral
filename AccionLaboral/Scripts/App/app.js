@@ -34,17 +34,16 @@ angular.module('AccionLaboralApp', [
             IdleProvider.idle(5*60);
             IdleProvider.timeout(10);
             KeepaliveProvider.interval(10);
-
-            /*
             $routeProvider.
                  when('/HomePage', {
                      templateUrl: '/Home/HomePage',
                      controller: 'homePageController'
                  }).
                 otherwise({
-                    redirectTo: '/'
-                });*/
-
+                    redirectTo: '/',
+                    templateUrl: '/Home/HomePage',
+                    controller: 'homePageController'
+                });
         }
     ])
     .filter('startFrom', function () {
@@ -210,8 +209,7 @@ angular.module('AccionLaboralApp', [
                 $rootScope.forgotPass = false;
                 
                 usersRepo.requestChangePassword(userName).success(function (data) {
-                    $scope.userValid = data;
-                    if ($scope.userValid == true) {
+                    
                         $scope.addAlert("success", "La solicitud se ha enviado a su correo.");
                         window.location = "#/Login";
                         $scope.skinClass = "bg-black";
@@ -220,11 +218,6 @@ angular.module('AccionLaboralApp', [
                         $rootScope.forgotPass = false;
                         $rootScope.loading = false;
                         fakeProgress();
-                    } else {
-                        $scope.skinClass = "bg-black";
-                        $scope.template = "Users/Login";
-                        $scope.addAlert("danger", "Usuario no v\u00e1lido. Intente de nuevo.");
-                    };
                     $rootScope.loading = false;
                     fakeProgress();
                 })

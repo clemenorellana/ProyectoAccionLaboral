@@ -1126,6 +1126,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 //$log.info('Modal dismissed at: ' + new Date());
             });
         };
+
+        $scope.spanishMonth = function spanishMonth(m) {
+            $scope.monthname = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
+            return $scope.monthname[m];
+        }
+
         //enroll costumer
         $scope.enrollClientExist = false;
         $scope.showMsgErrorClient = false;
@@ -1227,6 +1233,12 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             
             if ($scope.enrollClientForm.$valid) {
                 $scope.openLoading();
+                $scope.currentDate = new Date();
+                $scope.currentYear = $scope.currentDate.getFullYear().toString().substr(2, 2);
+                var pad = "00000";
+                var clientId = $rootScope.enrollClient.ClientId.toString();
+                var clientId = pad.substring(0, pad.length - clientId.length) + clientId;
+                $rootScope.enrollClient.CorrelativeCode = $scope.spanishMonth($scope.currentDate.getMonth()) + "-" + $scope.currentYear + "-" + clientId;
                 if ($scope.personalReferencesEnroll)
                     $rootScope.enrollClient.References = $scope.personalReferencesEnroll;
                 customerRepository.inscribeCustomer($rootScope.enrollClient).success(function () {
