@@ -16,7 +16,7 @@ accionLabControllers.factory('usersRepo', ['$http', '$rootScope', function ($htt
                 "Active": true,
                 "Busy": false,
             };
-            return $http.post("api/account/register", user, { headers: { 'Authorization': 'Bearer ' + $rootScope.user$rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.post("api/account/register", user, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         //method for update
         //updateUser: function (callback, user) {
@@ -72,7 +72,7 @@ accionLabControllers.factory('usersRepo', ['$http', '$rootScope', function ($htt
                 "ConfirmPassword": confirmPassword
             };
 
-            return $http.post('api/Account/ChangePassword', user, { headers: { 'Authorization': 'Bearer ' + $rootScope.user$rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.post('api/Account/ChangePassword', user, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getUser: function (id) {
             return $http.get(url + "/" + id, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });

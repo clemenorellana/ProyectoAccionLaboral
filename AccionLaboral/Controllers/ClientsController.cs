@@ -150,13 +150,15 @@ namespace AccionLaboral.Controllers
         [System.Web.Http.Route("api/trackingclientsbyemployee/{id}")]
         public IHttpActionResult GetTrackingClients(int id)
         {
-            var clients = Ok(db.Clients
+            var clients = db.Clients
                 .Include(r => r.State)
                 .Include(r => r.Trackings.Select(c => c.TrackingType))
                 .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.Employee.EmployeeAlias, x.EnrollDate, x.Age, Trackings = x.Trackings.Select(c => new { c.TrackingType }), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
                 .OrderBy(r => r.EnrollDate)
                 .Where(r => r.EmployeeId == id)
-                .ToList());
+                .ToList();
+
+            int a = clients.Count();
 
             if (clients == null)
                 return NotFound();

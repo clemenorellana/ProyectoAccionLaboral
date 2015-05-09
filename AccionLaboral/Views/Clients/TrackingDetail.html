@@ -39,6 +39,14 @@
                         </div>
                         <div class="box-body">
                             <form role="form" name="ClientTrackingForm" ng-submit="saveTracking(client)">
+                                <div class="row" ng-show="Client.StateId!=getStateByAlias('PI').StateId && Client.StateId!=getStateByAlias('DE').StateId && Client.StateId!=getStateByAlias('RE').StateId">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Correlativo</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.CorrelativeCode" ng-class="{'loadinggif': load}" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -74,14 +82,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" ng-show="Client.StateId==getStateByAlias('IN').StateId">
+                                <div class="row">
                                     <!--<div class="col-md-6">
                                 <div class="form-group">
                                     <label>Empresa</label>
                                     <select class="form-control" ng-options="Company.CompanyId as Company.Name for Company in Companies" ng-model="Client.CompanyId" ng-class="{'loadinggif': load}" ng-disabled="true" required></select>
                                 </div>
                             </div>-->
-                                    <div class="col-md-8">
+                                    <div class="col-md-8" ng-show="Client.StateId==getStateByAlias('IN').StateId">
                                         <div class="form-group">
                                             <label>Plaza a la que aspira</label>
                                             <input type="text" class="form-control" ng-model="Client.DesiredEmployment" ng-disabled="true" ng-class="{'loadinggif': load}">
@@ -109,6 +117,8 @@
                                     <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Client.InformationMedia" ng-class="{'loadinggif': load}" ng-disabled="true">
                                 </div>
                             </div>-->
+                                </div>
+                                <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Estado</label>
