@@ -78,16 +78,21 @@
                             <h3 class="box-title">Foto de Perfil</h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
-                            <div class="text-center">
-                                <img ng-show="episodeImgData" ng-src="data:image/jpeg;base64,{{episodeImgData}}" class="img-thumbnail" />
-                                <img ng-show="!episodeImgData" src="images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
-                            </div>
-                            <br />
-                            <div class="form-group required">
-                                <label for="exampleInputFile">Cambiar foto de Perfil</label>
-                                <input type="file" id="exampleInputFile">
-                                <p class="help-block">Seleccione una foto</p>
-                            </div>
+                            <form name="photoForm">
+                                <div class="text-center">
+                                    <img ng-show="episodeImgData" ng-src="data:image/jpeg;base64,{{episodeImgData}}" class="img-thumbnail" />
+                                    <img ng-show="!episodeImgData" src="images/userprofilepic.jpg" id="imagen" class="img-circle" alt="User Image" ng-model="New.Photo">
+                                </div>
+                                <br />
+                                <div class="form-group required">
+                                    <label for="exampleInputFile">Foto de Perfil</label>
+                                    <input type="file" id="exampleInputFile" required>
+                                    <p class="help-block">Seleccione una foto</p>
+                                    <span style="color:red" ng-show="!New.Photo">
+                                        <span ng-show="!New.Photo">Foto es requerida.</span>
+                                    </span>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -116,6 +121,9 @@
                                                     <div class="form-group required">
                                                         <label>Identidad</label>
                                                         <input type="text" class="form-control" id="identityNumber" placeholder="Ingresar ..." ng-model="New.IdentityNumber" required data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" input-mask>
+                                                        <span style="color:red" ng-show="!New.IdentityNumber">
+                                                            <span ng-show="!New.IdentityNumber">Identidad es requerido.</span>
+                                                        </span>
                                                     </div>
 
                                                 </div>
@@ -125,18 +133,18 @@
                                                     <div class="form-group required">
                                                         <label>Nombre(s)</label>
                                                         <input type="text" class="form-control" id="firstName" placeholder="Ingresar ..." ng-model="New.FirstName" required>
-                                                        <!--<span style="color:red" ng-show="!New.FirstName">
+                                                        <span style="color:red" ng-show="!New.FirstName">
                                                             <span ng-show="!New.FirstName">Nombre es requerido.</span>
-                                                        </span>-->
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group required">
                                                         <label>Apellidos</label>
                                                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.LastName" required>
-                                                        <!--<span style="color:red" ng-show="!New.FirstName">
+                                                        <span style="color:red" ng-show="!New.LastName">
                                                             <span ng-show="!New.LastName">Apellido es requerido.</span>
-                                                        </span>-->
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,6 +159,9 @@
                                                             </div>
                                                             <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" ng-change="calculateAge()" data-mask="" ng-model="New.Birthday" required>
                                                         </div>
+                                                        <span style="color:red" ng-show="!New.Birthday">
+                                                            <span ng-show="!New.Birthday">Fecha es requerida.</span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -159,6 +170,9 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.Age" required>
                                                         </div>
+                                                        <span style="color:red" ng-show="!New.Age">
+                                                            <span ng-show="!New.Age">Edad es requerida.</span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -178,6 +192,9 @@
                                                                 </p>
                                                             </div>
                                                         </div>
+                                                        <span style="color:red" ng-show="!New.Gender">
+                                                            <span ng-show="!New.Gender">Genero es requerido.</span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,7 +205,7 @@
                                                         <label>Correo Electrónico</label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email">
+                                                            <input type="email" class="form-control" placeholder="alguien@ejemplo.com" ng-model="New.Email">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -203,7 +220,10 @@
                                                                 <i class="fa fa-mobile-phone"></i>
                                                             </div>
                                                             <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="New.Cellphone" required input-mask>
-                                                        </div><!-- /.input group -->
+                                                        </div>
+                                                        <span style="color:red" ng-show="!New.Cellphone">
+                                                            <span ng-show="!New.Cellphone">Celular es requerido.</span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -221,9 +241,14 @@
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
+                                                    <div class="form-group required">
                                                         <label>Ciudad</label>
-                                                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId"></select>
+                                                        <select class="form-control" ng-options="city.Name for city in Cities" ng-model="New.CityId">
+                                                            <option>--Seleccione una opción</option>
+                                                        </select>
+                                                        <span style="color:red" ng-show="!New.CityId">
+                                                            <span ng-show="!New.CityId">Ciudad es requerida.</span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -231,6 +256,9 @@
                                             <div class="form-group required">
                                                 <label>Dirección Completa</label>
                                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="New.CompleteAddress" required>
+                                                <span style="color:red" ng-show="!New.CompleteAddress">
+                                                    <span ng-show="!New.CompleteAddress">Dirección es requerida.</span>
+                                                </span>
                                             </div>
                                         </form>
                                     </div><!-- /.box-body -->
@@ -554,7 +582,7 @@
                                         <button type="button" class="btn btn-danger" ng-click="back()">Cancelar</button>
                                     </div>
                                     <div class="has-error">
-                                        <p class="help-block" ng-show="!clientForm.$valid">Complete todos los campos requeridos.</p>
+                                        <p class="help-block" ng-show="!clientForm.$valid">Complete todos los campos requeridos marcados con *.</p>
                                     </div>
                                 </div>
                             </div>
@@ -574,37 +602,66 @@
                             <form action="#" method="post" name="academicEducationModal">
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-3 required" >
                                             <label>Año</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Year" required>
+                                            <span style="color:red" ng-show="!Year">
+                                                <span ng-show="!Year">Año es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-4 required">
                                             <label>País</label>
-                                            <select class="form-control" ng-options="country.Name for country in Countries track by country.CountryId" ng-model="Country" required></select>
+                                            <select class="form-control" ng-options="country.Name for country in Countries track by country.CountryId" ng-model="Country" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!Country">
+                                                <span ng-show="!Country">País es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-5">
+                                        <div class="form-group col-md-5 required">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(Country.CountryId)" ng-model="City" required></select>
+                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(Country.CountryId)" ng-model="City" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!City">
+                                                <span ng-show="!City">Ciudad es requerida.</span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>Nivel Académico</label>
-                                            <select class="form-control" ng-options="academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevel" required></select>
+                                            <select class="form-control" ng-options="academicLevel.Name for academicLevel in AcademicLevels" ng-change="assignCareers()" ng-model="AcademicLevel" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!AcademicLevel">
+                                                <span ng-show="!AcademicLevel">Nivel es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>Carrera</label>
-                                            <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId" required></select>
+                                            <select class="form-control" ng-disabled="Career" ng-options="Career.CareerId as Career.Name for Career in Careers" ng-model="CareerId" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!CareerId">
+                                                <span ng-show="!CareerId">Carrera es requerida.</span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-12 required">
                                             <label>Título Obtenido</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="TrainingName" required>
+                                            <span style="color:red" ng-show="!TrainingName">
+                                                <span ng-show="!TrainingName">Título es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-12 required">
                                             <label>Nombre de la Institución</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="InstitutionName" required>
+                                            <span style="color:red" ng-show="!InstitutionName">
+                                                <span ng-show="!InstitutionName">Institución es requerido.</span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -627,21 +684,34 @@
                             <form action="#" method="post" name="FormLanguage">
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>Idioma</label>
-                                            <select class="form-control" ng-options="Language.Name for Language in Languages" ng-model="Language" required></select>
+                                            <select class="form-control" ng-options="Language.Name for Language in Languages" ng-model="Language" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!Language">
+                                                <span ng-show="!Language">Idioma es requerido.</span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-4 required">
                                             <label>Nivel</label>
-                                            <select class="form-control" ng-options="LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevel" required></select>
+                                            <select class="form-control" ng-options="LanguageLevel.Name for LanguageLevel in LanguageLevels" ng-model="LanguageLevel" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!LanguageLevel">
+                                                <span ng-show="!LanguageLevel">Nivel es requerido.</span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-3 required">
                                             <label>Porcentaje</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Percentage" required>
+                                            <span style="color:red" ng-show="!Percentage">
+                                                <span ng-show="!Percentage">Porcentaje es requerido.</span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -664,9 +734,12 @@
                             </div>
                             <form action="#" method="post" name="FormProgram">
                                 <div class="modal-body">
-                                    <div class="form-group">
+                                    <div class="form-group required">
                                         <label>Nombre del Programa</label>
                                         <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="NameProgram" required>
+                                        <span style="color:red" ng-show="!NameProgram">
+                                            <span ng-show="!NameProgram">Nombre del Programa es requerido.</span>
+                                        </span>
                                     </div>
 
                                     <div class="modal-footer clearfix">
@@ -690,14 +763,17 @@
                             <form action="#" method="post" name="formWorkExperience">
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>Fecha Inicio</label>
                                             <div class="input-group">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="StartDate" required>
+                                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="StartDate" required>                                                
                                             </div>
+                                            <span style="color:red" ng-show="!StartDate">
+                                                <span ng-show="!StartDate">Fecha Inicio es requerida.</span>
+                                            </span>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Fecha Fin</label>
@@ -705,36 +781,52 @@
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="EndDate" required>
+                                                <input type="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask="" ng-model="EndDate">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>País</label>
-                                            <select class="form-control" ng-options="Country.Name for Country in Countries" ng-model="WorkCountry" required></select>
+                                            <select class="form-control" ng-options="Country.Name for Country in Countries" ng-model="WorkCountry" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!WorkCountry">
+                                                <span ng-show="!WorkCountry">País es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="City.Name for City in getCitiesByCountry(WorkCountry.CountryId)" ng-model="WorkCity" required></select>
+                                            <select class="form-control" ng-options="City.Name for City in getCitiesByCountry(WorkCountry.CountryId)" ng-model="WorkCity" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!WorkCity">
+                                                <span ng-show="!WorkCity">Ciudad es requerida.</span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-6 required">
                                             <label>Nombre de la Empresa</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyName" required>
+                                            <span style="color:red" ng-show="!CompanyName">
+                                                <span ng-show="!CompanyName">Nombre es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-6">
                                             <label>Sector</label>
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyArea" required>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyArea" >
                                         </div>
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-12 required">
                                             <label>Cargo Ocupado</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="Charge" required>
+                                            <span style="color:red" ng-show="!Charge">
+                                                <span ng-show="!Charge">Cargo es requerido.</span>
+                                            </span>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Tareas o Logros Realizados</label>
-                                            <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="Achievements" required></textarea>
+                                            <textarea class="form-control" rows="3" placeholder="Ingresar ..." ng-model="Achievements" ></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -758,28 +850,37 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label>Nombre</label>
                                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNameWRef" required>
+                                                <span style="color:red" ng-show="!FirstNameWRef">
+                                                    <span ng-show="!FirstNameWRef">Nombre es requerido.</span>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label>Apellido</label>
                                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNameWRef" required>
+                                                <span style="color:red" ng-show="!LastNameWRef">
+                                                    <span ng-show="!LastNameWRef">Apellido es requerido.</span>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label>Teléfono</label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-phone"></i>
                                                     </div>
-                                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="CellphoneWRef" required input-mask>
-                                                </div><!-- /.input group -->
+                                                    <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="CellphoneWRef" required input-mask>                                                    
+                                                </div>
+                                                <span style="color:red" ng-show="!CellphoneWRef">
+                                                    <span ng-show="!CellphoneWRef">Teléfono es requerido.</span>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -787,32 +888,50 @@
                                                 <label>Correo Electrónico</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef" required>
+                                                    <input type="email" class="form-control" placeholder="alguien@ejemplo.com" ng-model="EmailWRef">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>País</label>
-                                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryWRef" required></select>
+                                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryWRef" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!CountryWRef">
+                                                <span ng-show="!CountryWRef">País es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryWRef.CountryId)" ng-model="CityWRef" required></select>
+                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryWRef.CountryId)" ng-model="CityWRef" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!CityWRef">
+                                                <span ng-show="!CityWRef">Ciudad es requerida.</span>
+                                            </span>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Empresa</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyNameWRef" required>
+                                    <div class="row">
+                                        <div class="form-group col-md-6 required">
+                                            <label>Empresa</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="CompanyNameWRef" required>
+                                            <span style="color:red" ng-show="!CompanyNameWRef">
+                                                <span ng-show="!CompanyNameWRef">Empresa es requerida.</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group  col-md-6 required">
+                                            <label>Cargo</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargeWRef" required>
+                                            <span style="color:red" ng-show="!ChargeWRef">
+                                                <span ng-show="!ChargeWRef">Cargo es requerido.</span>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Cargo</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargeWRef" required>
                                     </div>
-                                </div>
                                 <div class="modal-footer clearfix">
                                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addWorkReference()">{{textButton}}</button>
@@ -833,21 +952,27 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label>Nombre</label>
                                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="FirstNamePRef" required>
+                                                <span style="color:red" ng-show="!FirstNamePRef">
+                                                    <span ng-show="!FirstNamePRef">Nombre es requerido.</span>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label>Apellido</label>
                                                 <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="LastNamePRef" required>
+                                                <span style="color:red" ng-show="!LastNamePRef">
+                                                    <span ng-show="!LastNamePRef">Apellido es requerido.</span>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group required">
                                                 <label>Teléfono</label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon">
@@ -855,6 +980,9 @@
                                                     </div>
                                                     <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" ng-model="CellphonePRef" required input-mask>
                                                 </div><!-- /.input group -->
+                                                <span style="color:red" ng-show="!CellphonePRef">
+                                                    <span ng-show="!CellphonePRef">Teléfono es requerido.</span>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -862,30 +990,45 @@
                                                 <label>Correo Electrónico</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailPRef" required>
+                                                    <input type="email" class="form-control" placeholder="alguien@ejemplo.com" ng-model="EmailPRef" >
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>País</label>
-                                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryPRef" required></select>
+                                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="CountryPRef" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!CountryPRef">
+                                                <span ng-show="!CountryPRef">País es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-6 required">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryPRef.CountryId)" ng-model="CityPRef" required></select>
+                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(CountryPRef.CountryId)" ng-model="CityPRef" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!CityPRef">
+                                                <span ng-show="!CityPRef">Ciudad es requerida.</span>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Ocupación</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargePRef" required>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label>Ocupación</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="ChargePRef">
+                                        </div>
+                                        <div class="form-group col-md-6 required">
+                                            <label>Parentesco</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="RelationshipPRef" required>
+                                            <span style="color:red" ng-show="!RelationshipPRef">
+                                                <span ng-show="!RelationshipPRef">Parentesco es requerido.</span>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Parentesco</label>
-                                        <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="RelationshipPRef" required>
                                     </div>
-                                </div>
                                 <div class="modal-footer clearfix">
                                     <button type="button" class="btn btn-danger text-center" data-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-primary text-center" data-dismiss="modal" ng-click="addPersonalReference()">{{textButton}}</button>
@@ -905,34 +1048,52 @@
                             <form action="#" method="post" name="trainingForm">
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-3 required">
                                             <label>Año</label>
                                             <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_Year" required>
+                                            <span style="color:red" ng-show="!_Year">
+                                                <span ng-show="!_Year">Año es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-4 required">
                                             <label>País</label>
-                                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="_Country" required></select>
+                                            <select class="form-control" ng-options="country.Name for country in Countries" ng-model="_Country" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!_Country">
+                                                <span ng-show="!_Country">País es requerido.</span>
+                                            </span>
                                         </div>
-                                        <div class="form-group col-md-5">
+                                        <div class="form-group col-md-5 required">
                                             <label>Ciudad</label>
-                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(_Country.CountryId)" ng-model="_City" required></select>
+                                            <select class="form-control" ng-options="city.Name for city in getCitiesByCountry(_Country.CountryId)" ng-model="_City" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!_City">
+                                                <span ng-show="!_City">Ciudad es requerida.</span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
 
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6 required">
                                             <label>Carrera</label>
-                                            <select class="form-control" ng-options="career.Name for career in AllCarees" ng-model="_Career" required></select>
+                                            <select class="form-control" ng-options="career.Name for career in AllCarees" ng-model="_Career" required>
+                                                <option>--Seleccione una opción</option>
+                                            </select>
+                                            <span style="color:red" ng-show="!_Career">
+                                                <span ng-show="!_Career">Carrera es requerida.</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group col-md-6 ">
+                                            <label>Título de la formación</label>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName" >
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <div class="form-group col-md-12">
-                                                <label>Título de la formación</label>
-                                                <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_TrainingName" required>
-                                            </div>
+                                        <div class="form-group col-md-12">                                            
                                             <label>Nombre de la Institución</label>
-                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_InstitutionName" required>
+                                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="_InstitutionName" >
                                         </div>
                                     </div>
                                 </div>
@@ -946,6 +1107,28 @@
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
+
+                <script type="text/ng-template" id="loadingModal.html">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"><i class="fa "></i>Cargando...</h4>
+                        </div>
+                        <form action="#" method="post" name="formReject">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </script>
+
             </div>
         </div>
     </div>

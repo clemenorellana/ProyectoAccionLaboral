@@ -232,7 +232,7 @@ angular.module('AccionLaboralApp', [
                     $scope.alertsTags = $rootScope.alerts;
                 }
             } else {
-                alertService.add('danger', 'Error', 'Complete todos los campos correctamente.');
+                alertService.add('danger', 'Error', 'Complete todos los campos correctamente marcados con *.');
                 $scope.alertsTags = $rootScope.alerts;
             }
             $scope.action = '';
@@ -680,7 +680,7 @@ angular.module('AccionLaboralApp', [
         };
 
         $scope.update = function () {
-            if ($scope.clientForm.$valid) {
+            if ($scope.clientForm.$valid && $scope.photoForm.$valid) {
                 if ($scope.episodeImgData)
                     $scope.New.Photo = $scope.episodeImgData.replace(/data:image\/jpeg;base64,/g, '');
 
@@ -813,7 +813,7 @@ angular.module('AccionLaboralApp', [
                 }
 
             } else {
-                alertService.add('danger', 'Error', 'Complete correctamente todos los campos.');
+                alertService.add('danger', 'Error', 'Complete correctamente todos los campos marcados con *.');
                 $scope.alertsTags = $rootScope.alerts;
             }
         }
