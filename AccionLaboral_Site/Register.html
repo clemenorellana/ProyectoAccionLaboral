@@ -425,8 +425,8 @@
                                                             <th>Opción</th>
                                                         </tr>
                                                         <tr ng-repeat="workReference in workReferences">
-                                                            <td>{{workReference.FirstName}}</td>
-                                                            <td>{{workReference.LastName}}</td>
+                                                            <td>{{workReference.FirstName}} {{workReference.LastName}}</td>
+                                                            <td>{{workReference.CompanyName}}</td>
                                                             <td>{{workReference.Charge}}</td>
                                                             <td>{{workReference.Cellphone}}</td>
                                                             <td>{{workReference.Email}}</td>
@@ -465,9 +465,9 @@
                                                             <th>Opción</th>
                                                         </tr>
                                                         <tr ng-repeat="personalReference in personalReferences">
-                                                            <td>{{personalReference.FirstName}}</td>
-                                                            <td>{{personalReference.LastName}}</td>
+                                                            <td>{{personalReference.FirstName}} {{personalReference.LastName}}</td>
                                                             <td>{{personalReference.Charge}}</td>
+                                                            <td>{{personalReference.Relationship}}</td>
                                                             <td>{{personalReference.Cellphone}}</td>
                                                             <td>{{personalReference.Email}}</td>
                                                             <td>{{personalReference.City.Name}}</td>
