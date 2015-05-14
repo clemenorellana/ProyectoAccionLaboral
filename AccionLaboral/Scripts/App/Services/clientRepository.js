@@ -26,6 +26,11 @@ accionLabControllers.factory('customerRepository', ['$http', "$rootScope", funct
             return $http.post(urlCustomersByEmployee + currentPage + "/" + recordsPerPage, term, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getTrackingCustomers: function (employee, currentPage, recordsPerPage, term) {
+            if (currentPage == null)
+                currentPage = 1;
+            if (recordsPerPage == null)
+                recordsPerPage = 5;
+            
             var urlCustomersByEmployee;
             if (employee.Role.Alias == "ASREC")
                 urlCustomersByEmployee = 'api/trackingclientsbyemployee/' + employee.EmployeeId + '/';
