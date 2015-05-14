@@ -120,6 +120,7 @@ namespace AccionLaboral.Models
 
             return success;
 #endif
+            return true;
         }
 
         public bool RoleExists(ApplicationRoleManager roleManager, string name)

@@ -34,16 +34,19 @@ angular.module('AccionLaboralApp', [
             IdleProvider.idle(5*60);
             IdleProvider.timeout(10);
             KeepaliveProvider.interval(10);
+
             $routeProvider.
                  when('/HomePage', {
                      templateUrl: '/Home/HomePage',
                      controller: 'homePageController'
                  }).
                 otherwise({
+
                     redirectTo: '/',
                     templateUrl: '/Home/HomePage',
                     controller: 'homePageController'
                 });
+
         }
     ])
     .filter('startFrom', function () {

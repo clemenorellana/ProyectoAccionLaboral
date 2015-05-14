@@ -120,7 +120,7 @@
                                         <label>Correo Electrónico</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="New.Email" ng-class="{'loadinggif': load}" >
+                                            <input type="email" class="form-control" placeholder="alguien@ejemplo.com" ng-model="New.Email" ng-class="{'loadinggif': load}">
                                         </div>
                                     </div>
                                 </div>
@@ -361,17 +361,17 @@
                                             <th>Teléfono</th>
                                             <th>Correo Electrónico</th>
                                             <th>Ciudad</th>
-                                            <th>País</th>
+                                            <!--<th>País</th>-->
                                             <th class="col-md-3">Opción</th>
                                         </tr>
                                         <tr ng-repeat="workReference in workReferences">
-                                            <td>{{workReference.FirstName}}</td>
-                                            <td>{{workReference.LastName}}</td>
+                                            <td>{{workReference.FirstName}} {{workReference.LastName}}</td>
+                                            <td>{{workReference.CompanyName}}</td>
                                             <td>{{workReference.Charge}}</td>
                                             <td>{{workReference.Cellphone}}</td>
                                             <td>{{workReference.Email}}</td>
                                             <td>{{workReference.City.Name}}</td>
-                                            <td>{{workReference.City.Country.Name}}</td>
+                                            <!--<td>{{workReference.Country.Name}}</td>-->
                                             <td>
                                                 <button type="button" class="btn btn-danger" ng-click=" removeWorkReference($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workRefInfo" ng-click="fillWorkReference($index)" title="Editar"><i class="fa fa-edit"></i></button>
@@ -401,17 +401,17 @@
                                             <th>Teléfono</th>
                                             <th>Correo Electrónico</th>
                                             <th>Ciudad</th>
-                                            <th>País</th>
+                                            <!--<th>País</th>-->
                                             <th class="col-md-2">Opción</th>
                                         </tr>
                                         <tr ng-repeat="personalReference in personalReferences">
-                                            <td>{{personalReference.FirstName}}</td>
-                                            <td>{{personalReference.LastName}}</td>
+                                            <td>{{personalReference.FirstName}} {{personalReference.LastName}}</td>
                                             <td>{{personalReference.Charge}}</td>
+                                            <td>{{personalReference.Relationship}}</td>
                                             <td>{{personalReference.Cellphone}}</td>
                                             <td>{{personalReference.Email}}</td>
                                             <td>{{personalReference.City.Name}}</td>
-                                            <td>{{personalReference.City.Country.Name}}</td>
+                                            <!--<td>{{personalReference.Country.Name}}</td>-->
                                             <td>
                                                 <button type="button" class="btn btn-danger" ng-click=" removePersonalReference($index)" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#personalRefInfo" ng-click="fillPersonalReference($index)" title="Editar"><i class="fa fa-edit"></i></button>
@@ -744,7 +744,7 @@
                                 <label>Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailWRef" required>
+                                    <input type="email" class="form-control" placeholder="alguien@ejemplo.com" ng-model="EmailWRef" required>
                                 </div>
                             </div>
                         </div>
@@ -821,7 +821,7 @@
                                 <label>Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" placeholder="Ingresar ..." ng-model="EmailPRef" required>
+                                    <input type="email" class="form-control" placeholder="alguien@ejemplo.com" ng-model="EmailPRef" required>
                                 </div>
                             </div>
                         </div>

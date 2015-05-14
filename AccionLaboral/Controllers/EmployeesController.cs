@@ -39,9 +39,10 @@ namespace AccionLaboral.Controllers
 
         [Route("api/RecruitmentEmployees")]
         [HttpGet]
-        public IQueryable<Employee> RecruitmentEmployees()
+        public IHttpActionResult RecruitmentEmployees()
         {
-            return db.Employees.Include("Role").Where(r => r.Role.Alias == "ASREC");
+            var employees = db.Employees.Include("Role").Where(r => r.Role.Alias == "ASREC").ToList();
+            return Ok(employees);
         }
 
         // GET api/Employees/5

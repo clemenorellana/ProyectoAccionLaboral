@@ -30,6 +30,16 @@ using System.Linq;
             context.CreateRole(_roleManager, "Gerente General", "GTEGE");
             context.CreateRole(_roleManager, "Admin. del Sistema", "ADMIN");
 
+            var academicLevels = new List<AcademicLevel>
+            {
+                new AcademicLevel {AcademicLevelId=1, Name="Primaria"},
+                new AcademicLevel {AcademicLevelId=2, Name="Secundaria"},
+                new AcademicLevel {AcademicLevelId=3, Name="Pre grado"},
+                new AcademicLevel {AcademicLevelId=4, Name="Post grado"}
+            };
+            academicLevels.ForEach(s => context.AcademicLevels.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
+
             var countries = new List<Country>
             {
                 new Country {CountryId=1, Name="Honduras"},
