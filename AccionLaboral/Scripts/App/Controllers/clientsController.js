@@ -325,38 +325,40 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.entryLimit = $scope.itemsPerPageList[0];
         $scope.currentPage = 1; //current page
         $scope.setData = function (term) {
-            if(!term)
+            term = $scope.search;
+            if (!term)
                 $scope.load = true;
             else
-                    term.StateId = (!term.StateId) ? "" : term.StateId;
+                term.StateId = (!term.StateId) ? "" : term.StateId;
 
-            customerRepository.getCustomers($rootScope.userLoggedIn).success(function(data) {
-                        $scope.customerData = data;
-                        $scope.load = false;
+            customerRepository.getCustomers($rootScope.userLoggedIn, $scope.currentPage, $scope.entryLimit, term).success(function (data) {
+                $scope.customerData = data.data;
+                $scope.count = data.count;
+                $scope.load = false;
 
-                        if ($rootScope.alerts)
-                        $scope.alertsTags = $rootScope.alerts;
+                if ($rootScope.alerts)
+                    $scope.alertsTags = $rootScope.alerts;
                 $scope.maxSize = 5; //pagination max size
-                 //max rows for data table
+                //max rows for data table
 
                 /* init pagination with $scope.list */
-                $scope.setFiltered(term);
-                    
-                })
-                    .error(function(data) {
+                $scope.setFiltered(data);
+
+            })
+                    .error(function (data) {
                         alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + data.Message);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.load = false;
                     });
         };
-        
-        $scope.setFiltered = function (term) {
-            if ($scope.customerData) {
-            $scope.filtered = filterFilter($scope.customerData, term);
 
-            $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                    $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-            $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+        $scope.setFiltered = function (data) {
+            if (data.data) {
+                //$scope.filtered = filterFilter($scope.customerData, term);
+
+                $scope.itemsInPage = ($scope.count) ? ((($scope.currentPage * $scope.entryLimit) > $scope.count) ?
+                        $scope.count - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                $scope.noOfPages = Math.ceil($scope.count / $scope.entryLimit);
             }
         };
 
@@ -1404,11 +1406,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
          $scope.entryLimit = $scope.itemsPerPageList[0];
          $scope.currentPage = 1; //current page
          $scope.setEnrollClients = function (term) {
+             term = $scope.search;
              if (!term)
                  $scope.load = true;
-             customerRepository.getEnrolledCustomers($rootScope.userLoggedIn).success(function (data) {
+             customerRepository.getEnrolledCustomers($rootScope.userLoggedIn, $scope.currentPage, $scope.entryLimit, term).success(function (data) {
                  var state = $scope.getStateByAlias('PI');
-                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: $scope.getStateByAlias('PI').StateId }, true);
+                 $scope.enrollCustomerData = data.data;
+                 $scope.count = data.count;
 
                  $scope.load = false;
 
@@ -1418,7 +1422,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                  //max rows for data table
 
                  /* init pagination with $scope.list */
-                 $scope.setEnrollClientFiltered(term);
+                 $scope.setEnrollClientFiltered(data);
 
              })
                      .error(function (error) {
@@ -1427,13 +1431,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                          $scope.load = false;
                      });
          }
-         $scope.setEnrollClientFiltered = function (term) {
-             if ($scope.enrollCustomerData) {
-                 $scope.filtered = filterFilter($scope.enrollCustomerData, term);
-
-                 $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                         $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-                 $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+         $scope.setEnrollClientFiltered = function (data) {
+             if (data) {
+                 $scope.itemsInPage = ($scope.count) ? ((($scope.currentPage * $scope.entryLimit) > $scope.count) ?
+                        $scope.count - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                 $scope.noOfPages = Math.ceil($scope.count / $scope.entryLimit);
              }
          };
 
@@ -2291,6 +2293,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.currentPage = 1; //current page
 
         $scope.setData = function (term) {
+            term = $scope.search;
             if (!term)
                 $scope.load = true;
             else {
@@ -2303,8 +2306,9 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             customerRepository.getStates().success(function (data) {
                 $scope.States = data;
             });
-            customerRepository.getTrackingCustomers($rootScope.userLoggedIn).success(function (data) {
-                $scope.customerData = data;
+            customerRepository.getTrackingCustomers($rootScope.userLoggedIn, $scope.currentPage, $scope.entryLimit, term).success(function (data) {
+                $scope.customerData = data.data;
+                $scope.count = data.count;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -2315,7 +2319,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 /* init pagination with $scope.list */
                 $scope.setFiltered(term);
 
-
             })
                     .error(function (error) {
                         alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
@@ -2325,13 +2328,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
         };
 
-        $scope.setFiltered = function (term) {
-            if ($scope.customerData) {
-                $scope.filtered = filterFilter($scope.customerData, term);
-
-                $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
-                        $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-                $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
+        $scope.setFiltered = function (data) {
+            if (data) {
+                $scope.itemsInPage = ($scope.count) ? ((($scope.currentPage * $scope.entryLimit) > $scope.count) ?
+                       $scope.count - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                $scope.noOfPages = Math.ceil($scope.count / $scope.entryLimit);
             }
         };
 

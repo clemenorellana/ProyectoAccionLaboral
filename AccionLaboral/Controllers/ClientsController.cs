@@ -29,12 +29,30 @@ namespace AccionLaboral.Controllers
             db.Database.CommandTimeout = 180;
         }
 
-        // GET api/Clients
-        //[Authorize]
-        public IHttpActionResult GetClients()
+        // GET api/Clients/{currentPage}/{recordsPerPage}
+        [Authorize]
+        [HttpPost]
+        [Route("api/Clients/{currentPage}/{recordsPerPage}")]
+        public IHttpActionResult GetClients(int currentPage, int recordsPerPage, ClientFilter term)
         {
-            var clients = db.Clients.Include(r => r.State).Include(r=>r.Employee)
-                .Select(x => new
+            term = term ?? new ClientFilter();
+            var begin = (currentPage - 1) * recordsPerPage;
+
+            var results = db.Clients.Include(r => r.State).Include(r => r.Employee).AsEnumerable().Where(r =>
+                   (r.FirstName.ToLower().Contains(string.IsNullOrEmpty(term.FirstName) ? "" : term.FirstName.ToLower())
+                 && r.LastName.ToLower().Contains(string.IsNullOrEmpty(term.LastName) ? "" : term.LastName.ToLower())
+                 && r.IdentityNumber.ToLower().Contains(term.IdentityNumber ?? "")
+                 && r.Age.ToString().Contains(term.Age ?? "")
+                 && r.Email.ToLower().Contains(string.IsNullOrEmpty(term.Email) ? "" : term.Email.ToLower())
+                 && r.CompleteAddress.ToLower().Contains(string.IsNullOrEmpty(term.CompleteAddress) ? "" : term.CompleteAddress.ToLower())
+                 && r.Cellphone.Contains(term.Cellphone ?? "")
+                 && r.StateId.ToString().Contains(term.StateId ?? ""))
+                 );
+
+            var clients = new
+            {
+                count = results.Count(),
+                data = results.Select(x => new
                 {
                     x.ClientId,
                     x.FirstName,
@@ -50,8 +68,9 @@ namespace AccionLaboral.Controllers
                     x.Employee.Address,
                     x.RejectionDescription
                 })
-                .OrderByDescending(r => r.EnrollDate)
-                .ToList();
+                .OrderByDescending(r => r.EnrollDate).Skip(begin).Take(recordsPerPage)
+                .ToList()
+            };
 
             if (clients == null)
                 return NotFound();
@@ -59,14 +78,31 @@ namespace AccionLaboral.Controllers
             return Ok(clients);
         }
 
-        // Get api/ClientsByEmployee
+        // POST api/ClientsByEmployee/{id}/{currentPage}/{recordsPerPage}
         [Authorize]
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("api/clientsbyemployee/{id}")]
-        public IHttpActionResult ClientsByEmployee(int id)
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/clientsbyemployee/{id}/{currentPage}/{recordsPerPage}")]
+        public IHttpActionResult ClientsByEmployee(int id, int currentPage, int recordsPerPage, ClientFilter term)
         {
-            var clients = db.Clients.Include(r => r.State)
-                .Select(x => new
+            term = term ?? new ClientFilter();
+            var begin = (currentPage - 1) * recordsPerPage;
+
+            var results = db.Clients.Include(r => r.State).Include(r => r.Employee).AsEnumerable().Where(r =>
+                   (r.FirstName.ToLower().Contains(string.IsNullOrEmpty(term.FirstName) ? "" : term.FirstName.ToLower())
+                 && r.LastName.ToLower().Contains(string.IsNullOrEmpty(term.LastName) ? "" : term.LastName.ToLower())
+                 && r.IdentityNumber.ToLower().Contains(term.IdentityNumber ?? "")
+                 && r.Age.ToString().Contains(term.Age ?? "")
+                 && r.Email.ToLower().Contains(string.IsNullOrEmpty(term.Email) ? "" : term.Email.ToLower())
+                 && r.CompleteAddress.ToLower().Contains(string.IsNullOrEmpty(term.CompleteAddress) ? "" : term.CompleteAddress.ToLower())
+                 && r.Cellphone.Contains(term.Cellphone ?? "")
+                 && r.StateId.ToString().Contains(term.StateId ?? "")
+                 && r.EmployeeId == id)
+                 );
+
+            var clients = new
+            {
+                count = results.Count(),
+                data = results.Select(x => new
                 {
                     x.ClientId,
                     x.FirstName,
@@ -76,15 +112,15 @@ namespace AccionLaboral.Controllers
                     x.StateId,
                     x.Email,
                     x.State,
-                    x.EmployeeId,
                     x.CompleteAddress,
                     x.Cellphone,
                     x.IdentityNumber,
+                    x.Employee.Address,
                     x.RejectionDescription
                 })
-                .OrderBy(r => r.EnrollDate)
-                .Where(r => r.EmployeeId == id)
-                .ToList();
+                .OrderByDescending(r => r.EnrollDate).Skip(begin).Take(recordsPerPage)
+                .ToList()
+            };
 
             if (clients == null)
                 return NotFound();
@@ -92,49 +128,80 @@ namespace AccionLaboral.Controllers
             return Ok(clients);
         }
 
-        // Get api/enrolledclientsbyemployee
+        // Get api/enrolledclientsbyemployee/{id}/{currentPage}/{recordsPerPage}
         [Authorize]
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("api/enrolledclientsbyemployee/{id}")]
-        public IHttpActionResult GetEnrolledClients(int id)
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/enrolledclientsbyemployee/{id}/{currentPage}/{recordsPerPage}")]
+        public IHttpActionResult GetEnrolledClients(int id, int currentPage, int recordsPerPage, ClientFilter term)
         {
-            var clients = db.Clients.Include(r => r.State)
-                .Include(r => r.Trackings.Select(c => c.TrackingType))
-                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, x.StateId, x.EmployeeId, x.State })
-                .OrderBy(r => r.EnrollDate)
-                .Where(r => r.EmployeeId == id).ToList();
+            term = term ?? new ClientFilter();
+            var begin = (currentPage - 1) * recordsPerPage;
+
+            var results = db.Clients.Include(r => r.State).Include(r => r.Employee).AsEnumerable().Where(r =>
+                   (r.FirstName.ToLower().Contains(string.IsNullOrEmpty(term.FirstName) ? "" : term.FirstName.ToLower())
+                 && r.LastName.ToLower().Contains(string.IsNullOrEmpty(term.LastName) ? "" : term.LastName.ToLower())
+                 && r.IdentityNumber.ToLower().Contains(term.IdentityNumber ?? "")
+                 && r.State.Alias=="PI"
+                 && r.EmployeeId == id)
+                 );
+
+            var clients = new
+            {
+                count = results.Count(),
+                data = results.Select(x => new
+                {
+                    x.ClientId,
+                    x.FirstName,
+                    x.LastName,
+                    x.EnrollDate,
+                    x.IdentityNumber,
+                    x.StateId,
+                    x.EmployeeId,
+                    x.State
+                })
+                .OrderByDescending(r => r.EnrollDate).Skip(begin).Take(recordsPerPage)
+                .ToList()
+            };
+
             if (clients == null)
-                NotFound();
+                return NotFound();
 
             return Ok(clients);
         }
 
         // Get api/enrolledclients
         [Authorize]
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("api/enrolledclients")]
-        public IHttpActionResult GetEnrolledClients()
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/enrolledclients/{currentPage}/{recordsPerPage}")]
+        public IHttpActionResult GetEnrolledClients(int currentPage, int recordsPerPage, ClientFilter term)
         {
-            return Ok(db.Clients.Include(r => r.State)
-                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.EnrollDate, x.IdentityNumber, x.StateId, x.EmployeeId, x.State })
-                .OrderBy(r => r.EnrollDate)
-                .ToList());
+            term = term ?? new ClientFilter();
+            var begin = (currentPage - 1) * recordsPerPage;
 
+            var results = db.Clients.Include(r => r.State).Include(r => r.Employee).AsEnumerable().Where(r =>
+                   (r.FirstName.ToLower().Contains(string.IsNullOrEmpty(term.FirstName) ? "" : term.FirstName.ToLower())
+                 && r.LastName.ToLower().Contains(string.IsNullOrEmpty(term.LastName) ? "" : term.LastName.ToLower())
+                 && r.IdentityNumber.ToLower().Contains(term.IdentityNumber ?? "")
+                 && r.State.Alias == "PI")
+                 );
 
-        }
-
-        // Get api/trackingclients
-        [Authorize]
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("api/trackingclients")]
-        public IHttpActionResult GetTrackingClients()
-        {
-            var clients = db.Clients
-                .Include(r => r.State)
-                .Include(r => r.Trackings.Select(c => c.TrackingType))
-                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.Employee.EmployeeAlias, x.EnrollDate, x.Age,Trackings = x.Trackings.Select(c =>new {c.TrackingType}), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
-                .OrderBy(r => r.EnrollDate)
-                .ToList();
+            var clients = new
+            {
+                count = results.Count(),
+                data = results.Select(x => new
+                {
+                    x.ClientId,
+                    x.FirstName,
+                    x.LastName,
+                    x.EnrollDate,
+                    x.IdentityNumber,
+                    x.StateId,
+                    x.EmployeeId,
+                    x.State
+                })
+                .OrderByDescending(r => r.EnrollDate).Skip(begin).Take(recordsPerPage)
+                .ToList()
+            };
 
             if (clients == null)
                 return NotFound();
@@ -144,27 +211,105 @@ namespace AccionLaboral.Controllers
 
         }
 
-        // Get api/trackingclients
+        // Get api/trackingclients/{currentPage}/{recordsPerPage}
         [Authorize]
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("api/trackingclientsbyemployee/{id}")]
-        public IHttpActionResult GetTrackingClients(int id)
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/trackingclients/{currentPage}/{recordsPerPage}")]
+        public IHttpActionResult GetTrackingClients(int currentPage, int recordsPerPage, ClientFilter term)
         {
-            var clients = db.Clients
-                .Include(r => r.State)
-                .Include(r => r.Trackings.Select(c => c.TrackingType))
-                .Select(x => new { x.ClientId, x.FirstName, x.LastName, x.Employee.EmployeeAlias, x.EnrollDate, x.Age, Trackings = x.Trackings.Select(c => new { c.TrackingType }), x.CompleteAddress, x.Cellphone, StateId = x.StateId, x.EmployeeId, x.State })
-                .OrderBy(r => r.EnrollDate)
-                .Where(r => r.EmployeeId == id)
-                .ToList();
+            term = term ?? new ClientFilter();
+            var begin = (currentPage - 1) * recordsPerPage;
 
-            int a = clients.Count();
+            var results = db.Clients.Include(r => r.State).Include(r => r.Employee)
+                .Include(r => r.Trackings.Select(c => c.TrackingType)).AsEnumerable().Where(r =>
+                   (r.FirstName.ToLower().Contains(string.IsNullOrEmpty(term.FirstName) ? "" : term.FirstName.ToLower())
+                 && r.LastName.ToLower().Contains(string.IsNullOrEmpty(term.LastName) ? "" : term.LastName.ToLower())
+                 && r.IdentityNumber.ToLower().Contains(term.IdentityNumber ?? "")
+                 && r.Age.ToString().Contains(term.Age ?? "")
+                 && r.Email.ToLower().Contains(string.IsNullOrEmpty(term.Email) ? "" : term.Email.ToLower())
+                 && r.CompleteAddress.ToLower().Contains(string.IsNullOrEmpty(term.CompleteAddress) ? "" : term.CompleteAddress.ToLower())
+                 && r.Cellphone.Contains(term.Cellphone ?? "")
+                 && r.StateId.ToString().Contains(term.StateId ?? "")
+                 && r.Trackings.ToList()[0].TrackingTypeId.ToString().Contains(term.TrackingTypeId ?? ""))
+                 );
+
+            var clients = new
+            {
+                count = results.Count(),
+                data = results.Select(x => new
+                {
+                    x.ClientId,
+                    x.FirstName,
+                    x.LastName,
+                    x.Employee.EmployeeAlias,
+                    x.EnrollDate,
+                    x.Age,
+                    Trackings = x.Trackings.Select(c => new { c.TrackingType }),
+                    x.CompleteAddress,
+                    x.Cellphone,
+                    StateId = x.StateId,
+                    x.EmployeeId,
+                    x.State
+                })
+                .OrderByDescending(r => r.EnrollDate).Skip(begin).Take(recordsPerPage)
+                .ToList()
+            };
 
             if (clients == null)
                 return NotFound();
+
             return Ok(clients);
+        }
 
+        // Get api/trackingclients/{id}/{currentPage}/{recordsPerPage}
+        [Authorize]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/trackingclientsbyemployee/{id}/{currentPage}/{recordsPerPage}")]
+        public IHttpActionResult GetTrackingClients(int id, int currentPage, int recordsPerPage, ClientFilter term)
+        {
+            term = term ?? new ClientFilter();
+            var begin = (currentPage - 1) * recordsPerPage;
 
+            var results = db.Clients.Include(r => r.State).Include(r => r.Employee)
+                .Include(r => r.Trackings.Select(c => c.TrackingType)).AsEnumerable().Where(r =>
+                   (r.FirstName.ToLower().Contains(string.IsNullOrEmpty(term.FirstName) ? "" : term.FirstName.ToLower())
+                 && r.LastName.ToLower().Contains(string.IsNullOrEmpty(term.LastName) ? "" : term.LastName.ToLower())
+                 && r.IdentityNumber.ToLower().Contains(term.IdentityNumber ?? "")
+                 && r.Age.ToString().Contains(term.Age ?? "")
+                 && r.Email.ToLower().Contains(string.IsNullOrEmpty(term.Email) ? "" : term.Email.ToLower())
+                 && r.CompleteAddress.ToLower().Contains(string.IsNullOrEmpty(term.CompleteAddress) ? "" : term.CompleteAddress.ToLower())
+                 && r.Cellphone.Contains(term.Cellphone ?? "")
+                 && r.StateId.ToString().Contains(term.StateId ?? "")
+                 && ((r.Trackings.ToList().Count() > 0) ? r.Trackings.ToList()[0].TrackingTypeId.ToString().Contains(term.TrackingTypeId ?? "") : false)
+                 && r.EmployeeId == id)
+                 );
+
+            var clients = new
+            {
+                count = results.Count(),
+                data = results.Select(x => new
+                {
+                    x.ClientId,
+                    x.FirstName,
+                    x.LastName,
+                    x.Employee.EmployeeAlias,
+                    x.EnrollDate,
+                    x.Age,
+                    Trackings = x.Trackings.Select(c => new { c.TrackingType }),
+                    x.CompleteAddress,
+                    x.Cellphone,
+                    StateId = x.StateId,
+                    x.EmployeeId,
+                    x.State
+                })
+                .OrderByDescending(r => r.EnrollDate).Skip(begin).Take(recordsPerPage)
+                .ToList()
+            };
+
+            if (clients == null)
+                return NotFound();
+
+            return Ok(clients);
         }
 
         // GET api/Clients/5
@@ -415,7 +560,6 @@ namespace AccionLaboral.Controllers
             client.State = null;
             try
             {
-                //db.Clients.Attach(client);
                 var dbClients = db.Clients
                            .Include(x => x.AcademicEducations)
                            .Include(x => x.Languages)

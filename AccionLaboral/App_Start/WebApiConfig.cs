@@ -27,6 +27,12 @@ namespace AccionLaboral
             );
 
             config.Routes.MapHttpRoute(
+                name: "PagingApi",
+                routeTemplate: "api/{action}/{currentPage}/{itemsPerPage}/{search}",
+                defaults: new { currentPage = RouteParameter.Optional, itemsPage = RouteParameter.Optional, search = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "ExportApi",
                 routeTemplate: "api/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }

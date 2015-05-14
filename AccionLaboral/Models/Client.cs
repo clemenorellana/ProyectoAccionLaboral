@@ -75,4 +75,18 @@ namespace AccionLaboral.Models
         public ICollection<Reference> References { get; set; }
         public ICollection<Tracking> Trackings { get; set; }
     }
+
+    public class ClientFilter
+    {
+        public string IdentityNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Age { get; set; }
+        public string Email { get; set; }
+        public string CompleteAddress { get; set; }
+        public string Cellphone { get; set; }
+        public string StateId { get; set; }
+        public string TrackingTypeId { get; set; }
+        public DateTime EnrollDate { get; set; }
+    }
 }

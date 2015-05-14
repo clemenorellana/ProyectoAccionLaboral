@@ -19,12 +19,12 @@ namespace AccionLaboral.Controllers
     {
         private AccionLaboralContext db = new AccionLaboralContext();
 
-        // GET api/academicEducations
         public AcademicEducationsController()
         {
             db.Database.CommandTimeout = 180;
         }
-        
+
+        // GET api/academicEducations
         [HttpGet]
         public IQueryable<AcademicEducation> GetAcademicEducations()
         {
@@ -34,7 +34,6 @@ namespace AccionLaboral.Controllers
 
         // GET api/AcademicEducations/5
         [ResponseType(typeof(AcademicEducation))]
-        //[Route("api/client/{clientId}/academicEducations/{academicEducationId}")]
         [HttpGet]
         public IHttpActionResult GetAcademicEducation(int academicEducationId)
         {

@@ -7,32 +7,32 @@ var urlCustomer = 'api/clients/';
 accionLabControllers.factory('customerRepository', ['$http', "$rootScope", function ($http, $rootScope) {
     var token = $rootScope.userToken;
     return {
-        getCustomers: function (employee) {
+        getCustomers: function (employee, currentPage, recordsPerPage, term) {
             var urlCustomersByEmployee;
             if (employee.Role.Alias == "ASREC")
-                urlCustomersByEmployee = 'api/clientsbyemployee/' + employee.EmployeeId;
+                urlCustomersByEmployee = 'api/clientsbyemployee/' + employee.EmployeeId + '/';
             else
                 urlCustomersByEmployee = 'api/clients/';
 
-            return $http.get(urlCustomersByEmployee, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.post(urlCustomersByEmployee + currentPage + "/" + recordsPerPage, term, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
-        getEnrolledCustomers: function (employee) {
+        getEnrolledCustomers: function (employee, currentPage, recordsPerPage, term) {
             var urlCustomersByEmployee;
             if (employee.Role.Alias == "ASREC")
-                urlCustomersByEmployee = 'api/enrolledclientsbyemployee/' + employee.EmployeeId;
+                urlCustomersByEmployee = 'api/enrolledclientsbyemployee/' + employee.EmployeeId + '/';
             else
                 urlCustomersByEmployee = 'api/enrolledclients/';
 
-            return $http.get(urlCustomersByEmployee, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.post(urlCustomersByEmployee + currentPage + "/" + recordsPerPage, term, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
-        getTrackingCustomers: function (employee) {
+        getTrackingCustomers: function (employee, currentPage, recordsPerPage, term) {
             var urlCustomersByEmployee;
             if (employee.Role.Alias == "ASREC")
-                urlCustomersByEmployee = 'api/trackingclientsbyemployee/' + employee.EmployeeId;
+                urlCustomersByEmployee = 'api/trackingclientsbyemployee/' + employee.EmployeeId + '/';
             else
                 urlCustomersByEmployee = 'api/trackingclients/';
 
-            return $http.get(urlCustomersByEmployee, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
+            return $http.post(urlCustomersByEmployee + currentPage + "/" + recordsPerPage, term, { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
         },
         getEmployees: function () {
             return $http.get('api/Employees', { headers: { 'Authorization': 'Bearer ' + $rootScope.userToken, 'Content-Type': 'application/json; charset=utf-8' } });
