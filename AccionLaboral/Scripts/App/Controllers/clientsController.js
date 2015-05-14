@@ -1013,8 +1013,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         }
 
                     } else {
-                        $modalInstance.dismiss('cancel');
-                        //$modalStack.dismissAll();
+                        //$modalInstance.dismiss('cancel');
+                        $modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'Complete correctamente todos los campos.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
