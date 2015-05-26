@@ -230,7 +230,7 @@ namespace AccionLaboral.Controllers
                  && r.CompleteAddress.ToLower().Contains(string.IsNullOrEmpty(term.CompleteAddress) ? "" : term.CompleteAddress.ToLower())
                  && r.Cellphone.Contains(term.Cellphone ?? "")
                  && r.StateId.ToString().Contains(term.StateId ?? "")
-                 && r.Trackings.ToList()[0].TrackingTypeId.ToString().Contains(term.TrackingTypeId ?? ""))
+                 && r.Trackings.ToList().First().TrackingTypeId.ToString().Contains(term.TrackingTypeId ?? ""))
                  );
 
             var clients = new

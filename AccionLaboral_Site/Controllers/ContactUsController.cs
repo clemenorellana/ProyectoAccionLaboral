@@ -32,7 +32,7 @@ namespace AccionLaboral_Site.Controllers
                 var fromAddress = "accionlaboralhnsps@gmail.com";
 
                 // any address where the email will be sending
-                var toAddress = "info@accionlaboralhn.com";
+                var toAddress = "info@accionlaboral.info";
 
                 //Password of your gmail address
                 const string fromPassword = "4ccionl4bor4l";
