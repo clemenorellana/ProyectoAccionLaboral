@@ -28,7 +28,7 @@ namespace AccionLaboral.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Contraseña")]
-        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la confirmación de contraseña no coinciden.")]
+        [Compare("ConfirmPassword", ErrorMessage = "La nueva contraseña y la confirmación de contraseña no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -46,7 +46,7 @@ namespace AccionLaboral.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Contraseña")]
-        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la confirmación de contraseña no coinciden.")]
+        [Compare("ConfirmPassword", ErrorMessage = "La nueva contraseña y la confirmación de contraseña no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -64,7 +64,7 @@ namespace AccionLaboral.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Contraseña")]
-        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la confirmación de contraseña no coinciden.")]
+        [Compare("ConfirmPassword", ErrorMessage = "La nueva contraseña y la confirmación de contraseña no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         public bool Active { get; set; }
@@ -112,7 +112,7 @@ namespace AccionLaboral.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Contraseña")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("ConfirmPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 }

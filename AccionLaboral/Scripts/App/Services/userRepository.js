@@ -11,8 +11,8 @@ accionLabControllers.factory('usersRepo', ['$http', '$rootScope', function ($htt
         insertUser: function (callback, user) {
             var user = {
                 "UserName": user.UserName,
-                "Password": "AccionLaboral_123",//user.UserName,
-                "ConfirmPassword": "AccionLaboral_123",
+                "Password": "AccionLaboral123",
+                "ConfirmPassword": "AccionLaboral123",
                 "Active": true,
                 "Busy": false,
             };
