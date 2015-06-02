@@ -132,8 +132,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Porcentaje de Inglés</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.EnglishPercentage" ng-class="{'loadinggif': load}">
+                            <label>Porcentaje de Inglés</label>                            
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.EnglishPercentage" ng-class="{'loadinggif': load}" data-inputmask="&quot;mask&quot;: &quot;999&quot;" input-mask>
                         </div>
                     </div>
                 </div>
@@ -145,12 +145,12 @@
                             <div class="form-group">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked ng-model="enrollClient.IsStudying"  required>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked ng-model="enrollClient.IsStudying"  >
                                         Si
                                     </label>
 
                                     <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="0" ng-model="enrollClient.IsStudying" required>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="0" ng-model="enrollClient.IsStudying" >
                                         No
                                     </label>
                                 </div>
@@ -167,7 +167,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Cantidad de clases en la Universidad</label>
-                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.QtyClasses" ng-class="{'loadinggif': load}">
+                            <input type="text" class="form-control" placeholder="Ingresar ..." ng-model="enrollClient.QtyClasses" ng-class="{'loadinggif': load}" data-inputmask="&quot;mask&quot;: &quot;999&quot;" input-mask>
                         </div>
                     </div>
                 </div>

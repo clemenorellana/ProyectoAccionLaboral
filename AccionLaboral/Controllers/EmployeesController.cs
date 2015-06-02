@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -92,6 +95,8 @@ namespace AccionLaboral.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        
+
         // POST api/Employees
         [Route("api/Employees")]
         [HttpPost]
@@ -115,33 +120,27 @@ namespace AccionLaboral.Controllers
             message.Subject = "Confirmación de Registro";
 
 
-            string uri = this.Url.Link("Default", new { controller = "User", action = "ResetPassword" });
+            string uri = this.Url.Link("Default", new { controller = "User", action = "Login" });
             uri = uri.Replace("User", "#");
 
+            string password = "AccionLaboral123";
+
             message.Body = string.Format(@"Bienvenido(a) {0}
+                                    <BR/>
                                     <BR/>
                                     Usted ahora forma parte de la familia Acción Laboral.
                                     <BR/>
                                     Su usuario es: {1}
                                     <BR/>
+                                    Su contraseña temporal es: {2}
                                     <BR/>
-                                    <a href={3}>De clic aquí para activar su cuenta</a>"
+                                    Siga el siguiente enlace, inicie sesión y luego cambie su contraseña:
+                                    <a href={3}>De clic aquí para iniciar sesión</a>"
                                   , employee.FirstName
                                   , user.UserName
-                                  //, user.Password
+                                  , password
                                   , uri);
-            //<BR/>
-            //Clic para activar su cuenta: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = employee.EmployeeId, Email = employee.Email }, Request.Url.Scheme));
-
-            
-            //string uri = Url.Action("Action2", "Controller2", new { }, Request.Url.Scheme);
-
-            
-
-            //message.Body = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\">Registrarse</a>",
-            //    user.UserName,
-            //    uri);
-
+           
            
             message.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");

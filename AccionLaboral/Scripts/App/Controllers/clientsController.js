@@ -326,35 +326,35 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.currentPage = 1; //current page
         $scope.setData = function (term) {
             term = $scope.search;
-            if (!term)
+            if(!term)
                 $scope.load = true;
             else
-                term.StateId = (!term.StateId) ? "" : term.StateId;
+                    term.StateId = (!term.StateId) ? "" : term.StateId;
 
             customerRepository.getCustomers($rootScope.userLoggedIn, $scope.currentPage, $scope.entryLimit, term).success(function (data) {
                 $scope.customerData = data.data;
                 $scope.count = data.count;
-                $scope.load = false;
+                        $scope.load = false;
 
-                if ($rootScope.alerts)
-                    $scope.alertsTags = $rootScope.alerts;
+                        if ($rootScope.alerts)
+                        $scope.alertsTags = $rootScope.alerts;
                 $scope.maxSize = 5; //pagination max size
-                //max rows for data table
+                 //max rows for data table
 
                 /* init pagination with $scope.list */
                 $scope.setFiltered(data);
-
-            })
-                    .error(function (data) {
+                    
+                })
+                    .error(function(data) {
                         alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + data.Message);
                         $scope.alertsTags = $rootScope.alerts;
                         $scope.load = false;
                     });
         };
-
+        
         $scope.setFiltered = function (data) {
             if (data.data) {
-                //$scope.filtered = filterFilter($scope.customerData, term);
+            //$scope.filtered = filterFilter($scope.customerData, term);
 
                 $scope.itemsInPage = ($scope.count) ? ((($scope.currentPage * $scope.entryLimit) > $scope.count) ?
                         $scope.count - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
@@ -430,6 +430,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         }
         $scope.clearAcademicEducation = function () {
             $scope.textButton = 'Agregar';
+            $scope.academicEducationModal.$setUntouched();
             $scope.TrainingName = "",
             $scope.InstitutionName = "",
             $scope.AcademicLevel = "",
@@ -448,6 +449,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         /*Languages*/
         $scope.clearKnownLanguage = function () {
             $scope.textButton = 'Agregar';
+            $scope.FormLanguage.$setUntouched();
             $scope.Percentage = "",
             $scope.Language = "",
             $scope.LanguageLevel = "";
@@ -510,6 +512,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         /*Programs*/
         $scope.clearProgram = function () {
             $scope.textButton = 'Agregar';
+            $scope.FormProgram.$setUntouched();
             $scope.NameProgram = "";
             $scope.action = '';
             $scope.index = -1;
@@ -549,6 +552,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         /*WorkExperience*/
     $scope.clearWorkExperience = function () {
         $scope.textButton = 'Agregar';
+        $scope.formWorkExperience.$setUntouched();
             $scope.CompanyName = "";
             $scope.CompanyArea = "";
             $scope.Charge = "";
@@ -615,6 +619,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         /*WorkReference*/
     $scope.clearWorkReference = function () {
         $scope.textButton = "Agregar";
+        $scope.formWorkReference.$setUntouched();
         $scope.FirstNameWRef = "";
         $scope.LastNameWRef = "";
         $scope.ChargeWRef = "";
@@ -686,6 +691,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         /*PersonalReference*/
     $scope.clearPersonalReference = function () {
         $scope.textButton = 'Agregar';
+        $scope.formPersonalRef.$setUntouched();
                     $scope.FirstNamePRef = "";
                     $scope.LastNamePRef = "";
                     $scope.ChargePRef = "";
@@ -756,6 +762,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         /*Tranning*/
     $scope.clearTranning = function () {
         $scope.textButton = 'Agregar';
+        $scope.trainingForm.$setUntouched();
                     $scope._TrainingName = "",
                         $scope._InstitutionName = "",
                         $scope._AcademicLevel = "",
@@ -1013,8 +1020,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                         }
 
                     } else {
-                        //$modalInstance.dismiss('cancel');
-                        $modalStack.dismissAll();
+                        $modalInstance.dismiss('cancel');
+                        //$modalStack.dismissAll();
                         alertService.add('danger', 'Error', 'Complete correctamente todos los campos.');
                         $scope.alertsTags = $rootScope.alerts;
                     }
@@ -1406,13 +1413,11 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
          $scope.entryLimit = $scope.itemsPerPageList[0];
          $scope.currentPage = 1; //current page
          $scope.setEnrollClients = function (term) {
-             term = $scope.search;
              if (!term)
                  $scope.load = true;
-             customerRepository.getEnrolledCustomers($rootScope.userLoggedIn, $scope.currentPage, $scope.entryLimit, term).success(function (data) {
+             customerRepository.getEnrolledCustomers($rootScope.userLoggedIn).success(function (data) {
                  var state = $scope.getStateByAlias('PI');
-                 $scope.enrollCustomerData = data.data;
-                 $scope.count = data.count;
+                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: $scope.getStateByAlias('PI').StateId }, true);
 
                  $scope.load = false;
 
@@ -1422,7 +1427,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                  //max rows for data table
 
                  /* init pagination with $scope.list */
-                 $scope.setEnrollClientFiltered(data);
+                 $scope.setEnrollClientFiltered(term);
 
              })
                      .error(function (error) {
@@ -1431,11 +1436,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                          $scope.load = false;
                      });
          }
-         $scope.setEnrollClientFiltered = function (data) {
-             if (data) {
-                 $scope.itemsInPage = ($scope.count) ? ((($scope.currentPage * $scope.entryLimit) > $scope.count) ?
-                        $scope.count - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-                 $scope.noOfPages = Math.ceil($scope.count / $scope.entryLimit);
+         $scope.setEnrollClientFiltered = function (term) {
+             if ($scope.enrollCustomerData) {
+                 $scope.filtered = filterFilter($scope.enrollCustomerData, term);
+
+                 $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                         $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                 $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
              }
          };
 
@@ -1667,6 +1674,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             }
             $scope.clearAcademicEducation = function () {
                 $scope.textButton = 'Agregar';
+                $scope.academicFormEdit.$setUntouched();
                 $scope.TrainingName = "",
                 $scope.InstitutionName = "",
                 $scope.AcademicLevelId = "",
@@ -1685,6 +1693,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             /*Languages*/
             $scope.clearKnownLanguage = function () {
                 $scope.textButton = 'Agregar';
+                $scope.languageFormEdit.$setUntouched();
                 $scope.Percentage = "",
                 $scope.LanguageId = "",
                 $scope.LanguageLevelId = "";
@@ -1736,6 +1745,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             /*Programs*/
             $scope.clearProgram = function () {
                 $scope.textButton = 'Agregar';
+                $scope.programFormEdit.$setUntouched();
                 $scope.NameProgram = "";
                 $scope.action = '';
                 $scope.index = -1;
@@ -1775,6 +1785,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             /*WorkExperience*/
             $scope.clearWorkExperience = function () {
                 $scope.textButton = 'Agregar';
+                $scope.workExperienceFormEdit.$setUntouched();
                 $scope.CompanyName = "";
                 $scope.CompanyArea = "";
                 $scope.Charge = "";
@@ -1846,6 +1857,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             /*WorkReference*/
             $scope.clearWorkReference = function () {
                 $scope.textButton = "Agregar";
+                $scope.workReferenceFormEdit.$setUntouched();
                 $scope.FirstNameWRef = "";
                 $scope.LastNameWRef = "";
                 $scope.ChargeWRef = "";
@@ -1923,6 +1935,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             /*PersonalReference*/
             $scope.clearPersonalReference = function () {
                 $scope.textButton = 'Agregar';
+                $scope.personalReferenceFormEdit.$setUntouched();
                 $scope.FirstNamePRef = "";
                 $scope.LastNamePRef = "";
                 $scope.ChargePRef = "";
@@ -1950,7 +1963,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.index = index;
             };
             $scope.addPersonalReference = function () {
-                if ($scope.personalReferenceFormEdit) {
+                if ($scope.personalReferenceFormEdit.$valid) {
                     if ($scope.action == 'edit') {
                         $scope.personalReferences[$scope.index].FirstName = $scope.FirstNamePRef,
                             $scope.personalReferences[$scope.index].LastName = $scope.LastNamePRef,
@@ -2000,6 +2013,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             /*Tranning*/
             $scope.clearTranning = function () {
                 $scope.textButton = 'Agregar';
+                $scope.trainigFormEdit.$setUntouched();
                 $scope._TrainingName = "",
                     $scope._InstitutionName = "",
                     $scope._AcademicLevel = "",
@@ -2293,7 +2307,6 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
         $scope.currentPage = 1; //current page
 
         $scope.setData = function (term) {
-            term = $scope.search;
             if (!term)
                 $scope.load = true;
             else {
@@ -2306,9 +2319,8 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
             customerRepository.getStates().success(function (data) {
                 $scope.States = data;
             });
-            customerRepository.getTrackingCustomers($rootScope.userLoggedIn, $scope.currentPage, $scope.entryLimit, term).success(function (data) {
-                $scope.customerData = data.data;
-                $scope.count = data.count;
+            customerRepository.getTrackingCustomers($rootScope.userLoggedIn).success(function (data) {
+                $scope.customerData = data;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -2319,6 +2331,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 /* init pagination with $scope.list */
                 $scope.setFiltered(term);
 
+
             })
                     .error(function (error) {
                         alertService.add('danger', 'Error', 'No se han cargado los datos correctamente.' + ' \nDetalle: ' + error.Message);
@@ -2328,11 +2341,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
 
         };
 
-        $scope.setFiltered = function (data) {
-            if (data) {
-                $scope.itemsInPage = ($scope.count) ? ((($scope.currentPage * $scope.entryLimit) > $scope.count) ?
-                       $scope.count - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
-                $scope.noOfPages = Math.ceil($scope.count / $scope.entryLimit);
+        $scope.setFiltered = function (term) {
+            if ($scope.customerData) {
+                $scope.filtered = filterFilter($scope.customerData, term);
+
+                $scope.itemsInPage = ($scope.filtered.length) ? ((($scope.currentPage * $scope.entryLimit) > $scope.filtered.length) ?
+                        $scope.filtered.length - (($scope.currentPage - 1) * $scope.entryLimit) : $scope.entryLimit) : 0;
+                $scope.noOfPages = ($scope.filtered) ? Math.ceil($scope.filtered.length / $scope.entryLimit) : 1;
             }
         };
 
