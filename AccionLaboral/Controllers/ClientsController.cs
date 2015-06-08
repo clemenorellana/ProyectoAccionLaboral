@@ -46,8 +46,8 @@ namespace AccionLaboral.Controllers
                  && r.Email.ToLower().Contains(string.IsNullOrEmpty(term.Email) ? "" : term.Email.ToLower())
                  && r.CompleteAddress.ToLower().Contains(string.IsNullOrEmpty(term.CompleteAddress) ? "" : term.CompleteAddress.ToLower())
                  && r.Cellphone.Contains(term.Cellphone ?? "")
-                 && r.StateId.ToString().Contains(term.StateId ?? ""))
-                 );
+                 && r.StateId.ToString().Contains(term.StateId ?? "")
+                 ));
 
             var clients = new
             {
@@ -738,7 +738,7 @@ namespace AccionLaboral.Controllers
 
                 db.SaveChanges();
                 //await Task.Run(()=>
-                GoLucene.AddUpdateLuceneIndex(client));
+                GoLucene.AddUpdateLuceneIndex(client);
             }
             catch (Exception)
             {

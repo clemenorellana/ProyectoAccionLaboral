@@ -1413,11 +1413,13 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
          $scope.entryLimit = $scope.itemsPerPageList[0];
          $scope.currentPage = 1; //current page
          $scope.setEnrollClients = function (term) {
+             
              if (!term)
                  $scope.load = true;
-             customerRepository.getEnrolledCustomers($rootScope.userLoggedIn).success(function (data) {
+             customerRepository.getEnrolledCustomers($rootScope.userLoggedIn, $scope.currentPage, $scope.itemsPerPageList[0], term).success(function (data) {
                  var state = $scope.getStateByAlias('PI');
-                 $scope.enrollCustomerData = $filter('filter')(data, { StateId: $scope.getStateByAlias('PI').StateId }, true);
+                 //$scope.enrollCustomerData = $filter('filter')(data, { StateId: $scope.getStateByAlias('PI').StateId }, true);
+                 $scope.enrollCustomerData = data.data;
 
                  $scope.load = false;
 
@@ -2320,7 +2322,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.States = data;
             });
             customerRepository.getTrackingCustomers($rootScope.userLoggedIn).success(function (data) {
-                $scope.customerData = data;
+                $scope.customerData = data.data;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
@@ -3472,7 +3474,7 @@ angular.module("clientsController", ['ngRoute', 'clientsRepository', 'alertRepos
                 $scope.States = data;
             });
             customerRepository.getTrackingCustomers($rootScope.userLoggedIn).success(function (data) {
-                $scope.customerData = data;
+                $scope.customerData = data.data;
                 $scope.load = false;
 
                 if ($rootScope.alerts)
