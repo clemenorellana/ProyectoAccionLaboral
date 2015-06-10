@@ -363,14 +363,19 @@ namespace AccionLaboral.Reports.Helpers
         #region static void CreateCurriculum(this DocX document)
         public static void CreateCurriculum(this DocX document, Client client)
         {
-            System.IO.MemoryStream ms = new System.IO.MemoryStream(client.Photo);
-            Bitmap newSignImage = (Bitmap)System.Drawing.Image.FromStream(ms);
-            int imgHeight = 160;
-            int imgWidth = 160;
+            if (client.Photo != null)
+            {
+                System.IO.MemoryStream ms = new System.IO.MemoryStream(client.Photo);
+                Bitmap newSignImage = (Bitmap)System.Drawing.Image.FromStream(ms);
+                int imgHeight = 160;
+                int imgWidth = 160;
 
-            Size newSize = new Size(imgWidth, imgHeight);
-            Bitmap sigImage = new Bitmap(newSignImage, newSize);
-            ReplaceTextWithImage(document, "{Photo}", sigImage, 1);
+                Size newSize = new Size(imgWidth, imgHeight);
+                Bitmap sigImage = new Bitmap(newSignImage, newSize);
+                ReplaceTextWithImage(document, "{Photo}", sigImage, 1);
+            }
+            else
+                document.ReplaceText("{Photo}", "");
 
             Formatting Bold = new Formatting();
             Bold.Bold = true;
@@ -605,7 +610,10 @@ namespace AccionLaboral.Reports.Helpers
                         trainings = educations[i].TrainingName + ",";
                     }
                 }
-                document.ReplaceText("{Trainings}", trainings.Remove(trainings.Length - 1), false, System.Text.RegularExpressions.RegexOptions.None, noBold);
+                if (trainings.Length > 0)
+                    document.ReplaceText("{Trainings}", trainings.Remove(trainings.Length - 1), false, System.Text.RegularExpressions.RegexOptions.None, noBold);
+                else
+                    document.ReplaceText("{Trainings}", "Ninguna");
             }
             else
             {
