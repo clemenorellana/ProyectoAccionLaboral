@@ -21,7 +21,7 @@ namespace AccionLaboral.Models
         //[Index("IX_EmployeeFirstNameLastName", 2, IsUnique = true)]
         [StringLength(50)]
         public string LastName { get; set; }
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
         public DateTime Birthday { get; set; }
         public int Age { get; set; }

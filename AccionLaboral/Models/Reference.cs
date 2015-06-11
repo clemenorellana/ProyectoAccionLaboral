@@ -18,7 +18,7 @@ namespace AccionLaboral.Models
         public string LastName { get; set; }
         public string Charge { get; set; }
         public string Cellphone { get; set; }
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
         public string CompanyName { get; set; }        
         public string Relationship { get; set; }
